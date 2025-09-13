@@ -87,7 +87,7 @@ export default function Footer() {
               </div>
             </motion.div>
             <p className="text-gray-200 mb-6 leading-relaxed">
-              Chuyên cung cấp các thiết bị âm thanh chất lượng cao với dịch vụ tư vấn chuyên nghiệp, 
+              Chuyên cung cấp thiết bị âm thanh chính hãng tại khu vực Quảng Ngãi với dịch vụ tư vấn chuyên nghiệp, 
               mang đến trải nghiệm âm thanh tuyệt vời cho khách hàng.
             </p>
             

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link"
-import Image from "next/image"
 import { ArrowRight, Shield, Truck, Headphones, DollarSign, Star, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/ProductCard"
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react'
 
 export default function HomePageResponsive() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
+  // const [bestsellerProducts, setBestsellerProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -23,6 +23,7 @@ export default function HomePageResponsive() {
           getCategories()
         ])
         setFeaturedProducts(featured.slice(0, 8))
+        // setBestsellerProducts(bestseller.slice(0, 6))
         setCategories(cats)
       } catch (error) {
         console.error('Error loading data:', error)
@@ -51,21 +52,18 @@ export default function HomePageResponsive() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Banner Background */}
+      {/* Hero Section */}
       <motion.section 
-        className="relative h-[600px] lg:h-[700px] overflow-hidden bg-red-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        className="relative min-h-[600px] lg:min-h-[700px] overflow-hidden"
+        {...fadeInUp}
       >
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image 
-            src="/banner.jpg"
-            alt="Tiến Đạt Audio Banner"
-            fill
-            className="object-cover"
-            priority
+          <div 
+            className="w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/images/tien-dat-audio-banner.jpg')"
+            }}
           />
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-black/40"></div>
@@ -163,6 +161,46 @@ export default function HomePageResponsive() {
                   <div className="text-sm text-white/80 font-medium">Hài lòng</div>
                 </div>
               </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+                
+                {/* Floating Cards */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 1 }}
+                  className="absolute -right-4 lg:-right-8 top-8 bg-white rounded-xl p-4 shadow-lg"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-gray-900">Bảo hành</div>
+                      <div className="text-xs text-gray-600">Chính hãng</div>
+                    </div>
+                  </div>
+                </motion.div>
+                
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 1.2 }}
+                  className="absolute -left-4 lg:-left-8 bottom-8 bg-white rounded-xl p-4 shadow-lg"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <Truck className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-gray-900">Giao hàng</div>
+                      <div className="text-xs text-gray-600">Miễn phí</div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -278,7 +316,7 @@ export default function HomePageResponsive() {
         </div>
       </motion.section>
 
-      {/* Featured Products Section */}
+      {/* Featured Products */}
       <motion.section 
         className="py-12 lg:py-20 bg-gray-50"
         variants={staggerContainer}
@@ -287,28 +325,32 @@ export default function HomePageResponsive() {
         viewport={{ once: true }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div className="text-center mb-12" variants={fadeInUp}>
+          <motion.div variants={fadeInUp} className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Sản phẩm nổi bật
             </h2>
             <p className="text-lg text-gray-600">
-              Những sản phẩm thiết bị âm thanh được khách hàng yêu thích nhất
+              Những sản phẩm được khách hàng tin tưởng và lựa chọn nhiều nhất
             </p>
           </motion.div>
           
-          {!isLoading && featuredProducts.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {featuredProducts.map((product) => (
-                <motion.div key={product.id} variants={fadeInUp}>
+          {!isLoading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {featuredProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  variants={fadeInUp}
+                  custom={index}
+                >
                   <ProductCard product={product} />
                 </motion.div>
               ))}
             </div>
           )}
           
-          <motion.div className="text-center mt-12" variants={fadeInUp}>
+          <motion.div variants={fadeInUp} className="text-center mt-12">
             <Link href="/products">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button size="lg" variant="outline" className="hover:bg-blue-600 hover:text-white">
                 Xem tất cả sản phẩm
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -348,9 +390,9 @@ export default function HomePageResponsive() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="tel:+84334995657">
+            <Link href="tel:+84123456789">
               <Button size="lg" variant="outline" className="border-blue-200 text-blue-100 hover:bg-blue-100 hover:text-blue-900 w-full sm:w-auto">
-                Gọi: 0334.995.657
+                Gọi: 0123.456.789
               </Button>
             </Link>
           </motion.div>

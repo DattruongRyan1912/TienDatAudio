@@ -100,19 +100,19 @@ export default function HeaderResponsive() {
           >
             <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
               <motion.div 
-                className={`bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                className={`bg-red-600 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isScrolled ? 'w-8 h-8' : 'w-10 h-10'
                 }`}
                 whileHover={{ rotate: 5 }}
                 transition={{ duration: 0.2 }}
               >
-                <span className={`text-white font-bold ${isScrolled ? 'text-lg' : 'text-xl'}`}>T</span>
+                <span className={`text-white font-bold ${isScrolled ? 'text-lg' : 'text-xl'}`}>TĐ</span>
               </motion.div>
               <div className="hidden sm:block">
                 <h1 className={`font-bold text-gray-900 transition-all duration-300 ${
                   isScrolled ? 'text-lg' : 'text-xl'
                 }`}>Tiến Đạt Audio</h1>
-                <p className="text-xs text-gray-600 hidden lg:block">Thiết bị âm thanh chuyên nghiệp</p>
+                <p className="text-xs text-gray-600 hidden lg:block">Thiết bị âm thanh Quảng Ngãi</p>
               </div>
               <div className="sm:hidden">
                 <h1 className="text-lg font-bold text-gray-900">Tiến Đạt</h1>
