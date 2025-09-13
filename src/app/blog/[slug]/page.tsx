@@ -2,8 +2,9 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar, Clock, User, ArrowLeft, Share2, Tag } from 'lucide-react'
+import { Calendar, Clock, User, ArrowLeft, Tag } from 'lucide-react'
 import { getBlogPost, getBlogPosts } from '@/lib/data'
+import ShareButton from '@/components/ShareButton'
 
 interface BlogPostPageProps {
   params: {
@@ -152,24 +153,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <h3 className="text-lg font-semibold text-gray-900">
               Chia sẻ bài viết
             </h3>
-            <button
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: post.title,
-                    text: post.excerpt,
-                    url: window.location.href,
-                  })
-                } else {
-                  navigator.clipboard.writeText(window.location.href)
-                  alert('Đã copy link bài viết!')
-                }
-              }}
-            >
-              <Share2 className="h-4 w-4" />
-              Chia sẻ
-            </button>
+            <ShareButton title={post.title} excerpt={post.excerpt} />
           </div>
         </div>
       </article>

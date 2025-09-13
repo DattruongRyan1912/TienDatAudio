@@ -53,6 +53,7 @@ export interface Brand {
   website?: string;
   country: string;
   sortOrder: number;
+  productCount?: number;
 }
 
 export interface BlogPost {
@@ -190,9 +191,9 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 }
 
 export async function getBrands(): Promise<Brand[]> {
-  return brandsData.brands.map(brand => ({
+  return brandsData.brands.map((brand, index) => ({
     ...brand,
-    sortOrder: 0 // Add default sortOrder
+    sortOrder: index // Use index as default sortOrder
   }));
 }
 
