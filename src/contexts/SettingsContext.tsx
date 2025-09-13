@@ -20,12 +20,6 @@ interface SiteSettings {
   logo: string
   favicon: string
   socialMedia: SocialMedia
-  seo: {
-    metaTitle: string
-    metaDescription: string
-    keywords: string[]
-    ogImage: string
-  }
   smtp: {
     host: string
     port: number
@@ -109,38 +103,10 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       }
     }
 
-    // Add Open Graph meta tags
-    updateMetaTag('property', 'og:title', settingsData.seo?.metaTitle || settingsData.siteName)
-    updateMetaTag('property', 'og:description', settingsData.seo?.metaDescription || settingsData.siteDescription)
-    updateMetaTag('property', 'og:url', settingsData.siteUrl)
-    if (settingsData.seo?.ogImage) {
-      updateMetaTag('property', 'og:image', settingsData.seo.ogImage)
-    }
-
-    // Add Twitter Card meta tags
-    updateMetaTag('name', 'twitter:card', 'summary_large_image')
-    updateMetaTag('name', 'twitter:title', settingsData.seo?.metaTitle || settingsData.siteName)
-    updateMetaTag('name', 'twitter:description', settingsData.seo?.metaDescription || settingsData.siteDescription)
-    
-    // Add keywords
-    if (settingsData.seo?.keywords?.length) {
-      updateMetaTag('name', 'keywords', settingsData.seo.keywords.join(', '))
-    }
-
     // Add analytics scripts if configured
     if (settingsData.analytics?.googleAnalyticsId) {
       addGoogleAnalytics(settingsData.analytics.googleAnalyticsId)
     }
-  }
-
-  const updateMetaTag = (attribute: string, value: string, content: string) => {
-    let meta = document.querySelector(`meta[${attribute}="${value}"]`)
-    if (!meta) {
-      meta = document.createElement('meta')
-      meta.setAttribute(attribute, value)
-      document.head.appendChild(meta)
-    }
-    meta.setAttribute('content', content)
   }
 
   const addGoogleAnalytics = (gaId: string) => {

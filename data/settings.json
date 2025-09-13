@@ -14,19 +14,6 @@
     "instagram": "https://instagram.com/tiendataudio",
     "tiktok": "https://tiktok.com/@tiendataudio"
   },
-  "seo": {
-    "metaTitle": "Tiến Đạt Audio - Thiết bị âm thanh chuyên nghiệp",
-    "metaDescription": "Chuyên cung cấp thiết bị âm thanh chất lượng cao: loa, amply, micro, phụ kiện âm thanh. Giá tốt, bảo hành chính hãng.",
-    "keywords": [
-      "thiết bị âm thanh",
-      "loa",
-      "amply",
-      "micro",
-      "karaoke",
-      "âm thanh chuyên nghiệp"
-    ],
-    "ogImage": "/images/og-image.jpg"
-  },
   "smtp": {
     "host": "",
     "port": 587,
