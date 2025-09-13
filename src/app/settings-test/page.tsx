@@ -61,20 +61,22 @@ export default function SettingsTestPage() {
           ) : (
             <div className="space-y-3">
               <div>
-                <span className="font-medium text-gray-700">Meta Title: </span>
-                <span className="text-gray-600">{settings?.seo?.metaTitle || 'Chưa cấu hình'}</span>
+                <span className="font-medium text-gray-700">Site Name: </span>
+                <span className="text-gray-600">{settings?.siteName || 'Chưa cấu hình'}</span>
               </div>
               
               <div>
-                <span className="font-medium text-gray-700">Meta Description: </span>
-                <span className="text-gray-600">{settings?.seo?.metaDescription || 'Chưa cấu hình'}</span>
+                <span className="font-medium text-gray-700">Site Description: </span>
+                <span className="text-gray-600">{settings?.siteDescription || 'Chưa cấu hình'}</span>
               </div>
               
               <div>
-                <span className="font-medium text-gray-700">Keywords: </span>
-                <span className="text-gray-600">
-                  {settings?.seo?.keywords?.join(', ') || 'Chưa cấu hình'}
-                </span>
+                <span className="font-medium text-gray-700">Site URL: </span>
+                <span className="text-gray-600">{settings?.siteUrl || 'Chưa cấu hình'}</span>
+              </div>
+              
+              <div className="text-sm text-gray-500 italic">
+                SEO data is now managed separately in the admin panel
               </div>
             </div>
           )}

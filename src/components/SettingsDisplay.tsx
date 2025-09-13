@@ -50,12 +50,6 @@ export default function SettingsDisplay() {
           <p><span className="font-medium">TikTok:</span> {settings.socialMedia.tiktok}</p>
         </div>
 
-        <div>
-          <h3 className="font-semibold text-gray-700">SEO</h3>
-          <p><span className="font-medium">Meta Title:</span> {settings.seo.metaTitle}</p>
-          <p><span className="font-medium">Meta Description:</span> {settings.seo.metaDescription}</p>
-        </div>
-
         <div className="text-sm text-gray-500">
           <p><span className="font-medium">Last Updated:</span> {new Date(settings.updatedAt).toLocaleString('vi-VN')}</p>
         </div>
