@@ -45,11 +45,11 @@ function getSEOContents(): SEOContent[] {
 
 function saveSEOContents(seoContents: SEOContent[]) {
   try {
-    // Create backup
-    if (fs.existsSync(SEO_FILE)) {
-      const backupFile = SEO_FILE.replace('.json', `-backup-${Date.now()}.json`)
-      fs.copyFileSync(SEO_FILE, backupFile)
-    }
+    // Backup creation disabled to avoid multiple backup files
+    // if (fs.existsSync(SEO_FILE)) {
+    //   const backupFile = SEO_FILE.replace('.json', `-backup-${Date.now()}.json`)
+    //   fs.copyFileSync(SEO_FILE, backupFile)
+    // }
 
     const data = { seoContents }
     fs.writeFileSync(SEO_FILE, JSON.stringify(data, null, 2))
