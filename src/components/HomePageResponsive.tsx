@@ -2,28 +2,31 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Shield, Truck, Headphones, DollarSign, Star, Play } from "lucide-react"
+import { ArrowRight, Shield, Truck, Headphones, DollarSign, Star, Play, Calendar, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/ProductCard"
-import { getFeaturedProducts, getBestsellerProducts, getCategories, type Product, type Category } from "@/lib/data"
+import { getFeaturedProducts, getBestsellerProducts, getCategories, getFeaturedBlogPosts, type Product, type Category, type BlogPost } from "@/lib/data"
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 export default function HomePageResponsive() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [featured, , cats] = await Promise.all([
+        const [featured, , cats, posts] = await Promise.all([
           getFeaturedProducts(),
           getBestsellerProducts(),
-          getCategories()
+          getCategories(),
+          getFeaturedBlogPosts(3)
         ])
         setFeaturedProducts(featured.slice(0, 8))
         setCategories(cats)
+        setBlogPosts(posts)
       } catch (error) {
         console.error('Error loading data:', error)
       } finally {
@@ -310,6 +313,92 @@ export default function HomePageResponsive() {
             <Link href="/products">
               <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
                 Xem tất cả sản phẩm
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Blog Section */}
+      <motion.section 
+        className="py-12 lg:py-20"
+        variants={staggerContainer}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div className="text-center mb-12" variants={fadeInUp}>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Blog thiết bị âm thanh
+            </h2>
+            <p className="text-lg text-gray-600">
+              Cập nhật tin tức mới nhất và hướng dẫn chuyên nghiệp về thiết bị âm thanh
+            </p>
+          </motion.div>
+          
+          {!isLoading && blogPosts.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {blogPosts.map((post) => (
+                <motion.div key={post.id} variants={fadeInUp}>
+                  <article className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    {post.featuredImage && (
+                      <div className="aspect-video relative overflow-hidden">
+                        <Image
+                          src={post.featuredImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="p-6">
+                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{new Date(post.publishedAt).toLocaleDateString('vi-VN')}</span>
+                        </div>
+                        {post.readingTime && (
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{post.readingTime} phút đọc</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                        <Link 
+                          href={`/blog/${post.slug}`}
+                          className="hover:text-blue-600 transition-colors"
+                        >
+                          {post.title}
+                        </Link>
+                      </h3>
+
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {post.excerpt}
+                      </p>
+
+                      <Link 
+                        href={`/blog/${post.slug}`}
+                        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                      >
+                        Đọc thêm
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </article>
+                </motion.div>
+              ))}
+            </div>
+          )}
+          
+          <motion.div className="text-center mt-12" variants={fadeInUp}>
+            <Link href="/blog">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                Xem tất cả bài viết
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>

@@ -48,10 +48,30 @@ export interface Brand {
   id: string;
   name: string;
   slug: string;
-  logo: string;
   description: string;
-  country?: string;
-  productCount?: number;
+  logo: string;
+  website?: string;
+  country: string;
+  sortOrder: number;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  publishedAt: string;
+  updatedAt: string;
+  featuredImage?: string;
+  tags: string[];
+  category: string;
+  published: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  readingTime?: number;
 }
 
 export interface ProductFilters {
@@ -170,7 +190,49 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 }
 
 export async function getBrands(): Promise<Brand[]> {
-  return brandsData.brands;
+  return brandsData.brands.map(brand => ({
+    ...brand,
+    sortOrder: 0 // Add default sortOrder
+  }));
+}
+
+// Blog functions
+export async function getBlogPosts(published: boolean = true): Promise<BlogPost[]> {
+  // Mock data for now - will be replaced with actual data source
+  const mockPosts: BlogPost[] = [
+    {
+      id: "1",
+      title: "Hướng dẫn chọn mua thiết bị âm thanh chất lượng tại Quảng Ngãi",
+      slug: "huong-dan-chon-mua-thiet-bi-am-thanh-chat-luong-tai-quang-ngai",
+      excerpt: "Bài viết hướng dẫn chi tiết cách chọn mua thiết bị âm thanh chất lượng, phù hợp với nhu cầu và ngân sách tại khu vực Quảng Ngãi.",
+      content: `# Hướng dẫn chọn mua thiết bị âm thanh chất lượng
+
+Việc chọn mua thiết bị âm thanh phù hợp không chỉ đơn thuần là chọn sản phẩm có giá cả hợp lý mà còn cần cân nhắc nhiều yếu tố khác...`,
+      author: "Tiến Đạt Audio",
+      publishedAt: "2025-09-10T00:00:00Z",
+      updatedAt: "2025-09-10T00:00:00Z",
+      featuredImage: "/images/blog/chon-mua-thiet-bi-am-thanh.jpg",
+      tags: ["thiết bị âm thanh", "hướng dẫn", "quảng ngãi"],
+      category: "Hướng dẫn",
+      published: true,
+      metaTitle: "Hướng dẫn chọn mua thiết bị âm thanh chất lượng tại Quảng Ngãi",
+      metaDescription: "Bài viết hướng dẫn chi tiết cách chọn mua thiết bị âm thanh chất lượng, phù hợp với nhu cầu tại Quảng Ngãi",
+      keywords: ["thiết bị âm thanh", "quảng ngãi", "hướng dẫn mua hàng"],
+      readingTime: 5
+    }
+  ];
+  
+  return published ? mockPosts.filter(post => post.published) : mockPosts;
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  const posts = await getBlogPosts(false);
+  return posts.find(post => post.slug === slug) || null;
+}
+
+export async function getFeaturedBlogPosts(limit: number = 3): Promise<BlogPost[]> {
+  const posts = await getBlogPosts();
+  return posts.slice(0, limit);
 }
 
 export async function getBrandBySlug(slug: string): Promise<Brand | null> {
