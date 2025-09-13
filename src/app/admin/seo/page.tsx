@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -54,10 +54,20 @@ export default function SEOPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const [keywordsInput, setKeywordsInput] = useState('');
+  const keywordsTextareaRef = useRef<HTMLTextAreaElement>(null);
+
   // Load SEO contents on component mount
   useEffect(() => {
     loadSEOContents();
   }, []);
+
+  // Update keywords input when selectedSEO changes
+  useEffect(() => {
+    if (selectedSEO && Array.isArray(selectedSEO.keywords)) {
+      setKeywordsInput(selectedSEO.keywords.join(', '));
+    }
+  }, [selectedSEO]);
 
   const loadSEOContents = async () => {
     try {
@@ -78,32 +88,57 @@ export default function SEOPage() {
   };
 
   const handleSave = async () => {
-    if (!selectedSEO) return;
+    if (!selectedSEO) {
+      alert('Không có dữ liệu để lưu');
+      return;
+    }
+    
+    // Validation
+    if (!selectedSEO.page || !selectedSEO.title) {
+      alert('Vui lòng nhập đầy đủ thông tin: Trang và Tiêu đề');
+      return;
+    }
     
     try {
       setSaving(true);
+      
+      // Đảm bảo keywords được cập nhật từ keywordsInput
+      const finalKeywords = keywordsInput.split(',')
+        .map(k => k.trim())
+        .filter(k => k.length > 0);
+      
+      const seoToSave = {
+        ...selectedSEO,
+        keywords: finalKeywords
+      };
+      
+      console.log('Saving SEO:', seoToSave); // Debug log
+      
       const method = selectedSEO.id ? 'PUT' : 'POST';
       const response = await fetch('/api/admin/seo', {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ seo: selectedSEO }),
+        body: JSON.stringify({ seo: seoToSave }),
       });
       
       const result = await response.json();
+      console.log('Save result:', result); // Debug log
       
       if (result.success) {
+        alert('Lưu cấu hình SEO thành công!');
         await loadSEOContents(); // Reload data
         setIsEditing(false);
         setIsAdding(false);
         setSelectedSEO(null);
+        setKeywordsInput(''); // Reset keywords input
       } else {
-        alert('Lỗi: ' + result.message);
+        alert('Lỗi: ' + (result.message || 'Không xác định'));
       }
     } catch (error) {
       console.error('Error saving SEO:', error);
-      alert('Có lỗi xảy ra khi lưu');
+      alert('Có lỗi xảy ra khi lưu: ' + (error instanceof Error ? error.message : 'Lỗi không xác định'));
     } finally {
       setSaving(false);
     }
@@ -132,6 +167,7 @@ export default function SEOPage() {
       isActive: true,
     };
     setSelectedSEO(newSEO as SEOContent);
+    setKeywordsInput(''); // Reset keywords input
     setIsAdding(true);
     setIsEditing(true);
   };
@@ -353,8 +389,22 @@ export default function SEOPage() {
 
       {/* Edit Modal */}
       {isEditing && selectedSEO && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-10 mx-auto p-5 border max-w-2xl shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          onClick={(e) => {
+            // Chỉ đóng modal khi click vào backdrop, không phải vào modal content
+            if (e.target === e.currentTarget) {
+              setIsEditing(false);
+              setIsAdding(false);
+              setSelectedSEO(null);
+              setKeywordsInput('');
+            }
+          }}
+        >
+          <div 
+            className="relative top-10 mx-auto p-5 border max-w-2xl shadow-lg rounded-md bg-white"
+            onClick={(e) => e.stopPropagation()} // Ngăn đóng modal khi click vào content
+          >
             <div className="mt-3">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
                 {isAdding ? 'Thêm cấu hình SEO' : 'Chỉnh sửa SEO'}
@@ -404,6 +454,7 @@ export default function SEOPage() {
                     type="text"
                     value={selectedSEO.title}
                     onChange={(e) => updateSelectedSEO('title', e.target.value)}
+                    onKeyDown={(e) => e.stopPropagation()}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                     placeholder="Tiêu đề SEO của trang"
                   />
@@ -415,20 +466,53 @@ export default function SEOPage() {
                     rows={3}
                     value={selectedSEO.description}
                     onChange={(e) => updateSelectedSEO('description', e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    onKeyDown={(e) => e.stopPropagation()}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 resize-none"
                     placeholder="Mô tả ngắn gọn về trang"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Từ khóa</label>
-                  <input
-                    type="text"
-                    value={selectedSEO.keywords.join(', ')}
-                    onChange={(e) => updateSelectedSEO('keywords', e.target.value.split(',').map(k => k.trim()).filter(k => k))}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                    placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy"
+                  <textarea
+                    ref={keywordsTextareaRef}
+                    rows={3}
+                    value={keywordsInput}
+                    onChange={(e) => {
+                      // Chỉ cập nhật keywordsInput, không xử lý gì khác
+                      const newValue = e.target.value;
+                      setKeywordsInput(newValue);
+                      console.log('Keywords input changed:', newValue); // Debug log
+                    }}
+                    onBlur={() => {
+                      // Chỉ xử lý khi blur để tạo keywords array
+                      const keywords = keywordsInput.split(',')
+                        .map(k => k.trim())
+                        .filter(k => k.length > 0);
+                      updateSelectedSEO('keywords', keywords);
+                      console.log('Keywords processed:', keywords); // Debug log
+                    }}
+                    onKeyDown={(e) => {
+                      // Ngăn chặn tất cả event propagation nhưng cho phép input
+                      e.stopPropagation();
+                      console.log('KeyDown:', e.key); // Debug log
+                    }}
+                    onInput={(e) => {
+                      // Đảm bảo input event được xử lý
+                      console.log('Input event:', (e.target as HTMLTextAreaElement).value);
+                    }}
+                    style={{ 
+                      // Force style để đảm bảo không có CSS nào override
+                      pointerEvents: 'auto',
+                      userSelect: 'text',
+                      WebkitUserSelect: 'text'
+                    }}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Nhập từ khóa, cách nhau bằng dấu phẩy. Ví dụ: thiết bị âm thanh, loa bluetooth, micro karaoke"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Từ khóa được phân tách bởi dấu phẩy. Hiện tại: {keywordsInput.split(',').filter(k => k.trim()).length} từ khóa
+                  </p>
                 </div>
                 
                 <div>
@@ -437,6 +521,7 @@ export default function SEOPage() {
                     type="text"
                     value={selectedSEO.h1}
                     onChange={(e) => updateSelectedSEO('h1', e.target.value)}
+                    onKeyDown={(e) => e.stopPropagation()}
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                     placeholder="Tiêu đề chính của trang"
                   />
@@ -449,6 +534,7 @@ export default function SEOPage() {
                       type="text"
                       value={selectedSEO.ogTitle}
                       onChange={(e) => updateSelectedSEO('ogTitle', e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       placeholder="Tiêu đề cho social media"
                     />
@@ -459,6 +545,7 @@ export default function SEOPage() {
                       type="text"
                       value={selectedSEO.ogImage}
                       onChange={(e) => updateSelectedSEO('ogImage', e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       placeholder="/images/og-image.jpg"
                     />
@@ -471,7 +558,8 @@ export default function SEOPage() {
                     rows={2}
                     value={selectedSEO.ogDescription}
                     onChange={(e) => updateSelectedSEO('ogDescription', e.target.value)}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    onKeyDown={(e) => e.stopPropagation()}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 resize-none"
                     placeholder="Mô tả cho social media"
                   />
                 </div>
@@ -496,6 +584,7 @@ export default function SEOPage() {
                       type="text"
                       value={selectedSEO.canonicalUrl}
                       onChange={(e) => updateSelectedSEO('canonicalUrl', e.target.value)}
+                      onKeyDown={(e) => e.stopPropagation()}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       placeholder="https://example.com/page"
                     />
@@ -509,6 +598,7 @@ export default function SEOPage() {
                     setIsEditing(false);
                     setIsAdding(false);
                     setSelectedSEO(null);
+                    setKeywordsInput(''); // Reset keywords input
                   }}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >

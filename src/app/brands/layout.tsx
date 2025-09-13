@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/brands',
   title: 'Thương hiệu',
   description: 'Đại lý chính thức các thương hiệu thiết bị âm thanh hàng đầu: Sony, JBL, Bose, Audio-Technica, Shure và nhiều thương hiệu uy tín khác.',
   keywords: [

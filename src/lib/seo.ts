@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { type Product, type Category, type Brand, type ProductSEO } from '@/lib/data'
+import { getSEODataForPage, type SEOContent } from '@/lib/seo-static'
 
 export const siteConfig = {
   name: 'Tiến Đạt Audio',
@@ -38,6 +39,7 @@ export function generateSEOMetadata({
   type = 'website',
   noIndex = false,
   keywords,
+  pagePath,
 }: {
   title?: string
   description?: string
@@ -46,13 +48,27 @@ export function generateSEOMetadata({
   type?: 'website' | 'article'
   noIndex?: boolean
   keywords?: string[]
+  pagePath?: string
 }): Metadata {
-  // Simplified version - will enhance with database lookup later
-  const seoTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.name;
-  const seoDescription = description || siteConfig.description;
-  const seoKeywords = keywords || siteConfig.keywords;
-  const seoImage = image || siteConfig.ogImage;
-  const seoUrl = url || siteConfig.url;
+  // Try to get SEO data from database first
+  let seoData: SEOContent | null = null
+  if (pagePath) {
+    seoData = getSEODataForPage(pagePath)
+  }
+  
+  // Use SEO data from database if available, otherwise use fallback
+  const seoTitle = seoData?.title || title || siteConfig.name;
+  const seoDescription = seoData?.description || description || siteConfig.description;
+  const seoKeywords = seoData?.keywords || keywords || siteConfig.keywords;
+  const seoImage = seoData?.ogImage || image || siteConfig.ogImage;
+  const seoUrl = seoData?.canonicalUrl || url || siteConfig.url;
+  const seoOgTitle = seoData?.ogTitle || seoTitle;
+  const seoOgDescription = seoData?.ogDescription || seoDescription;
+  
+  // Parse robots meta from seoData
+  const robotsMeta = seoData?.metaRobots || 'index,follow';
+  const isNoIndex = robotsMeta.includes('noindex') || noIndex;
+  const isNoFollow = robotsMeta.includes('nofollow');
 
   return {
     title: seoTitle,
@@ -68,31 +84,31 @@ export function generateSEOMetadata({
       type,
       locale: 'vi_VN',
       url: seoUrl,
-      title: seoTitle,
-      description: seoDescription,
+      title: seoOgTitle,
+      description: seoOgDescription,
       siteName: siteConfig.name,
       images: [
         {
           url: seoImage,
           width: 1200,
           height: 630,
-          alt: seoTitle,
+          alt: seoOgTitle,
         }
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
+      title: seoOgTitle,
+      description: seoOgDescription,
       images: [seoImage],
       creator: '@tiendataudio',
     },
     robots: {
-      index: !noIndex,
-      follow: !noIndex,
+      index: !isNoIndex,
+      follow: !isNoFollow,
       googleBot: {
-        index: !noIndex,
-        follow: !noIndex,
+        index: !isNoIndex,
+        follow: !isNoFollow,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,

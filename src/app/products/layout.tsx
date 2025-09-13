@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/products',
   title: 'Tất cả sản phẩm',
   description: 'Khám phá bộ sưu tập thiết bị âm thanh chất lượng cao: Loa, Ampli, Phụ kiện âm thanh từ các thương hiệu uy tín như Sony, Yamaha, Denon với giá tốt nhất.',
   keywords: [

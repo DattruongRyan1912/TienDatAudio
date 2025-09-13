@@ -1,10 +1,10 @@
-import type { Metadata, Viewport } from 'next'
+import type { Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SettingsProvider } from '@/contexts/SettingsContext'
-import { generateSEOMetadata, structuredData } from '@/lib/seo'
+import { structuredData } from '@/lib/seo'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 
@@ -13,7 +13,10 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = generateSEOMetadata({})
+// Metadata is handled by individual pages
+// export const metadata: Metadata = generateSEOMetadata({
+//   pagePath: '/'
+// })
 
 export const viewport: Viewport = {
   width: 'device-width',
