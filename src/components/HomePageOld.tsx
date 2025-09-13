@@ -44,22 +44,22 @@ export default function HomePage() {
     }
   }
 
-  const cardVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    },
-    hover: {
-      scale: 1.05,
-      transition: {
-        duration: 0.3
-      }
-    }
-  }
+  // const cardVariants = {
+  //   hidden: { scale: 0.8, opacity: 0 },
+  //   visible: {
+  //     scale: 1,
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.5
+  //     }
+  //   },
+  //   hover: {
+  //     scale: 1.05,
+  //     transition: {
+  //       duration: 0.3
+  //     }
+  //   }
+  // }
 
   return (
     <div className="min-h-screen">

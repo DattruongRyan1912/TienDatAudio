@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link"
+import Image from "next/image"
 import { Heart, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from 'framer-motion'
@@ -39,10 +40,11 @@ export default function ProductCard({ product }: ProductCardProps) {
             transition={{ duration: 0.4 }}
           >
             {product.images && product.images[0] ? (
-              <img 
+              <Image 
                 src={product.images[0]} 
                 alt={product.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             ) : (
               <div className="w-32 h-32 bg-gray-300 rounded flex items-center justify-center">
