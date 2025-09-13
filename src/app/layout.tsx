@@ -5,6 +5,8 @@ import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SettingsProvider } from '@/contexts/SettingsContext'
 import { generateSEOMetadata, structuredData } from '@/lib/seo'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/react'
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,6 +57,8 @@ export default function RootLayout({
             </ConditionalLayout>
           </ThemeProvider>
         </SettingsProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
