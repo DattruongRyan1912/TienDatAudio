@@ -47,15 +47,17 @@ export function generateSEOMetadata({
   noIndex?: boolean
   keywords?: string[]
 }): Metadata {
-  const seoTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.name
-  const seoDescription = description || siteConfig.description
-  const seoImage = image || siteConfig.ogImage
-  const seoUrl = url || siteConfig.url
+  // Simplified version - will enhance with database lookup later
+  const seoTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.name;
+  const seoDescription = description || siteConfig.description;
+  const seoKeywords = keywords || siteConfig.keywords;
+  const seoImage = image || siteConfig.ogImage;
+  const seoUrl = url || siteConfig.url;
 
   return {
     title: seoTitle,
     description: seoDescription,
-    keywords: keywords || siteConfig.keywords,
+    keywords: seoKeywords,
     authors: siteConfig.authors,
     creator: siteConfig.creator,
     metadataBase: siteConfig.metadataBase,
