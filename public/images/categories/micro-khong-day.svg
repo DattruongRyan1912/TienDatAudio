@@ -1,0 +1,8 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#f3f4f6"/>
+  <ellipse cx="200" cy="160" rx="15" ry="60" fill="#374151"/>
+  <circle cx="200" cy="100" r="25" fill="#6b7280"/>
+  <rect x="190" y="85" width="20" height="30" fill="#374151"/>
+  <path d="M 180 100 Q 200 80 220 100" stroke="#374151" stroke-width="3" fill="none"/>
+  <text x="200" y="320" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">Micro Không Dây</text>
+</svg>

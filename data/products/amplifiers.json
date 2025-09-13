@@ -1,0 +1,102 @@
+{
+  "amplifiers": [
+    {
+      "id": "amp001",
+      "name": "Amply BMB DA-2500 Pro",
+      "slug": "amply-bmb-da-2500-pro",
+      "category": "amply-karaoke",
+      "brand": "bmb",
+      "price": 8500000,
+      "salePrice": 7500000,
+      "images": [
+        "/images/products/bmb-da-2500-1.svg",
+        "/images/products/bmb-da-2500-1.svg"
+      ],
+      "specifications": {
+        "power": "2 x 250W",
+        "frequency": "10Hz - 50kHz",
+        "connectivity": [
+          "Bluetooth",
+          "USB",
+          "AUX",
+          "Optical"
+        ],
+        "channels": "2.0",
+        "weight": "15kg",
+        "dimensions": "430 x 350 x 150mm"
+      },
+      "description": "Amply BMB DA-2500 Pro là dòng amply karaoke cao cấp với công suất mạnh mẽ và chất lượng âm thanh tuyệt vời. Phù hợp cho phòng hát gia đình và kinh doanh.",
+      "features": [
+        "Công suất 2 x 250W",
+        "Chống quá tải thông minh",
+        "Kết nối đa dạng",
+        "Thiết kế sang trọng",
+        "Bảo hành 2 năm"
+      ],
+      "inStock": true,
+      "featured": true,
+      "bestseller": true,
+      "createdAt": "2024-01-10",
+      "updatedAt": "2024-02-28"
+    },
+    {
+      "id": "amp002",
+      "name": "Amply Sony STR-DH190",
+      "slug": "amply-sony-str-dh190",
+      "category": "amply-karaoke",
+      "brand": "sony",
+      "price": 4200000,
+      "salePrice": 3800000,
+      "images": [
+        "/images/products/sony-str-dh190-1.svg",
+        "/images/products/sony-str-dh190-1.svg"
+      ],
+      "specifications": {
+        "power": "2 x 100W",
+        "frequency": "10Hz - 100kHz",
+        "connectivity": [
+          "Bluetooth",
+          "USB",
+          "AUX",
+          "Phono"
+        ],
+        "channels": "2.0",
+        "weight": "7.8kg",
+        "dimensions": "430 x 133 x 284mm"
+      },
+      "description": "Amply Sony STR-DH190 mang đến âm thanh Hi-Fi chất lượng cao với thiết kế tinh tế. Tích hợp Bluetooth và đầu vào Phono cho đĩa than.",
+      "features": [
+        "Âm thanh Hi-Fi",
+        "Tích hợp Bluetooth",
+        "Đầu vào Phono",
+        "Thiết kế tối giản",
+        "Tiết kiệm năng lượng"
+      ],
+      "inStock": true,
+      "featured": false,
+      "bestseller": false,
+      "createdAt": "2024-01-25",
+      "updatedAt": "2024-03-05"
+    },
+    {
+      "id": "1757603502194",
+      "slug": "abc",
+      "name": "abc",
+      "category": "Ampli",
+      "brand": "Sony",
+      "price": 123123,
+      "salePrice": 123123,
+      "images": [],
+      "specifications": {
+        "abc": "abc"
+      },
+      "description": "1231232123",
+      "features": [],
+      "inStock": true,
+      "featured": true,
+      "bestseller": false,
+      "createdAt": "2025-09-11T15:11:42.194Z",
+      "updatedAt": "2025-09-11T15:11:42.194Z"
+    }
+  ]
+}

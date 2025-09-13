@@ -1,0 +1,36 @@
+{
+  "categories": [
+    {
+      "id": "loa-bluetooth",
+      "name": "Loa Bluetooth",
+      "slug": "loa-bluetooth",
+      "description": "Loa bluetooth chất lượng cao, âm thanh sống động",
+      "image": "/images/categories/loa-bluetooth.svg",
+      "sortOrder": 1
+    },
+    {
+      "id": "amply-karaoke",
+      "name": "Amply Karaoke",
+      "slug": "amply-karaoke", 
+      "description": "Amply karaoke chuyên nghiệp cho gia đình và kinh doanh",
+      "image": "/images/categories/amply-karaoke.svg",
+      "sortOrder": 2
+    },
+    {
+      "id": "micro-khong-day",
+      "name": "Micro Không Dây",
+      "slug": "micro-khong-day",
+      "description": "Micro không dây chất lượng cao, thu âm rõ nét",
+      "image": "/images/categories/micro-khong-day.svg",
+      "sortOrder": 3
+    },
+    {
+      "id": "thiet-bi-dj",
+      "name": "Thiết Bị DJ",
+      "slug": "thiet-bi-dj",
+      "description": "Thiết bị DJ chuyên nghiệp cho các sự kiện",
+      "image": "/images/categories/thiet-bi-dj.svg",
+      "sortOrder": 4
+    }
+  ]
+}

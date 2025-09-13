@@ -1,0 +1,49 @@
+{
+  "brands": [
+    {
+      "id": "jbl",
+      "name": "JBL",
+      "slug": "jbl",
+      "logo": "/images/brands/jbl.png",
+      "description": "Thương hiệu âm thanh hàng đầu thế giới",
+      "country": "USA",
+      "productCount": 15
+    },
+    {
+      "id": "sony",
+      "name": "Sony", 
+      "slug": "sony",
+      "logo": "/images/brands/sony.png",
+      "description": "Công nghệ âm thanh tiên tiến từ Nhật Bản",
+      "country": "Japan",
+      "productCount": 12
+    },
+    {
+      "id": "bmb",
+      "name": "BMB",
+      "slug": "bmb",
+      "logo": "/images/brands/bmb.png", 
+      "description": "Chuyên gia karaoke từ Nhật Bản",
+      "country": "Japan",
+      "productCount": 8
+    },
+    {
+      "id": "bose",
+      "name": "Bose",
+      "slug": "bose",
+      "logo": "/images/brands/bose.png",
+      "description": "Âm thanh chất lượng premium",
+      "country": "USA",
+      "productCount": 10
+    },
+    {
+      "id": "pioneer",
+      "name": "Pioneer",
+      "slug": "pioneer", 
+      "logo": "/images/brands/pioneer.png",
+      "description": "Thiết bị DJ chuyên nghiệp",
+      "country": "Japan",
+      "productCount": 6
+    }
+  ]
+}

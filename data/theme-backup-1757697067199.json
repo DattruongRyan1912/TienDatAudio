@@ -1,0 +1,103 @@
+{
+  "id": "default",
+  "colors": {
+    "primary": "#2563eb",
+    "secondary": "#f97316",
+    "accent": "#06b6d4",
+    "background": "#ffffff",
+    "surface": "#f8fafc",
+    "text": "#111827",
+    "textLight": "#6b7280",
+    "border": "#e5e7eb",
+    "success": "#10b981",
+    "warning": "#f59e0b",
+    "error": "#ef4444"
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, sans-serif",
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem"
+    },
+    "fontWeight": {
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "layout": {
+    "maxWidth": "1200px",
+    "headerHeight": "80px",
+    "footerHeight": "200px",
+    "sidebarWidth": "280px",
+    "spacing": {
+      "xs": "0.5rem",
+      "sm": "1rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "3rem"
+    },
+    "borderRadius": {
+      "sm": "0.375rem",
+      "md": "0.5rem",
+      "lg": "0.75rem",
+      "xl": "1rem"
+    }
+  },
+  "branding": {
+    "siteName": "Tiến Đạt Audio",
+    "tagline": "Thiết bị âm thanh chất lượng cao",
+    "logo": "/images/logo.png",
+    "favicon": "/favicon.ico",
+    "ogImage": "/images/og-image.jpg"
+  },
+  "contact": {
+    "phone": "+84 123 456 789",
+    "email": "contact@tiendataudio.com",
+    "address": "Số 123, Đường ABC, Quận 1, TP.HCM",
+    "workingHours": "T2-T7: 8:00-18:00, CN: 9:00-17:00",
+    "socialLinks": {
+      "facebook": "https://facebook.com/tiendataudio",
+      "instagram": "https://instagram.com/tiendataudio",
+      "youtube": "https://youtube.com/tiendataudio",
+      "zalo": "https://zalo.me/tiendataudio"
+    }
+  },
+  "features": {
+    "showHeader": true,
+    "showFooter": true,
+    "showSidebar": false,
+    "enableAnimations": true,
+    "enableDarkMode": false,
+    "enableSearch": true,
+    "enableCart": true,
+    "enableWishlist": true,
+    "enableComments": false,
+    "enableRating": true
+  },
+  "seo": {
+    "googleAnalytics": "",
+    "googleTagManager": "",
+    "facebookPixel": "",
+    "metaVerification": {
+      "google": "",
+      "bing": "",
+      "yandex": ""
+    }
+  },
+  "performance": {
+    "enableImageOptimization": true,
+    "enableLazyLoading": true,
+    "enableCaching": true,
+    "enableCompression": true,
+    "enablePreloading": true
+  },
+  "updatedAt": "2025-09-12T12:14:55.721Z"
+}
