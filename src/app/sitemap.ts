@@ -19,6 +19,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/san-pham`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/brands`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
@@ -30,30 +42,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/lien-he`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    },
   ]
 
-  // Product pages
+  // Product pages - both English and Vietnamese URLs
   const products = await getAllProducts()
-  const productPages = products.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
-    lastModified: new Date(product.updatedAt),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+  const productPages = products.flatMap((product) => [
+    {
+      url: `${baseUrl}/product/${product.slug}`,
+      lastModified: new Date(product.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/san-pham/${product.slug}`,
+      lastModified: new Date(product.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }
+  ])
 
-  // Category pages
+  // Category filter pages - using san-pham?category=slug format
   const categories = await getCategories()
   const categoryPages = categories.map((category) => ({
-    url: `${baseUrl}/categories/${category.slug}`,
+    url: `${baseUrl}/san-pham?category=${category.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }))
 
-  // Brand pages
+  // Brand filter pages - using san-pham?brand=slug format (removed individual brand pages)
   const brands = await getBrands()
   const brandPages = brands.map((brand) => ({
-    url: `${baseUrl}/brands/${brand.slug}`,
+    url: `${baseUrl}/san-pham?brand=${brand.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,
