@@ -144,7 +144,7 @@ export default function HeaderResponsive() {
                 <p className="text-xs text-gray-600 hidden lg:block">Thiết bị âm thanh Quảng Ngãi</p>
               </div>
               <div className="sm:hidden">
-                <h1 className="text-lg font-bold text-gray-900">Tiến Đạt</h1>
+                <h1 className="text-lg font-bold text-gray-900">Tiến Đạt Audio</h1>
               </div>
             </Link>
           </motion.div>
