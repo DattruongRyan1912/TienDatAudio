@@ -115,13 +115,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        <div className="p-4">
+        <div className="p-3 md:p-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-1 md:gap-2 mb-2 flex-wrap">
               <span className="border border-gray-300 px-2 py-1 rounded text-xs">
                 {product.brand}
               </span>
@@ -130,13 +130,13 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             </div>
             
-            <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300 text-gray-900">
+            <h3 className="font-semibold text-base md:text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300 text-gray-900">
               {product.name}
             </h3>
             
             <div className="flex items-center justify-between mb-2">
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-blue-600">
+                <span className="text-base md:text-lg font-bold text-blue-600">
                   {formatPrice(currentPrice)}
                 </span>
                 {hasDiscount && (
@@ -147,7 +147,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </div>
               
               <div className="flex items-center">
-                <div className="flex text-yellow-400">
+                <div className="flex text-yellow-400 text-sm md:text-base">
                   {[...Array(5)].map((_, i) => (
                     <motion.span
                       key={i}
@@ -175,7 +175,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </motion.div>
         </div>
 
-        <div className="p-4 pt-0">
+        <div className="p-3 md:p-4 pt-0">
           <Link href={`/san-pham/${product.slug}`} className="w-full block">
             <motion.div
               whileHover={{ scale: 1.02 }}
@@ -183,7 +183,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               className="w-full"
             >
               <Button 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white transform transition-all duration-300"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white transform transition-all duration-300 text-sm md:text-base py-2 md:py-3"
                 disabled={!product.inStock}
               >
                 {product.inStock ? 'Xem chi tiết' : 'Hết hàng'}

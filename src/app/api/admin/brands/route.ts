@@ -63,12 +63,45 @@ const saveBrands = (brands: Brand[]) => {
 
 // Calculate product count for each brand
 const calculateProductCounts = (brands: Brand[]): Brand[] => {
-  // In a real application, you would query the products database
-  // For now, we'll use mock data
-  return brands.map(brand => ({
-    ...brand,
-    productCount: Math.floor(Math.random() * 20) + 1 // Mock product count
-  }))
+  // Load all products to count actual products per brand
+  try {
+    const speakersPath = path.join(process.cwd(), 'data', 'products', 'speakers.json')
+    const amplifiersPath = path.join(process.cwd(), 'data', 'products', 'amplifiers.json')
+    
+    let allProducts: { brand_id?: string; brand?: string }[] = []
+    
+    // Load speakers
+    if (fs.existsSync(speakersPath)) {
+      const speakersData = JSON.parse(fs.readFileSync(speakersPath, 'utf8'))
+      if (speakersData.speakers) {
+        allProducts = [...allProducts, ...speakersData.speakers]
+      }
+    }
+    
+    // Load amplifiers
+    if (fs.existsSync(amplifiersPath)) {
+      const amplifiersData = JSON.parse(fs.readFileSync(amplifiersPath, 'utf8'))
+      if (amplifiersData.amplifiers) {
+        allProducts = [...allProducts, ...amplifiersData.amplifiers]
+      }
+    }
+    
+    // Count products per brand
+    return brands.map(brand => {
+      const productCount = allProducts.filter(product => 
+        product.brand_id === brand.id || product.brand_id === brand.slug
+      ).length
+      
+      return {
+        ...brand,
+        productCount
+      }
+    })
+  } catch (error) {
+    console.error('Error calculating product counts:', error)
+    // Fallback to existing productCount if error
+    return brands
+  }
 }
 
 export async function GET() {

@@ -1,49 +1,67 @@
-{
-  "brands": [
-    {
-      "id": "jbl",
-      "name": "JBL",
-      "slug": "jbl",
-      "logo": "/images/brands/jbl.png",
-      "description": "Thương hiệu âm thanh hàng đầu thế giới",
-      "country": "USA",
-      "productCount": 15
-    },
-    {
-      "id": "sony",
-      "name": "Sony", 
-      "slug": "sony",
-      "logo": "/images/brands/sony.png",
-      "description": "Công nghệ âm thanh tiên tiến từ Nhật Bản",
-      "country": "Japan",
-      "productCount": 12
-    },
-    {
-      "id": "bmb",
-      "name": "BMB",
-      "slug": "bmb",
-      "logo": "/images/brands/bmb.png", 
-      "description": "Chuyên gia karaoke từ Nhật Bản",
-      "country": "Japan",
-      "productCount": 8
-    },
-    {
-      "id": "bose",
-      "name": "Bose",
-      "slug": "bose",
-      "logo": "/images/brands/bose.png",
-      "description": "Âm thanh chất lượng premium",
-      "country": "USA",
-      "productCount": 10
-    },
-    {
-      "id": "pioneer",
-      "name": "Pioneer",
-      "slug": "pioneer", 
-      "logo": "/images/brands/pioneer.png",
-      "description": "Thiết bị DJ chuyên nghiệp",
-      "country": "Japan",
-      "productCount": 6
-    }
-  ]
-}
+[
+  {
+    "id": "jbl",
+    "name": "JBL",
+    "slug": "jbl",
+    "description": "Thương hiệu âm thanh hàng đầu thế giới",
+    "logo": "/uploads/1757874158193_1jsr6w051wi.png",
+    "website": "",
+    "country": "USA",
+    "featured": false,
+    "productCount": 15,
+    "createdAt": "2025-09-14T18:22:39.406Z",
+    "updatedAt": "2025-09-14T18:22:39.406Z"
+  },
+  {
+    "id": "sony",
+    "name": "Sony",
+    "slug": "sony",
+    "description": "Công nghệ âm thanh tiên tiến từ Nhật Bản",
+    "logo": "/uploads/1757875368747_zeh8swkh21j.png",
+    "website": "",
+    "country": "Japan",
+    "featured": false,
+    "productCount": 12,
+    "createdAt": "2025-09-14T18:22:39.406Z",
+    "updatedAt": "2025-09-14T18:42:49.926Z"
+  },
+  {
+    "id": "bose",
+    "name": "Bose",
+    "slug": "bose",
+    "description": "Âm thanh chất lượng premium",
+    "logo": "/uploads/1757874349300_36jqh2s0lp9.webp",
+    "website": "",
+    "country": "USA",
+    "featured": false,
+    "productCount": 10,
+    "createdAt": "2025-09-14T18:22:39.406Z",
+    "updatedAt": "2025-09-14T18:25:50.437Z"
+  },
+  {
+    "id": "pioneer",
+    "name": "Pioneer",
+    "slug": "pioneer",
+    "description": "Thiết bị DJ chuyên nghiệp",
+    "logo": "/uploads/1757874336955_qkt4h5i3fj.png",
+    "website": "",
+    "country": "Japan",
+    "featured": false,
+    "productCount": 6,
+    "createdAt": "2025-09-14T18:22:39.406Z",
+    "updatedAt": "2025-09-14T18:25:38.246Z"
+  },
+  {
+    "id": "arf",
+    "name": "ARF",
+    "slug": "arf",
+    "description": "Thiết bị âm thanh chuyên nghiệp cho sân khấu",
+    "logo": "/uploads/1757874170389_5g8za7rib15.png",
+    "website": "",
+    "country": "China",
+    "featured": false,
+    "productCount": 6,
+    "createdAt": "2025-09-14T18:22:39.406Z",
+    "updatedAt": "2025-09-14T18:22:51.627Z"
+  }
+]

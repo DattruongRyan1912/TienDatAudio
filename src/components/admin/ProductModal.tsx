@@ -13,14 +13,28 @@ interface ProductModalProps {
   product?: Product | null
 }
 
-const CATEGORIES = ['Loa', 'Ampli', 'Phụ kiện']
-const BRANDS = ['Sony', 'Yamaha', 'Denon', 'Marantz', 'Pioneer', 'Onkyo', 'Klipsch', 'KEF', 'B&W']
+interface Brand {
+  id: string
+  name: string
+  slug: string
+}
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+}
 
 export default function ProductModal({ isOpen, onClose, onSave, product }: ProductModalProps) {
+  const [brands, setBrands] = useState<Brand[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  
   const [formData, setFormData] = useState<Partial<Product>>({
     name: '',
     brand: '',
+    brand_id: '',
     category: '',
+    category_id: '',
     price: 0,
     salePrice: 0,
     description: '',
@@ -40,7 +54,9 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
       setFormData({
         name: product.name || '',
         brand: product.brand || '',
+        brand_id: product.brand_id || '',
         category: product.category || '',
+        category_id: product.category_id || '',
         price: product.price || 0,
         salePrice: product.salePrice || 0,
         description: product.description || '',
@@ -64,7 +80,9 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
       setFormData({
         name: '',
         brand: '',
+        brand_id: '',
         category: '',
+        category_id: '',
         price: 0,
         salePrice: 0,
         description: '',
@@ -78,6 +96,36 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
     }
     setNewImageUrl('')
   }, [product, isOpen])
+
+  // Load brands and categories from API
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Load brands
+        const brandsRes = await fetch('/api/admin/brands')
+        if (brandsRes.ok) {
+          const brandsData = await brandsRes.json()
+          if (brandsData.success && brandsData.data) {
+            setBrands(brandsData.data)
+          }
+        }
+
+        // Load categories
+        const categoriesRes = await fetch('/api/admin/categories')
+        if (categoriesRes.ok) {
+          const categoriesData = await categoriesRes.json()
+          // Categories API returns array directly, not wrapped in {success, data}
+          if (Array.isArray(categoriesData)) {
+            setCategories(categoriesData)
+          }
+        }
+      } catch (error) {
+        console.error('Error loading brands/categories:', error)
+      }
+    }
+
+    loadData()
+  }, [])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
@@ -278,12 +326,19 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
                     <select
                       required
                       value={formData.brand}
-                      onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                      onChange={(e) => {
+                        const selectedBrand = brands.find(b => b.name === e.target.value)
+                        setFormData({ 
+                          ...formData, 
+                          brand: e.target.value,
+                          brand_id: selectedBrand?.id || ''
+                        })
+                      }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Chọn thương hiệu</option>
-                      {BRANDS.map(brand => (
-                        <option key={brand} value={brand}>{brand}</option>
+                      {brands.map(brand => (
+                        <option key={brand.id} value={brand.name}>{brand.name}</option>
                       ))}
                     </select>
                   </div>
@@ -295,12 +350,19 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
                     <select
                       required
                       value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      onChange={(e) => {
+                        const selectedCategory = categories.find(c => c.name === e.target.value)
+                        setFormData({ 
+                          ...formData, 
+                          category: e.target.value,
+                          category_id: selectedCategory?.id || ''
+                        })
+                      }}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Chọn danh mục</option>
-                      {CATEGORIES.map(category => (
-                        <option key={category} value={category}>{category}</option>
+                      {categories.map(category => (
+                        <option key={category.id} value={category.name}>{category.name}</option>
                       ))}
                     </select>
                   </div>

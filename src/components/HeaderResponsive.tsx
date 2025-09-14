@@ -7,12 +7,19 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSettings } from '@/contexts/SettingsContext'
 
+interface Brand {
+  id: string
+  name: string
+  slug: string
+}
+
 export default function HeaderResponsive() {
   const { settings } = useSettings()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [isScrolled, setIsScrolled] = useState(false)
+  const [brands, setBrands] = useState<Brand[]>([])
   const searchRef = useRef<HTMLDivElement>(null)
 
   const navigation = [
@@ -20,15 +27,37 @@ export default function HeaderResponsive() {
     { 
       name: 'Sản phẩm', 
       href: '/products',
-      submenu: [
-        { name: 'Loa', href: '/products?category=Loa' },
-        { name: 'Ampli', href: '/products?category=Ampli' },
-        { name: 'Phụ kiện', href: '/products?category=Phụ kiện' },
-      ]
+      hasSubmenu: true
     },
     { name: 'Thương hiệu', href: '/brands' },
     { name: 'Liên hệ', href: '/contact' },
   ]
+
+  // Load brands
+  useEffect(() => {
+    const loadBrands = async () => {
+      try {
+        console.log('HeaderResponsive: Loading brands...')
+        const brandsRes = await fetch('/api/admin/brands')
+        console.log('HeaderResponsive: Brands response status:', brandsRes.status)
+        
+        if (brandsRes.ok) {
+          const brandsData = await brandsRes.json()
+          console.log('HeaderResponsive: Brands data:', brandsData)
+          if (brandsData.success && brandsData.data) {
+            console.log('HeaderResponsive: Setting brands from data.data:', brandsData.data)
+            setBrands(brandsData.data)
+          } else {
+            console.log('HeaderResponsive: No brands found in response')
+          }
+        }
+      } catch (error) {
+        console.error('HeaderResponsive: Error loading brands:', error)
+      }
+    }
+
+    loadBrands()
+  }, [])
 
   // Handle scroll effect
   useEffect(() => {
@@ -135,22 +164,47 @@ export default function HeaderResponsive() {
                   className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 flex items-center space-x-1"
                 >
                   <span>{item.name}</span>
-                  {item.submenu && <ChevronDown className="h-4 w-4" />}
+                  {item.hasSubmenu && <ChevronDown className="h-4 w-4" />}
                 </Link>
                 
-                {/* Submenu */}
-                {item.submenu && (
-                  <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <div className="py-2">
-                      {item.submenu.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                {/* Brands Submenu */}
+                {item.hasSubmenu && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <div className="p-4">
+                      <div className="mb-3">
+                        <Link 
+                          href="/products"
+                          className="block text-base font-medium text-gray-900 hover:text-blue-600 transition-colors pb-3 border-b border-gray-100"
                         >
-                          {subItem.name}
+                          Tất cả sản phẩm
                         </Link>
-                      ))}
+                      </div>
+                      
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-3 text-sm">Thương hiệu</h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          {brands.slice(0, 8).map(brand => (
+                            <Link
+                              key={brand.id}
+                              href={`/products?brand_id=${encodeURIComponent(brand.id)}`}
+                              className="block px-2 py-1 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                            >
+                              {brand.name}
+                            </Link>
+                          ))}
+                        </div>
+                        {brands.length === 0 && (
+                          <p className="text-sm text-gray-500">Đang tải thương hiệu...</p>
+                        )}
+                        {brands.length > 8 && (
+                          <Link
+                            href="/brands"
+                            className="block mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                          >
+                            Xem tất cả thương hiệu →
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -264,18 +318,38 @@ export default function HeaderResponsive() {
                     >
                       {item.name}
                     </Link>
-                    {item.submenu && (
-                      <div className="ml-4 mt-2 space-y-1">
-                        {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
+                    {item.hasSubmenu && (
+                      <div className="ml-4 mt-2 space-y-2">
+                        <Link
+                          href="/products"
+                          className="block px-4 py-2 text-sm text-gray-900 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors font-medium"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          Tất cả sản phẩm
+                        </Link>
+                        
+                        <div className="space-y-1">
+                          <p className="px-4 py-1 text-xs font-medium text-gray-500 uppercase tracking-wider">Thương hiệu</p>
+                          {brands.slice(0, 6).map(brand => (
+                            <Link
+                              key={brand.id}
+                              href={`/products?brand_id=${encodeURIComponent(brand.id)}`}
+                              className="block px-4 py-1 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {brand.name}
+                            </Link>
+                          ))}
+                          {brands.length > 6 && (
+                            <Link
+                              href="/brands"
+                              className="block px-4 py-1 text-sm text-blue-600 hover:text-blue-800 font-medium"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              Xem tất cả →
+                            </Link>
+                          )}
+                        </div>
                       </div>
                     )}
                   </motion.div>

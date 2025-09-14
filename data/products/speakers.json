@@ -1,188 +1,305 @@
 {
   "speakers": [
     {
-      "id": "sp001",
-      "name": "Loa JBL PartyBox 110",
-      "slug": "loa-jbl-partybox-110",
-      "category": "Loa",
-      "brand": "Sony",
-      "price": 4500000,
-      "salePrice": 3800000,
+      "id": "arf-x12pro",
+      "name": "ARF X12Pro",
+      "slug": "arf-x12pro",
+      "category": "Loa Thùng",
+      "brand": "ARF",
+      "price": 20000000,
+      "salePrice": null,
       "images": [
-        "/images/products/jbl-partybox-110-1.svg",
-        "/images/products/jbl-partybox-110-1.svg",
-        "/images/products/jbl-partybox-110-1.svg",
-        "/uploads/1757699691302_inzm0syz1pp.jpg"
+        "/uploads/1757872819402_6jhbuhvujsk.jpg"
       ],
       "specifications": {
-        "power": "160W",
-        "frequency": "45Hz - 18kHz",
-        "connectivity": "Bluetooth, USB, AUX",
-        "battery": "12 giờ",
-        "weight": "9.7kg",
-        "dimensions": "292 x 550 x 295mm"
+        "power_handling": "400W AES / 1600W Peak",
+        "impedance": "8Ω",
+        "sensitivity": "98dB",
+        "max_spl": "128dB continuous / 131dB program / 134dB peak",
+        "frequency_response": "55Hz-18KHz (±3dB)",
+        "directivity": "110°(H) × 110°(V)",
+        "cabinet_size": "430×675×470mm",
+        "weight": "~18–25kg gross"
       },
-      "description": "Loa JBL PartyBox 110 mang đến âm thanh mạnh mẽ với công suất 160W, tích hợp đèn LED đầy màu sắc và tính năng chống nước IPX4. Hoàn hảo cho các bữa tiệc ngoài trời.",
+      "description": "Loa thùng ARF X12Pro với công suất xử lý 400W AES / 1600W Peak, độ nhạy 98dB và khả năng tái tạo âm thanh chất lượng cao trong dải tần 55Hz-18KHz.",
       "features": [
-        "Đèn LED đồng bộ theo nhạc",
-        "Chống nước IPX4",
-        "Micro có dây kèm theo",
-        "Pin 12 giờ",
-        "Kết nối True Wireless Stereo"
+        "Công suất cao 400W AES / 1600W Peak",
+        "Độ nhạy 98dB",
+        "Tỷ lệ chỉ hướng 110°(H) × 110°(V)",
+        "Thiết kế cabinet chuyên nghiệp",
+        "Xuất xứ China"
       ],
       "inStock": true,
       "featured": true,
-      "bestseller": true,
-      "createdAt": "2024-01-15",
-      "updatedAt": "2025-09-12T17:55:07.449Z",
+      "bestseller": false,
+      "unit": "Đôi",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:00:20.282Z",
       "seo": {
-        "metaTitle": "Loa JBL PartyBox 110 - Tiến Đạt Audio | Chính hãng, giá tốt",
-        "metaDescription": "Loa JBL PartyBox 110 tại Tiến Đạt Audio. Loa JBL PartyBox 110 mang đến âm thanh mạnh mẽ với công suất 160W, tích hợp đèn LED đầy màu sắc và tính năng chống nước",
+        "metaTitle": "Loa thùng ARF X12Pro - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Loa thùng ARF X12Pro tại Tiến Đạt Audio. Công suất 400W AES / 1600W Peak, độ nhạy 98dB, chất lượng âm thanh chuyên nghiệp.",
         "keywords": [
-          "loa jbl partybox 110",
-          "audio",
+          "loa thùng arf x12pro",
+          "loa arf",
           "thiết bị âm thanh",
           "chính hãng",
           "giá tốt"
         ],
-        "ogTitle": "Loa JBL PartyBox 110 - Tiến Đạt Audio",
-        "ogDescription": "Mua Loa JBL PartyBox 110 chính hãng tại Tiến Đạt Audio với giá tốt nhất",
-        "ogImage": "/images/products/jbl-partybox-110-1.svg",
-        "canonicalUrl": "/product/loa-jbl-partybox-110",
-        "noIndex": false,
-        "schemaMarkup": {
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": "Loa JBL PartyBox 110",
-          "description": "Loa JBL PartyBox 110 mang đến âm thanh mạnh mẽ với công suất 160W, tích hợp đèn LED đầy màu sắc và tính năng chống nước IPX4. Hoàn hảo cho các bữa tiệc ngoài trời.",
-          "brand": {
-            "@type": "Brand",
-            "name": "jbl"
-          },
-          "category": "loa-bluetooth",
-          "image": [
-            "/images/products/jbl-partybox-110-1.svg",
-            "/images/products/jbl-partybox-110-1.svg",
-            "/images/products/jbl-partybox-110-1.svg"
-          ],
-          "sku": "sp001",
-          "offers": {
-            "@type": "Offer",
-            "price": 3800000,
-            "priceCurrency": "VND",
-            "availability": "https://schema.org/InStock",
-            "seller": {
-              "@type": "Organization",
-              "name": "Tiến Đạt Audio",
-              "url": "https://tiendataudio.com"
-            },
-            "priceValidUntil": "2025-10-12"
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127"
-          },
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Trang chủ",
-                "item": "https://tiendataudio.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Sản phẩm",
-                "item": "https://tiendataudio.com/products?category="
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Loa JBL PartyBox 110",
-                "item": "https://tiendataudio.com/product/loa-jbl-partybox-110"
-              }
-            ]
-          }
-        }
-      }
-    },
-    {
-      "id": "sp002",
-      "name": "Loa Sony SRS-XB43",
-      "slug": "loa-sony-srs-xb43",
-      "category": "loa-bluetooth",
-      "brand": "sony",
-      "price": 3200000,
-      "salePrice": 2800000,
-      "images": [
-        "/images/products/sony-srs-xb43-1.svg",
-        "/images/products/sony-srs-xb43-1.svg"
-      ],
-      "specifications": {
-        "power": "80W",
-        "frequency": "20Hz - 20kHz",
-        "connectivity": [
-          "Bluetooth",
-          "USB",
-          "AUX"
-        ],
-        "battery": "24 giờ",
-        "weight": "2.95kg",
-        "dimensions": "325 x 123 x 123mm"
+        "ogTitle": "Loa thùng ARF X12Pro - Tiến Đạt Audio",
+        "ogDescription": "Mua Loa thùng ARF X12Pro chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
       },
-      "description": "Loa Sony SRS-XB43 với công nghệ EXTRA BASS mang đến âm bass sâu và mạnh mẽ. Thiết kế chống nước IP67 hoàn hảo cho mọi hoạt động ngoài trời.",
-      "features": [
-        "Công nghệ EXTRA BASS",
-        "Chống nước và bụi IP67",
-        "Pin 24 giờ",
-        "Đèn LED Party Connect",
-        "Kết nối đa thiết bị"
-      ],
-      "inStock": true,
-      "featured": true,
-      "bestseller": false,
-      "createdAt": "2024-01-20",
-      "updatedAt": "2024-02-15"
+      "category_id": "loa-thung",
+      "brand_id": "arf"
     },
     {
-      "id": "sp003",
-      "name": "Loa Bose SoundLink Revolve+",
-      "slug": "loa-bose-soundlink-revolve-plus",
-      "category": "loa-bluetooth",
-      "brand": "bose",
-      "price": 6500000,
+      "id": "arf-fs12",
+      "name": "ARF FS12",
+      "slug": "arf-fs12",
+      "category": "Loa Thùng",
+      "brand": "ARF",
+      "price": 13500000,
       "salePrice": null,
       "images": [
-        "/images/products/bose-revolve-plus-1.svg",
-        "/images/products/bose-revolve-plus-1.svg"
+        "/uploads/1757873177981_wez3lmbcclj.jpg",
+        "/uploads/1757873181717_onomi2j75ub.jpg"
       ],
-      "specifications": {
-        "power": "30W",
-        "frequency": "60Hz - 17kHz",
-        "connectivity": [
-          "Bluetooth",
-          "AUX"
-        ],
-        "battery": "16 giờ",
-        "weight": "0.9kg",
-        "dimensions": "184 x 105 x 105mm"
-      },
-      "description": "Loa Bose SoundLink Revolve+ với thiết kế 360 độ độc đáo, mang đến âm thanh chất lượng cao và âm bass sâu. Thương hiệu premium từ Mỹ.",
+      "specifications": {},
+      "description": "Loa thùng ARF FS12 với thiết kế chuyên nghiệp, phù hợp cho các hệ thống âm thanh sân khấu và sự kiện.",
       "features": [
-        "Âm thanh 360 độ",
-        "Chống nước IPX4",
-        "Pin 16 giờ",
-        "Thiết kế cao cấp",
-        "Kết nối stable"
+        "Thiết kế chuyên nghiệp",
+        "Chất lượng âm thanh tốt",
+        "Phù hợp sân khấu và sự kiện",
+        "Xuất xứ China",
+        "Bảo hành 12 tháng"
       ],
       "inStock": true,
       "featured": false,
       "bestseller": false,
-      "createdAt": "2024-02-01",
-      "updatedAt": "2024-02-20"
+      "unit": "Đôi",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:06:23.358Z",
+      "seo": {
+        "metaTitle": "Loa thùng ARF FS12 - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Loa thùng ARF FS12 tại Tiến Đạt Audio. Thiết kế chuyên nghiệp, phù hợp cho hệ thống âm thanh sân khấu và sự kiện.",
+        "keywords": [
+          "loa thùng arf fs12",
+          "loa arf",
+          "thiết bị âm thanh",
+          "chính hãng",
+          "giá tốt"
+        ],
+        "ogTitle": "Loa thùng ARF FS12 - Tiến Đạt Audio",
+        "ogDescription": "Mua Loa thùng ARF FS12 chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
+      },
+      "category_id": "loa-thung",
+      "brand_id": "arf"
+    },
+    {
+      "id": "arf-sa15",
+      "name": "ARF SA15",
+      "slug": "arf-sa15",
+      "category": "Loa Trầm",
+      "brand": "ARF",
+      "price": 13000000,
+      "salePrice": null,
+      "images": [
+        "/uploads/1757873195265_4t2alxsue4.webp",
+        "/uploads/1757873203337_t0b63dx81ng.webp",
+        "/uploads/1757873207683_gegudos964l.webp"
+      ],
+      "specifications": {},
+      "description": "Loa trầm ARF SA15 mang lại âm bass mạnh mẽ và sâu, hoàn hảo để bổ sung cho hệ thống âm thanh chuyên nghiệp.",
+      "features": [
+        "Âm bass mạnh mẽ và sâu",
+        "Thiết kế chuyên nghiệp",
+        "Phù hợp hệ thống âm thanh lớn",
+        "Xuất xứ China",
+        "Bảo hành 12 tháng"
+      ],
+      "inStock": true,
+      "featured": false,
+      "bestseller": false,
+      "unit": "Chiếc",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:06:48.438Z",
+      "seo": {
+        "metaTitle": "Loa trầm ARF SA15 - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Loa trầm ARF SA15 tại Tiến Đạt Audio. Âm bass mạnh mẽ và sâu, hoàn hảo cho hệ thống âm thanh chuyên nghiệp.",
+        "keywords": [
+          "loa trầm arf sa15",
+          "loa arf",
+          "thiết bị âm thanh",
+          "chính hãng",
+          "giá tốt"
+        ],
+        "ogTitle": "Loa trầm ARF SA15 - Tiến Đạt Audio",
+        "ogDescription": "Mua Loa trầm ARF SA15 chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
+      },
+      "category_id": "loa-tram",
+      "brand_id": "arf"
+    },
+    {
+      "id": "arf-vx330pro",
+      "name": "ARF VX330PRO",
+      "slug": "arf-vx330pro",
+      "category": "Vang Số",
+      "brand": "ARF",
+      "price": 5500000,
+      "salePrice": null,
+      "images": [
+        "/uploads/1757873217170_zjcdu51ihss.webp"
+      ],
+      "specifications": {
+        "power_handling": "500W AES / 2000W Peak",
+        "impedance": "8Ω",
+        "sensitivity": "97dB",
+        "max_spl": "121dB continuous / 124dB program / 128dB peak",
+        "frequency_response": "35Hz-150Hz",
+        "directivity": "omnidirectional",
+        "weight": "32kg net / 37kg gross"
+      },
+      "description": "Vang số ARF VX330PRO với công nghệ xử lý DSP 3x, 4 chế độ chuyên nghiệp tùy chọn và 5.1 kênh đầu ra.",
+      "features": [
+        "3xDSP digital processing technology",
+        "Optional 4 ex-factory professional modes",
+        "5.1 output channel",
+        "Tonal modification ±5 levels",
+        "Music/mic tonal with 7-band PEQ",
+        "Subwoofer/center-channel outputs with 3-band PEQ"
+      ],
+      "inStock": true,
+      "featured": true,
+      "bestseller": false,
+      "unit": "Bộ",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:06:58.803Z",
+      "seo": {
+        "metaTitle": "Vang số ARF VX330PRO - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Vang số ARF VX330PRO tại Tiến Đạt Audio. Công nghệ DSP 3x, 4 chế độ chuyên nghiệp, 5.1 kênh đầu ra.",
+        "keywords": [
+          "vang số arf vx330pro",
+          "vang arf",
+          "thiết bị âm thanh",
+          "chính hãng",
+          "giá tốt"
+        ],
+        "ogTitle": "Vang số ARF VX330PRO - Tiến Đạt Audio",
+        "ogDescription": "Mua Vang số ARF VX330PRO chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
+      },
+      "category_id": "vang-so",
+      "brand_id": "arf"
+    },
+    {
+      "id": "arf-vx660",
+      "name": "ARF VX660",
+      "slug": "arf-vx660",
+      "category": "Vang Số",
+      "brand": "ARF",
+      "price": 9500000,
+      "salePrice": null,
+      "images": [
+        "/uploads/1757873379176_l980buv6tri.png",
+        "/uploads/1757873383112_2qokmjpl7ax.jpg"
+      ],
+      "specifications": {},
+      "description": "Vang số ARF VX660 với thiết kế hiện đại và chất lượng âm thanh vượt trội, phù hợp cho hệ thống karaoke chuyên nghiệp.",
+      "features": [
+        "Thiết kế hiện đại",
+        "Chất lượng âm thanh vượt trội",
+        "Phù hợp karaoke chuyên nghiệp",
+        "Xuất xứ China",
+        "Bảo hành 12 tháng"
+      ],
+      "inStock": true,
+      "featured": false,
+      "bestseller": false,
+      "unit": "Đôi",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:09:44.049Z",
+      "seo": {
+        "metaTitle": "Vang số ARF VX660 - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Vang số ARF VX660 tại Tiến Đạt Audio. Thiết kế hiện đại, chất lượng âm thanh vượt trội cho karaoke chuyên nghiệp.",
+        "keywords": [
+          "vang số arf vx660",
+          "vang arf",
+          "thiết bị âm thanh",
+          "chính hãng",
+          "giá tốt"
+        ],
+        "ogTitle": "Vang số ARF VX660 - Tiến Đạt Audio",
+        "ogDescription": "Mua Vang số ARF VX660 chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
+      },
+      "category_id": "vang-so",
+      "brand_id": "arf"
+    },
+    {
+      "id": "arf-nx4-800",
+      "name": "ARF NX4-800",
+      "slug": "arf-nx4-800",
+      "category": "Main Công Suất",
+      "brand": "ARF",
+      "price": 18000000,
+      "salePrice": null,
+      "images": [
+        "/uploads/1757873410571_2tstfuq2vcq.jpg",
+        "/uploads/1757873414645_hxra7006d3t.jpg"
+      ],
+      "specifications": {
+        "stereo_power_8ohm": "800W x 4",
+        "stereo_power_4ohm": "1280W x 4",
+        "bridge_power_8ohm": "2560W x 2",
+        "circuit_type": "CLASS H+",
+        "frequency_response": "20Hz-20KHz ±1dB",
+        "dimensions": "483×530×88mm",
+        "weight": "22-24kg"
+      },
+      "description": "Main công suất ARF NX4-800 với công suất mạnh mẽ 800W x 4 kênh ở 8Ω, sử dụng mạch CLASS H+ hiệu quả cao.",
+      "features": [
+        "Công suất mạnh mẽ 800W x 4 kênh",
+        "Mạch CLASS H+ hiệu quả cao",
+        "Đáp ứng tần số 20Hz-20KHz ±1dB",
+        "Thiết kế chuyên nghiệp",
+        "Xuất xứ China"
+      ],
+      "inStock": true,
+      "featured": true,
+      "bestseller": false,
+      "unit": "Chiếc",
+      "origin": "China",
+      "warranty_months": 12,
+      "createdAt": "2025-09-14",
+      "updatedAt": "2025-09-14T18:10:16.133Z",
+      "seo": {
+        "metaTitle": "Main công suất ARF NX4-800 - Tiến Đạt Audio | Chính hãng, giá tốt",
+        "metaDescription": "Main công suất ARF NX4-800 tại Tiến Đạt Audio. Công suất 800W x 4 kênh, mạch CLASS H+, chuyên nghiệp.",
+        "keywords": [
+          "main công suất arf nx4-800",
+          "main arf",
+          "thiết bị âm thanh",
+          "chính hãng",
+          "giá tốt"
+        ],
+        "ogTitle": "Main công suất ARF NX4-800 - Tiến Đạt Audio",
+        "ogDescription": "Mua Main công suất ARF NX4-800 chính hãng tại Tiến Đạt Audio với giá tốt nhất",
+        "ogImage": ""
+      },
+      "category_id": "main-cong-suat",
+      "brand_id": "arf"
     }
   ]
 }

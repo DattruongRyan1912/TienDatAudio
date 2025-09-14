@@ -10,6 +10,7 @@ import ProductModal from '@/components/admin/ProductModal'
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
+  const [availableCategories, setAvailableCategories] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -26,7 +27,7 @@ export default function ProductsPage() {
     if (searchQuery) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.brand.toLowerCase().includes(searchQuery.toLowerCase())
+        (product.brand && product.brand.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     }
 
@@ -43,12 +44,22 @@ export default function ProductsPage() {
 
   const loadProducts = async () => {
     try {
-      const response = await fetch('/api/admin/products')
-      if (!response.ok) {
+      const [productsRes, categoriesRes] = await Promise.all([
+        fetch('/api/admin/products'),
+        fetch('/api/admin/categories')
+      ])
+      
+      if (!productsRes.ok) {
         throw new Error('Failed to fetch products')
       }
-      const allProducts = await response.json()
+      
+      const allProducts = await productsRes.json()
       setProducts(allProducts)
+      
+      if (categoriesRes.ok) {
+        const categoriesData = await categoriesRes.json()
+        setAvailableCategories(categoriesData.map((cat: { name: string }) => cat.name))
+      }
     } catch (error) {
       console.error('Error loading products:', error)
       alert('Có lỗi xảy ra khi tải danh sách sản phẩm')
@@ -100,8 +111,6 @@ export default function ProductsPage() {
     setEditingProduct(null)
     alert('Lưu sản phẩm thành công!')
   }
-
-  const categories = [...new Set(products.map(p => p.category))]
 
   if (loading) {
     return (
@@ -157,7 +166,7 @@ export default function ProductsPage() {
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                 >
                   <option value="">Tất cả danh mục</option>
-                  {categories.map(category => (
+                  {availableCategories.map(category => (
                     <option key={category} value={category}>{category}</option>
                   ))}
                 </select>

@@ -59,8 +59,8 @@ const mockIssues: SEOIssue[] = [
 ];
 
 export default function SEODashboard() {
-  const [analytics, setAnalytics] = useState<SEOAnalytics>(mockAnalytics);
-  const [issues, setIssues] = useState<SEOIssue[]>(mockIssues);
+  const [analytics] = useState<SEOAnalytics>(mockAnalytics);
+  const [issues] = useState<SEOIssue[]>(mockIssues);
   const [loading, setLoading] = useState(false);
 
   const refreshData = async () => {

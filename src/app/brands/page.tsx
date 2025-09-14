@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import ProductCard from '@/components/ProductCard'
-import { getBrands, getProducts, type Product, type Brand } from '@/lib/data'
+import { getProducts, type Product, type Brand } from '@/lib/data'
 import { Search, Star, Award, Users, TrendingUp } from 'lucide-react'
 
 const brandStats = [
@@ -32,10 +33,10 @@ export default function BrandsPage() {
     }
   }, [searchQuery])
 
-  const loadProductsByBrand = useCallback(async (brandName: string) => {
+  const loadProductsByBrand = useCallback(async (brandId: string) => {
     try {
       const productsData = await getProducts({ 
-        brand: brandName,
+        brand: brandId,
         search: searchQuery 
       })
       setProducts(productsData)
@@ -46,8 +47,14 @@ export default function BrandsPage() {
 
   const loadData = useCallback(async () => {
     try {
-      const brandsData = await getBrands()
-      setBrands(brandsData)
+      // Load brands from API instead of static data
+      const response = await fetch('/api/admin/brands')
+      const result = await response.json()
+      if (result.success) {
+        setBrands(result.data)
+      } else {
+        console.error('Failed to load brands:', result.message)
+      }
       await loadAllProducts()
     } catch (error) {
       console.error('Error loading data:', error)
@@ -68,8 +75,14 @@ export default function BrandsPage() {
     }
   }, [selectedBrand, loadProductsByBrand, loadAllProducts])
 
-  const handleBrandSelect = (brandName: string) => {
-    setSelectedBrand(selectedBrand === brandName ? '' : brandName)
+  const handleBrandSelect = (brandId: string) => {
+    setSelectedBrand(selectedBrand === brandId ? '' : brandId)
+  }
+
+  const getSelectedBrandName = () => {
+    if (!selectedBrand) return ''
+    const brand = brands.find(b => b.id === selectedBrand)
+    return brand ? brand.name : selectedBrand
   }
 
   const featuredBrands = brands.slice(0, 6)
@@ -159,21 +172,31 @@ export default function BrandsPage() {
                   <motion.div
                     key={brand.id}
                     className={`bg-white rounded-xl p-6 text-center cursor-pointer transition-all duration-300 border-2 shadow-lg hover:shadow-xl ${
-                      selectedBrand === brand.name 
+                      selectedBrand === brand.id 
                         ? 'border-blue-600 bg-blue-50' 
                         : 'border-gray-200 hover:border-blue-300'
                     }`}
-                    onClick={() => handleBrandSelect(brand.name)}
+                    onClick={() => handleBrandSelect(brand.id)}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-gray-700">
-                        {brand.name.charAt(0)}
-                      </span>
+                    <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
+                      {brand.logo ? (
+                        <Image 
+                          src={brand.logo} 
+                          alt={brand.name}
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <span className="text-2xl font-bold text-gray-700">
+                          {brand.name.charAt(0)}
+                        </span>
+                      )}
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">{brand.name}</h3>
                     <p className="text-sm text-gray-600">{brand.country || 'International'}</p>
@@ -200,11 +223,11 @@ export default function BrandsPage() {
                     <motion.button
                       key={brand.id}
                       className={`p-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        selectedBrand === brand.name
+                        selectedBrand === brand.id
                           ? 'bg-blue-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
-                      onClick={() => handleBrandSelect(brand.name)}
+                      onClick={() => handleBrandSelect(brand.id)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -227,11 +250,11 @@ export default function BrandsPage() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {selectedBrand ? `Sản phẩm ${selectedBrand}` : 'Sản phẩm nổi bật'}
+                {selectedBrand ? `Sản phẩm ${getSelectedBrandName()}` : 'Sản phẩm nổi bật'}
               </h2>
               <p className="text-gray-600">
                 {selectedBrand 
-                  ? `Khám phá các sản phẩm chất lượng cao từ ${selectedBrand}`
+                  ? `Khám phá các sản phẩm chất lượng cao từ ${getSelectedBrandName()}`
                   : 'Những sản phẩm được yêu thích nhất từ các thương hiệu hàng đầu'
                 }
               </p>

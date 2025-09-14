@@ -1,7 +1,7 @@
 {
   "id": "default",
   "colors": {
-    "primary": "#8B5CF6",
+    "primary": "#3B82F6",
     "secondary": "#6B7280",
     "accent": "#06b6d4",
     "background": "#ffffff",
@@ -99,5 +99,5 @@
     "enableCompression": true,
     "enablePreloading": true
   },
-  "updatedAt": "2025-09-12T17:11:15.090Z"
+  "updatedAt": "2025-09-14T18:13:56.981Z"
 }

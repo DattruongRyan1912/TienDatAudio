@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  Palette,
   Save,
   RotateCcw,
   Monitor,
@@ -52,7 +51,7 @@ const fontOptions = [
 ];
 
 export default function ThemePage() {
-  const { theme: globalTheme, updateTheme: updateGlobalTheme, reloadTheme } = useTheme();
+  const { theme: globalTheme, updateTheme: updateGlobalTheme } = useTheme();
   const [theme, setTheme] = useState<ThemeSettings>(defaultTheme);
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [saving, setSaving] = useState(false);
@@ -73,10 +72,6 @@ export default function ThemePage() {
       });
     }
   }, [globalTheme]);
-
-  const loadCurrentTheme = async () => {
-    reloadTheme();
-  };
 
   const handleColorChange = (key: keyof ThemeSettings, value: string) => {
     setTheme(prev => ({ ...prev, [key]: value }));

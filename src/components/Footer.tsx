@@ -4,18 +4,45 @@ import Link from "next/link"
 import { Facebook, Instagram, Youtube, Phone, Mail, MapPin } from "lucide-react"
 import { motion } from 'framer-motion'
 import { useSettings } from '@/contexts/SettingsContext'
+import { useState, useEffect } from 'react'
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+}
 
 export default function Footer() {
   const { settings } = useSettings()
+  const [categories, setCategories] = useState<Category[]>([])
+
+  // Load categories from API
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const categoriesRes = await fetch('/api/admin/categories')
+        if (categoriesRes.ok) {
+          const categoriesData = await categoriesRes.json()
+          // Categories API returns array directly, not wrapped in {success, data}
+          if (Array.isArray(categoriesData)) {
+            setCategories(categoriesData)
+          }
+        }
+      } catch (error) {
+        console.error('Footer: Error loading categories:', error)
+      }
+    }
+
+    loadCategories()
+  }, [])
+
   const footerSections = [
     {
       title: "Sản phẩm",
-      links: [
-        { name: "Loa", href: "/san-pham?category=loa" },
-        { name: "Amply", href: "/san-pham?category=amply" },
-        { name: "Micro", href: "/san-pham?category=micro" },
-        { name: "Mixer", href: "/san-pham?category=mixer" },
-      ]
+      links: categories.slice(0, 6).map(category => ({
+        name: category.name,
+        href: `/products?category_id=${category.id}`
+      }))
     },
     {
       title: "Thông tin",
@@ -75,11 +102,11 @@ export default function Footer() {
               whileHover={{ scale: 1.02 }}
             >
               <motion.div 
-                className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center"
+                className="w-10 h-10 bg-red-600 rounded-full p-2 flex self-start justify-center"
                 whileHover={{ rotate: 5 }}
                 transition={{ duration: 0.2 }}
               >
-                <span className="text-white font-bold text-xl">T</span>
+                <span className="text-white font-bold text-xl">TĐ</span>
               </motion.div>
               <div>
                 <h3 className="text-xl font-bold">{settings?.siteName || 'Tiến Đạt Audio'}</h3>

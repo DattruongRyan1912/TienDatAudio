@@ -39,7 +39,7 @@ function ProductSearchContent() {
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [sortBy, setSortBy] = useState('newest')
-  const [showFilters, setShowFilters] = useState(true)
+  const [showFilters, setShowFilters] = useState(false) // Changed default to false for mobile-first
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
     brands: [],
@@ -56,9 +56,36 @@ function ProductSearchContent() {
 
   useEffect(() => {
     const query = searchParams.get('search') || ''
+    const category = searchParams.get('category') || ''
+    const brand = searchParams.get('brand') || ''
+    const brand_id = searchParams.get('brand_id') || ''
+    
     setSearchQuery(query)
+    
+    // Apply filters from URL parameters
+    setFilters(prev => ({
+      ...prev,
+      categories: category ? [category] : [],
+      brands: brand ? [brand] : (brand_id ? [brand_id] : [])
+    }))
+    
     loadProducts()
   }, [searchParams])
+
+  // Close filter on mobile when clicking outside
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) { // lg breakpoint
+        setShowFilters(true)
+      } else {
+        setShowFilters(false)
+      }
+    }
+
+    handleResize() // Set initial state
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const applyFiltersAndSort = useCallback(() => {
     let filtered = [...products]
@@ -68,18 +95,23 @@ function ProductSearchContent() {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.brand.toLowerCase().includes(searchQuery.toLowerCase())
+        (product.brand && product.brand.toLowerCase().includes(searchQuery.toLowerCase()))
       )
     }
 
     // Category filter
     if (filters.categories.length > 0) {
-      filtered = filtered.filter(product => filters.categories.includes(product.category))
+      filtered = filtered.filter(product => 
+        product.category && filters.categories.includes(product.category)
+      )
     }
 
-    // Brand filter
+    // Brand filter - support both brand names and brand IDs
     if (filters.brands.length > 0) {
-      filtered = filtered.filter(product => filters.brands.includes(product.brand))
+      filtered = filtered.filter(product => 
+        (product.brand && filters.brands.includes(product.brand)) ||
+        (product.brand_id && filters.brands.includes(product.brand_id))
+      )
     }
 
     // Price range filter
@@ -135,12 +167,18 @@ function ProductSearchContent() {
       const allProducts = await getProducts()
       setProducts(allProducts)
       
-      // Extract unique categories and brands
-      const categories = [...new Set(allProducts.map(p => p.category))]
-      const brands = [...new Set(allProducts.map(p => p.brand))]
+      // Load categories and brands from APIs
+      const [categoriesRes, brandsRes] = await Promise.all([
+        fetch('/api/admin/categories'),
+        fetch('/api/admin/brands')
+      ])
       
-      setAvailableCategories(categories)
-      setAvailableBrands(brands)
+      if (categoriesRes.ok && brandsRes.ok) {
+        const categoriesData = await categoriesRes.json()
+        const brandsData = await brandsRes.json()
+        setAvailableCategories(categoriesData.map((cat: { name: string }) => cat.name))
+        setAvailableBrands(brandsData.map((brand: { name: string }) => brand.name))
+      }
       
       // Set price range
       const prices = allProducts.map(p => p.salePrice || p.price)
@@ -195,33 +233,52 @@ function ProductSearchContent() {
     }).format(price)
   }
 
+  const getPageTitle = () => {
+    if (searchQuery) {
+      return `Kết quả tìm kiếm cho "${searchQuery}"`
+    }
+    
+    const categoryFilter = filters.categories[0]
+    const brandFilter = filters.brands[0]
+    
+    if (categoryFilter && brandFilter) {
+      return `${brandFilter} - ${categoryFilter}`
+    } else if (categoryFilter) {
+      return `Danh mục: ${categoryFilter}`
+    } else if (brandFilter) {
+      return `Thương hiệu: ${brandFilter}`
+    }
+    
+    return 'Tất cả sản phẩm'
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="pt-24">
-        <div className="container mx-auto px-4 py-8">
+      <main className="pt-20 md:pt-24">
+        <div className="container mx-auto px-4 py-4 md:py-8">
           {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {searchQuery ? `Kết quả tìm kiếm cho "${searchQuery}"` : 'Tất cả sản phẩm'}
+          <div className="mb-4 md:mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              {getPageTitle()}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-sm md:text-base">
               Tìm thấy {filteredProducts.length} sản phẩm
             </p>
           </div>
 
           {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 bg-white p-4 rounded-lg shadow-sm">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 md:mb-6 bg-white p-3 md:p-4 rounded-lg shadow-sm">
+            <div className="flex items-center gap-2 md:gap-4 overflow-x-auto">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="flex items-center gap-2 px-3 md:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap text-sm"
               >
                 <SlidersHorizontal className="w-4 h-4" />
-                Bộ lọc
+                <span className="hidden sm:inline">Bộ lọc</span>
               </button>
               
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Hiển thị:</span>
+                <span className="text-sm text-gray-600 hidden md:inline">Hiển thị:</span>
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-500 hover:bg-gray-100'}`}
@@ -242,7 +299,7 @@ function ProductSearchContent() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="appearance-none bg-white border border-gray-300 rounded-lg px-3 md:px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full min-w-[140px]"
                 >
                   {sortOptions.map(option => (
                     <option key={option.key} value={option.value}>
@@ -255,16 +312,27 @@ function ProductSearchContent() {
             </div>
           </div>
 
-          <div className="flex gap-6">
-            {/* Sidebar Filters */}
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+            {/* Sidebar Filters - Mobile Drawer */}
             {showFilters && (
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="w-80 bg-white rounded-lg shadow-sm p-6 h-fit sticky top-6"
+                className="fixed lg:sticky top-0 lg:top-6 left-0 w-full lg:w-80 h-full lg:h-fit bg-white lg:rounded-lg shadow-sm p-4 lg:p-6 z-50 lg:z-auto overflow-y-auto lg:overflow-visible"
               >
+                {/* Mobile close button */}
+                <div className="flex lg:hidden items-center justify-between mb-4 pb-4 border-b">
+                  <h2 className="text-lg font-semibold text-gray-900">Bộ lọc</h2>
+                  <button
+                    onClick={() => setShowFilters(false)}
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    ✕
+                  </button>
+                </div>
+
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <h2 className="hidden lg:flex text-lg font-semibold text-gray-900 items-center gap-2">
                     <Filter className="w-5 h-5" />
                     Bộ lọc
                   </h2>
@@ -386,7 +454,15 @@ function ProductSearchContent() {
             )}
 
             {/* Products */}
-            <div className="flex-1">
+            <div className="flex-1 lg:min-w-0">
+              {/* Mobile filter backdrop */}
+              {showFilters && (
+                <div 
+                  className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                  onClick={() => setShowFilters(false)}
+                />
+              )}
+
               {loading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -395,8 +471,12 @@ function ProductSearchContent() {
                 <motion.div 
                   className={
                     viewMode === 'grid'
-                      ? `grid gap-6 ${showFilters ? 'grid-cols-1 lg:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`
-                      : 'space-y-4'
+                      ? `grid gap-3 md:gap-4 lg:gap-6 ${
+                          showFilters 
+                            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' 
+                            : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+                        }`
+                      : 'space-y-3 md:space-y-4'
                   }
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

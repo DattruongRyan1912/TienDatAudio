@@ -30,19 +30,19 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     }).format(price)
 
     return {
-      title: `${product.name} - ${product.brand} | Tiến Đạt Audio`,
-      description: `${product.name} ${product.brand} giá ${formattedPrice}. ${product.description}. Miễn phí vận chuyển, bảo hành chính hãng tại Tiến Đạt Audio.`,
+      title: `${product.name} - ${product.brand || 'N/A'} | Tiến Đạt Audio`,
+      description: `${product.name} ${product.brand || ''} giá ${formattedPrice}. ${product.description}. Miễn phí vận chuyển, bảo hành chính hãng tại Tiến Đạt Audio.`,
       keywords: [
         product.name,
-        product.brand,
-        product.category,
+        product.brand || '',
+        product.category || '',
         'thiết bị âm thanh',
         'chính hãng',
         'giá tốt'
-      ],
+      ].filter(Boolean), // Remove empty strings
       openGraph: {
-        title: `${product.name} - ${product.brand}`,
-        description: `${product.name} ${product.brand} giá ${formattedPrice}`,
+        title: `${product.name} - ${product.brand || 'N/A'}`,
+        description: `${product.name} ${product.brand || ''} giá ${formattedPrice}`,
         images: product.images?.[0] ? [
           {
             url: product.images[0],
