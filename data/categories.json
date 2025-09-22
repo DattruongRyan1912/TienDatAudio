@@ -5,63 +5,47 @@
       "name": "Loa Bluetooth",
       "slug": "loa-bluetooth",
       "description": "Loa bluetooth chất lượng cao, âm thanh sống động",
-      "image": "/images/categories/loa-bluetooth.svg",
+      "image": "/uploads/1757911468916_14ddjtlvx86.jpeg",
       "sortOrder": 1
     },
     {
       "id": "amply-karaoke",
       "name": "Amply Karaoke",
-      "slug": "amply-karaoke", 
+      "slug": "amply-karaoke",
       "description": "Amply karaoke chuyên nghiệp cho gia đình và kinh doanh",
-      "image": "/images/categories/amply-karaoke.svg",
+      "image": "/uploads/1757911481166_zyzsozkmp7k.jpeg",
       "sortOrder": 2
-    },
-    {
-      "id": "micro-khong-day",
-      "name": "Micro Không Dây",
-      "slug": "micro-khong-day",
-      "description": "Micro không dây chất lượng cao, thu âm rõ nét",
-      "image": "/images/categories/micro-khong-day.svg",
-      "sortOrder": 3
-    },
-    {
-      "id": "thiet-bi-dj",
-      "name": "Thiết Bị DJ",
-      "slug": "thiet-bi-dj",
-      "description": "Thiết bị DJ chuyên nghiệp cho các sự kiện",
-      "image": "/images/categories/thiet-bi-dj.svg",
-      "sortOrder": 4
     },
     {
       "id": "loa-thung",
       "name": "Loa Thùng",
-      "slug": "loa-thung",
+      "slug": "loa-th-ng",
       "description": "Loa thùng chuyên nghiệp cho sân khấu và sự kiện",
-      "image": "/images/categories/loa-thung.svg",
+      "image": "/uploads/1757911498269_vky7s589yrq.jpg",
       "sortOrder": 5
     },
     {
       "id": "loa-tram",
       "name": "Loa Trầm",
-      "slug": "loa-tram",
+      "slug": "loa-tr-m",
       "description": "Loa trầm mạnh mẽ, âm bass sâu và trong",
-      "image": "/images/categories/loa-tram.svg",
+      "image": "/uploads/1757911594368_zftp0quy0em.webp",
       "sortOrder": 6
     },
     {
       "id": "vang-so",
       "name": "Vang Số",
-      "slug": "vang-so",
+      "slug": "vang-s",
       "description": "Vang số chuyên nghiệp với công nghệ DSP hiện đại",
-      "image": "/images/categories/vang-so.svg",
+      "image": "/uploads/1757911548285_okj4rwrpfi8.webp",
       "sortOrder": 7
     },
     {
       "id": "main-cong-suat",
       "name": "Main Công Suất",
-      "slug": "main-cong-suat",
+      "slug": "main-c-ng-su-t",
       "description": "Main công suất mạnh mẽ cho hệ thống âm thanh lớn",
-      "image": "/images/categories/main-cong-suat.svg",
+      "image": "/uploads/1757911562386_i3rnnh7iz5.jpg",
       "sortOrder": 8
     }
   ]
