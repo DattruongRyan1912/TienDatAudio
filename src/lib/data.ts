@@ -2,6 +2,7 @@ import speakersData from '../../data/products/speakers.json';
 import amplifiersData from '../../data/products/amplifiers.json';
 import categoriesData from '../../data/categories.json';
 import brandsData from '../../data/brands.json';
+import combosData from '../../data/combos.json';
 
 export interface ProductSEO {
     metaTitle?: string;
@@ -75,6 +76,46 @@ export interface BlogPost {
     metaDescription?: string;
     keywords?: string[];
     readingTime?: number;
+}
+
+export interface ComboProduct {
+    id: string;
+    quantity: number;
+    role: 'main' | 'accessory';
+}
+
+export interface ComboMedia {
+    type: 'video' | 'image';
+    url?: string;
+    posterImage?: string;
+    images?: string[];
+}
+
+export interface Combo {
+    id: string;
+    title: string;
+    slug: string;
+    type: 'video' | 'image';
+    thumbnail: string;
+    media: ComboMedia;
+    description: string;
+    products: ComboProduct[];
+    // Pricing fields - optional for post type
+    originalPrice?: number;
+    comboPrice?: number;
+    savings?: number;
+    savingsPercent?: number;
+    // Content type: 'combo' for product combos, 'post' for content posts
+    contentType: 'combo' | 'post';
+    tags: string[];
+    features: string[];
+    views: number;
+    likes: number;
+    shares: number;
+    comments: number;
+    createdAt: string;
+    featured: boolean;
+    status: 'active' | 'draft' | 'archived';
 }
 
 export interface ProductFilters {
@@ -327,4 +368,32 @@ export async function getProductsByBrand(brandSlug: string): Promise<Product[]> 
 // Search functionality
 export async function searchProducts(query: string): Promise<Product[]> {
     return getProducts({ search: query });
+}
+
+// Combo products functions
+export async function getAllCombos(): Promise<Combo[]> {
+    return combosData as Combo[];
+}
+
+export async function getFeaturedCombos(limit?: number): Promise<Combo[]> {
+    const allCombos = await getAllCombos();
+    const featured = allCombos.filter(combo => combo.featured && combo.status === 'active');
+    return limit ? featured.slice(0, limit) : featured;
+}
+
+export async function getComboBySlug(slug: string): Promise<Combo | null> {
+    const allCombos = await getAllCombos();
+    return allCombos.find(combo => combo.slug === slug) || null;
+}
+
+export async function getComboProducts(combo: Combo): Promise<(Product & { quantity: number; role: string })[]> {
+    const allProducts = await getAllProducts();
+    return combo.products.map(comboProduct => {
+        const product = allProducts.find(p => p.id === comboProduct.id);
+        return product ? {
+            ...product,
+            quantity: comboProduct.quantity,
+            role: comboProduct.role
+        } : null;
+    }).filter(Boolean) as (Product & { quantity: number; role: string })[];
 }

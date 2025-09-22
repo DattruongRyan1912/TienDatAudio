@@ -1,0 +1,111 @@
+[
+  {
+    "id": "combo-1",
+    "title": "Combo Karaoke Gia Đình Premium",
+    "slug": "combo-karaoke-gia-dinh-premium",
+    "type": "video",
+    "thumbnail": "/images/combos/karaoke-family-thumb.jpg",
+    "media": {
+      "type": "video",
+      "url": "https://res.cloudinary.com/dbkigtpqf/video/upload/v1758464737/tiendataudio/combos/videos/combos/jxjeunsxbakcgfoctn5r.mp4",
+      "posterImage": "https://res.cloudinary.com/dbkigtpqf/video/upload/c_fill,g_center,h_1920,q_auto:low,w_1080/v1758464737/tiendataudio/combos/videos/combos/jxjeunsxbakcgfoctn5r.mp4"
+    },
+    "description": "Bộ combo karaoke hoàn hảo cho gia đình với chất lượng âm thanh vượt trội",
+    "contentType": "combo",
+    "products": [
+      {
+        "id": "speaker-1",
+        "quantity": 2,
+        "role": "main"
+      },
+      {
+        "id": "amplifier-1",
+        "quantity": 1,
+        "role": "main"
+      },
+      {
+        "id": "microphone-1",
+        "quantity": 2,
+        "role": "accessory"
+      }
+    ],
+    "originalPrice": 0,
+    "comboPrice": 12000000,
+    "savings": 0,
+    "savingsPercent": 0,
+    "tags": [
+      "karaoke",
+      "gia-dinh",
+      "premium"
+    ],
+    "features": [
+      "Âm thanh chống hú cao cấp",
+      "Kết nối Bluetooth 5.0",
+      "Điều khiển từ xa thông minh",
+      "Bảo hành 2 năm chính hãng"
+    ],
+    "views": 2450,
+    "likes": 189,
+    "shares": 45,
+    "comments": 23,
+    "createdAt": "2025-01-15T10:00:00Z",
+    "featured": true,
+    "status": "active",
+    "updatedAt": "2025-09-21T14:26:27.037Z"
+  },
+  {
+    "id": "combo-2",
+    "title": "Combo Cafe Acoustic Chuyên Nghiệp",
+    "slug": "combo-cafe-acoustic-chuyen-nghiep",
+    "type": "image",
+    "thumbnail": "/images/combos/cafe-acoustic-thumb.jpg",
+    "media": {
+      "type": "image",
+      "images": [
+        "/images/combos/cafe-acoustic-1.jpg",
+        "/images/combos/cafe-acoustic-2.jpg",
+        "/images/combos/cafe-acoustic-3.jpg"
+      ]
+    },
+    "description": "Giải pháp âm thanh hoàn hảo cho quán cafe với âm thanh trong trẻo, ấm áp",
+    "products": [
+      {
+        "id": "speaker-acoustic-1",
+        "quantity": 4,
+        "role": "main"
+      },
+      {
+        "id": "mixer-1",
+        "quantity": 1,
+        "role": "main"
+      },
+      {
+        "id": "amplifier-2",
+        "quantity": 1,
+        "role": "main"
+      }
+    ],
+    "originalPrice": 25000000,
+    "comboPrice": 20000000,
+    "savings": 5000000,
+    "savingsPercent": 20,
+    "tags": [
+      "cafe",
+      "acoustic",
+      "chuyen-nghiep"
+    ],
+    "features": [
+      "Âm thanh tự nhiên, không méo tiếng",
+      "Hệ thống phân vùng thông minh",
+      "Tiết kiệm điện năng cao",
+      "Lắp đặt miễn phí tại Quảng Ngãi"
+    ],
+    "views": 1890,
+    "likes": 156,
+    "shares": 34,
+    "comments": 18,
+    "createdAt": "2025-01-10T14:30:00Z",
+    "featured": true,
+    "status": "active"
+  }
+]
