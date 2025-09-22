@@ -18,6 +18,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
+import { useNotification } from '@/hooks/useNotification'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 
 interface SEOContent {
   id: string;
@@ -47,6 +49,7 @@ const defaultPages = [
 ];
 
 export default function SEOPage() {
+  const { showSuccess, showError, showWarning, showConfirm, confirmDialog, closeConfirm } = useNotification()
   const [seoContents, setSeoContents] = useState<SEOContent[]>([]);
   const [selectedSEO, setSelectedSEO] = useState<SEOContent | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -89,13 +92,13 @@ export default function SEOPage() {
 
   const handleSave = async () => {
     if (!selectedSEO) {
-      alert('Không có dữ liệu để lưu');
+      showWarning('Không có dữ liệu để lưu');
       return;
     }
     
     // Validation
     if (!selectedSEO.page || !selectedSEO.title) {
-      alert('Vui lòng nhập đầy đủ thông tin: Trang và Tiêu đề');
+      showWarning('Thiếu thông tin', 'Vui lòng nhập đầy đủ thông tin: Trang và Tiêu đề');
       return;
     }
     
@@ -127,18 +130,18 @@ export default function SEOPage() {
       console.log('Save result:', result); // Debug log
       
       if (result.success) {
-        alert('Lưu cấu hình SEO thành công!');
+        showSuccess('Lưu cấu hình SEO thành công!');
         await loadSEOContents(); // Reload data
         setIsEditing(false);
         setIsAdding(false);
         setSelectedSEO(null);
         setKeywordsInput(''); // Reset keywords input
       } else {
-        alert('Lỗi: ' + (result.message || 'Không xác định'));
+        showError('Lỗi', result.message || 'Không xác định');
       }
     } catch (error) {
       console.error('Error saving SEO:', error);
-      alert('Có lỗi xảy ra khi lưu: ' + (error instanceof Error ? error.message : 'Lỗi không xác định'));
+      showError('Có lỗi xảy ra khi lưu', error instanceof Error ? error.message : 'Lỗi không xác định');
     } finally {
       setSaving(false);
     }
@@ -172,29 +175,37 @@ export default function SEOPage() {
     setIsEditing(true);
   };
 
-  const handleDelete = async (seoId: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa cấu hình SEO này?')) return;
-    
-    try {
-      const response = await fetch('/api/admin/seo', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ seoId }),
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        await loadSEOContents();
-      } else {
-        alert('Lỗi: ' + result.message);
+  const handleDelete = async (seoId: string, page: string) => {
+    showConfirm(
+      {
+        title: 'Xóa cấu hình SEO',
+        message: `Bạn có chắc chắn muốn xóa cấu hình SEO cho trang "${page}"? Hành động này không thể hoàn tác.`,
+        type: 'danger'
+      },
+      async () => {
+        try {
+          const response = await fetch('/api/admin/seo', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ seoId }),
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            await loadSEOContents();
+            showSuccess('Xóa cấu hình SEO thành công!');
+          } else {
+            showError('Lỗi', result.message);
+          }
+        } catch (error) {
+          console.error('Error deleting SEO:', error);
+          showError('Có lỗi xảy ra khi xóa');
+        }
       }
-    } catch (error) {
-      console.error('Error deleting SEO:', error);
-      alert('Có lỗi xảy ra khi xóa');
-    }
+    );
   };
 
   const updateSelectedSEO = (field: string, value: unknown) => {
@@ -316,7 +327,7 @@ export default function SEOPage() {
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(seoContent.id)}
+                          onClick={() => handleDelete(seoContent.id, seoContent.page)}
                           className="text-gray-400 hover:text-red-600"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -626,6 +637,16 @@ export default function SEOPage() {
           </div>
         </div>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirm}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        type={confirmDialog.type}
+      />
     </div>
   );
 }

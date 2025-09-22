@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Plus } from 'lucide-react'
 import Image from 'next/image'
 import { type Product } from '@/lib/data'
+import { useNotification } from '@/hooks/useNotification'
 
 interface ProductModalProps {
   isOpen: boolean
@@ -26,6 +27,7 @@ interface Category {
 }
 
 export default function ProductModal({ isOpen, onClose, onSave, product }: ProductModalProps) {
+  const { showError } = useNotification()
   const [brands, setBrands] = useState<Brand[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   
@@ -181,7 +183,7 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
       }
     } catch (error) {
       console.error('Error saving product:', error)
-      alert('Có lỗi xảy ra khi lưu sản phẩm. Vui lòng thử lại.')
+      showError('Có lỗi xảy ra khi lưu sản phẩm', 'Vui lòng thử lại.')
     }
   }, [formData, specifications, images, onSave, product])
 
@@ -213,7 +215,7 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      alert('Chỉ chấp nhận file ảnh định dạng JPEG, PNG, WebP')
+      showError('File không hợp lệ', 'Chỉ chấp nhận file ảnh định dạng JPEG, PNG, WebP')
       event.target.value = ''
       return
     }
@@ -221,7 +223,7 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
     // Validate file size (max 5MB)
     const maxSize = 5 * 1024 * 1024 // 5MB
     if (file.size > maxSize) {
-      alert('File quá lớn. Kích thước tối đa là 5MB')
+      showError('File quá lớn', 'Kích thước tối đa là 5MB')
       event.target.value = ''
       return
     }
@@ -246,11 +248,11 @@ export default function ProductModal({ isOpen, onClose, onSave, product }: Produ
         // Reset input
         event.target.value = ''
       } else {
-        alert('Lỗi tải ảnh: ' + result.error)
+        showError('Lỗi tải ảnh', result.error)
       }
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Có lỗi xảy ra khi tải ảnh: ' + (error instanceof Error ? error.message : 'Unknown error'))
+      showError('Có lỗi xảy ra khi tải ảnh', error instanceof Error ? error.message : 'Unknown error')
       event.target.value = ''
     }
   }

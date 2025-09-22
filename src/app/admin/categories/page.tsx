@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { Plus, Edit, Trash2, Search, Package } from 'lucide-react'
 import Image from 'next/image'
 import CategoryModal from '@/components/admin/CategoryModal'
+import { useNotification } from '@/hooks/useNotification'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 
 interface Category {
   id: string
@@ -16,6 +18,7 @@ interface Category {
 }
 
 export default function CategoriesPage() {
+  const { showSuccess, showError, showConfirm, confirmDialog, closeConfirm } = useNotification()
   const [categories, setCategories] = useState<Category[]>([])
   const [filteredCategories, setFilteredCategories] = useState<Category[]>([])
   const [searchQuery, setSearchQuery] = useState('')
@@ -70,13 +73,14 @@ export default function CategoriesPage() {
         await loadCategories()
         setIsModalOpen(false)
         setEditingCategory(null)
+        showSuccess(editingCategory ? 'Cập nhật danh mục thành công!' : 'Thêm danh mục thành công!')
       } else {
         const error = await response.json()
-        alert(error.error || 'Có lỗi xảy ra')
+        showError('Có lỗi xảy ra', error.error || 'Không xác định')
       }
     } catch (error) {
       console.error('Error saving category:', error)
-      alert('Có lỗi xảy ra khi lưu danh mục')
+      showError('Có lỗi xảy ra khi lưu danh mục')
     }
   }, [editingCategory, loadCategories])
 
@@ -86,26 +90,32 @@ export default function CategoriesPage() {
   }, [])
 
   const handleDelete = useCallback(async (category: Category) => {
-    if (!confirm(`Bạn có chắc muốn xóa danh mục "${category.name}"?`)) {
-      return
-    }
+    showConfirm(
+      {
+        title: 'Xóa danh mục',
+        message: `Bạn có chắc chắn muốn xóa danh mục "${category.name}"? Hành động này không thể hoàn tác.`,
+        type: 'danger'
+      },
+      async () => {
+        try {
+          const response = await fetch(`/api/admin/categories?id=${category.id}`, {
+            method: 'DELETE',
+          })
 
-    try {
-      const response = await fetch(`/api/admin/categories?id=${category.id}`, {
-        method: 'DELETE',
-      })
-
-      if (response.ok) {
-        await loadCategories()
-      } else {
-        const error = await response.json()
-        alert(error.error || 'Có lỗi xảy ra')
+          if (response.ok) {
+            await loadCategories()
+            showSuccess('Xóa danh mục thành công!')
+          } else {
+            const error = await response.json()
+            showError('Có lỗi xảy ra', error.error || 'Không xác định')
+          }
+        } catch (error) {
+          console.error('Error deleting category:', error)
+          showError('Có lỗi xảy ra khi xóa danh mục')
+        }
       }
-    } catch (error) {
-      console.error('Error deleting category:', error)
-      alert('Có lỗi xảy ra khi xóa danh mục')
-    }
-  }, [loadCategories])
+    )
+  }, [loadCategories, showConfirm, showSuccess, showError])
 
   const handleAdd = useCallback(() => {
     setEditingCategory(null)
@@ -231,6 +241,16 @@ export default function CategoriesPage() {
         }}
         onSave={handleSave}
         category={editingCategory}
+      />
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirm}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        type={confirmDialog.type}
       />
     </div>
   )

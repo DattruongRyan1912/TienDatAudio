@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import Image from 'next/image'
+import { useNotification } from '@/hooks/useNotification'
 
 interface Category {
   id: string
@@ -22,6 +23,7 @@ interface CategoryModalProps {
 }
 
 export default function CategoryModal({ isOpen, onClose, onSave, category }: CategoryModalProps) {
+  const { showError } = useNotification()
   const [formData, setFormData] = useState<Partial<Category>>({
     name: '',
     description: '',
@@ -54,14 +56,14 @@ export default function CategoryModal({ isOpen, onClose, onSave, category }: Cat
 
     try {
       if (!formData.name || !formData.description) {
-        alert('Vui lòng điền đầy đủ thông tin')
+        showError('Thiếu thông tin', 'Vui lòng điền đầy đủ thông tin')
         return
       }
 
       await onSave(formData)
     } catch (error) {
       console.error('Error saving category:', error)
-      alert('Có lỗi xảy ra khi lưu danh mục')
+      showError('Có lỗi xảy ra khi lưu danh mục')
     }
   }, [formData, onSave])
 
@@ -88,11 +90,11 @@ export default function CategoryModal({ isOpen, onClose, onSave, category }: Cat
         // Reset input
         event.target.value = ''
       } else {
-        alert('Lỗi tải ảnh: ' + result.error)
+        showError('Lỗi tải ảnh', result.error)
       }
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Có lỗi xảy ra khi tải ảnh')
+      showError('Có lỗi xảy ra khi tải ảnh')
     }
   }
 
@@ -225,8 +227,8 @@ export default function CategoryModal({ isOpen, onClose, onSave, category }: Cat
                       <div>
                         <label className="block text-sm text-gray-600 mb-1">Hoặc nhập URL:</label>
                         <input
-                          type="url"
-                          placeholder="https://example.com/image.jpg"
+                          type="text"
+                          placeholder="https://example.com/image.jpg hoặc /uploads/image.jpg"
                           value={formData.image}
                           onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"

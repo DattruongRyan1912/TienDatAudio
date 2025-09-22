@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import { useSettings } from "@/contexts/SettingsContext";
+import { useNotification } from '@/hooks/useNotification'
 
 const tabs = [
     { id: 'general', name: 'Chung', icon: Settings },
@@ -27,6 +28,7 @@ const tabs = [
 ];
 
 export default function SettingsPage() {
+    const { showSuccess, showError } = useNotification()
     const [activeTab, setActiveTab] = useState('general');
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -83,20 +85,20 @@ export default function SettingsPage() {
             if (response.ok) {
                 const result = await response.json();
                 if (result.success) {
-                    alert('Lưu cài đặt thành công!');
+                    showSuccess('Lưu cài đặt thành công!');
                     // Reload to get updated data
                     await loadSettings();
                     // Reload settings context to apply changes globally
                     await reloadSettings();
                 } else {
-                    alert('Lỗi: ' + result.message);
+                    showError('Lỗi', result.message);
                 }
             } else {
-                alert('Lỗi khi lưu cài đặt');
+                showError('Lỗi khi lưu cài đặt');
             }
         } catch (error) {
             console.error('Error saving settings:', error);
-            alert('Lỗi khi lưu cài đặt');
+            showError('Lỗi khi lưu cài đặt');
         } finally {
             setIsSaving(false);
         }

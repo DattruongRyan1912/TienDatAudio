@@ -6,8 +6,11 @@ import { Plus, Edit, Trash2, Search, Filter } from 'lucide-react'
 import Image from 'next/image'
 import { type Product } from '@/lib/data'
 import ProductModal from '@/components/admin/ProductModal'
+import { useNotification } from '@/hooks/useNotification'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 
 export default function ProductsPage() {
+  const { showSuccess, showError, showConfirm, confirmDialog, closeConfirm } = useNotification()
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [availableCategories, setAvailableCategories] = useState<string[]>([])
@@ -62,7 +65,7 @@ export default function ProductsPage() {
       }
     } catch (error) {
       console.error('Error loading products:', error)
-      alert('Có lỗi xảy ra khi tải danh sách sản phẩm')
+      showError('Có lỗi xảy ra khi tải danh sách sản phẩm')
     } finally {
       setLoading(false)
     }
@@ -74,24 +77,31 @@ export default function ProductsPage() {
   }
 
   const handleDelete = async (product: Product) => {
-    if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${product.name}"?`)) {
-      try {
-        const response = await fetch(`/api/admin/products?id=${product.id}`, {
-          method: 'DELETE',
-        })
+    showConfirm(
+      {
+        title: 'Xóa sản phẩm',
+        message: `Bạn có chắc chắn muốn xóa sản phẩm "${product.name}"? Hành động này không thể hoàn tác.`,
+        type: 'danger'
+      },
+      async () => {
+        try {
+          const response = await fetch(`/api/admin/products?id=${product.id}`, {
+            method: 'DELETE',
+          })
 
-        if (!response.ok) {
-          throw new Error('Failed to delete product')
+          if (!response.ok) {
+            throw new Error('Failed to delete product')
+          }
+
+          // Remove from local state
+          setProducts(products.filter(p => p.id !== product.id))
+          showSuccess('Xóa sản phẩm thành công!')
+        } catch (error) {
+          console.error('Error deleting product:', error)
+          showError('Có lỗi xảy ra khi xóa sản phẩm')
         }
-
-        // Remove from local state
-        setProducts(products.filter(p => p.id !== product.id))
-        alert('Xóa sản phẩm thành công!')
-      } catch (error) {
-        console.error('Error deleting product:', error)
-        alert('Có lỗi xảy ra khi xóa sản phẩm')
       }
-    }
+    )
   }
 
   const handleSave = (productData: Partial<Product>) => {
@@ -109,7 +119,7 @@ export default function ProductsPage() {
     }
     setIsModalOpen(false)
     setEditingProduct(null)
-    alert('Lưu sản phẩm thành công!')
+    showSuccess('Lưu sản phẩm thành công!')
   }
 
   if (loading) {
@@ -298,6 +308,15 @@ export default function ProductsPage() {
         }}
         onSave={handleSave}
         product={editingProduct}
+      />
+
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirm}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        type={confirmDialog.type}
       />
     </div>
   )

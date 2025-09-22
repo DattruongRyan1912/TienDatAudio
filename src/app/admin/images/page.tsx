@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Upload, X, Eye, Trash2, Edit3, Plus, Image as ImageIcon } from 'lucide-react'
 import Image from 'next/image'
+import { useNotification } from '@/hooks/useNotification'
 
 interface ProductImage {
   id: string
@@ -40,6 +41,7 @@ interface Product {
 }
 
 export default function AdminImagesPage() {
+  const { showError, showSuccess, showConfirm } = useNotification()
   const [images, setImages] = useState<ProductImage[]>([])
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProduct, setSelectedProduct] = useState<string>('')
@@ -126,21 +128,21 @@ export default function AdminImagesPage() {
 
   const handleImageUpload = async (file: File) => {
     if (!selectedProduct) {
-      alert('Vui lòng chọn sản phẩm trước')
+      showError('Thiếu thông tin', 'Vui lòng chọn sản phẩm trước')
       return
     }
 
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      alert('Chỉ chấp nhận file ảnh định dạng JPEG, PNG, WebP')
+      showError('Định dạng không hỗ trợ', 'Chỉ chấp nhận file ảnh định dạng JPEG, PNG, WebP')
       return
     }
 
     // Validate file size (max 5MB)
     const maxSize = 5 * 1024 * 1024 // 5MB
     if (file.size > maxSize) {
-      alert('File quá lớn. Kích thước tối đa là 5MB')
+      showError('File quá lớn', 'Kích thước tối đa là 5MB')
       return
     }
 
@@ -183,13 +185,13 @@ export default function AdminImagesPage() {
       const data = await response.json()
       if (data.success) {
         await loadImagesByProduct(selectedProduct)
-        alert('Upload ảnh thành công!')
+        showSuccess('Upload thành công', 'Ảnh đã được tải lên thành công!')
       } else {
         throw new Error(data.error || 'Failed to save image info')
       }
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Có lỗi xảy ra khi tải ảnh: ' + (error instanceof Error ? error.message : 'Unknown error'))
+      showError('Upload thất bại', 'Có lỗi xảy ra khi tải ảnh: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setUploading(false)
     }
@@ -241,22 +243,29 @@ export default function AdminImagesPage() {
   }
 
   const handleDeleteImage = async (imageId: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa hình ảnh này?')) return
+    showConfirm(
+      {
+        title: 'Xác nhận xóa',
+        message: 'Bạn có chắc chắn muốn xóa hình ảnh này?',
+        type: 'danger'
+      },
+      async () => {
+        try {
+          const response = await fetch('/api/admin/images', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageId })
+          })
 
-    try {
-      const response = await fetch('/api/admin/images', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageId })
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        await loadImagesByProduct(selectedProduct)
+          const data = await response.json()
+          if (data.success) {
+            await loadImagesByProduct(selectedProduct)
+          }
+        } catch (error) {
+          console.error('Error deleting image:', error)
+        }
       }
-    } catch (error) {
-      console.error('Error deleting image:', error)
-    }
+    )
   }
 
   const handleSetMainImage = async (imageId: string) => {

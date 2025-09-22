@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { Plus, Edit, Trash2, Search, X } from 'lucide-react'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import Image from 'next/image'
+import { useNotification } from '@/hooks/useNotification'
+import ConfirmDialog from '@/components/ui/confirm-dialog'
 
 interface Brand {
   id: string
@@ -31,6 +33,7 @@ interface BrandForm {
 }
 
 export default function BrandsPage() {
+  const { showSuccess, showError, showConfirm, confirmDialog, closeConfirm } = useNotification()
   const [brands, setBrands] = useState<Brand[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -82,37 +85,44 @@ export default function BrandsPage() {
       if (data.success) {
         await loadBrands()
         resetForm()
-        alert(editingBrand ? 'Cập nhật thương hiệu thành công!' : 'Thêm thương hiệu thành công!')
+        showSuccess(editingBrand ? 'Cập nhật thương hiệu thành công!' : 'Thêm thương hiệu thành công!')
       } else {
-        alert(data.message || 'Có lỗi xảy ra')
+        showError('Có lỗi xảy ra', data.message || 'Không xác định')
       }
     } catch (error) {
       console.error('Error saving brand:', error)
-      alert('Lỗi khi lưu thương hiệu')
+      showError('Lỗi khi lưu thương hiệu')
     }
   }
 
-  const handleDeleteBrand = async (brandId: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')) return
+  const handleDeleteBrand = async (brandId: string, brandName: string) => {
+    showConfirm(
+      {
+        title: 'Xóa thương hiệu',
+        message: `Bạn có chắc chắn muốn xóa thương hiệu "${brandName}"? Hành động này không thể hoàn tác.`,
+        type: 'danger'
+      },
+      async () => {
+        try {
+          const response = await fetch('/api/admin/brands', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brandId })
+          })
 
-    try {
-      const response = await fetch('/api/admin/brands', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ brandId })
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        await loadBrands()
-        alert('Xóa thương hiệu thành công!')
-      } else {
-        alert(data.message || 'Có lỗi xảy ra')
+          const data = await response.json()
+          if (data.success) {
+            await loadBrands()
+            showSuccess('Xóa thương hiệu thành công!')
+          } else {
+            showError('Có lỗi xảy ra', data.message || 'Không xác định')
+          }
+        } catch (error) {
+          console.error('Error deleting brand:', error)
+          showError('Lỗi khi xóa thương hiệu')
+        }
       }
-    } catch (error) {
-      console.error('Error deleting brand:', error)
-      alert('Lỗi khi xóa thương hiệu')
-    }
+    )
   }
 
   const handleEditBrand = (brand: Brand) => {
@@ -185,11 +195,11 @@ export default function BrandsPage() {
         // Reset input
         event.target.value = ''
       } else {
-        alert('Lỗi tải ảnh: ' + result.error)
+        showError('Lỗi tải ảnh', result.error)
       }
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Có lỗi xảy ra khi tải ảnh')
+      showError('Có lỗi xảy ra khi tải ảnh')
     }
   }
 
@@ -301,7 +311,7 @@ export default function BrandsPage() {
                       </button>
                       
                       <button
-                        onClick={() => handleDeleteBrand(brand.id)}
+                        onClick={() => handleDeleteBrand(brand.id, brand.name)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
                         title="Xóa"
                       >
@@ -498,6 +508,16 @@ export default function BrandsPage() {
           </div>
         </div>
       )}
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirm}
+        onConfirm={confirmDialog.onConfirm}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        type={confirmDialog.type}
+      />
     </div>
   )
 }
