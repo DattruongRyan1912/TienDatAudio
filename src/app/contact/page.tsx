@@ -5,8 +5,10 @@ import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useSettings } from '@/contexts/SettingsContext'
+import { useNotification } from '@/hooks/useNotification'
 
 export default function ContactPage() {
+  const { showSuccess } = useNotification()
   const { settings } = useSettings()
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +26,13 @@ export default function ContactPage() {
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000))
     
-    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.')
+    showSuccess(
+      'Gửi liên hệ thành công!',
+      'Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.',
+      {
+        duration: 7000
+      }
+    )
     setFormData({
       name: '',
       email: '',

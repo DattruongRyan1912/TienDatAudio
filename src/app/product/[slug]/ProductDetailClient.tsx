@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Star, Heart, ShoppingCart, Share2, Truck, Shield, RotateCcw, Phone } from 'lucide-react'
 import ProductCard from '@/components/ProductCard'
 import { type Product, type Category, type Brand } from '@/lib/data'
+import { useNotification } from '@/hooks/useNotification'
 
 interface ProductDetailClientProps {
   product: Product
@@ -20,17 +21,33 @@ export default function ProductDetailClient({
   category,
   brand 
 }: ProductDetailClientProps) {
+  const { showSuccess } = useNotification()
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isWishlist, setIsWishlist] = useState(false)
 
   const handleAddToCart = () => {
-    alert(`Đã thêm ${quantity} ${product.name} vào giỏ hàng`)
+    showSuccess(
+      'Đã thêm vào giỏ hàng!',
+      `${quantity} ${product.name} đã được thêm vào giỏ hàng.`,
+      {
+        action: {
+          label: 'Xem giỏ hàng',
+          onClick: () => {
+            // Navigate to cart page
+            window.location.href = '/cart'
+          }
+        }
+      }
+    )
   }
 
   const handleToggleWishlist = () => {
     setIsWishlist(!isWishlist)
-    alert(isWishlist ? 'Đã xóa khỏi danh sách yêu thích' : 'Đã thêm vào danh sách yêu thích')
+    showSuccess(
+      isWishlist ? 'Đã xóa khỏi yêu thích' : 'Đã thêm vào yêu thích',
+      isWishlist ? 'Sản phẩm đã được xóa khỏi danh sách yêu thích' : 'Sản phẩm đã được thêm vào danh sách yêu thích'
+    )
   }
 
   const handleShare = async () => {
