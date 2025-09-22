@@ -14,13 +14,11 @@ import {
   BarChart3,
   Palette,
   FileText,
-  TrendingUp,
   MessageSquare,
-  Users,
-  Shield,
+  Globe,
   FolderOpen,
-  Bell,
-  Globe
+  Layers,
+  Cloud
 } from 'lucide-react'
 
 interface NavigationItem {
@@ -40,6 +38,7 @@ const navigation: NavigationItem[] = [
   
   // Quản lý sản phẩm
   { name: 'Sản phẩm', href: '/admin/products', icon: Package },
+  { name: 'Combo Reel', href: '/admin/combos', icon: Layers },
   { name: 'Danh mục', href: '/admin/categories', icon: Tags },
   { name: 'Thương hiệu', href: '/admin/brands', icon: MapPin },
   { name: 'Hình ảnh', href: '/admin/images', icon: Image },
@@ -50,7 +49,6 @@ const navigation: NavigationItem[] = [
   // Nội dung trang web
   { name: 'Bài viết', href: '/admin/posts', icon: FileText },
   { name: 'Trang chủ', href: '/admin/homepage', icon: Globe },
-  { name: 'Giới thiệu', href: '/admin/about', icon: Users },
   { name: 'Liên hệ', href: '/admin/contacts', icon: MessageSquare },
   
   // Separator  
@@ -59,15 +57,12 @@ const navigation: NavigationItem[] = [
   // SEO & Marketing
   { name: 'SEO Content', href: '/admin/seo', icon: Search },
   { name: 'SEO Dashboard', href: '/admin/seo/dashboard', icon: BarChart3 },
-  { name: 'Thống kê', href: '/admin/analytics', icon: TrendingUp },
   
   // Separator
   { name: 'HỆ THỐNG', href: '', icon: Settings, type: 'separator' },
   
   // Hệ thống
-  { name: 'File Manager', href: '/admin/files', icon: FolderOpen },
-  { name: 'Thông báo', href: '/admin/notifications', icon: Bell },
-  { name: 'Người dùng', href: '/admin/users', icon: Shield },
+  { name: 'Cloudinary Files', href: '/admin/cloudinary', icon: Cloud },
   { name: 'Theme Options', href: '/admin/theme', icon: Palette },
   { name: 'Cài đặt', href: '/admin/settings', icon: Settings },
 ]
