@@ -1,6 +1,7 @@
 'use client'
 
 import { Share2 } from 'lucide-react'
+import { useNotification } from '@/hooks/useNotification'
 
 interface ShareButtonProps {
   title: string
@@ -8,6 +9,8 @@ interface ShareButtonProps {
 }
 
 export default function ShareButton({ title, excerpt }: ShareButtonProps) {
+  const { showSuccess } = useNotification()
+  
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -17,7 +20,7 @@ export default function ShareButton({ title, excerpt }: ShareButtonProps) {
       })
     } else {
       navigator.clipboard.writeText(window.location.href)
-      alert('Đã copy link bài viết!')
+      showSuccess('Đã copy link bài viết!', 'Link đã được sao chép vào clipboard.')
     }
   }
 

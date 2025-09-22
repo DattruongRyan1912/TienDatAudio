@@ -2,10 +2,10 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Shield, Truck, Headphones, DollarSign, Star, Play, Calendar, Clock } from "lucide-react"
+import { ArrowRight, Shield, Truck, Headphones, DollarSign, Star, Play, Calendar, Clock, Eye, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ProductCard from "@/components/ProductCard"
-import { getFeaturedProducts, getBestsellerProducts, getCategories, getFeaturedBlogPosts, type Product, type Category, type BlogPost } from "@/lib/data"
+import { getFeaturedProducts, getBestsellerProducts, getCategories, getFeaturedBlogPosts, getFeaturedCombos, type Product, type Category, type BlogPost, type Combo } from "@/lib/data"
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -13,30 +13,35 @@ export default function HomePageResponsive() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+    const [combos, setCombos] = useState<Combo[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const loadData = async () => {
             try {
                 console.log('Starting to load data...')
-                const [featured, , cats, posts] = await Promise.all([
+                const [featured, , cats, posts, featuredCombos] = await Promise.all([
                     getFeaturedProducts(),
                     getBestsellerProducts(),
                     getCategories(),
-                    getFeaturedBlogPosts(3)
+                    getFeaturedBlogPosts(3),
+                    getFeaturedCombos(3)
                 ])
                 console.log('Raw data loaded:', {
                     featured,
                     cats,
-                    posts
+                    posts,
+                    featuredCombos
                 })
                 setFeaturedProducts(featured.slice(0, 8))
                 setCategories(cats)
                 setBlogPosts(posts)
+                setCombos(featuredCombos)
                 console.log('Data loaded:', {
                     featuredProducts: featured.length,
                     categories: cats.length,
-                    blogPosts: posts.length
+                    blogPosts: posts.length,
+                    combos: featuredCombos.length
                 })
             } catch (error) {
                 console.error('Error loading data:', error)
@@ -384,6 +389,147 @@ export default function HomePageResponsive() {
                 </div>
             </motion.section>
 
+            {/* Combo Reels Section */}
+            <motion.section
+                className="py-12 lg:py-20 bg-gradient-to-r from-purple-50 to-pink-50"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: false, margin: "-100px" }}
+            >
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <motion.div className="text-center mb-12" variants={fadeInUp}>
+                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                            Combo Reel Sản Phẩm 🎥
+                        </h2>
+                        <p className="text-lg text-gray-600">
+                            Khám phá combo sản phẩm qua video và hình ảnh sống động
+                        </p>
+                    </motion.div>
+
+                    {!isLoading && combos.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                            {combos.map((combo) => (
+                                <motion.div
+                                    key={combo.id}
+                                    variants={fadeInUp}
+                                    whileHover={{ scale: 1.02 }}
+                                    className="group"
+                                >
+                                    <Link href={`/combos/${combo.slug}`}>
+                                        <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+                                            {/* Thumbnail */}
+                                            <div className="relative aspect-[9/16] sm:aspect-[4/3] lg:aspect-[9/16] overflow-hidden">
+                                                <Image
+                                                    src={combo.thumbnail}
+                                                    alt={combo.title}
+                                                    fill
+                                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                />
+                                                {/* Type indicator */}
+                                                <div className="absolute top-3 right-3">
+                                                    <div className="bg-black/60 backdrop-blur-sm rounded-full p-2">
+                                                        {combo.type === 'video' ? (
+                                                            <Play className="h-4 w-4 text-white" />
+                                                        ) : (
+                                                            <div className="flex gap-1">
+                                                                {[1,2,3].map((i) => (
+                                                                    <div key={i} className="w-1 h-1 bg-white rounded-full opacity-80" />
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Price overlay */}
+                                                <div className="absolute bottom-3 left-3 right-3">
+                                                    <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-lg p-2 text-white">
+                                                        <div className="flex items-center justify-between">
+                                                            <div>
+                                                                <p className="text-xs opacity-80 line-through">
+                                                                    {new Intl.NumberFormat('vi-VN', {
+                                                                        style: 'currency',
+                                                                        currency: 'VND'
+                                                                    }).format(combo.originalPrice || 0)}
+                                                                </p>
+                                                                <p className="font-bold text-sm">
+                                                                    {new Intl.NumberFormat('vi-VN', {
+                                                                        style: 'currency',
+                                                                        currency: 'VND'
+                                                                    }).format(combo.comboPrice || 0)}
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-white/20 rounded-full px-2 py-1">
+                                                                <span className="text-xs font-bold">-{combo.savingsPercent}%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Content */}
+                                            <div className="p-4">
+                                                <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors">
+                                                    {combo.title}
+                                                </h3>
+                                                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                                                    {combo.description}
+                                                </p>
+                                                
+                                                {/* Tags */}
+                                                <div className="flex flex-wrap gap-1 mb-3">
+                                                    {combo.tags.slice(0, 2).map((tag) => (
+                                                        <span
+                                                            key={tag}
+                                                            className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full"
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                
+                                                {/* Stats */}
+                                                <div className="flex items-center gap-4 text-xs text-gray-500">
+                                                    <div className="flex items-center gap-1">
+                                                        <Eye className="h-3 w-3" />
+                                                        <span>{combo.views.toLocaleString()}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <Heart className="h-3 w-3" />
+                                                        <span>{combo.likes.toLocaleString()}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    ) : isLoading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <div key={index} className="bg-gray-200 animate-pulse rounded-2xl aspect-[9/16] sm:aspect-[4/3] lg:aspect-[9/16]"></div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8">
+                            <div className="text-6xl mb-4">🎬</div>
+                            <p className="text-gray-600 mb-4">Chưa có combo reel nào</p>
+                            <p className="text-sm text-gray-500">Chúng tôi đang chuẩn bị các combo sản phẩm hấp dẫn</p>
+                        </div>
+                    )}
+
+                    <motion.div className="text-center mt-12" variants={fadeInUp}>
+                        <Link href="/combos">
+                            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 py-3">
+                                🎥 Xem tất cả combo reel
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                        </Link>
+                    </motion.div>
+                </div>
+            </motion.section>
+
             {/* Categories Section */}
             <motion.section
                 className="py-12 lg:py-20"
@@ -402,7 +548,7 @@ export default function HomePageResponsive() {
                         </p>
                     </motion.div>
 
-                    {!isLoading && (
+                    {!isLoading && categories.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                             {categories.map((category) => (
                                 <motion.div
@@ -411,11 +557,22 @@ export default function HomePageResponsive() {
                                     whileHover={{ scale: 1.02 }}
                                     className="group"
                                 >
-                                    <Link href={`/categories/${category.slug}`}>
+                                    <Link href={`/san-pham?category=${category.slug}`}>
                                         <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-                                            <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                                <span className="text-4xl opacity-50">📻</span>
-                                            </div>
+                                            {category.image ? (
+                                                <div className="aspect-[4/3] relative overflow-hidden">
+                                                    <Image
+                                                        src={category.image.startsWith('http') || category.image.startsWith('/') ? category.image : `/uploads/${category.image}`}
+                                                        alt={category.name}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                                    <span className="text-4xl opacity-50">📻</span>
+                                                </div>
+                                            )}
                                             <div className="p-6">
                                                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                                     {category.name}
@@ -428,6 +585,16 @@ export default function HomePageResponsive() {
                                     </Link>
                                 </motion.div>
                             ))}
+                        </div>
+                    ) : isLoading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <div key={index} className="bg-gray-200 animate-pulse rounded-xl h-80"></div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8 text-gray-600">
+                            Không có danh mục nào
                         </div>
                     )}
                 </div>
@@ -468,7 +635,7 @@ export default function HomePageResponsive() {
                         </Link>
                         <Link href="tel:+84334995657">
                             <Button size="lg" variant="outline" className="border-blue-200 text-blue-100 hover:bg-blue-100 hover:text-blue-900 w-full sm:w-auto">
-                                Gọi: 0334.995.657
+                                Gọi: 0934.995.657
                             </Button>
                         </Link>
                     </motion.div>

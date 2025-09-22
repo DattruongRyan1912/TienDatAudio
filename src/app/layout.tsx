@@ -4,6 +4,7 @@ import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SettingsProvider } from '@/contexts/SettingsContext'
+import { ToastProvider } from '@/components/ui/toast'
 import { structuredData } from '@/lib/seo'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
@@ -53,13 +54,15 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased min-h-screen bg-white">
-        <SettingsProvider>
-          <ThemeProvider>
-            <ConditionalLayout>
-              {children}
-            </ConditionalLayout>
-          </ThemeProvider>
-        </SettingsProvider>
+        <ToastProvider>
+          <SettingsProvider>
+            <ThemeProvider>
+              <ConditionalLayout>
+                {children}
+              </ConditionalLayout>
+            </ThemeProvider>
+          </SettingsProvider>
+        </ToastProvider>
         <SpeedInsights />
         <Analytics />
       </body>
