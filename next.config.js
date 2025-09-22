@@ -11,6 +11,32 @@ const nextConfig = {
   // Compression
   compress: true,
   
+  // Turbopack configuration for better performance
+  turbopack: {
+    rules: {
+      '*.mp4': ['file-loader'],
+      '*.mov': ['file-loader'],
+      '*.avi': ['file-loader'],
+    },
+  },
+  
+  // Webpack configuration for large files
+  webpack: (config, { isServer }) => {
+    // Handle large files
+    config.module.rules.push({
+      test: /\.(mp4|mov|avi|webm)$/,
+      use: {
+        loader: 'file-loader',
+        options: {
+          publicPath: '/_next/static/media/',
+          outputPath: 'static/media/',
+        },
+      },
+    });
+    
+    return config;
+  },
+  
   // Headers for better SEO and performance
   async headers() {
     return [
