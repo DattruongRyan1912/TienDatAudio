@@ -20,6 +20,7 @@ import {
     TrendingUp
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ContactModal from '@/components/ui/contact-modal'
 import ProductCard from '@/components/ProductCard'
 import { getComboBySlug, getComboProducts, type Combo, type Product } from '@/lib/data'
 import Loading from '@/components/Loading'
@@ -37,6 +38,7 @@ export default function ComboDetailPage() {
     const [isLiked, setIsLiked] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [showingVideo, setShowingVideo] = useState(false)
+    const [showContactModal, setShowContactModal] = useState(false)
 
     // Determine if combo has video based on URL
     const hasVideo = combo?.media?.url && (
@@ -152,8 +154,7 @@ export default function ComboDetailPage() {
 
     const handleAddToCart = () => {
         if (combo) {
-            const price = combo.comboPrice || 0
-            showSuccess('Đã thêm vào giỏ hàng!', `Combo "${combo.title}" đã được thêm vào giỏ hàng${price > 0 ? ` với giá ${formatPrice(price)}` : ''}`)
+            setShowContactModal(true)
         }
     }
 
@@ -446,6 +447,13 @@ export default function ComboDetailPage() {
                     )}
                 </div>
             </div>
+
+            {/* Contact Modal */}
+            <ContactModal
+                isOpen={showContactModal}
+                onClose={() => setShowContactModal(false)}
+                productName={combo.title}
+            />
         </div>
     )
 }
