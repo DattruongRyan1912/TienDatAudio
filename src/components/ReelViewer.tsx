@@ -10,13 +10,13 @@ import {
     MessageCircle, 
     Bookmark, 
     Phone, 
+    Eye,
     Play, 
     Pause,
     Volume2,
     VolumeX,
     ArrowUp,
     ArrowDown,
-    Eye,
     Tag,
     Clock
 } from 'lucide-react'
@@ -131,7 +131,7 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
     }
 
     const handleMuteToggle = () => {
-        if (combo.type === 'video' && videoRef.current) {
+        if (isVideoMedia && videoRef.current) {
             const newMutedState = !isMuted
             videoRef.current.muted = newMutedState
             setIsMuted(newMutedState)
@@ -394,6 +394,19 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
                             </div>
                             <span className="text-white text-xs font-medium">Liên hệ</span>
                         </motion.button>
+
+                        {/* Detail Button */}
+                        <Link href={`/combos/${combo.slug}`}>
+                            <motion.div
+                                whileTap={{ scale: 0.9 }}
+                                className="flex flex-col items-center gap-1"
+                            >
+                                <div className="p-3 rounded-full bg-blue-500 backdrop-blur-sm">
+                                    <Eye className="h-6 w-6 text-white" />
+                                </div>
+                                <span className="text-white text-xs font-medium">Chi tiết</span>
+                            </motion.div>
+                        </Link>
                     </div>
                 </div>
             </div>

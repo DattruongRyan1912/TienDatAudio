@@ -36,6 +36,24 @@ export default function ComboDetailPage() {
     const [error, setError] = useState<string | null>(null)
     const [isLiked, setIsLiked] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [showingVideo, setShowingVideo] = useState(false)
+
+    // Determine if combo has video based on URL
+    const hasVideo = combo?.media?.url && (
+        combo.media.url.includes('.mp4') || 
+        combo.media.url.includes('.webm') || 
+        combo.media.url.includes('.mov')
+    )
+
+    // Create all media array (video + images + thumbnail)
+    const allMedia = combo ? [
+        ...(hasVideo ? [{ type: 'video', url: combo.media.url!, poster: combo.media.posterImage }] : []),
+        ...(combo.media.images || []).map(img => ({ type: 'image', url: img, poster: undefined })),
+        ...(combo.thumbnail ? [{ type: 'image', url: combo.thumbnail, poster: undefined }] : [])
+    ].filter((item, index, arr) => 
+        // Remove duplicates
+        arr.findIndex(i => i.url === item.url) === index
+    ) : []
 
     useEffect(() => {
         const loadCombo = async () => {
@@ -199,8 +217,9 @@ export default function ComboDetailPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Media Section */}
                     <div className="space-y-6">
-                        {combo.type === 'video' ? (
-                            <div className="relative aspect-[9/16] bg-black rounded-2xl overflow-hidden">
+                        {/* Main Media Display */}
+                        <div className="relative aspect-[4/3] bg-gray-200 rounded-2xl overflow-hidden">
+                            {showingVideo && hasVideo ? (
                                 <video
                                     className="w-full h-full object-cover"
                                     controls
@@ -209,38 +228,62 @@ export default function ComboDetailPage() {
                                 >
                                     <source src={combo.media.url} type="video/mp4" />
                                 </video>
-                            </div>
-                        ) : (
-                            <div className="space-y-4">
-                                <div className="relative aspect-[4/3] bg-gray-200 rounded-2xl overflow-hidden">
-                                    <Image
-                                        src={combo.media.images?.[currentImageIndex] || combo.thumbnail}
-                                        alt={combo.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                                
-                                {combo.media.images && combo.media.images.length > 1 && (
-                                    <div className="grid grid-cols-4 gap-2">
-                                        {combo.media.images.map((image, index) => (
-                                            <button
-                                                key={index}
-                                                onClick={() => setCurrentImageIndex(index)}
-                                                className={`relative aspect-square rounded-lg overflow-hidden ${
-                                                    currentImageIndex === index ? 'ring-2 ring-blue-500' : ''
-                                                }`}
-                                            >
-                                                <Image
-                                                    src={image}
-                                                    alt={`${combo.title} ${index + 1}`}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </button>
-                                        ))}
+                            ) : (
+                                <Image
+                                    src={allMedia[currentImageIndex]?.url || combo.thumbnail}
+                                    alt={combo.title}
+                                    fill
+                                    className="object-cover"
+                                />
+                            )}
+
+                            {/* Play button overlay for video thumbnail */}
+                            {!showingVideo && hasVideo && currentImageIndex === 0 && (
+                                <button
+                                    onClick={() => setShowingVideo(true)}
+                                    className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors"
+                                >
+                                    <div className="bg-white/90 rounded-full p-4 hover:bg-white transition-colors">
+                                        <Play className="h-8 w-8 text-gray-800 ml-1" />
                                     </div>
-                                )}
+                                </button>
+                            )}
+                        </div>
+                        
+                        {/* Media Thumbnails */}
+                        {allMedia.length > 1 && (
+                            <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
+                                {allMedia.map((media, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => {
+                                            if (media.type === 'video') {
+                                                setCurrentImageIndex(index)
+                                                setShowingVideo(true)
+                                            } else {
+                                                setCurrentImageIndex(index)
+                                                setShowingVideo(false)
+                                            }
+                                        }}
+                                        className={`relative aspect-square rounded-lg overflow-hidden ${
+                                            currentImageIndex === index ? 'ring-2 ring-blue-500' : ''
+                                        } hover:ring-2 hover:ring-blue-300 transition-all`}
+                                    >
+                                        <Image
+                                            src={media.type === 'video' ? (media.poster || media.url) : media.url}
+                                            alt={`${combo.title} ${index + 1}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                        
+                                        {/* Video indicator */}
+                                        {media.type === 'video' && (
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                                <Play className="h-4 w-4 text-white" />
+                                            </div>
+                                        )}
+                                    </button>
+                                ))}
                             </div>
                         )}
 
