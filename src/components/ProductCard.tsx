@@ -2,9 +2,11 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Heart, ShoppingCart } from "lucide-react"
+import { Heart, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import ContactModal from "@/components/ui/contact-modal"
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import type { Product } from "@/lib/data"
 
 interface ProductCardProps {
@@ -12,6 +14,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [showContactModal, setShowContactModal] = useState(false)
+  
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -71,8 +75,12 @@ export default function ProductCard({ product }: ProductCardProps) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <Button size="sm" className="bg-white text-gray-900 hover:bg-gray-100">
-                <ShoppingCart className="h-4 w-4" />
+              <Button 
+                size="sm" 
+                className="bg-white text-gray-900 hover:bg-gray-100"
+                onClick={() => setShowContactModal(true)}
+              >
+                <Phone className="h-4 w-4" />
               </Button>
             </motion.div>
           </motion.div>
@@ -192,6 +200,13 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Link>
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={showContactModal}
+        onClose={() => setShowContactModal(false)}
+        productName={product.name}
+      />
     </motion.div>
   )
 }

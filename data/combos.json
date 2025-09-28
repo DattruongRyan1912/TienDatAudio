@@ -3,12 +3,15 @@
     "id": "combo-1",
     "title": "Combo Karaoke Gia Đình Premium",
     "slug": "combo-karaoke-gia-dinh-premium",
-    "type": "video",
-    "thumbnail": "/images/combos/karaoke-family-thumb.jpg",
+    "type": "image",
+    "thumbnail": "https://res.cloudinary.com/dbkigtpqf/image/upload/v1759071436/tiendataudio/combos/images/thumbnails/aqu9gtsgneu6nuod2r1u.webp",
     "media": {
-      "type": "video",
+      "type": "image",
       "url": "https://res.cloudinary.com/dbkigtpqf/video/upload/v1758464737/tiendataudio/combos/videos/combos/jxjeunsxbakcgfoctn5r.mp4",
-      "posterImage": "https://res.cloudinary.com/dbkigtpqf/video/upload/c_fill,g_center,h_1920,q_auto:low,w_1080/v1758464737/tiendataudio/combos/videos/combos/jxjeunsxbakcgfoctn5r.mp4"
+      "posterImage": "https://res.cloudinary.com/dbkigtpqf/video/upload/c_fill,g_center,h_1920,q_auto:low,w_1080/v1758464737/tiendataudio/combos/videos/combos/jxjeunsxbakcgfoctn5r.mp4",
+      "images": [
+        "https://res.cloudinary.com/dbkigtpqf/image/upload/v1759071407/tiendataudio/combos/images/combos/xejlehuvdmwjdmdrf7v9.webp"
+      ]
     },
     "description": "Bộ combo karaoke hoàn hảo cho gia đình với chất lượng âm thanh vượt trội",
     "contentType": "combo",
@@ -51,7 +54,7 @@
     "createdAt": "2025-01-15T10:00:00Z",
     "featured": true,
     "status": "active",
-    "updatedAt": "2025-09-21T14:26:27.037Z"
+    "updatedAt": "2025-09-28T14:58:55.970Z"
   },
   {
     "id": "combo-2",

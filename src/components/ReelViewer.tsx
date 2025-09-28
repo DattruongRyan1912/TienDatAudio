@@ -9,7 +9,7 @@ import {
     Share2, 
     MessageCircle, 
     Bookmark, 
-    ShoppingCart, 
+    Phone, 
     Play, 
     Pause,
     Volume2,
@@ -21,6 +21,7 @@ import {
     Clock
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ContactModal from '@/components/ui/contact-modal'
 import { type Combo } from '@/lib/data'
 import { useNotification } from '@/hooks/useNotification'
 
@@ -44,6 +45,7 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [showContactModal, setShowContactModal] = useState(false)
     const videoRef = useRef<HTMLVideoElement>(null)
 
     useEffect(() => {
@@ -382,21 +384,27 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
                             </div>
                         </motion.button>
 
-                        {/* Buy Button */}
-                        <Link href={`/combos/${combo.slug}`}>
-                            <motion.div
-                                whileTap={{ scale: 0.9 }}
-                                className="flex flex-col items-center gap-1"
-                            >
-                                <div className="p-3 rounded-full bg-green-500 backdrop-blur-sm">
-                                    <ShoppingCart className="h-6 w-6 text-white" />
-                                </div>
-                                <span className="text-white text-xs font-medium">Mua</span>
-                            </motion.div>
-                        </Link>
+                        {/* Contact Button */}
+                        <motion.button
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setShowContactModal(true)}
+                            className="flex flex-col items-center gap-1"
+                        >
+                            <div className="p-3 rounded-full bg-green-500 backdrop-blur-sm">
+                                <Phone className="h-6 w-6 text-white" />
+                            </div>
+                            <span className="text-white text-xs font-medium">Liên hệ</span>
+                        </motion.button>
                     </div>
                 </div>
             </div>
+
+            {/* Contact Modal */}
+            <ContactModal
+                isOpen={showContactModal}
+                onClose={() => setShowContactModal(false)}
+                productName={combo.title}
+            />
         </div>
     )
 }
