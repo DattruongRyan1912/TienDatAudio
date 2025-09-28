@@ -401,7 +401,7 @@ export default function SEOPage() {
       {/* Edit Modal */}
       {isEditing && selectedSEO && (
         <div 
-          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+          className="fixed inset-0 bg-gray-600/50 overflow-y-auto h-full w-full z-50"
           onClick={(e) => {
             // Chỉ đóng modal khi click vào backdrop, không phải vào modal content
             if (e.target === e.currentTarget) {

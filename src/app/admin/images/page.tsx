@@ -438,7 +438,7 @@ export default function AdminImagesPage() {
                     )}
 
                     {/* Actions Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-2">
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center space-x-2">
                       <button
                         onClick={() => handleEditImage(image)}
                         className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700"
@@ -486,7 +486,7 @@ export default function AdminImagesPage() {
 
         {/* Image Modal */}
         {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">
