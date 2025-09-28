@@ -47,9 +47,9 @@ export default function ComboDetailPage() {
 
     // Create all media array (video + images + thumbnail)
     const allMedia = combo ? [
-        ...(hasVideo ? [{ type: 'video', url: combo.media.url!, poster: combo.media.posterImage }] : []),
+        ...(hasVideo ? [{ type: 'video', url: combo.media.url!, poster: combo.thumbnail || combo.media.posterImage }] : []),
         ...(combo.media.images || []).map(img => ({ type: 'image', url: img, poster: undefined })),
-        ...(combo.thumbnail ? [{ type: 'image', url: combo.thumbnail, poster: undefined }] : [])
+        ...(combo.thumbnail && !hasVideo ? [{ type: 'image', url: combo.thumbnail, poster: undefined }] : [])
     ].filter((item, index, arr) => 
         // Remove duplicates
         arr.findIndex(i => i.url === item.url) === index
@@ -223,14 +223,18 @@ export default function ComboDetailPage() {
                                 <video
                                     className="w-full h-full object-cover"
                                     controls
-                                    poster={combo.media.posterImage}
+                                    poster={combo.thumbnail || combo.media.posterImage}
                                     preload="metadata"
                                 >
                                     <source src={combo.media.url} type="video/mp4" />
                                 </video>
                             ) : (
                                 <Image
-                                    src={allMedia[currentImageIndex]?.url || combo.thumbnail}
+                                    src={
+                                        allMedia[currentImageIndex]?.type === 'video' 
+                                            ? allMedia[currentImageIndex]?.poster || combo.thumbnail
+                                            : allMedia[currentImageIndex]?.url || combo.thumbnail
+                                    }
                                     alt={combo.title}
                                     fill
                                     className="object-cover"
