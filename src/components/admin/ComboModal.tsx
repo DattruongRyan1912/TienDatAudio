@@ -242,13 +242,27 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
     }
 
     const handleMediaChange = (field: string, value: any) => {
-        setFormData(prev => ({
-            ...prev,
-            media: {
-                ...prev.media!,
-                [field]: value
+        setFormData(prev => {
+            // Sync both formData.type and media.type
+            if (field === 'type') {
+                return {
+                    ...prev,
+                    type: value,
+                    media: {
+                        ...prev.media!,
+                        type: value
+                    }
+                }
             }
-        }))
+            
+            return {
+                ...prev,
+                media: {
+                    ...prev.media!,
+                    [field]: value
+                }
+            }
+        })
     }
 
     const handleCloudinaryUpload = (result: CloudinaryUploadResult, uploadType: 'thumbnail' | 'video' | 'image') => {

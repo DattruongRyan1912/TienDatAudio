@@ -48,28 +48,31 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
     const [showContactModal, setShowContactModal] = useState(false)
     const videoRef = useRef<HTMLVideoElement>(null)
 
+    // Determine if media is video based on URL extension
+    const isVideoMedia = combo.media.url?.includes('.mp4') || combo.media.url?.includes('.webm') || combo.media.url?.includes('.mov')
+
     useEffect(() => {
-        if (combo.type === 'video' && videoRef.current) {
+        if (isVideoMedia && videoRef.current) {
             if (isActive && isPlaying) {
                 videoRef.current.play()
             } else {
                 videoRef.current.pause()
             }
         }
-    }, [isActive, isPlaying, combo.type])
+    }, [isActive, isPlaying, isVideoMedia])
 
     useEffect(() => {
         // Auto play video when reel becomes active
-        if (isActive && combo.type === 'video') {
+        if (isActive && isVideoMedia) {
             setIsPlaying(true)
         } else {
             setIsPlaying(false)
         }
-    }, [isActive, combo.type])
+    }, [isActive, isVideoMedia])
 
     useEffect(() => {
         // Auto rotate images for image-type combos
-        if (combo.type === 'image' && combo.media.images && isActive) {
+        if (!isVideoMedia && combo.media.images && isActive) {
             const interval = setInterval(() => {
                 setCurrentImageIndex(prev => 
                     (prev + 1) % (combo.media.images?.length || 1)
@@ -77,19 +80,19 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
             }, 3000)
             return () => clearInterval(interval)
         }
-    }, [combo.type, combo.media.images, isActive])
+    }, [isVideoMedia, combo.media.images, isActive])
 
     // Sync muted state with video element
     useEffect(() => {
-        if (combo.type === 'video' && videoRef.current) {
+        if (isVideoMedia && videoRef.current) {
             videoRef.current.muted = isMuted
         }
-    }, [isMuted, combo.type])
+    }, [isMuted, isVideoMedia])
 
     // Listen to video events to sync play state
     useEffect(() => {
         const video = videoRef.current
-        if (combo.type === 'video' && video) {
+        if (isVideoMedia && video) {
             const handlePlay = () => setIsPlaying(true)
             const handlePause = () => setIsPlaying(false)
             
@@ -101,7 +104,7 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
                 video.removeEventListener('pause', handlePause)
             }
         }
-    }, [combo.type])
+    }, [isVideoMedia])
 
     const handleLike = () => {
         setIsLiked(!isLiked)
@@ -114,20 +117,16 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
     }
 
     const handlePlayPause = async () => {
-        if (combo.type === 'video' && videoRef.current) {
-            try {
-                if (isPlaying) {
-                    videoRef.current.pause()
-                    setIsPlaying(false)
-                } else {
-                    await videoRef.current.play()
-                    setIsPlaying(true)
-                }
-            } catch (error) {
-                console.error('Error playing/pausing video:', error)
-                // Reset playing state if there's an error
-                setIsPlaying(videoRef.current.paused === false)
+        if (!isVideoMedia || !videoRef.current) return
+        
+        try {
+            if (isPlaying) {
+                await videoRef.current.pause()
+            } else {
+                await videoRef.current.play()
             }
+        } catch (error) {
+            console.error('Error controlling video playback:', error)
         }
     }
 
@@ -160,7 +159,7 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
         <div className="relative h-screen w-full bg-black overflow-hidden">
             {/* Media Content */}
             <div className="absolute inset-0">
-                {combo.type === 'video' ? (
+                {isVideoMedia ? (
                     <div className="relative h-full w-full flex items-center justify-center bg-black">
                         <video
                             ref={videoRef}
@@ -168,7 +167,7 @@ function ReelItem({ combo, isActive, onLike, onShare, onComment, onSave }: ReelI
                             loop
                             muted={isMuted}
                             playsInline
-                            poster={combo.media.posterImage}
+                            preload="metadata"
                         >
                             <source src={combo.media.url} type="video/mp4" />
                         </video>
