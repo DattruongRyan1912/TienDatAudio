@@ -1,45 +1,94 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  
-  /* Theme colors - will be updated by ThemeProvider */
-  --color-primary: #2563eb;
-  --color-secondary: #f97316;
-  --color-accent: #06b6d4;
-  --color-background: #ffffff;
-  --color-surface: #f8fafc;
-  --color-text: #111827;
-  --color-text-light: #6b7280;
-  --color-border: #e5e7eb;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  
-  /* Layout variables */
-  --max-width: 1200px;
-  --header-height: 80px;
-  --font-family: Inter, system-ui, sans-serif;
+  --sonic-obsidian: #080808;
+  --sonic-surface: #111111;
+  --sonic-surface-strong: #141313;
+  --sonic-text: #e5e2e1;
+  --sonic-muted: #9ea2a2;
+  --sonic-line: rgba(229, 226, 225, 0.14);
+  --sonic-gold: #d4af37;
+  --sonic-gold-soft: rgba(212, 175, 55, 0.16);
 }
 
-/* Utility classes for theme colors */
-.bg-primary { background-color: var(--color-primary); }
-.bg-secondary { background-color: var(--color-secondary); }
-.bg-accent { background-color: var(--color-accent); }
-.text-primary { color: var(--color-primary); }
-.text-secondary { color: var(--color-secondary); }
-.border-primary { border-color: var(--color-primary); }
+* { box-sizing: border-box; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #fafafa;
-    --foreground: #313030;
-  }
-}
+html { scroll-behavior: smooth; background: var(--sonic-obsidian); }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-family, Arial, Helvetica, sans-serif);
+  min-height: 100vh;
+  margin: 0;
+  background: var(--sonic-obsidian);
+  color: var(--sonic-text);
+  font-family: var(--font-manrope), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+::selection { background: var(--sonic-gold); color: var(--sonic-obsidian); }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--sonic-obsidian); }
+::-webkit-scrollbar-thumb { background: #353333; border: 3px solid var(--sonic-obsidian); border-radius: 999px; }
+
+.sonic-page { min-height: 100vh; overflow: clip; background: var(--sonic-obsidian); color: var(--sonic-text); }
+.sonic-container { width: min(1440px, calc(100% - 40px)); margin-inline: auto; }
+@media (min-width: 768px) { .sonic-container { width: min(1440px, calc(100% - 128px)); } }
+
+.sonic-label {
+  color: var(--sonic-gold);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.sonic-display { font-size: clamp(2.8rem, 7vw, 6.25rem); font-weight: 800; letter-spacing: -0.065em; line-height: 0.98; }
+.sonic-title { font-size: clamp(2rem, 4.5vw, 4rem); font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }
+.sonic-subtitle { font-size: clamp(1.15rem, 2vw, 1.5rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.sonic-copy { color: var(--sonic-muted); font-size: 1rem; line-height: 1.75; }
+
+.sonic-glass { background: rgba(8, 8, 8, 0.72); border: 1px solid rgba(229, 226, 225, 0.12); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.sonic-panel { background: var(--sonic-surface); border: 1px solid var(--sonic-line); }
+.sonic-line { border-color: var(--sonic-line); }
+
+.sonic-button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 0.65rem; border: 1px solid transparent; padding: 0.8rem 1.15rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; line-height: 1; text-transform: uppercase; transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease; }
+.sonic-button:hover { transform: translateY(-2px); }
+.sonic-button:focus-visible { outline: 2px solid var(--sonic-gold); outline-offset: 3px; }
+.sonic-button-gold { background: var(--sonic-gold); color: var(--sonic-obsidian); box-shadow: 0 0 26px rgba(212, 175, 55, 0.14); }
+.sonic-button-gold:hover { background: #e5c45a; }
+.sonic-button-ghost { border-color: rgba(229, 226, 225, 0.3); color: var(--sonic-text); }
+.sonic-button-ghost:hover { border-color: var(--sonic-gold); color: var(--sonic-gold); }
+
+.sonic-input { width: 100%; border: 1px solid rgba(229, 226, 225, 0.18); background: rgba(17, 17, 17, 0.92); color: var(--sonic-text); outline: none; padding: 0.9rem 1rem; transition: border-color 180ms ease, background 180ms ease; }
+.sonic-input::placeholder { color: #707474; }
+.sonic-input:focus { border-color: var(--sonic-gold); background: #151515; }
+
+.sonic-grid-bg { background-image: linear-gradient(rgba(229, 226, 225, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(229, 226, 225, 0.035) 1px, transparent 1px); background-size: 48px 48px; }
+.sonic-fade-up { animation: sonic-fade-up 650ms cubic-bezier(.22, .61, .36, 1) both; }
+@keyframes sonic-fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+.sonic-hero-image { animation: sonic-hero-breathe 14s ease-in-out infinite alternate; transform-origin: 68% 50%; }
+.sonic-hero-glow { left: 54%; top: 20%; background: rgba(212, 175, 55, 0.12); filter: blur(70px); animation: sonic-glow-pulse 8s ease-in-out infinite; }
+.sonic-cta-glow { animation: sonic-glow-pulse 7s ease-in-out infinite reverse; }
+.sonic-map-frame iframe { display: block; height: 100%; width: 100%; filter: grayscale(0.78) contrast(0.94); transition: filter 700ms ease; }
+.sonic-map-frame:hover iframe { filter: grayscale(0.1) contrast(1); }
+
+@keyframes sonic-hero-breathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+
+@keyframes sonic-glow-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50% { opacity: 0.9; transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .sonic-hero-image, .sonic-hero-glow, .sonic-cta-glow { animation: none !important; }
 }

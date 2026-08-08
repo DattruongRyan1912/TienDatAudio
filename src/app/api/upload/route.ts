@@ -2,8 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir, unlink } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
+import { randomUUID } from 'node:crypto'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
+
+const extensionByMimeType: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+}
 
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const data = await request.formData()
     const file: File | null = data.get('file') as unknown as File
@@ -13,8 +23,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-    if (!allowedTypes.includes(file.type)) {
+    const extension = extensionByMimeType[file.type]
+    if (!extension) {
       return NextResponse.json({ 
         error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' 
       }, { status: 400 })
@@ -32,13 +42,10 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
 
     // Create unique filename
-    const timestamp = Date.now()
-    const randomString = Math.random().toString(36).substring(2, 15)
-    const extension = file.name.split('.').pop()
-    const filename = `${timestamp}_${randomString}.${extension}`
+    const filename = `${randomUUID()}.${extension}`
 
     // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), 'public', 'uploads')
+    const uploadDir = process.env.UPLOAD_DIR || join(process.cwd(), 'public', 'uploads')
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true })
     }
@@ -65,6 +72,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { searchParams } = new URL(request.url)
     const filename = searchParams.get('filename')
@@ -74,11 +82,12 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Security check - only allow deleting from uploads directory
-    if (filename.includes('..') || filename.includes('/')) {
+    if (!/^[A-Za-z0-9_-]+\.(?:jpe?g|png|webp)$/.test(filename)) {
       return NextResponse.json({ error: 'Invalid filename' }, { status: 400 })
     }
 
-    const filePath = join(process.cwd(), 'public', 'uploads', filename)
+    const uploadDir = process.env.UPLOAD_DIR || join(process.cwd(), 'public', 'uploads')
+    const filePath = join(uploadDir, filename)
     
     if (existsSync(filePath)) {
       await unlink(filePath)

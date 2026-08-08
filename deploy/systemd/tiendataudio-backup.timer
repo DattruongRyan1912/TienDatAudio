@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Tiến Đạt Audio MongoDB backup
+
+[Timer]
+OnCalendar=*-*-* 02:30:00 Asia/Ho_Chi_Minh
+Persistent=true
+RandomizedDelaySec=15m
+Unit=tiendataudio-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -1,8 +1,9 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import HeaderResponsive from '@/components/HeaderResponsive'
-import Footer from '@/components/Footer'
+import SonicHeader from '@/components/sonic/SonicHeader'
+import SonicFooter from '@/components/sonic/SonicFooter'
+import FloatingContact from '@/components/sonic/FloatingContact'
 
 interface ConditionalLayoutProps {
   children: React.ReactNode
@@ -22,11 +23,12 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   // For non-admin routes, show header and footer
   return (
     <>
-      <HeaderResponsive />
-      <main className="flex-1">
+      <SonicHeader />
+      <main>
         {children}
       </main>
-      <Footer />
+      <FloatingContact />
+      <SonicFooter />
     </>
   )
 }

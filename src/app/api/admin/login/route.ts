@@ -1,57 +1,43 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+import { createAdminSession, getAdminSession, getSessionCookieName, verifyAdminCredentials } from '@/lib/auth'
 
-// In production, use environment variables and proper password hashing
-const ADMIN_CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME || 'admin',
-  password: process.env.ADMIN_PASSWORD || 'admin123'
+export const runtime = 'nodejs'
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json() as { username?: string; password?: string }
+    const username = String(body.username || '').trim()
+    const password = String(body.password || '')
+
+    if (username.length > 80 || password.length > 200 || !(await verifyAdminCredentials(username, password))) {
+      return NextResponse.json({ success: false, error: 'Tên đăng nhập hoặc mật khẩu không đúng' }, { status: 401 })
+    }
+
+    const response = NextResponse.json({ success: true })
+    response.cookies.set(getSessionCookieName(), createAdminSession(username), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 8,
+      path: '/',
+    })
+    response.cookies.delete('admin-auth')
+    return response
+  } catch (error) {
+    console.error('[admin/login]', error)
+    return NextResponse.json({ success: false, error: 'Đã xảy ra lỗi khi đăng nhập' }, { status: 500 })
+  }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const { username, password } = await request.json()
-
-    // Simple credential check (in production, use proper authentication)
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-      // Create response first
-      const response = NextResponse.json({ success: true })
-      
-      // Set cookie on the response
-      response.cookies.set('admin-auth', 'authenticated', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        path: '/'
-      })
-
-      return response
-    } else {
-      return NextResponse.json(
-        { error: 'Tên đăng nhập hoặc mật khẩu không chính xác' },
-        { status: 401 }
-      )
-    }
-  } catch (error) {
-    console.error('Login error:', error)
-    return NextResponse.json(
-      { error: 'Có lỗi xảy ra' },
-      { status: 500 }
-    )
-  }
+export async function GET() {
+  const session = await getAdminSession()
+  return NextResponse.json({ authenticated: Boolean(session), username: session?.username || null })
 }
 
 export async function DELETE() {
-  try {
-    const cookieStore = await cookies()
-    cookieStore.delete('admin-auth')
-    
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Logout error:', error)
-    return NextResponse.json(
-      { error: 'Có lỗi xảy ra' },
-      { status: 500 }
-    )
-  }
+  const response = NextResponse.json({ success: true })
+  response.cookies.delete(getSessionCookieName())
+  response.cookies.delete('admin-auth')
+  return response
 }
+

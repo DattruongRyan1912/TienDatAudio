@@ -1,5 +1,5 @@
 import type { Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
@@ -9,9 +9,9 @@ import { structuredData } from '@/lib/seo'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const manrope = Manrope({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-manrope",
 });
 
 // Metadata is handled by individual pages
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={inter.variable}>
+    <html lang="vi" data-scroll-behavior="smooth" className={`${manrope.variable} dark`}>
       <head>
         <script
           type="application/ld+json"
@@ -53,7 +53,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased min-h-screen bg-white">
+      <body className="antialiased min-h-screen">
         <ToastProvider>
           <SettingsProvider>
             <ThemeProvider>

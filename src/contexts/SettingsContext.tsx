@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface SocialMedia {
   facebook: string
@@ -56,6 +57,7 @@ interface SettingsProviderProps {
 }
 
 export function SettingsProvider({ children }: SettingsProviderProps) {
+  const pathname = usePathname()
   const [settings, setSettings] = useState<SiteSettings | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -135,8 +137,8 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
   }
 
   useEffect(() => {
-    loadSettings()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (pathname?.startsWith('/admin') && pathname !== '/admin/login') loadSettings()
+  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <SettingsContext.Provider value={{ settings, reloadSettings, isLoading }}>

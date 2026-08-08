@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface ThemeColors {
   primary: string
@@ -109,6 +110,7 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
+  const pathname = usePathname()
   const [theme, setTheme] = useState<ThemeData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -206,8 +208,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }
 
   useEffect(() => {
-    loadTheme()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (pathname?.startsWith('/admin') && pathname !== '/admin/login') loadTheme()
+  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const contextValue: ThemeContextType = {
     theme,

@@ -1,79 +1,12 @@
-'use client'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { getCombos } from '@/lib/catalog'
 
-import { useState, useEffect } from 'react'
-import { getFeaturedCombos, type Combo } from '@/lib/data'
-import ReelViewer from '@/components/ReelViewer'
-import Loading from '@/components/Loading'
+export const metadata = { title: 'Giải pháp phối ghép — Tiến Đạt Audio', description: 'Các cấu hình âm thanh tham khảo cho gia đình, cafe và không gian chuyên nghiệp.' }
 
-export default function CombosPage() {
-    const [combos, setCombos] = useState<Combo[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-
-    useEffect(() => {
-        const loadCombos = async () => {
-            try {
-                setIsLoading(true)
-                const featuredCombos = await getFeaturedCombos()
-                setCombos(featuredCombos)
-            } catch (err) {
-                console.error('Error loading combos:', err)
-                setError('Không thể tải được combo sản phẩm')
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        loadCombos()
-    }, [])
-
-    const handleComboChange = (index: number) => {
-        console.log('Current combo:', combos[index]?.title)
-        // Track analytics, update URL, etc.
-    }
-
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loading />
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="text-center text-white">
-                    <h2 className="text-2xl font-bold mb-4">Có lỗi xảy ra</h2>
-                    <p className="text-white/80 mb-6">{error}</p>
-                    <button 
-                        onClick={() => window.location.reload()}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold"
-                    >
-                        Thử lại
-                    </button>
-                </div>
-            </div>
-        )
-    }
-
-    if (combos.length === 0) {
-        return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="text-center text-white">
-                    <h2 className="text-2xl font-bold mb-4">Chưa có combo nào</h2>
-                    <p className="text-white/80">Chúng tôi đang cập nhật combo sản phẩm mới</p>
-                </div>
-            </div>
-        )
-    }
-
-    return (
-        <main>
-            <ReelViewer 
-                combos={combos} 
-                onComboChange={handleComboChange}
-            />
-        </main>
-    )
+export default async function CombosPage() {
+  const combos = await getCombos()
+  return <div className="sonic-page pt-28 md:pt-36"><section className="sonic-container pb-16 md:pb-24"><p className="sonic-label">Systems / Curated setups</p><h1 className="sonic-title mt-5 max-w-4xl">Một cấu hình tốt là một câu chuyện được phối ghép.</h1><p className="sonic-copy mt-6 max-w-xl">Các bộ giải pháp chỉ là điểm tham khảo. Chúng tôi sẽ tinh chỉnh theo đúng không gian và cách bạn muốn sử dụng.</p></section><section className="border-y border-white/10 bg-[#0d0d0d] py-12 md:py-20"><div className="sonic-container grid gap-5 md:grid-cols-2">{combos.map((combo, index) => <Link key={combo.id} href={`/combos/${combo.slug}`} className="group relative min-h-[400px] overflow-hidden border border-white/10 bg-[#111111]"><Image src={combo.thumbnail.startsWith('http') || combo.thumbnail.startsWith('/uploads/') ? combo.thumbnail : '/images/sonic-hero.png'} alt={combo.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover opacity-65 transition duration-700 group-hover:scale-105 group-hover:opacity-85" /><div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/35 to-transparent" /><div className="absolute inset-x-6 bottom-6"><div className="flex items-end justify-between gap-4"><div><p className="sonic-label text-[#858989]">0{index + 1} / {combo.tags.join(' · ')}</p><h2 className="mt-3 text-3xl font-bold tracking-[-0.05em] text-[#e5e2e1]">{combo.title}</h2><p className="mt-3 max-w-md text-sm leading-6 text-[#c4c7c7]">{combo.description}</p></div><span className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/30 text-[#e5e2e1] transition-all group-hover:border-[#d4af37] group-hover:bg-[#d4af37] group-hover:text-[#080808]"><ArrowUpRight size={17} /></span></div></div></Link>)}</div></section><section className="sonic-container py-16 md:py-24"><div className="border-l-2 border-[#d4af37] pl-6"><p className="text-2xl font-semibold leading-tight tracking-[-0.04em] text-[#e5e2e1] md:max-w-3xl md:text-4xl">Không có combo nào thay thế được một cuộc nghe thử trong căn phòng thật.</p><Link href="/contact" className="sonic-button sonic-button-gold mt-8">Tạo cấu hình riêng <ArrowUpRight size={16} /></Link></div></section></div>
 }
+

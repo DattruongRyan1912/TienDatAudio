@@ -1,122 +1,20 @@
-import { generateSEOMetadata } from '@/lib/seo'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowUpRight, CircleDot, Ear, Gauge, MapPin } from 'lucide-react'
+import { getSettings } from '@/lib/catalog'
 
-export const metadata = generateSEOMetadata({
-  title: 'Về chúng tôi',
-  description: 'Tìm hiểu về Tiến Đạt Audio - Đơn vị chuyên cung cấp thiết bị âm thanh chất lượng cao với hơn 10 năm kinh nghiệm'
-})
+export const metadata = { title: 'Về Tiến Đạt Audio', description: 'Tiến Đạt Audio — tư vấn và triển khai giải pháp âm thanh tại Quảng Ngãi.' }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSettings()
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Về <span className="text-blue-600">Tiến Đạt Audio</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Chúng tôi là đơn vị hàng đầu trong lĩnh vực cung cấp thiết bị âm thanh chuyên nghiệp, 
-            với hơn 10 năm kinh nghiệm phục vụ khách hàng trên toàn quốc.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Câu chuyện của chúng tôi</h2>
-            <div className="space-y-6 text-gray-600 leading-relaxed">
-              <p>
-                Tiến Đạt Audio được thành lập với sứ mệnh mang đến những trải nghiệm âm thanh tuyệt vời 
-                cho mọi khách hàng. Từ những ngày đầu khởi nghiệp với đội ngũ chỉ vài người, chúng tôi 
-                đã không ngừng phát triển và trở thành một trong những thương hiệu uy tín nhất trong ngành.
-              </p>
-              <p>
-                Chúng tôi hiểu rằng âm thanh không chỉ là âm nhạc, mà là cảm xúc, là trải nghiệm, 
-                là khoảnh khắc đáng nhớ. Vì vậy, mỗi sản phẩm chúng tôi cung cấp đều được tuyển chọn 
-                kỹ lưỡng từ những thương hiệu hàng đầu thế giới.
-              </p>
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-6">Tầm nhìn & Sứ mệnh</h3>
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-semibold mb-2">🎯 Tầm nhìn</h4>
-                <p className="text-blue-100">
-                  Trở thành đơn vị số 1 Việt Nam trong lĩnh vực thiết bị âm thanh chuyên nghiệp
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">🎵 Sứ mệnh</h4>
-                <p className="text-blue-100">
-                  Mang đến trải nghiệm âm thanh hoàn hảo cho mọi không gian và mọi khách hàng
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">💎 Giá trị cốt lõi</h4>
-                <p className="text-blue-100">
-                  Chất lượng - Uy tín - Chuyên nghiệp - Tận tâm
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-white">🏆</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Chất lượng hàng đầu</h3>
-            <p className="text-gray-600">
-              Tất cả sản phẩm đều được nhập khẩu chính hãng từ các thương hiệu uy tín
-            </p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-white">👥</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Đội ngũ chuyên nghiệp</h3>
-            <p className="text-gray-600">
-              Kỹ thuật viên giàu kinh nghiệm, tư vấn tận tình và hỗ trợ 24/7
-            </p>
-          </div>
-          
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-white">🚚</span>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Dịch vụ toàn diện</h3>
-            <p className="text-gray-600">
-              Giao hàng nhanh, lắp đặt tận nơi, bảo hành chính hãng dài hạn
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-gray-50 rounded-2xl p-8 lg:p-12">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
-            Thành tựu của chúng tôi
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2">5000+</div>
-              <div className="text-gray-600">Khách hàng tin tưởng</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2">10+</div>
-              <div className="text-gray-600">Năm kinh nghiệm</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2">50+</div>
-              <div className="text-gray-600">Thương hiệu hợp tác</div>
-            </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-2">99%</div>
-              <div className="text-gray-600">Khách hàng hài lòng</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="sonic-page pt-28 md:pt-36">
+      <section className="sonic-container pb-16 md:pb-24"><p className="sonic-label">About / The listening practice</p><h1 className="sonic-title mt-5 max-w-5xl">Chúng tôi tin rằng âm thanh tốt làm cho một không gian trở nên có hồn.</h1><p className="sonic-copy mt-7 max-w-2xl">Tiến Đạt Audio là nơi những người yêu âm nhạc tìm thấy thiết bị phù hợp, lời giải thích rõ ràng và một cấu hình có thể sống cùng họ trong nhiều năm.</p></section>
+      <section className="relative min-h-[480px] overflow-hidden border-y border-white/10"><Image src="/images/sonic-hero.png" alt="Không gian nghe nhạc" fill sizes="100vw" className="object-cover object-center opacity-60" /><div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/45 to-[#080808]/20" /><div className="sonic-container relative flex min-h-[480px] items-end py-12"><div><p className="sonic-label">Listening is personal</p><p className="mt-4 max-w-md text-2xl font-semibold leading-tight tracking-[-0.04em] text-[#e5e2e1] md:text-4xl">Không có một hệ thống hoàn hảo cho tất cả mọi người. Chỉ có hệ thống đúng với bạn.</p></div></div></section>
+      <section id="solutions" className="sonic-container py-16 md:py-24"><div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:gap-20"><div><p className="sonic-label">01 / Cách chúng tôi làm việc</p><h2 className="sonic-title mt-5">Bắt đầu từ việc lắng nghe.</h2></div><div className="grid gap-8 sm:grid-cols-2">{[[Ear, 'Hiểu nhu cầu', 'Bạn nghe gì, trong không gian nào và âm thanh cần xuất hiện ra sao?'], [Gauge, 'Đo và phối ghép', 'Từ công suất, độ nhạy đến vị trí đặt — mọi lựa chọn đều có căn cứ.'], [CircleDot, 'Cân chỉnh', 'Một hệ thống chỉ hoàn thiện khi nó phản hồi đúng trong căn phòng thật.'], [MapPin, 'Đồng hành', 'Từ showroom đến lắp đặt, chúng tôi ở lại sau khi sản phẩm được giao.']].map(([Icon, title, copy]) => { const Component = Icon as typeof Ear; return <div key={title as string} className="border-t border-white/15 pt-5"><Component size={19} className="text-[#d4af37]" /><h3 className="mt-5 text-lg font-bold text-[#e5e2e1]">{title as string}</h3><p className="mt-3 text-sm leading-6 text-[#9ea2a2]">{copy as string}</p></div> })}</div></div></section>
+      <section id="projects" className="border-y border-white/10 bg-[#0d0d0d] py-16 md:py-24"><div className="sonic-container grid gap-12 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-20"><div><p className="sonic-label">02 / Dự án & không gian</p><h2 className="sonic-title mt-5">Âm thanh phải thuộc về nơi nó sống.</h2><p className="sonic-copy mt-6 max-w-xl">Gia đình, cafe acoustic, phòng karaoke hay sân khấu nhỏ — mỗi dự án là một bài toán về độ phủ, cảm xúc và sự ổn định.</p><div className="mt-8 grid gap-3 sm:grid-cols-3"><div className="border border-white/10 p-4"><p className="text-2xl font-bold text-[#d4af37]">10+</p><p className="mt-2 text-xs leading-5 text-[#858989]">năm trong ngành</p></div><div className="border border-white/10 p-4"><p className="text-2xl font-bold text-[#d4af37]">24/7</p><p className="mt-2 text-xs leading-5 text-[#858989]">hỗ trợ sau lắp đặt</p></div><div className="border border-white/10 p-4"><p className="text-2xl font-bold text-[#d4af37]">01</p><p className="mt-2 text-xs leading-5 text-[#858989]">điểm nghe tại Quảng Ngãi</p></div></div></div><div className="sonic-panel p-7 md:p-9"><p className="sonic-label">Showroom / Quảng Ngãi</p><h3 className="mt-5 text-2xl font-bold tracking-[-0.04em] text-[#e5e2e1]">Một cuộc hẹn để nghe sự khác biệt.</h3><p className="mt-5 text-sm leading-7 text-[#9ea2a2]">{settings.address}<br />{settings.businessHours}</p><Link href="/contact" className="sonic-button sonic-button-gold mt-8">Đặt lịch trải nghiệm <ArrowUpRight size={16} /></Link></div></div></section>
+      <section className="sonic-container py-16 md:py-24"><div className="border-l-2 border-[#d4af37] pl-6 md:pl-10"><p className="text-2xl font-semibold leading-tight tracking-[-0.04em] text-[#e5e2e1] md:max-w-4xl md:text-4xl">“Điều quan trọng không phải là hệ thống đắt nhất. Mà là hệ thống khiến bạn muốn ngồi xuống và nghe thêm một bài nữa.”</p><p className="mt-5 text-xs font-bold uppercase tracking-[0.15em] text-[#858989]">— Tiến Đạt Audio</p></div></section>
     </div>
   )
 }
+

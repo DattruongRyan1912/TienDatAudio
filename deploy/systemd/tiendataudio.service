@@ -1,0 +1,39 @@
+[Unit]
+Description=Tiến Đạt Audio Next.js application
+After=network-online.target mongod.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tda-deploy
+Group=tda-deploy
+WorkingDirectory=/srv/tiendataudio/current
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+Environment=HOSTNAME=127.0.0.1
+Environment=PORT=3000
+EnvironmentFile=/etc/tiendataudio/tiendataudio.env
+EnvironmentFile=-/srv/tiendataudio/shared/release.env
+ExecStart=/usr/bin/npm run start -- --hostname 127.0.0.1 --port 3000
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=60s
+TimeoutStopSec=20s
+KillSignal=SIGTERM
+UMask=0027
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/srv/tiendataudio/shared
+ReadWritePaths=/srv/tiendataudio/current/.next
+
+[Install]
+WantedBy=multi-user.target

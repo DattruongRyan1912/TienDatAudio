@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import cloudinary, { videoUploadOptions, imageUploadOptions, productImageOptions } from '@/lib/cloudinary'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 // Export configuration for handling large files
 export const config = {
@@ -11,6 +12,7 @@ export const config = {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+    if (!(await requireAdmin())) return unauthorizedResponse()
     try {
         const formData = await request.formData()
         const file = formData.get('file') as File
@@ -19,6 +21,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         if (!file) {
             return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+        }
+        if (file.size > 50 * 1024 * 1024) {
+            return NextResponse.json({ error: 'File exceeds the 50MB limit' }, { status: 413 })
+        }
+        if (!/^[A-Za-z0-9/_-]+$/.test(folder) || folder.includes('..')) {
+            return NextResponse.json({ error: 'Invalid upload folder' }, { status: 400 })
         }
 
         // Convert file to buffer
@@ -137,6 +145,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 // DELETE endpoint to remove files from Cloudinary
 export async function DELETE(request: NextRequest) {
+    if (!(await requireAdmin())) return unauthorizedResponse()
     try {
         const { searchParams } = new URL(request.url)
         const publicId = searchParams.get('publicId')

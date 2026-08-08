@@ -1,0 +1,47 @@
+[
+  {
+    "id": "post-1",
+    "title": "Cách chọn loa phù hợp cho không gian nghe nhạc tại gia",
+    "slug": "cach-chon-loa-phu-hop-cho-khong-gian-nghe-nhac-tai-gia",
+    "excerpt": "Diện tích phòng, vị trí đặt loa và thói quen nghe quyết định nhiều hơn thông số công suất trên giấy.",
+    "content": "Một hệ thống nghe nhạc tốt bắt đầu từ việc hiểu không gian. Hãy đo diện tích phòng, xác định vị trí ngồi nghe và chọn loa có độ nhạy phù hợp trước khi cân nhắc nâng cấp ampli.",
+    "author": "Tiến Đạt Audio",
+    "publishedAt": "2025-09-10T00:00:00Z",
+    "updatedAt": "2025-09-10T00:00:00Z",
+    "featuredImage": "/uploads/1757878828693_jde4oz1e0kn.jpeg",
+    "tags": ["loa", "hi-fi", "phòng nghe"],
+    "category": "Kiến thức âm thanh",
+    "published": true,
+    "readingTime": 6
+  },
+  {
+    "id": "post-2",
+    "title": "Khi nào nên dùng loa thùng và khi nào nên dùng loa trầm?",
+    "slug": "khi-nao-nen-dung-loa-thung-va-loa-tram",
+    "excerpt": "Một góc nhìn thực tế để ghép hệ thống cho karaoke gia đình, cafe và sân khấu nhỏ.",
+    "content": "Loa thùng đảm nhiệm phần lớn dải trung và cao, trong khi loa trầm bổ sung năng lượng ở dải thấp. Việc ghép đúng giúp hệ thống rõ tiếng hơn mà không cần tăng âm lượng.",
+    "author": "Tiến Đạt Audio",
+    "publishedAt": "2025-08-26T00:00:00Z",
+    "updatedAt": "2025-08-26T00:00:00Z",
+    "featuredImage": "/uploads/1757872819402_6jhbuhvujsk.jpg",
+    "tags": ["loa thùng", "loa trầm", "tư vấn"],
+    "category": "Giải pháp",
+    "published": true,
+    "readingTime": 5
+  },
+  {
+    "id": "post-3",
+    "title": "Checklist nghiệm thu một hệ thống âm thanh chuyên nghiệp",
+    "slug": "checklist-nghiem-thu-he-thong-am-thanh",
+    "excerpt": "Các điểm nên kiểm tra từ đấu nối, chống hú đến độ phủ âm trước khi bàn giao.",
+    "content": "Nội dung đang được biên tập.",
+    "author": "Tiến Đạt Audio",
+    "publishedAt": "2025-09-20T00:00:00Z",
+    "updatedAt": "2025-09-20T00:00:00Z",
+    "featuredImage": "/uploads/1757873195265_4t2alxsue4.webp",
+    "tags": ["dự án", "lắp đặt"],
+    "category": "Dự án",
+    "published": false,
+    "readingTime": 4
+  }
+]
