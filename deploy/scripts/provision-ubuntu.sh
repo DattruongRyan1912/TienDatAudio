@@ -90,6 +90,10 @@ if [[ "$mongo_ready" -ne 1 ]]; then
 fi
 
 env_file=/etc/tiendataudio/tiendataudio.env
+write_env_value() {
+  printf '%s=%q\n' "$1" "$2"
+}
+
 if [[ ! -f "$env_file" ]]; then
   mongo_password="$(openssl rand -hex 32)"
   session_secret="$(openssl rand -hex 48)"
@@ -112,16 +116,31 @@ if [[ ! -f "$env_file" ]]; then
   '
 
   {
-    printf 'MONGODB_URI=mongodb://%s:%s@127.0.0.1:27017/%s?authSource=%s\n' "$APP_DB_USER" "$mongo_password" "$APP_DB" "$APP_DB"
-    printf 'MONGODB_DB=%s\n' "$APP_DB"
-    printf 'ADMIN_USERNAME=%s\n' "$ADMIN_USERNAME"
-    printf 'ADMIN_PASSWORD_HASH=%s\n' "$admin_password_hash"
-    printf 'SESSION_SECRET=%s\n' "$session_secret"
-    printf 'NEXT_PUBLIC_SITE_URL=https://%s\n' "$APP_DOMAIN"
-    printf 'UPLOAD_DIR=%s/shared/uploads\n' "$APP_ROOT"
+    write_env_value MONGODB_URI "mongodb://$APP_DB_USER:$mongo_password@127.0.0.1:27017/$APP_DB?authSource=$APP_DB"
+    write_env_value MONGODB_DB "$APP_DB"
+    write_env_value ADMIN_USERNAME "$ADMIN_USERNAME"
+    write_env_value ADMIN_PASSWORD_HASH "$admin_password_hash"
+    write_env_value SESSION_SECRET "$session_secret"
+    write_env_value NEXT_PUBLIC_SITE_URL "https://$APP_DOMAIN"
+    write_env_value UPLOAD_DIR "$APP_ROOT/shared/uploads"
   } > "$env_file"
   chown root:"$DEPLOY_USER" "$env_file"
   chmod 0640 "$env_file"
+else
+  raw_admin_hash="$(awk -F= '$1 == "ADMIN_PASSWORD_HASH" { print substr($0, index($0, "=") + 1); exit }' "$env_file")"
+  if [[ "$raw_admin_hash" == scrypt\$* ]]; then
+    env_tmp="$(mktemp)"
+    while IFS= read -r env_line; do
+      if [[ "$env_line" == ADMIN_PASSWORD_HASH=* ]]; then
+        write_env_value ADMIN_PASSWORD_HASH "${env_line#ADMIN_PASSWORD_HASH=}"
+      else
+        printf '%s\n' "$env_line"
+      fi
+    done < "$env_file" > "$env_tmp"
+    chown root:"$DEPLOY_USER" "$env_tmp"
+    chmod 0640 "$env_tmp"
+    mv -f "$env_tmp" "$env_file"
+  fi
 fi
 
 if ! grep -Eq '^[[:space:]]*authorization:[[:space:]]*enabled' /etc/mongod.conf; then
