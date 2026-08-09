@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 const SEO_FILE = path.join(process.cwd(), 'data', 'seo.json')
 
@@ -31,6 +32,7 @@ interface SEOIssue {
 }
 
 export async function GET() {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     let seoContents: SEOContent[] = []
 

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, LogOut, Menu, Package, Settings, Tags, Users, X } from 'lucide-react'
+import { LayoutDashboard, LogOut, Menu, Package, Settings, Sparkles, Tags, Users, X } from 'lucide-react'
 import { useState } from 'react'
 
 const links = [
@@ -11,6 +11,7 @@ const links = [
   { href: '/admin/categories', label: 'Danh mục', icon: Tags },
   { href: '/admin/brands', label: 'Thương hiệu', icon: Tags },
   { href: '/admin/contacts', label: 'Yêu cầu tư vấn', icon: Users },
+  { href: '/admin/seo/strategy', label: 'Keyword + GEO/AIO', icon: Sparkles },
   { href: '/admin/settings', label: 'Cài đặt', icon: Settings },
 ]
 

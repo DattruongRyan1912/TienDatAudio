@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 interface SEOContent {
   id: string
@@ -62,6 +63,7 @@ function saveSEOContents(seoContents: SEOContent[]) {
 
 // GET - Lấy danh sách cấu hình SEO
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { searchParams } = new URL(request.url)
     const page = searchParams.get('page')
@@ -99,6 +101,7 @@ export async function GET(request: NextRequest) {
 
 // POST - Thêm cấu hình SEO mới
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { seo } = await request.json()
     
@@ -168,6 +171,7 @@ export async function POST(request: NextRequest) {
 
 // PUT - Cập nhật cấu hình SEO
 export async function PUT(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { seo } = await request.json()
     
@@ -221,6 +225,7 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Xóa cấu hình SEO
 export async function DELETE(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { seoId } = await request.json()
     

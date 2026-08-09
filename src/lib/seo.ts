@@ -2,10 +2,12 @@ import { Metadata } from 'next'
 import { type Product, type Category, type Brand, type ProductSEO } from '@/lib/data'
 import { getSEODataForPage, type SEOContent } from '@/lib/seo-static'
 
+const defaultSiteUrl = 'https://tiendataudioquangngai.id.vn'
+
 export const siteConfig = {
   name: 'Tiến Đạt Audio',
   description: 'Chuyên cung cấp thiết bị âm thanh chất lượng cao - Loa, Ampli, Phụ kiện âm thanh chính hãng với giá tốt nhất',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudio.vercel.app',
+  url: process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl,
   ogImage: '/images/og-image.jpg',
   keywords: [
     'thiết bị âm thanh',
@@ -24,11 +26,11 @@ export const siteConfig = {
   authors: [
     {
       name: 'Tiến Đạt Audio',
-      url: process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudio.vercel.app',
+      url: process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl,
     }
   ],
   creator: 'Tiến Đạt Audio Team',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudio.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl),
 }
 
 export function generateSEOMetadata({
@@ -156,20 +158,19 @@ export const structuredData = {
     description: siteConfig.description,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '123 Đường Âm Thanh',
-      addressLocality: 'Quận 1',
-      addressRegion: 'TP. Hồ Chí Minh',
-      postalCode: '70000',
+      streetAddress: '264 Phan Đình Phùng, Chánh Lộ',
+      addressLocality: 'Quảng Ngãi',
+      addressRegion: 'Quảng Ngãi',
       addressCountry: 'VN'
     },
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+84-123-456-789',
+      telephone: '+84-934-995-657',
       contactType: 'customer service',
       availableLanguage: 'Vietnamese'
     },
     sameAs: [
-      'https://facebook.com/tiendataudio',
+      'https://www.facebook.com/amthanhtiendat',
       'https://instagram.com/tiendataudio',
       'https://youtube.com/tiendataudio'
     ]
@@ -197,19 +198,18 @@ export const structuredData = {
     name: siteConfig.name,
     description: siteConfig.description,
     url: siteConfig.url,
-    telephone: '+84-123-456-789',
+    telephone: '+84-934-995-657',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '123 Đường Âm Thanh',
-      addressLocality: 'Quận 1',
-      addressRegion: 'TP. Hồ Chí Minh',
-      postalCode: '70000',
+      streetAddress: '264 Phan Đình Phùng, Chánh Lộ',
+      addressLocality: 'Quảng Ngãi',
+      addressRegion: 'Quảng Ngãi',
       addressCountry: 'VN'
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 10.7769,
-      longitude: 106.7009
+      latitude: 15.11569782866824,
+      longitude: 108.80262824033873
     },
     openingHoursSpecification: [
       {

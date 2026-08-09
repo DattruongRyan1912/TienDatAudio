@@ -61,7 +61,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <section className="border-y border-white/10 bg-[#0d0d0d]">
         <div className="sonic-container py-7">
           <form action="/products" className="flex flex-col gap-3 md:flex-row">
-            <div className="relative flex-1"><Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#858989]" /><input name="search" defaultValue={search} className="sonic-input pl-11" placeholder="Tìm kiếm thiết bị, thương hiệu..." /></div>
+            <div className="relative flex-1"><Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#858989]" /><input name="search" defaultValue={search} className="sonic-input sonic-input-with-leading-icon" placeholder="Tìm kiếm thiết bị, thương hiệu..." /></div>
             {category && <input type="hidden" name="category" value={category} />}
             {brand && <input type="hidden" name="brand" value={brand} />}
             <button type="submit" className="sonic-button sonic-button-gold">Tìm kiếm</button>

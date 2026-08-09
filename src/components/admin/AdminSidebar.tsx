@@ -18,7 +18,8 @@ import {
   Globe,
   FolderOpen,
   Layers,
-  Cloud
+  Cloud,
+  Sparkles
 } from 'lucide-react'
 
 interface NavigationItem {
@@ -56,6 +57,7 @@ const navigation: NavigationItem[] = [
   
   // SEO & Marketing
   { name: 'SEO Content', href: '/admin/seo', icon: Search },
+  { name: 'Keyword + GEO/AIO', href: '/admin/seo/strategy', icon: Sparkles },
   { name: 'SEO Dashboard', href: '/admin/seo/dashboard', icon: BarChart3 },
   
   // Separator

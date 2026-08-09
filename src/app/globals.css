@@ -64,6 +64,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sonic-button-ghost:hover { border-color: var(--sonic-gold); color: var(--sonic-gold); }
 
 .sonic-input { width: 100%; border: 1px solid rgba(229, 226, 225, 0.18); background: rgba(17, 17, 17, 0.92); color: var(--sonic-text); outline: none; padding: 0.9rem 1rem; transition: border-color 180ms ease, background 180ms ease; }
+.sonic-input-with-leading-icon { padding-left: 2.75rem; }
+.sonic-input-with-trailing-icon { padding-right: 2.75rem; }
 .sonic-input::placeholder { color: #707474; }
 .sonic-input:focus { border-color: var(--sonic-gold); background: #151515; }
 

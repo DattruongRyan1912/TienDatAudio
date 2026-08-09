@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 // Types
 interface ProductSEO {
@@ -56,6 +57,7 @@ function writeProductFile(filePath: string, data: Record<string, Product[]>): bo
 
 // PUT - Update product SEO
 export async function PUT(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { searchParams } = new URL(request.url)
     const productId = searchParams.get('productId')
@@ -140,6 +142,7 @@ export async function PUT(request: NextRequest) {
 
 // GET - Get product SEO data
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
   try {
     const { searchParams } = new URL(request.url)
     const productId = searchParams.get('productId')

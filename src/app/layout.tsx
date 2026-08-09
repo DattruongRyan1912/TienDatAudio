@@ -5,7 +5,7 @@ import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { SettingsProvider } from '@/contexts/SettingsContext'
 import { ToastProvider } from '@/components/ui/toast'
-import { structuredData } from '@/lib/seo'
+import { buildAIReadableStructuredData, getSEOConfig } from '@/lib/seo-strategy'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 
@@ -26,30 +26,22 @@ export const viewport: Viewport = {
   userScalable: true,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const seoConfig = await getSEOConfig()
+  const discoveryStructuredData = buildAIReadableStructuredData(seoConfig)
+
   return (
     <html lang="vi" data-scroll-behavior="smooth" className={`${manrope.variable} dark`}>
       <head>
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site information" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData.organization),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData.website),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData.store),
+            __html: JSON.stringify(discoveryStructuredData),
           }}
         />
       </head>

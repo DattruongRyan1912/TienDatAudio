@@ -1,0 +1,128 @@
+{
+  "id": "seo-strategy",
+  "entity": {
+    "name": "Tiến Đạt Audio",
+    "alternateName": "Tiến Đạt Audio Quảng Ngãi",
+    "description": "Đơn vị tư vấn, phối ghép và cung cấp thiết bị âm thanh cho gia đình, phòng karaoke, cafe và không gian chuyên nghiệp tại Quảng Ngãi.",
+    "url": "https://tiendataudioquangngai.id.vn",
+    "logo": "/images/logo.png",
+    "phone": "0934995657",
+    "email": "contact@tiendataudio.com",
+    "address": "264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi, Việt Nam",
+    "areaServed": [
+      "Quảng Ngãi",
+      "Miền Trung",
+      "Việt Nam"
+    ],
+    "latitude": 15.11569782866824,
+    "longitude": 108.80262824033872,
+    "sameAs": [
+      "https://www.facebook.com/amthanhtiendat",
+      "https://youtube.com/@tiendataudio",
+      "https://instagram.com/tiendataudio",
+      "https://tiktok.com/@tiendataudio"
+    ]
+  },
+  "keywords": [
+    {
+      "id": "kw-local-audio-quang-ngai",
+      "term": "thiết bị âm thanh Quảng Ngãi",
+      "intent": "local",
+      "targetPage": "/products",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Từ khóa trụ cột cho nhu cầu tìm cửa hàng và tư vấn tại địa phương.",
+      "isActive": true,
+      "updatedAt": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "id": "kw-audio-consulting",
+      "term": "tư vấn phối ghép âm thanh",
+      "intent": "commercial",
+      "targetPage": "/contact",
+      "cluster": "consulting",
+      "priority": "high",
+      "notes": "Phù hợp cho landing page dịch vụ và nội dung tư vấn.",
+      "isActive": true,
+      "updatedAt": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "id": "kw-karaoke-system",
+      "term": "lắp đặt âm thanh phòng karaoke",
+      "intent": "transactional",
+      "targetPage": "/contact",
+      "cluster": "solutions",
+      "priority": "high",
+      "notes": "Cần có bài hướng dẫn và case study liên kết về trang liên hệ.",
+      "isActive": true,
+      "updatedAt": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "id": "kw-speaker-selection",
+      "term": "cách chọn loa cho phòng khách",
+      "intent": "informational",
+      "targetPage": "/kien-thuc",
+      "cluster": "education",
+      "priority": "medium",
+      "notes": "Tạo nội dung giải đáp theo câu hỏi tự nhiên.",
+      "isActive": true,
+      "updatedAt": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "id": "kw-hifi-speakers",
+      "term": "loa nghe nhạc chính hãng",
+      "intent": "commercial",
+      "targetPage": "/products",
+      "cluster": "products",
+      "priority": "medium",
+      "notes": "Liên kết tới danh mục sản phẩm và bài đánh giá chuyên sâu.",
+      "isActive": true,
+      "updatedAt": "2026-08-09T00:00:00.000Z"
+    }
+  ],
+  "ai": {
+    "enabled": true,
+    "positioning": "Tiến Đạt Audio là nơi tư vấn và phối ghép thiết bị âm thanh theo không gian, nhu cầu sử dụng và ngân sách của khách hàng tại Quảng Ngãi.",
+    "entityFacts": [
+      "Tiến Đạt Audio có showroom tại 264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi.",
+      "Khách hàng có thể trao đổi nhu cầu, nghe thử và nhận tư vấn cấu hình trước khi mua.",
+      "Danh mục tập trung vào loa, vang số, amply, micro và các thiết bị cho hệ thống âm thanh gia đình hoặc chuyên nghiệp."
+    ],
+    "services": [
+      "Tư vấn chọn thiết bị âm thanh",
+      "Phối ghép hệ thống theo không gian",
+      "Lắp đặt và cân chỉnh âm thanh",
+      "Tư vấn hệ thống karaoke và nghe nhạc"
+    ],
+    "answerGuidelines": [
+      "Ưu tiên trả lời bằng thông tin sản phẩm, nhu cầu sử dụng và ngân sách cụ thể.",
+      "Khi câu hỏi liên quan địa điểm, ưu tiên Quảng Ngãi và khu vực phục vụ đã công bố.",
+      "Dẫn người dùng về trang sản phẩm hoặc liên hệ để xác nhận tồn kho, giá và lịch nghe thử.",
+      "Không tự suy đoán thông số, giá bán hoặc chính sách chưa được công bố."
+    ],
+    "faqs": [
+      {
+        "id": "faq-audio-consulting",
+        "question": "Tiến Đạt Audio có tư vấn phối ghép hệ thống âm thanh không?",
+        "answer": "Có. Tiến Đạt Audio tư vấn dựa trên diện tích phòng, mục đích sử dụng, gu nghe và ngân sách trước khi đề xuất cấu hình."
+      },
+      {
+        "id": "faq-listening-room",
+        "question": "Khách hàng có thể nghe thử thiết bị ở đâu?",
+        "answer": "Khách hàng có thể liên hệ Tiến Đạt Audio tại 264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi để trao đổi lịch trải nghiệm phù hợp."
+      },
+      {
+        "id": "faq-karaoke",
+        "question": "Tiến Đạt Audio có tư vấn hệ thống karaoke gia đình không?",
+        "answer": "Có. Đội ngũ có thể tư vấn loa, amply, vang số và micro theo diện tích phòng, mức âm lượng mong muốn và ngân sách."
+      }
+    ],
+    "preferredSources": [
+      "/",
+      "/products",
+      "/kien-thuc",
+      "/contact"
+    ]
+  },
+  "updatedAt": "2026-08-09T00:00:00.000Z"
+}

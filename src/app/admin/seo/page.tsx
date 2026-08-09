@@ -16,6 +16,7 @@ import {
   Package,
   ArrowRight,
   RefreshCw,
+  Sparkles,
 } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import { useNotification } from '@/hooks/useNotification'
@@ -231,6 +232,17 @@ export default function SEOPage() {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">SEO Sản phẩm</h3>
             <p className="text-gray-600 text-sm">Quản lý SEO cho từng sản phẩm riêng biệt</p>
+          </div>
+        </Link>
+
+        <Link href="/admin/seo/strategy" className="group">
+          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <Sparkles className="w-8 h-8 text-amber-600" />
+              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-amber-600 transition-colors" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Keyword + GEO/AIO</h3>
+            <p className="text-gray-600 text-sm">Quản lý intent, entity, local signals và nguồn dữ liệu cho AI.</p>
           </div>
         </Link>
         
