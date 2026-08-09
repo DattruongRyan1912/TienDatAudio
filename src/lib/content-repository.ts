@@ -60,7 +60,7 @@ export async function listContentPosts(filters: PostListFilters = {}, publicOnly
   try {
     const db = await getDb()
     const query: Record<string, unknown> = {}
-    const conditions: Record<string, unknown>[] = []
+    const conditions: Record<string, unknown>[] = [{ $or: [{ contentType: 'editorial' }, { contentType: { $exists: false } }] }]
     if (publicOnly) {
       const now = new Date().toISOString()
       conditions.push({ $or: [
@@ -102,7 +102,7 @@ export async function getContentPostBySlug(slug: string, publicOnly = false) {
   }
   try {
     const db = await getDb()
-    const document = await db.collection('posts').findOne({ slug })
+    const document = await db.collection('posts').findOne({ slug, $or: [{ contentType: 'editorial' }, { contentType: { $exists: false } }] })
     if (!document) return null
     const post = normalizeContentPost(document)
     return !publicOnly || hasPublicStatus(post) ? post : null
@@ -116,7 +116,7 @@ export async function getContentPostBySlug(slug: string, publicOnly = false) {
 export async function getContentPostById(id: string) {
   if (!hasMongoConfig()) return fallbackContent.find((item) => item.id === id) || null
   const db = await getDb()
-  const document = await db.collection('posts').findOne({ id })
+  const document = await db.collection('posts').findOne({ id, $or: [{ contentType: 'editorial' }, { contentType: { $exists: false } }] })
   return document ? normalizeContentPost(document) : null
 }
 

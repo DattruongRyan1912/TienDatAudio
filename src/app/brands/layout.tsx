@@ -4,15 +4,15 @@ import { generateSEOMetadata } from '@/lib/seo'
 export const metadata: Metadata = generateSEOMetadata({
   pagePath: '/brands',
   title: 'Thương hiệu',
-  description: 'Đại lý chính thức các thương hiệu thiết bị âm thanh hàng đầu: Sony, JBL, Bose, Audio-Technica, Shure và nhiều thương hiệu uy tín khác.',
+  description: 'Khám phá các thương hiệu âm thanh được Tiến Đạt Audio tuyển chọn: JBL, Sony, Bose, Pioneer và ARF.',
   keywords: [
     'thương hiệu âm thanh',
-    'Sony audio',
     'JBL chính hãng',
+    'Sony audio',
     'Bose Vietnam',
-    'Audio-Technica',
-    'Shure microphone',
-    'đại lý chính thức'
+    'Pioneer audio',
+    'ARF audio',
+    'phối ghép âm thanh'
   ]
 })
 

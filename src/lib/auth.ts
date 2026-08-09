@@ -1,11 +1,11 @@
 import { cookies } from 'next/headers'
-import { createHmac, randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto'
+import { createHmac, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto'
 import { promisify } from 'node:util'
+import { developmentSessionSecret } from './session-secret'
 
 const scrypt = promisify(scryptCallback)
 const sessionCookieName = 'sonic_admin_session'
 const sessionDuration = 60 * 60 * 8
-const developmentSecret = randomBytes(32).toString('hex')
 
 type AdminSession = {
   username: string
@@ -17,7 +17,7 @@ function getSessionSecret() {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('SESSION_SECRET chưa được cấu hình')
   }
-  return developmentSecret
+  return developmentSessionSecret
 }
 
 function encode(value: string) {

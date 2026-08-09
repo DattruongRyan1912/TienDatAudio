@@ -181,7 +181,7 @@ export function buildAIReadableStructuredData(config: SEOConfig, profile: Busine
         publisher: { '@id': businessId },
         potentialAction: {
           '@type': 'SearchAction',
-          target: `${baseUrl}/products?search={search_term_string}`,
+          target: `${baseUrl}/tim-kiem?q={search_term_string}`,
           'query-input': 'required name=search_term_string',
         },
       },

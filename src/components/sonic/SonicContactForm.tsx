@@ -31,7 +31,7 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
     }
   }
 
-  if (status === 'success') return <div className="sonic-panel flex min-h-[500px] flex-col items-center justify-center p-8 text-center"><span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d4af37] text-[#080808]"><Check size={24} /></span><p className="sonic-label mt-7">Yêu cầu đã được ghi nhận</p><h2 className="mt-4 text-3xl font-bold tracking-[-0.05em]">Chúng tôi sẽ liên hệ sớm.</h2><p className="sonic-copy mt-4 max-w-md text-sm">Đội ngũ Tiến Đạt Audio sẽ gọi lại để hiểu rõ nhu cầu và sắp xếp lịch phù hợp.</p><button type="button" onClick={() => setStatus('idle')} className="sonic-button sonic-button-ghost mt-8">Gửi yêu cầu khác</button></div>
+  if (status === 'success') return <div className="sonic-panel sonic-fade-up flex min-h-[500px] flex-col items-center justify-center p-8 text-center"><span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d4af37] text-[#080808]"><Check size={24} /></span><p className="sonic-label mt-7">Yêu cầu đã được ghi nhận</p><h2 className="mt-4 text-3xl font-bold tracking-[-0.05em]">Chúng tôi sẽ liên hệ sớm.</h2><p className="sonic-copy mt-4 max-w-md text-sm">Đội ngũ Tiến Đạt Audio sẽ gọi lại để hiểu rõ nhu cầu và sắp xếp lịch phù hợp.</p><button type="button" onClick={() => setStatus('idle')} className="sonic-button sonic-button-ghost mt-8">Gửi yêu cầu khác</button></div>
 
   return (
     <form onSubmit={submit} className="sonic-panel p-6 md:p-8">

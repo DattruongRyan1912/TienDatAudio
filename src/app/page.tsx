@@ -2,9 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowDown, ArrowUpRight, Headphones, SlidersHorizontal, Sparkles } from 'lucide-react'
 import SonicProductCard from '@/components/sonic/SonicProductCard'
+import SonicSolutionCard from '@/components/sonic/SonicSolutionCard'
 import SonicReveal from '@/components/sonic/SonicReveal'
 import SonicSectionHeading from '@/components/sonic/SonicSectionHeading'
 import { getCategories, getFeaturedProducts, getPosts } from '@/lib/catalog'
+import SocialPostCard from '@/components/social/SocialPostCard'
+import { listSocialPosts } from '@/modules/social/application/social-post-service'
 
 export const metadata = {
   title: 'Tiến Đạt Audio — Âm thanh được tuyển chọn',
@@ -12,31 +15,31 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  const [featuredProducts, categories, posts] = await Promise.all([
+  const [featuredProducts, categories, posts, socialFeed] = await Promise.all([
     getFeaturedProducts(4),
     getCategories(),
     getPosts(),
+    listSocialPosts({ limit: 3 }),
   ])
+  const featuredGridColumns = featuredProducts.length <= 3 ? 'xl:grid-cols-3' : 'xl:grid-cols-4'
 
   return (
     <div className="sonic-page">
-      <section className="relative isolate flex min-h-[760px] items-end overflow-hidden border-b border-white/10 pt-28 md:min-h-[850px] md:items-center">
-        <Image src="/images/sonic-hero.png" alt="Loa hi-end trong không gian nghe nhạc tối" fill priority sizes="100vw" className="sonic-hero-image -z-20 object-cover object-[64%_center] opacity-80 md:object-center" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#080808_0%,rgba(8,8,8,.93)_27%,rgba(8,8,8,.36)_65%,rgba(8,8,8,.18)_100%)]" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#080808_0%,transparent_38%,rgba(8,8,8,.35)_100%)]" />
+      <section className="sonic-media-surface relative isolate flex min-h-[760px] items-end overflow-hidden border-b border-white/10 pt-28 md:min-h-[850px] md:items-center">
+        <Image src="/images/sonic-hero.png" alt="Loa hi-end trong không gian nghe nhạc tối" fill priority sizes="100vw" className="sonic-hero-image -z-20 object-cover object-[64%_center] md:object-center" />
         <div className="sonic-hero-glow absolute -z-10 h-72 w-72 rounded-full" />
         <div className="sonic-container relative z-10 w-full pb-16 md:pb-0">
-          <SonicReveal className="max-w-3xl" direction="left">
+          <SonicReveal className="sonic-media-content max-w-3xl" direction="left">
             <p className="sonic-label">Sonic Purity / Tiến Đạt Audio</p>
-            <h1 className="sonic-display mt-6 max-w-3xl text-[#e5e2e1]">Âm thanh không chỉ để nghe.<br /><span className="text-[#d4af37]">Đó là một trải nghiệm.</span></h1>
-            <p className="sonic-copy mt-7 max-w-xl text-base md:text-lg">Bộ sưu tập thiết bị được tuyển chọn và phối ghép cho những không gian cần âm thanh có chiều sâu, rõ ràng và đầy cảm xúc.</p>
+            <h1 className="sonic-display mt-6 max-w-3xl">Âm thanh không chỉ để nghe.<br /><span className="sonic-media-accent">Đó là một trải nghiệm.</span></h1>
+            <p className="sonic-media-copy-muted mt-7 max-w-xl text-base leading-7 md:text-lg">Bộ sưu tập thiết bị được tuyển chọn và phối ghép cho những không gian cần âm thanh có chiều sâu, rõ ràng và đầy cảm xúc.</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link href="/products" className="sonic-button sonic-button-gold">Khám phá sản phẩm <ArrowUpRight size={16} /></Link>
               <Link href="/contact" className="sonic-button sonic-button-ghost">Đặt lịch trải nghiệm</Link>
             </div>
           </SonicReveal>
-          <div className="mt-14 flex items-center gap-4 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-[#858989] md:absolute md:bottom-10 md:right-0 md:mt-0">
-            <ArrowDown size={14} className="text-[#d4af37]" /> Cuộn để khám phá
+          <div className="sonic-media-copy-muted mt-14 flex items-center gap-4 text-[0.62rem] font-bold uppercase tracking-[0.18em] md:absolute md:bottom-10 md:right-0 md:mt-0">
+            <ArrowDown size={14} className="sonic-media-accent" /> Cuộn để khám phá
           </div>
         </div>
       </section>
@@ -56,35 +59,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="sonic-container py-20 md:py-28">
+      <section className="sonic-container py-24 md:py-32">
         <SonicReveal>
           <SonicSectionHeading label="01 / Bộ sưu tập" title="Những thiết bị làm nên một không gian nghe tốt." copy="Từ loa thùng chuyên nghiệp đến xử lý tín hiệu chính xác — mỗi sản phẩm đều được chọn vì vai trò của nó trong một hệ thống hoàn chỉnh." href="/products" linkLabel="Xem toàn bộ sản phẩm" />
         </SonicReveal>
-        <div className="mt-12 grid gap-4 md:grid-cols-4 md:auto-rows-fr">
+        <div className={`mt-14 grid gap-4 sm:grid-cols-2 ${featuredGridColumns}`}>
           {featuredProducts.length > 0 ? featuredProducts.map((product, index) => (
-            <SonicReveal key={product.id} className="h-full" delay={index * 0.08}>
-              <SonicProductCard product={product} featured={index === 0} />
+            <SonicReveal key={product.id} className="h-full" delay={Math.min(index * 0.08, 0.24)}>
+              <SonicProductCard product={product} featured={index === 0} variant="home" eyebrow={product.featured ? 'Tuyển chọn' : `${String(index + 1).padStart(2, '0')} / ${product.category || 'Thiết bị'}`} />
             </SonicReveal>
           )) : <div className="sonic-panel col-span-full p-10 text-[#9ea2a2]">Danh mục đang được cập nhật. Liên hệ để nhận danh sách thiết bị mới nhất.</div>}
         </div>
       </section>
 
-      <section id="solutions" className="border-y border-white/10 bg-[#0d0d0d] py-20 md:py-28">
+      <section id="solutions" className="border-y border-white/10 bg-[#0d0d0d] py-24 md:py-32">
         <div className="sonic-container">
           <SonicReveal>
             <SonicSectionHeading label="02 / Giải pháp" title="Một hệ thống tốt bắt đầu từ đúng câu hỏi." copy="Không gian gia đình, phòng karaoke, cafe hay sân khấu — chúng tôi thiết kế cấu hình theo cách bạn thực sự sử dụng âm thanh." href="/contact" linkLabel="Trao đổi nhu cầu" />
           </SonicReveal>
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
             {categories.slice(0, 6).map((category, index) => (
-              <SonicReveal key={category.id} delay={index * 0.07}>
-                <Link href={`/products?category=${category.id}`} className="group relative block min-h-[240px] overflow-hidden border border-white/10 bg-[#111111] p-6">
-                  <Image src={category.image || '/images/sonic-hero.png'} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover opacity-35 grayscale transition duration-700 group-hover:scale-105 group-hover:opacity-55" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/55 to-transparent" />
-                  <div className="relative flex h-full min-h-[188px] flex-col justify-between">
-                    <span className="sonic-label text-[#858989]">0{index + 1} / Category</span>
-                    <div><h3 className="text-2xl font-bold tracking-[-0.04em] text-[#e5e2e1]">{category.name}</h3><p className="mt-2 max-w-xs text-sm leading-6 text-[#a7aaaa]">{category.description}</p></div>
-                  </div>
-                </Link>
+              <SonicReveal key={category.id} delay={Math.min(index * 0.07, 0.28)} className={`h-full ${index === 0 ? 'lg:col-span-5' : index === 1 ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
+                <SonicSolutionCard category={category} index={index} featured={index === 0} />
               </SonicReveal>
             ))}
           </div>
@@ -93,10 +89,9 @@ export default async function HomePage() {
 
       <section id="projects" className="sonic-container py-20 md:py-28">
         <div className="grid items-center gap-10 md:grid-cols-[1.05fr_.95fr] md:gap-16">
-          <SonicReveal direction="left" className="relative aspect-[1.08] overflow-hidden border border-white/10">
-            <Image src="/images/sonic-hero.png" alt="Không gian nghe nhạc được phối ghép" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition duration-1000 hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#080808]/75 via-transparent to-[#d4af37]/10" />
-            <div className="absolute bottom-5 left-5 border border-[#d4af37]/50 bg-[#080808]/75 px-4 py-3 backdrop-blur-md"><p className="sonic-label">Listening room / 2025</p><p className="mt-1 text-sm font-bold text-[#e5e2e1]">Một hệ thống, một cá tính.</p></div>
+          <SonicReveal direction="left" className="sonic-media-surface relative aspect-[1.08] overflow-hidden border border-white/10">
+            <Image src="/images/sonic-hero.png" alt="Không gian nghe nhạc được phối ghép" fill sizes="(min-width: 768px) 50vw, 100vw" className="sonic-image-hover object-cover" />
+            <div className="sonic-media-plate absolute bottom-5 left-5 px-4 py-3"><p className="sonic-label">Listening room / 2025</p><p className="sonic-media-copy mt-1 text-sm font-bold">Một hệ thống, một cá tính.</p></div>
           </SonicReveal>
           <SonicReveal direction="right">
             <p className="sonic-label">03 / Trải nghiệm</p>
@@ -129,6 +124,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {socialFeed.items.length > 0 && <section className="sonic-container py-20 md:py-28">
+        <SonicReveal>
+          <SonicSectionHeading label="05 / Góc Audio" title="Những gì đang diễn ra ngoài showroom." copy="Cập nhật nhanh từ các hệ thống đã lắp đặt, sản phẩm mới và trải nghiệm nghe thực tế." href="/bai-viet" linkLabel="Xem Social Hub" />
+        </SonicReveal>
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">{socialFeed.items.map((post, index) => <SonicReveal key={post.id} delay={index * 0.08}><SocialPostCard post={post} /></SonicReveal>)}</div>
+      </section>}
 
       <section className="sonic-container py-20 md:py-28">
         <SonicReveal direction="scale">

@@ -415,7 +415,7 @@ export default function AdminImagesPage() {
                 {filteredImages.map((image, index) => (
                   <motion.div
                     key={image.id}
-                    className="relative group bg-gray-100 rounded-lg overflow-hidden aspect-square"
+                    className="sonic-media-surface relative group bg-gray-100 rounded-lg overflow-hidden aspect-square"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -429,7 +429,7 @@ export default function AdminImagesPage() {
                     
                     {/* Main Image Badge */}
                     {image.isMain && (
-                      <div className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute top-2 left-2 rounded bg-green-500 px-2 py-1 text-xs text-white">
                         Chính
                       </div>
                     )}
@@ -464,8 +464,8 @@ export default function AdminImagesPage() {
                     </div>
 
                     {/* Image Info */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2">
-                      <p className="text-white text-xs truncate">{image.alt}</p>
+                    <div className="sonic-media-content absolute bottom-0 left-0 right-0 p-2">
+                      <p className="sonic-media-copy truncate text-xs">{image.alt}</p>
                     </div>
                   </motion.div>
                 ))}

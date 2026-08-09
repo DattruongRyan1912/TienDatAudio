@@ -123,6 +123,8 @@ export async function upsertBrand(input: Partial<Brand>) {
     slug: String(input.slug || '').trim(),
     description: String(input.description || '').trim(),
     logo: String(input.logo || ''),
+    logoDark: String(input.logoDark || ''),
+    logoLight: String(input.logoLight || ''),
     website: String(input.website || ''),
     country: String(input.country || ''),
     featured: Boolean((input as Brand & { featured?: boolean }).featured),

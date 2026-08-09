@@ -166,3 +166,113 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
 - Result: chưa thể reset service hoặc deploy vì SSH daemon/firewall/out-of-band console chưa truy cập được; không có thay đổi production nào được thực hiện.
 - Rollback reference: không có mutation production trong lần audit này; CI/CD release rollback vẫn nằm trong `deploy/scripts/deploy-release.sh` và `/srv/tiendataudio/deployments.jsonl` khi SSH được khôi phục.
 - Remaining blocker: cần reboot/repair network từ BKNS console hoặc mở lại SSH port `46789` (và xác nhận user/key của CI), sau đó mới chạy provision idempotent, backup, deploy và domain healthcheck.
+
+## 2026-08-09 — Architecture audit and Social Hub/UI redesign plan
+
+- Actor: Codex theo yêu cầu repository owner; chỉ thực hiện audit và cập nhật tài liệu, chưa thay đổi application behavior.
+- Scope/authority: đối chiếu design system Stitch `Sonic Purity`, prompt Social/Facebook Posts Hub và source Next.js/MongoDB hiện tại; chuẩn hóa clean architecture, UI contract, SEO/GEO/AIO, QA và rollout plan.
+- Audit baseline: public shell đã có Manrope, Sonic header/footer/reveal, dark obsidian/gold tokens và editorial `/kien-thuc`; admin/content repository có auth guard, revisions, Cloudinary, SEO strategy và publish flow. Social Post aggregate, native/embed discriminator, media grid/lightbox, official embed, link preview, social filter, relation graph và search hợp nhất chưa có. Public knowledge list còn dùng fetch số lượng lớn thay vì feed pagination.
+- Plan: giữ `/kien-thuc` cho editorial; tạo canonical Social Hub `/bai-viet`; giữ collection `posts` làm source of truth với `contentType`; tách domain/application/infrastructure/presentation theo `docs/ARCHITECTURE_STANDARD.md`; triển khai S0–S6 từ foundation → domain/migration → feed → detail/media → admin CMS → home/search/distribution → QA/release.
+- Changes: thêm `docs/ARCHITECTURE_STANDARD.md`; append S0–S6 vào `.agent/IMPLEMENTATION_PLAN.md`; cập nhật `.agent/INSTRUCTIONS.md` để agent đọc architecture standard khi làm module/redesign lớn. Không sửa route, database, secret, production hoặc design behavior.
+- Verification: đọc đầy đủ prompt 1,334 dòng; inventory ZIP gồm ba screen desktop/mobile/detail và `DESIGN.md`; audit `src/app`, `src/components`, `src/lib`, routes/API/models; xác nhận không có `.codegraph`; working tree được kiểm tra trước khi ghi docs.
+- Result: architecture standard và roadmap Social Hub/UI mới đã được lưu làm source of truth; implementation chưa bắt đầu.
+- Rollback reference: revert riêng các thay đổi documentation; không cần rollback runtime/data.
+- Remaining risks/blockers: trước khi code cần xác nhận canonical `/bai-viet`, MVP không có comments/reaction counts, Facebook import manual/official-only và trạng thái source Project/Case Study thật.
+
+## 2026-08-09 — Add light mode requirement to UI architecture plan
+
+- Actor: Codex theo bổ sung của repository owner; chỉ cập nhật plan/standard, chưa sửa runtime.
+- Scope/authority: bổ sung Light Mode cho toàn bộ public website, admin shell và admin login; bảo toàn dark mode Sonic Purity làm default.
+- Audit baseline: `ThemeContext` hiện chỉ load ở admin; root `<html>` ép `dark`; public/admin còn nhiều raw dark classes; admin theme page/API còn dùng palette legacy và ghi `data/theme.json` runtime.
+- Plan: dùng một `ThemeMode` (`dark|light|system`) + semantic CSS tokens + `data-theme`; persist cookie/localStorage để SSR/no-flash; token hóa public/admin; kiểm thử contrast, keyboard, persistence, reduced motion ở desktop/mobile.
+- Changes: thêm Light/Dark theme contract vào `docs/ARCHITECTURE_STANDARD.md`; append work packages/acceptance/rollback vào `.agent/IMPLEMENTATION_PLAN.md`.
+- Verification: audit theme provider/root/admin shell/raw palette bằng `rg`; không thay đổi application behavior hoặc production data.
+- Result: Light Mode trở thành cross-cutting gate trước các phase Social Feed/CMS, không còn là phần bổ sung cuối dự án.
+- Rollback reference: documentation-only revert; implementation sau này có thể giữ default dark và tắt toggle bằng feature flag.
+- Remaining risks/blockers: cần xác nhận default dark + user-selectable light/system; migration raw colors sẽ cần browser visual QA cho cả public và admin.
+
+## 2026-08-09 — Implement Social Hub/UI foundation vertical slice
+
+- Actor: Codex theo yêu cầu repository owner; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: triển khai local code theo plan Social Hub/UI redesign và Light/Dark mode; không migration Mongo, không upload Cloudinary thật, không deploy/SSH hoặc mutate production.
+- Audit baseline: trước implementation chưa có Social Post aggregate, discriminator, public feed/detail, Social admin CMS, grouped search hoặc light-mode preference; editorial repository chưa lọc rõ record `contentType: social`.
+- Plan: khóa `/bai-viet` cho Social Hub, giữ `/kien-thuc` cho editorial; xây domain → application → infrastructure → presentation; nối public/admin/discovery; chạy tests/build/browser smoke; ghi rõ phần chưa đủ release gate.
+- Changes: semantic dark/light tokens + cookie/localStorage ThemeProvider/ThemeToggle; shared local-only dev session secret; Social types/validation/media layout/repository/revisions/API; public feed/detail/cards/lightbox/embed/link preview/relations; admin list/editor/upload/publish/archive/restore/pagination; homepage/search/sitemap/RSS/llms/IndexNow integration; editorial discriminator boundary và Social rollback flag; 14 domain/unit tests.
+- Verification: `npm test` 14/14; `npx tsc --noEmit` pass; `npm run lint` 0 error/0 warning; `npm run build` pass với 74 routes; `npm audit --omit=dev --audit-level=high` 0 vulnerabilities; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass. Production-build local smoke: public home/Social/search/feed/sitemap/llms 200, unauthenticated admin API 401, admin route redirect login; browser xác nhận login icon không đè text và toggle chuyển light mode. Local `/api/health` 503 vì không cấp Mongo trong môi trường test, không phải production health claim.
+- Result: code vertical slice đã chạy được với Mongo as production source và empty fallback khi thiếu Mongo; không claim authenticated publish hoặc production release.
+- Rollback reference: working tree chưa staged/committed; `SOCIAL_HUB_ENABLED=false` + `NEXT_PUBLIC_SOCIAL_HUB_ENABLED=false` tắt public Social UI/discovery hoặc revert patch theo các path mới.
+- Remaining risks/blockers: cần authenticated browser smoke với credential/session production, backup/migration/seed Mongo, kiểm tra Cloudinary thật, Facebook metadata import preview, hoàn thiện swipe/focus restore cho lightbox, project relation/post analytics, mobile 390px visual evidence và deploy immutable có release receipt.
+
+## 2026-08-09 20:26 +07 — Apply theme-independent media contrast surfaces
+
+- Actor: Codex theo yêu cầu repository owner; áp dụng ghi chú UI về media surface local theme, contrast zone và scrim/plate cho text đặt trên ảnh.
+- Scope/authority: chỉnh presentation/CSS local, không đổi schema, dữ liệu production, auth, deployment hoặc media binary.
+- Audit baseline: hero, solution/category cards, product cards/gallery, project caption, contact/about banners, featured article, Social media overflow action và admin media previews còn dùng gradient/raw text color rải trong component; Light Mode có thể biến text trên ảnh thành màu tối hoặc làm mất vị trí absolute khi thêm primitive.
+- Plan: thêm semantic `sonic-media-*` tokens giữ nguyên ở dark/light; tạo overlay hero/top/bottom/project, plate/badge/action; migrate toàn bộ public text-on-image surfaces và preview admin; smoke desktop/mobile và kiểm tra no-overflow/positioning.
+- Changes: mở rộng `src/app/globals.css` với media contract độc lập theme; cập nhật `docs/ARCHITECTURE_STANDARD.md`; áp dụng vào `src/app/page.tsx`, about/contact/combos/knowledge, `SonicProductCard`, `SonicProductGallery`, `SocialMediaGallery`, `admin/images` và `ComboModal`. Sửa primitive không ghi đè utility `absolute`, giữ CTA ghost trên media dùng text/border media tokens.
+- Verification: `npm test` 14/14; `npx tsc --noEmit` pass; `npm run lint` pass; `npm run build` pass với 74 routes; `npm audit --omit=dev --audit-level=high` 0 vulnerabilities; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass. Browser production build smoke: home light/dark, product card, solution cards, project caption; mobile emulation 390px báo `scrollWidth=390`, không horizontal overflow, heading `rgb(247,247,247)`, product gallery badge `position:absolute` và plate nền tối.
+- Result: text trên ảnh không còn phụ thuộc trực tiếp vào Light/Dark palette; hero giữ cinematic dark scrim + chữ trắng, các card/gallery có contrast zone hoặc plate nhẹ. Production server local đang chạy từ build mới tại `127.0.0.1:3000`; chưa deploy.
+- Rollback reference: revert riêng patch `globals.css`/media surfaces và documentation; không cần migration hoặc khôi phục dữ liệu.
+- Remaining risks/blockers: admin legacy pages ngoài các preview đã migrate vẫn còn palette cũ; cần visual review thêm với media Cloudinary thật và authenticated admin session trước release production.
+
+## 2026-08-09 20:35 +07 — Align product catalog page with Stitch listing design
+
+- Actor: Codex theo yêu cầu repository owner; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: thay đổi presentation route `/products`; giữ nguyên catalog repository, filter/search/sort contract, product detail links, SEO metadata và dữ liệu nguồn; không migration, không deploy hoặc mutate production.
+- Audit baseline: `/products` đang dùng hero editorial lớn, dark search band và `SonicProductCard` dạng text overlay; khác reference ở featured horizontal card, filter panel, card content panel riêng, pagination và editorial section cuối trang.
+- Plan: tách component catalog-specific để bảo toàn `SonicProductCard` cho các surface media; dựng hero/search/filter/featured/grid/pagination/editorial theo semantic Sonic tokens; kiểm tra filter/sort và responsive trước khi kết thúc.
+- Changes: thêm `SonicCatalogFeaturedCard` và `SonicCatalogProductCard`; refactor `src/app/products/page.tsx` sang layout catalog light/dark compatible; thêm query pagination `page` và link builder bảo toàn search/category/brand/sort; dùng product thực tế làm featured, không hard-code dữ liệu reference.
+- Verification: `npm test` pass 14/14; `npx tsc --noEmit` pass; `npm run lint` pass; `npm run build` pass với 74 routes; `npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; secret scan pass; `git diff --check` pass. Browser production-build smoke: desktop hero/card/filter render đúng; filter `brand=arf&sort=price-asc` trả đúng thứ tự và giữ query; mobile emulation 390px báo `scrollWidth=390`.
+- Result: `/products` đã bám sát cấu trúc Stitch reference mà không làm thay đổi data/API contract. Local production server đang chạy tại `127.0.0.1:3000`; chưa commit hoặc deploy.
+- Rollback reference: revert riêng `src/app/products/page.tsx`, `src/components/sonic/SonicCatalogFeaturedCard.tsx` và `src/components/sonic/SonicCatalogProductCard.tsx`; không cần khôi phục dữ liệu.
+- Remaining risks/blockers: số lượng sản phẩm fallback hiện tại là 06 nên pagination không hiển thị ở trạng thái mặc định; pagination sẽ xuất hiện khi catalog/Mongo có hơn 7 sản phẩm. Cần visual review thêm với ảnh Cloudinary thật trước release production.
+
+## 2026-08-09 20:43 +07 — Disable automatic overlays on text-over-image surfaces
+
+- Actor: Codex theo yêu cầu repository owner; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: presentation/CSS public và admin; giữ nguyên ảnh, nội dung, route, data/API, auth và deployment; không migration hoặc mutate production.
+- Audit baseline: `sonic-media-overlay-*` đang được dùng ở hero, category/project/contact/knowledge/product gallery, product card, combo preview và admin image caption; media token còn có gradient scrim, opacity layer và backdrop blur khiến text-over-image bị tối/mờ.
+- Plan: xóa toàn bộ render overlay và token gradient; bỏ opacity layer trên ảnh có text; chuyển plate/badge/action sang nền trong suốt, giữ màu chữ media độc lập theme; cập nhật architecture contract và kiểm tra tất cả route public/admin đã chạm.
+- Changes: gỡ các overlay JSX/CSS ở home, about, contact, combos, knowledge, product card/gallery, admin images, ComboModal và PublicArticle; bỏ opacity-35/60/65/80 trên media text surfaces; loại bỏ media backdrop blur/translucent plate; cập nhật `docs/ARCHITECTURE_STANDARD.md` để cấm scrim tự động.
+- Verification: `npm test` pass 14/14; `npx tsc --noEmit` pass; `npm run lint` pass; `npm run build` pass với 74 routes; `npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; secret scan pass; HTTP home 200; browser route smoke xác nhận `overlayElements=0`, không backdrop blur và media opacity 1 trên các route chính; mobile 390px `scrollWidth=390`.
+- Result: text trên ảnh hiện hiển thị trực tiếp trên ảnh nguyên bản, không còn lớp phủ mờ tự động; local production server đang chạy tại `127.0.0.1:3000`; chưa commit hoặc deploy.
+- Rollback reference: revert riêng patch `src/app/globals.css`, các public/admin media components/pages và `docs/ARCHITECTURE_STANDARD.md`; không cần khôi phục dữ liệu.
+- Remaining risks/blockers: chữ trắng trên một ảnh quá sáng có thể giảm contrast vì đã chủ động tắt scrim; cần chọn/crop ảnh phù hợp hoặc dùng badge solid ở từng surface nếu visual review thực tế yêu cầu.
+
+## 2026-08-09 20:45 +07 — Correction: remove remaining header glass blur
+
+- Correction: sau visual review, `sonic-glass` trên header/menu cũng được thay bằng `sonic-panel` và primitive `backdrop-filter` bị loại bỏ hoàn toàn khỏi source; đây là phần còn lại của lớp translucent nằm trên hero.
+- Verification: build lại pass 74 routes; browser desktop About xác nhận `overlayElements=0`, `glassElements=0`, `backdropFilterElements=0`, media opacity `1`; mobile Home 390px xác nhận `scrollWidth=390`, không overlay/glass.
+
+## 2026-08-09 21:03 +07 — Implement Premium Brand Archive UI
+
+- Actor: Codex theo brief Senior Product Designer/Creative Director/Front-end Engineer; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: nâng cấp public `/brands`, bổ sung detail route `/thuong-hieu/[slug]`, shared footer/floating contact và brand admin logo variants; giữ nguyên brand/product data, route catalog, auth, map và deployment boundary; không commit, deploy hoặc mutate production.
+- Audit baseline: `/brands` chưa có cấu trúc archive/editorial theo brief, brand card link chưa có detail route, logo chỉ có một variant và floating contact hiển thị mở rộng mặc định. Current catalog fallback có 5 brand; chỉ ARF có 6 product records, các productCount còn lại được lấy từ brand record hiện hữu.
+- Changes: dựng hero exact headline + stats động, brand index Tất cả/A–Z/Quốc gia, grid responsive 3/2/1 cột với featured card, neutral solid logo surface hỗ trợ `logoDark`/`logoLight`, accessible hover/focus, philosophy section và CTA; thêm `SonicBrandCard`, `SonicBrandLogo`, `getBrandBySlug`, static metadata/params và sitemap brand URLs; thêm detail catalog/empty state; active navbar brand underline; footer spacing semantic và contact button collapsed/expandable; admin taxonomy bảo toàn field hiện hữu khi edit và cho phép nhập logo mặc định/sáng/tối.
+- Verification: `npm test` pass 14/14; `npx tsc --noEmit` pass; `npm run lint` pass; `npm run build` pass với 79 routes và 5 brand detail paths; `npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass. Browser production-build QA: filter A–Z trả ARF/Bose/JBL/Pioneer/Sony; `/thuong-hieu/jbl` không 404 và `/thuong-hieu/arf` render 6 catalog cards; floating contact open/close đúng ARIA; light/dark logo readability; 1440/1024/768/430/390 không horizontal overflow, mobile 390px `scrollWidth=390`, map/footer và H1 đúng.
+- Result: Brand Archive UI đã hoàn tất local và production server đang chạy tại `127.0.0.1:3000`; chưa commit hoặc deploy.
+- Rollback reference: revert riêng các path Brand Archive/admin taxonomy/shared shell thay đổi trong working tree; không cần migration hoặc khôi phục dữ liệu.
+- Remaining risks/blockers: chưa có dữ liệu logo variant thật trong JSON/Mongo nên current brands dùng neutral logo surface + fallback `logo`; cần visual review thêm với asset Cloudinary thật trước release production.
+
+## 2026-08-09 21:35 +07 — Implement shared motion system across public page types
+
+- Actor: Codex theo yêu cầu triển khai sau audit motion; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: triển khai presentation/motion local theo brief; giữ nguyên layout/content/data/API/auth/SEO và deployment boundary; không thêm animation dependency, không migration, không commit/deploy production.
+- Audit baseline: Brands là implementation reference thật với `SonicReveal` + Framer Motion; `framer-motion` đã có sẵn trong `package.json`, không có GSAP/AOS/Lenis; các route products, product detail, about, knowledge, social, contact, combos còn thiếu reveal/interaction primitives. Audit runtime phát hiện reduced-motion có thể giữ wrapper ở `opacity: 0` do hydration timing.
+- Changes: thêm `src/components/sonic/sonic-motion.ts` làm token motion; chuẩn hóa `SonicReveal` và CSS token/easing/duration/reduced-motion override; thêm reveal có kiểm soát cho products/product detail/about/knowledge/articles/social/contact/combos; thêm hover image/focus/link primitives; gallery product crossfade bằng Framer Motion hiện hữu; animate header search/mobile menu, floating contact, social lightbox và contact success state; giới hạn/animate Social Post expand; sửa header consultation CTA có class responsive riêng để không override `hidden` và tràn ở mobile.
+- Verification: `rtk npx tsc --noEmit` pass; `rtk npm run lint` pass; `rtk npm test` pass 14/14; `rtk npm run build` pass, generate 79 routes; `rtk npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; secret scan pass; `git diff --check` pass. Browser QA production build: desktop route matrix 1440px và mobile route matrix 380px không horizontal overflow; reduced-motion trên home/brands có 0 reveal hidden và hero animation `none`; mobile menu/search/floating contact open-close; multi-image product gallery chuyển active image/badge đúng; local server đang chạy tại `127.0.0.1:3000`.
+- Result: motion system đã được triển khai bằng dependency hiện hữu, có reduced-motion contract và không animate nội dung bài viết Markdown theo đoạn; giữ Brands làm behavioral reference.
+- Rollback reference: revert riêng các path motion/component/page đã chạm và `.agent/WORKLOG.md`; không cần khôi phục dữ liệu hoặc production state.
+- Remaining risks/blockers: local social feed hiện không có public post nên chưa thể click-test lightbox với record thật; cần visual review thêm với media Cloudinary thực tế và authenticated admin session trước release production.
+
+## 2026-08-09 21:54 +07 — Refine Homepage collection and solution sections
+
+- Actor: Codex theo brief UI mới; áp dụng `tiendataudio-project` skill và workflow `.agent/`.
+- Scope/authority: chỉ chỉnh hai section `01 / BỘ SƯU TẬP` và `02 / GIẢI PHÁP` trên Homepage; giữ nguyên hero, navbar, typography, nội dung/data contract, route, các section còn lại, auth và deployment boundary; không migration, commit hoặc deploy.
+- Audit baseline: Homepage dùng `SonicProductCard` dạng overlay cho cả route khác, ảnh sản phẩm nền trắng thiếu media studio surface; `SonicReveal` làm direct grid child khiến featured span không áp dụng và 3 sản phẩm bị đặt trong grid 4 cột có cột trống; solution card chưa có local contrast system, alt text rỗng và mọi ảnh dùng focal center.
+- Changes: thêm home-only product card variant với media/content tách biệt, nền neutral, `object-contain`, `mix-blend-mode: multiply` scoped cho ảnh product và trạng thái `Liên hệ tư vấn` khi không có giá; thêm `SonicSolutionCard` với alt semantic, focal positions có fallback theo category và override `Category.objectPosition`; dựng controlled 12-column editorial grid `5/3/4` cho hàng đầu và `4/4/4` cho hàng sau; thêm local gradient scrim chỉ trong solution card để bảo đảm contrast, không khôi phục global overlay; cập nhật architecture contract ghi rõ ngoại lệ component-owned.
+- Verification: `rtk npx tsc --noEmit` pass; `rtk npm run lint` pass; `rtk npm test` pass 14/14; `rtk npm run build` pass, generate 79 routes; `rtk npm audit --omit=dev --audit-level=high` tìm thấy 0 vulnerabilities; `rtk run bash deploy/scripts/audit-secrets.sh` pass; `rtk git diff --check` pass. Browser production-build QA tại 1920/1440/1280/1024/768/430/390px cho Light và Dark: không horizontal overflow; product grid 3/2/1 cột đúng breakpoint; solution alt đầy đủ, local scrim ổn định, title luôn sáng ở cả hai theme; mobile render một cột và text không phụ thuộc hover.
+- Result: Homepage collection/solution đã bám brief mới trong production build local tại `127.0.0.1:3000`; các route dùng `SonicProductCard` mặc định không bị thay đổi.
+- Rollback reference: revert riêng `src/app/page.tsx`, `src/components/sonic/SonicProductCard.tsx`, `src/components/sonic/SonicSolutionCard.tsx`, `src/lib/data.ts`, `src/app/globals.css`, `docs/ARCHITECTURE_STANDARD.md` và entry này; không cần khôi phục dữ liệu.
+- Remaining risks/blockers: ảnh category hiện phần lớn là product-on-white nên focal position và scrim fallback cần visual review thêm với asset Cloudinary/Mongo thực tế; chưa deploy production.

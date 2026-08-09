@@ -163,6 +163,11 @@ export async function getBrands() {
   )
 }
 
+export async function getBrandBySlug(slug: string) {
+  const brands = await getBrands()
+  return brands.find((brand) => brand.slug === slug || brand.id === slug) || null
+}
+
 export async function getCombos() {
   return fallbackOr(
     () => combosData as Combo[],

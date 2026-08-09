@@ -439,11 +439,11 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
                             <div className="p-6">
                                 <div className="max-w-md mx-auto bg-black rounded-2xl overflow-hidden">
                                     {/* Reel Preview */}
-                                    <div className="relative aspect-[9/16] bg-gray-900">
+                                    <div className="sonic-media-surface relative aspect-[9/16] bg-gray-900">
                                         {formData.type === 'video' ? (
                                             <div className="w-full h-full flex items-center justify-center">
                                                 <Play className="h-16 w-16 text-white/60" />
-                                                <p className="absolute bottom-4 left-4 text-white text-sm">
+                                                <p className="sonic-media-content absolute bottom-4 left-4 text-sm">
                                                     Video: {formData.media?.url || 'Chưa có URL'}
                                                 </p>
                                             </div>
@@ -462,8 +462,7 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
                                         )}
                                         
                                         {/* Overlay content */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                                            <div className="absolute bottom-4 left-4 right-16 text-white">
+                                        <div className="sonic-media-content absolute bottom-4 left-4 right-16">
                                                 <h3 className="font-bold text-lg mb-2">{formData.title}</h3>
                                                 <p className="text-sm opacity-90 line-clamp-2">{formData.description}</p>
                                                 <div className="mt-2 bg-red-500 rounded px-3 py-1 inline-block">
@@ -471,7 +470,6 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
                                                         {formatPrice(formData.comboPrice || 0)}
                                                     </span>
                                                 </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

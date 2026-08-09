@@ -20,7 +20,7 @@ interface CloudinaryUploadProps {
     onUploadComplete: (result: CloudinaryUploadResult) => void
     onUploadError?: (error: string) => void
     accept?: 'image' | 'video' | 'both'
-    type?: 'video' | 'combo-image' | 'product'
+    type?: 'video' | 'combo-image' | 'product' | 'social'
     folder?: string
     maxSize?: number // in MB
     className?: string

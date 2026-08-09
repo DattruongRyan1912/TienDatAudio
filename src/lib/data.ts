@@ -44,6 +44,7 @@ export interface Category {
     slug: string;
     description: string;
     image: string;
+    objectPosition?: string;
     sortOrder: number;
 }
 
@@ -53,10 +54,15 @@ export interface Brand {
     slug: string;
     description: string;
     logo: string;
+    logoDark?: string;
+    logoLight?: string;
     website?: string;
     country: string;
+    featured?: boolean;
     sortOrder?: number;
     productCount?: number;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 interface ComboProduct {

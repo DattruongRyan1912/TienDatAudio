@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { developmentSessionSecret } from '@/lib/session-secret'
 
 const sessionCookie = 'sonic_admin_session'
 
@@ -10,8 +11,8 @@ function decodeBase64Url(value: string) {
 
 async function verifyEdgeSession(token: string | undefined) {
   if (!token) return false
-  const secret = process.env.SESSION_SECRET
-  if (!secret) return process.env.NODE_ENV !== 'production'
+  const secret = process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? '' : developmentSessionSecret)
+  if (!secret) return false
 
   const [payload, signature] = token.split('.')
   if (!payload || !signature) return false

@@ -57,3 +57,5 @@ Một thay đổi chỉ được xem là hoàn thành khi acceptance checks có 
 - Tạo/đổi credential, mở rộng persistent access, xóa dữ liệu, migration không thể rollback, thay DNS/Cloudflare hoặc khóa SSH hiện tại: dừng tại action boundary và xin xác nhận nếu chưa được xác nhận cụ thể.
 
 Repo skill nằm tại `.agents/skills/tiendataudio-project/`; custom agent nằm tại `.codex/agents/tiendataudio-engineer.toml`. Roadmap dài hạn nằm tại `.agent/IMPLEMENTATION_PLAN.md`; lịch sử task nằm tại `.agent/WORKLOG.md`; quy trình production nằm tại `docs/DEPLOYMENT_RUNBOOK.md`.
+
+Với task thêm module, redesign UI hoặc refactor có ảnh hưởng nhiều feature, đọc thêm `docs/ARCHITECTURE_STANDARD.md`. Đây là chuẩn dependency boundary, domain/application/infrastructure/presentation, design token, accessibility, SEO, performance và Definition of Done của source.
