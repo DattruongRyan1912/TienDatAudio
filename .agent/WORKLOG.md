@@ -276,3 +276,14 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
 - Result: Homepage collection/solution đã bám brief mới trong production build local tại `127.0.0.1:3000`; các route dùng `SonicProductCard` mặc định không bị thay đổi.
 - Rollback reference: revert riêng `src/app/page.tsx`, `src/components/sonic/SonicProductCard.tsx`, `src/components/sonic/SonicSolutionCard.tsx`, `src/lib/data.ts`, `src/app/globals.css`, `docs/ARCHITECTURE_STANDARD.md` và entry này; không cần khôi phục dữ liệu.
 - Remaining risks/blockers: ảnh category hiện phần lớn là product-on-white nên focal position và scrim fallback cần visual review thêm với asset Cloudinary/Mongo thực tế; chưa deploy production.
+
+## 2026-08-09 22:11 +07 — Production deploy release 41d6254 and origin TLS correction
+
+- Actor: Codex theo yêu cầu deploy production; áp dụng `tiendataudio-project` skill và `docs/DEPLOYMENT_RUNBOOK.md`.
+- Scope/authority: phát hành toàn bộ thay đổi project đang chờ release lên VPS production qua GitHub Actions; không migration/drop dữ liệu Mongo, không đổi Cloudflare DNS hoặc secret.
+- Audit baseline: `main` ở `9dd5863` với 83 file project changes chưa commit; production active release cũ hơn; CI/deploy workflow đã có immutable release, atomic switch, rollback và receipt. SSH quản trị hoạt động ở port `26266`; port `46789` timeout.
+- Changes: commit/push release `41d6254515ccd10b43b42f50127e454be89c348e`; CI run `31319935691` pass; deploy run `31319992314` upload/build/activate/healthcheck pass. Post-deploy audit phát hiện Caddy active `Caddyfile` của compose edge không còn site block Tiến Đạt Audio, làm origin TLS handshake lỗi và Cloudflare trả 525; backup tại `/home/lucas/apps/dynasty-legend-2/docker/caddy/Caddyfile.tiendataudio-backup-41d6254`, thêm block `tiendataudioquangngai.id.vn -> 172.18.0.1:3000`, validate và restart riêng edge container.
+- Verification: local gate `npm ci`, `npm test` 14/14, lint, build 79 routes, dependency audit 0 vulnerabilities, secret scan và diff check pass. Origin HTTPS `/api/health` 200 với certificate Let’s Encrypt đúng domain; Cloudflare HTTPS `/api/health`, `/` và `/admin/login` đều 200; `tiendataudio.service`, `mongod` và edge container active; remote receipt ghi release `41d6254` succeeded/healthy.
+- Result: production đang chạy release `41d6254`; domain và admin login đã phục hồi qua Cloudflare; Zalo direct URL `https://zalo.me/0934995657` trả 302.
+- Rollback reference: application rollback về `/srv/tiendataudio/releases/9dd5863fb24182667ec15f01c9388e73b2e64947` theo runbook; reverse-proxy rollback bằng cách restore `Caddyfile.tiendataudio-backup-41d6254` rồi restart `dynasty-legend-2-prod-edge-1`.
+- Remaining risks/blockers: Caddyfile thuộc compose của ứng dụng khác và không nằm trong repo Tiến Đạt Audio; nếu compose owner ghi đè lại file, domain có thể tái phát 525. Cần đưa site block vào source/config ownership của stack edge trong lần hardening hạ tầng tiếp theo.
