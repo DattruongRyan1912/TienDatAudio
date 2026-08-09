@@ -81,14 +81,16 @@ if ! npm ci --include=dev; then
 fi
 
 mkdir -p "$APP_ROOT/shared/uploads"
-if [[ ! -e "$APP_ROOT/shared/.uploads-initialized" && -d "$release_dir/public/uploads" ]]; then
+if [[ ! -e "$APP_ROOT/shared/.uploads-initialized" && -d "$release_dir/public/uploads" && ! -L "$release_dir/public/uploads" ]]; then
   cp -a "$release_dir/public/uploads/." "$APP_ROOT/shared/uploads/"
   touch "$APP_ROOT/shared/.uploads-initialized"
 fi
-if [[ -e "$release_dir/public/uploads" && ! -L "$release_dir/public/uploads" ]]; then
+if [[ -L "$release_dir/public/uploads" ]]; then
+  rm -f -- "$release_dir/public/uploads"
+elif [[ -e "$release_dir/public/uploads" ]]; then
   rm -rf -- "$release_dir/public/uploads"
 fi
-ln -sfn "$APP_ROOT/shared/uploads" "$release_dir/public/uploads"
+mkdir -p "$release_dir/public/uploads"
 
 if [[ ! -e "$APP_ROOT/shared/.database-seeded" ]]; then
   if ! npm run db:seed; then
@@ -102,6 +104,9 @@ if ! npm run build; then
   receipt "failed" "build"
   exit 1
 fi
+
+rm -rf -- "$release_dir/public/uploads"
+ln -s "$APP_ROOT/shared/uploads" "$release_dir/public/uploads"
 
 if ! npm prune --omit=dev; then
   receipt "failed" "npm-prune"
