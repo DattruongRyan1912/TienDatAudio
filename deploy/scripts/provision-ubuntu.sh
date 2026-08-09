@@ -15,6 +15,7 @@ APP_DB="${APP_DB:-tiendataudio}"
 APP_DB_USER="${APP_DB_USER:-tda_app}"
 REVERSE_PROXY_MODE="${REVERSE_PROXY_MODE:-nginx}"
 APP_BIND_HOST="${APP_BIND_HOST:-127.0.0.1}"
+CADDY_NETWORK_CIDR="${CADDY_NETWORK_CIDR:-}"
 ADMIN_USERNAME="${ADMIN_USERNAME:-admin}"
 ADMIN_PASSWORD_HASH_B64="${ADMIN_PASSWORD_HASH_B64:?ADMIN_PASSWORD_HASH_B64 is required}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -30,6 +31,10 @@ if [[ ! "$SSH_PORT" =~ ^[0-9]+$ ]] || ((SSH_PORT < 1 || SSH_PORT > 65535)); then
 fi
 if [[ "$REVERSE_PROXY_MODE" != nginx && "$REVERSE_PROXY_MODE" != caddy ]]; then
   echo "Supported reverse proxy modes: nginx or caddy." >&2
+  exit 2
+fi
+if [[ -n "$CADDY_NETWORK_CIDR" && ! "$CADDY_NETWORK_CIDR" =~ ^[0-9./]+$ ]]; then
+  echo "Invalid CADDY_NETWORK_CIDR." >&2
   exit 2
 fi
 if [[ ! "$DEPLOY_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
@@ -134,6 +139,7 @@ if [[ ! -f "$env_file" ]]; then
     write_env_value NEXT_PUBLIC_SITE_URL "https://$APP_DOMAIN"
     write_env_value UPLOAD_DIR "$APP_ROOT/shared/uploads"
     write_env_value APP_BIND_HOST "$APP_BIND_HOST"
+    write_env_value HEALTH_URL "http://$APP_BIND_HOST:3000/api/health"
   } > "$env_file"
   chown root:"$DEPLOY_USER" "$env_file"
   chmod 0640 "$env_file"
@@ -155,6 +161,11 @@ else
 fi
 if ! grep -Eq '^APP_BIND_HOST=' "$env_file"; then
   write_env_value APP_BIND_HOST "$APP_BIND_HOST" >> "$env_file"
+  chown root:"$DEPLOY_USER" "$env_file"
+  chmod 0640 "$env_file"
+fi
+if ! grep -Eq '^HEALTH_URL=' "$env_file"; then
+  write_env_value HEALTH_URL "http://$APP_BIND_HOST:3000/api/health" >> "$env_file"
   chown root:"$DEPLOY_USER" "$env_file"
   chmod 0640 "$env_file"
 fi
@@ -198,6 +209,9 @@ fi
 ufw allow "$SSH_PORT/tcp"
 ufw allow 80/tcp
 ufw allow 443/tcp
+if [[ "$REVERSE_PROXY_MODE" == caddy && -n "$CADDY_NETWORK_CIDR" ]]; then
+  ufw allow from "$CADDY_NETWORK_CIDR" to "$APP_BIND_HOST" port 3000 proto tcp comment "Tiendataudio Caddy upstream"
+fi
 ufw default deny incoming
 ufw default allow outgoing
 ufw --force enable

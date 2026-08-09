@@ -36,7 +36,7 @@ sudo env \
 
 The script is idempotent for packages, users and service config. On first run it creates a random MongoDB app password and session secret. It never exposes MongoDB publicly.
 
-When the VPS already hosts another application with Caddy on ports 80/443, keep that reverse proxy and provision Tiến Đạt Audio with `REVERSE_PROXY_MODE=caddy` and `APP_BIND_HOST=<docker-network-gateway>`. The app service then listens only on the host bridge address and the existing Caddy configuration adds a site block that proxies the production domain to port 3000. Do not stop the existing compose stack or install a second listener on ports 80/443.
+When the VPS already hosts another application with Caddy on ports 80/443, keep that reverse proxy and provision Tiến Đạt Audio with `REVERSE_PROXY_MODE=caddy`, `APP_BIND_HOST=<docker-network-gateway>` and `CADDY_NETWORK_CIDR=<docker-network-cidr>`. The app service then listens only on the host bridge address, the internal health URL follows that bind address, and the existing Caddy configuration adds a site block that proxies the production domain to port 3000. Do not stop the existing compose stack or install a second listener on ports 80/443.
 
 ## GitHub Actions configuration
 

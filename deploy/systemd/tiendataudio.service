@@ -33,7 +33,6 @@ ProtectControlGroups=true
 RestrictSUIDSGID=true
 LockPersonality=true
 ReadWritePaths=/srv/tiendataudio/shared
-ReadWritePaths=/srv/tiendataudio/current/.next
 
 [Install]
 WantedBy=multi-user.target
