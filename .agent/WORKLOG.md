@@ -145,6 +145,18 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
 - Rollback reference: thay đổi vẫn đang ở working tree, chưa staged/committed; có thể revert riêng roadmap patch trước khi release. Migration script dry-run mặc định và yêu cầu backup confirmation.
 - Remaining risks/blockers: cần Mongo backup + migration/seed, authenticated editor flow với session thật, kiểm tra external Search Console/IndexNow và deploy theo `docs/DEPLOYMENT_RUNBOOK.md` trước khi tuyên bố production complete.
 
+## 2026-08-09 19:05 +07 — Restore old VPS and complete CI/CD deployment
+
+- Actor: Codex theo yêu cầu repository owner; access endpoint mới được lưu ngoài repository và trong GitHub Actions Secrets, không ghi vào code/commit.
+- Audit baseline: VPS còn Docker/Caddy của ứng dụng khác nhưng Node, MongoDB, Nginx và Tiến Đạt Audio service chưa có; Cloudflare origin trả 525/502; SSH endpoint cũ timeout. Không dừng hoặc xóa container game hiện hữu.
+- Changes: provision idempotent Ubuntu 24.04 ở `REVERSE_PROXY_MODE=caddy`; cài Node.js 22, MongoDB 8, systemd app/backup timer, deploy user và UFW bridge rule; thêm site route vào Caddy hiện hữu với backup trước thay đổi; tạo CI Ed25519 key giới hạn forwarding và cập nhật GitHub Secrets; thêm Caddy-mode/health URL/sandbox fixes vào `deploy/` và runbook.
+- Deployment evidence: CI run `31312135618` pass; deploy run `31312171352` pass; active release `4a035dd17bdb9be94834c846911380d192ad1a98`; release receipt nằm tại `/srv/tiendataudio/deployments.jsonl`; previous failed release `52cf803...` được giữ làm rollback reference.
+- Data safety: first seed completed for MongoDB; backup Mongo/media created at `/var/backups/tiendataudio/` with SHA-256 sidecars. No password, private key or new SSH endpoint stored in repository.
+- Verification: `mongod`, `tiendataudio`, backup timer và Docker active; internal `/api/health` 200; public home/health/knowledge/RSS/sitemap/llms 200; unauthenticated admin API 401; Caddy TLS valid; production browser smoke desktop/mobile pass with 0 console error.
+- Result: old VPS đã phục hồi, domain production hoạt động và CI/CD tự động upload/build/activate/healthcheck thành công.
+- Rollback reference: `/srv/tiendataudio/releases/52cf8039bb593c91ebfce0dbc9f0d28fd21efd92`, Caddy backup tại `/home/lucas/apps/dynasty-legend-2/docker/caddy/Caddyfile.tiendataudio-backup-20260809-1838`, Mongo backup directory và deployment JSONL receipt.
+- Remaining risks/blockers: chưa chạy authenticated browser flow tạo/chỉnh sửa/publish bằng credential production; Caddy vẫn thuộc compose của ứng dụng khác nên cần giữ nguyên file backup và không tự ý đổi stack đó.
+
 ## 2026-08-09 18:34 +07 — Diagnose old VPS outage before recovery
 
 - Actor: Codex theo yêu cầu đưa dự án lên lại VPS cũ và setup/kiểm tra CI/CD.
