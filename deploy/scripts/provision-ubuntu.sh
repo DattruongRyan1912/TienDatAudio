@@ -76,6 +76,19 @@ install -d -m 0750 -o root -g "$DEPLOY_USER" /etc/tiendataudio
 
 systemctl enable --now mongod
 
+mongo_ready=0
+for attempt in $(seq 1 30); do
+  if mongosh --quiet --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; then
+    mongo_ready=1
+    break
+  fi
+  sleep 1
+done
+if [[ "$mongo_ready" -ne 1 ]]; then
+  echo "MongoDB did not become ready within 30 seconds." >&2
+  exit 1
+fi
+
 env_file=/etc/tiendataudio/tiendataudio.env
 if [[ ! -f "$env_file" ]]; then
   mongo_password="$(openssl rand -hex 32)"
