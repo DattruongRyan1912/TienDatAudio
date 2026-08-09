@@ -1,5 +1,7 @@
 'use client'
 
+/* eslint-disable @next/next/no-img-element -- Admin previews use Cloudinary-transformed URLs directly. */
+
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -10,7 +12,6 @@ import {
   Download,
   Trash2,
   Search,
-  Filter,
   Grid,
   List,
   Upload,
@@ -18,8 +19,6 @@ import {
   FolderOpen,
   Eye,
   Copy,
-  MoreVertical,
-  Calendar,
   HardDrive
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -146,7 +145,7 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
     } finally {
       setIsLoading(false)
     }
-  }, [currentFolder])
+  }, [addToast, currentFolder])
 
   useEffect(() => {
     loadFiles()
@@ -172,7 +171,6 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
       })
 
       if (response.ok) {
-        const result = await response.json()
         setNewFolderName('')
         setShowCreateFolder(false)
         
@@ -330,11 +328,11 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
         'Đã xóa thư mục thành công!',
         `${selectedFolders.size} thư mục đã được xóa.`
       ))
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to delete folders:', error)
       addToast(toast.error(
         'Có lỗi khi xóa thư mục',
-        error.message
+        error instanceof Error ? error.message : 'Vui lòng thử lại.'
       ))
     }
   }
@@ -349,7 +347,7 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
   }
 
   // Handle upload complete
-  const handleUploadComplete = async (result: any) => {
+  const handleUploadComplete = async () => {
     // Cleanup placeholder files in the current folder
     try {
       await fetch('/api/admin/cloudinary/cleanup-placeholders', {
@@ -361,9 +359,7 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
           folderPath: currentFolder
         })
       })
-    } catch (error) {
-      console.log('Could not cleanup placeholder files:', error)
-    }
+    } catch {}
     
     loadFiles() // Refresh file list
     setShowUpload(false)
@@ -653,7 +649,7 @@ export default function CloudinaryManager({ className = '' }: CloudinaryManagerP
             {/* Filter */}
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value as any)}
+              onChange={(e) => setFilterType(e.target.value as typeof filterType)}
               className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Tất cả</option>

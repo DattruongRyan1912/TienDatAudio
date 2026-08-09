@@ -162,8 +162,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       })
 
       if (response.ok) {
-        const result = await response.json()
-        console.log('Theme updated successfully:', result)
+        await response.json()
         setTheme(updatedTheme)
         applyThemeToDocument(updatedTheme)
       } else {
@@ -223,39 +222,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </ThemeContext.Provider>
   )
-}
-
-// Hook to get theme colors as CSS variables
-export function useThemeColors() {
-  const { theme } = useTheme()
-  
-  if (!theme) {
-    return {
-      primary: 'var(--color-primary, #2563eb)',
-      secondary: 'var(--color-secondary, #f97316)',
-      accent: 'var(--color-accent, #06b6d4)',
-      background: 'var(--color-background, #ffffff)',
-      surface: 'var(--color-surface, #f8fafc)',
-      text: 'var(--color-text, #111827)',
-      textLight: 'var(--color-text-light, #6b7280)',
-      border: 'var(--color-border, #e5e7eb)',
-      success: 'var(--color-success, #10b981)',
-      warning: 'var(--color-warning, #f59e0b)',
-      error: 'var(--color-error, #ef4444)',
-    }
-  }
-
-  return {
-    primary: `var(--color-primary, ${theme.colors.primary})`,
-    secondary: `var(--color-secondary, ${theme.colors.secondary})`,
-    accent: `var(--color-accent, ${theme.colors.accent})`,
-    background: `var(--color-background, ${theme.colors.background})`,
-    surface: `var(--color-surface, ${theme.colors.surface})`,
-    text: `var(--color-text, ${theme.colors.text})`,
-    textLight: `var(--color-text-light, ${theme.colors.textLight})`,
-    border: `var(--color-border, ${theme.colors.border})`,
-    success: `var(--color-success, ${theme.colors.success})`,
-    warning: `var(--color-warning, ${theme.colors.warning})`,
-    error: `var(--color-error, ${theme.colors.error})`,
-  }
 }

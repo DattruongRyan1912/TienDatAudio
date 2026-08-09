@@ -10,11 +10,11 @@ Group=tda-deploy
 WorkingDirectory=/srv/tiendataudio/current
 Environment=NODE_ENV=production
 Environment=NEXT_TELEMETRY_DISABLED=1
-Environment=HOSTNAME=127.0.0.1
+Environment=APP_BIND_HOST=127.0.0.1
 Environment=PORT=3000
 EnvironmentFile=/etc/tiendataudio/tiendataudio.env
 EnvironmentFile=-/srv/tiendataudio/shared/release.env
-ExecStart=/usr/bin/npm run start -- --hostname 127.0.0.1 --port 3000
+ExecStart=/usr/bin/npm run start -- --hostname ${APP_BIND_HOST} --port 3000
 Restart=on-failure
 RestartSec=5s
 TimeoutStartSec=60s

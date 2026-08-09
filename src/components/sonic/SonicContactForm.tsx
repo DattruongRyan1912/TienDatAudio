@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { ArrowUpRight, Check } from 'lucide-react'
+import { getAttributionContext, trackSiteEvent } from '@/components/analytics/SiteAnalytics'
 
 type FormState = { name: string; phone: string; email: string; interest: string; budget: string; message: string }
 
-export default function SonicContactForm({ product }: { product?: string }) {
+export default function SonicContactForm({ product, productId, articleId }: { product?: string; productId?: string; articleId?: string }) {
   const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', interest: product || '', budget: '', message: '' })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
@@ -17,7 +18,9 @@ export default function SonicContactForm({ product }: { product?: string }) {
     setStatus('loading')
     setError('')
     try {
-      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, source: 'contact-page' }) })
+      const attribution = getAttributionContext()
+      trackSiteEvent('contact_submit', { productId })
+      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...form, source: product ? 'product-page' : articleId ? 'article-page' : 'contact-page', attribution: { ...attribution, productId, articleId } }) })
       const data = await response.json() as { error?: string }
       if (!response.ok) throw new Error(data.error || 'Không thể gửi yêu cầu')
       setStatus('success')
@@ -45,4 +48,3 @@ export default function SonicContactForm({ product }: { product?: string }) {
     </form>
   )
 }
-

@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server'
-import { v2 as cloudinary } from 'cloudinary'
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 export async function POST(request: Request) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { folderPath, currentFolder } = await request.json()
 
@@ -38,13 +33,13 @@ export async function POST(request: Request) {
       note: 'Folder will be created when you upload the first file'
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Create folder error:', error)
     
     return NextResponse.json(
       { 
         success: false, 
-        message: error.message || 'Không thể chuẩn bị thư mục'
+        message: error instanceof Error ? error.message : 'Không thể chuẩn bị thư mục'
       },
       { status: 500 }
     )

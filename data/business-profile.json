@@ -1,0 +1,42 @@
+{
+  "name": "Tiến Đạt Audio",
+  "alternateName": "Tiến Đạt Audio Quảng Ngãi",
+  "description": "Đơn vị tư vấn, phối ghép và cung cấp thiết bị âm thanh cho gia đình, phòng karaoke, cafe và không gian chuyên nghiệp tại Quảng Ngãi.",
+  "siteUrl": "https://tiendataudioquangngai.id.vn",
+  "logo": "/images/logo.png",
+  "phone": "0934995657",
+  "email": "contact@tiendataudio.com",
+  "address": {
+    "streetAddress": "264 Phan Đình Phùng, Chánh Lộ",
+    "addressLocality": "Quảng Ngãi",
+    "addressRegion": "Quảng Ngãi",
+    "postalCode": "",
+    "addressCountry": "VN",
+    "formatted": "264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi, Việt Nam"
+  },
+  "businessHours": [
+    "Thứ 2 - Chủ nhật: 08:00 - 22:00"
+  ],
+  "latitude": 15.11569782866824,
+  "longitude": 108.80262824033872,
+  "areaServed": [
+    "Quảng Ngãi",
+    "Miền Trung",
+    "Việt Nam"
+  ],
+  "services": [
+    "Tư vấn chọn thiết bị âm thanh",
+    "Phối ghép hệ thống theo không gian",
+    "Lắp đặt và cân chỉnh âm thanh",
+    "Tư vấn hệ thống karaoke và nghe nhạc"
+  ],
+  "socialLinks": [
+    "https://www.facebook.com/amthanhtiendat",
+    "https://youtube.com/@tiendataudio",
+    "https://instagram.com/tiendataudio",
+    "https://tiktok.com/@tiendataudio"
+  ],
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d436.98143933457914!2d108.80262824033873!3d15.11569782866824!2m3!1f0!2f0!3f0!3m2!1i1024!1i768!4f13.1!3m3!1m2!1s0x3169adcf61ae37c5%3A0x1672600981d26f2b!2zVGnhur9uIMSQ4bqhdCBBdWRpbw!5e0!3m2!1svi!2s!4v1786213706677!5m2!1svi!2s",
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=Ti%E1%BA%BFn%20%C4%90%E1%BA%A1t%20Audio",
+  "updatedAt": "2026-08-09T00:00:00.000Z"
+}

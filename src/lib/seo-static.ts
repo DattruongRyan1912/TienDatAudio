@@ -21,7 +21,7 @@ export interface SEOContent {
 }
 
 // Static SEO data - updated from admin panel
-export const staticSEOData: Record<string, SEOContent> = {
+const staticSEOData: Record<string, SEOContent> = {
   "/": {
     "id": "seo_home_1757702000000",
     "page": "/",

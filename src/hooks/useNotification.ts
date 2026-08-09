@@ -1,6 +1,6 @@
 'use client'
 
-import { useToast, toast } from '@/components/ui/toast'
+import { useToast, toast, type Toast } from '@/components/ui/toast'
 import { useState } from 'react'
 
 interface ConfirmOptions {
@@ -26,19 +26,19 @@ export function useNotification() {
     onConfirm: () => {}
   })
 
-  const showSuccess = (title: string, message?: string, options?: any) => {
+  const showSuccess = (title: string, message?: string, options?: Partial<Toast>) => {
     addToast(toast.success(title, message, options))
   }
 
-  const showError = (title: string, message?: string, options?: any) => {
+  const showError = (title: string, message?: string, options?: Partial<Toast>) => {
     addToast(toast.error(title, message, options))
   }
 
-  const showWarning = (title: string, message?: string, options?: any) => {
+  const showWarning = (title: string, message?: string, options?: Partial<Toast>) => {
     addToast(toast.warning(title, message, options))
   }
 
-  const showInfo = (title: string, message?: string, options?: any) => {
+  const showInfo = (title: string, message?: string, options?: Partial<Toast>) => {
     addToast(toast.info(title, message, options))
   }
 

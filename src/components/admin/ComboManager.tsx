@@ -1,8 +1,10 @@
 'use client'
 
+/* eslint-disable @next/next/no-img-element -- Admin thumbnails may use arbitrary legacy or uploaded URLs. */
+
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Edit2, Trash2, Eye, Search, Filter, Play, Image as ImageIcon } from 'lucide-react'
+import { Plus, Edit2, Trash2, Eye, Search, Play, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ComboModal from './ComboModal'
 import { getAllCombos, getAllProducts, type Combo, type Product } from '@/lib/data'
@@ -200,7 +202,7 @@ export default function ComboManager() {
                 </div>
                 <select
                     value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value as any)}
+                    onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value="all">Tất cả trạng thái</option>

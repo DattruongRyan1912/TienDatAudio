@@ -1,9 +1,0 @@
-<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-  <rect width="400" height="400" fill="#f3f4f6"/>
-  <rect x="75" y="120" width="250" height="160" rx="15" fill="#374151"/>
-  <rect x="100" y="140" width="200" height="30" rx="5" fill="#6b7280"/>
-  <rect x="120" y="180" width="160" height="20" rx="3" fill="#9ca3af"/>
-  <rect x="140" y="210" width="120" height="20" rx="3" fill="#9ca3af"/>
-  <circle cx="320" cy="160" r="8" fill="#ef4444"/>
-  <text x="200" y="320" text-anchor="middle" font-family="Arial" font-size="18" fill="#374151">Amply Karaoke</text>
-</svg>

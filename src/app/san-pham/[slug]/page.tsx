@@ -6,6 +6,8 @@ import SonicProductGallery from '@/components/sonic/SonicProductGallery'
 import SonicProductCard from '@/components/sonic/SonicProductCard'
 import { getProductBySlug, getRelatedProducts } from '@/lib/catalog'
 import { formatPrice } from '@/lib/utils'
+import { getBusinessProfile } from '@/lib/business-profile'
+import ContentViewTracker from '@/components/analytics/ContentViewTracker'
 
 type ProductPageProps = { params: Promise<{ slug: string }> }
 
@@ -18,13 +20,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params
-  const product = await getProductBySlug(slug)
+  const [product, profile] = await Promise.all([getProductBySlug(slug), getBusinessProfile()])
   if (!product) notFound()
   const related = await getRelatedProducts(product.id, 3)
   const specs = Object.entries(product.specifications)
 
   return (
     <div className="sonic-page pt-28 md:pt-36">
+      <ContentViewTracker type="product" id={product.id} />
       <div className="sonic-container">
         <Link href="/products" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#858989] transition-colors hover:text-[#d4af37]"><ArrowLeft size={14} /> Quay lại catalog</Link>
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
@@ -34,7 +37,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             <h1 className="mt-5 text-4xl font-bold tracking-[-0.06em] text-[#e5e2e1] md:text-6xl">{product.name}</h1>
             <p className="sonic-copy mt-6 max-w-xl">{product.description}</p>
             <div className="mt-8 flex flex-wrap items-end gap-5 border-y border-white/10 py-6"><div><p className="sonic-label text-[#858989]">Giá tham khảo</p><p className="mt-2 text-2xl font-bold text-[#d4af37]">{product.price ? formatPrice(product.salePrice || product.price) : 'Liên hệ tư vấn'}</p></div>{product.inStock && <span className="mb-1 inline-flex items-center gap-2 text-xs text-[#9ea2a2]"><span className="h-2 w-2 rounded-full bg-emerald-400" /> Đang có sẵn</span>}</div>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2"><Link href={`/contact?product=${encodeURIComponent(product.name)}`} className="sonic-button sonic-button-gold">Nhận tư vấn sản phẩm <ArrowUpRight size={16} /></Link><a href="tel:0934995657" className="sonic-button sonic-button-ghost">Gọi 0934 995 657</a></div>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2"><Link href={`/contact?product=${encodeURIComponent(product.name)}&productId=${encodeURIComponent(product.id)}`} data-analytics-event="product_cta" data-product-id={product.id} className="sonic-button sonic-button-gold">Nhận tư vấn sản phẩm <ArrowUpRight size={16} /></Link><a href={`tel:${profile.phone.replace(/\D/g, '')}`} data-analytics-event="phone_click" className="sonic-button sonic-button-ghost">Gọi {profile.phone}</a></div>
             <div className="mt-8 grid gap-4 sm:grid-cols-3"><div className="flex items-center gap-3 text-xs text-[#9ea2a2]"><ShieldCheck size={17} className="text-[#d4af37]" /> Bảo hành chính hãng</div><div className="flex items-center gap-3 text-xs text-[#9ea2a2]"><Wrench size={17} className="text-[#d4af37]" /> Hỗ trợ phối ghép</div><div className="flex items-center gap-3 text-xs text-[#9ea2a2]"><Check size={17} className="text-[#d4af37]" /> Kiểm tra trước giao</div></div>
           </div>
         </div>
@@ -50,4 +53,3 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     </div>
   )
 }
-

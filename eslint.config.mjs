@@ -1,35 +1,22 @@
-import tsParser from '@typescript-eslint/parser'
-import tsPlugin from '@typescript-eslint/eslint-plugin'
-import reactPlugin from 'eslint-plugin-react'
-import reactHooksPlugin from 'eslint-plugin-react-hooks'
-import nextPlugin from '@next/eslint-plugin-next'
+import { FlatCompat } from '@eslint/eslintrc'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-export default [
+const currentDirectory = dirname(fileURLToPath(import.meta.url))
+const compat = new FlatCompat({ baseDirectory: currentDirectory })
+
+const config = [
   {
-    ignores: ['.next/**', 'node_modules/**', 'public/**', 'UI/**'],
+    ignores: ['.next/**', 'next-env.d.ts', 'node_modules/**', 'public/**', 'UI/**'],
   },
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: { ecmaVersion: 'latest', sourceType: 'module', ecmaFeatures: { jsx: true } },
-    },
-    plugins: {
-      '@typescript-eslint': tsPlugin,
-      react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      '@next/next': nextPlugin,
-    },
-    settings: { react: { version: 'detect' } },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...reactPlugin.configs.recommended.rules,
-      ...reactHooksPlugin.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
 ]
 
+export default config

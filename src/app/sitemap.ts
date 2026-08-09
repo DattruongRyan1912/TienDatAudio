@@ -1,100 +1,38 @@
-import { MetadataRoute } from 'next'
-import { getAllProducts, getCategories, getBrands } from '@/lib/data'
+import type { MetadataRoute } from 'next'
+import { getBusinessProfile } from '@/lib/business-profile'
+import { getProducts } from '@/lib/catalog'
+import { getPublicPosts } from '@/lib/content-repository'
+
+function validDate(value: string) {
+  const date = new Date(value)
+  return Number.isFinite(date.getTime()) ? date : new Date(0)
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudioquangngai.id.vn'
-  
-  // Static pages
-  const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/products`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/san-pham`,
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/brands`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/lien-he`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    },
+  const [profile, products, posts] = await Promise.all([getBusinessProfile(), getProducts(), getPublicPosts(500)])
+  const baseUrl = profile.siteUrl.replace(/\/$/, '')
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: baseUrl, lastModified: validDate(profile.updatedAt), changeFrequency: 'weekly', priority: 1 },
+    { url: `${baseUrl}/products`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: `${baseUrl}/brands`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.75 },
+    { url: `${baseUrl}/kien-thuc`, lastModified: posts.length ? validDate(posts[0].updatedAt) : new Date(), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${baseUrl}/about`, lastModified: validDate(profile.updatedAt), changeFrequency: 'monthly', priority: 0.55 },
+    { url: `${baseUrl}/contact`, lastModified: validDate(profile.updatedAt), changeFrequency: 'monthly', priority: 0.65 },
+    { url: `${baseUrl}/faq`, lastModified: validDate(profile.updatedAt), changeFrequency: 'monthly', priority: 0.6 },
   ]
-
-  // Product pages - both English and Vietnamese URLs
-  const products = await getAllProducts()
-  const productPages = products.flatMap((product) => [
-    {
-      url: `${baseUrl}/product/${product.slug}`,
-      lastModified: new Date(product.updatedAt),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/san-pham/${product.slug}`,
-      lastModified: new Date(product.updatedAt),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }
-  ])
-
-  // Category filter pages - using san-pham?category=slug format
-  const categories = await getCategories()
-  const categoryPages = categories.map((category) => ({
-    url: `${baseUrl}/san-pham?category=${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+  const productPages: MetadataRoute.Sitemap = products.map((product) => ({
+    url: `${baseUrl}/san-pham/${product.slug}`,
+    lastModified: validDate(product.updatedAt),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+    images: product.images.filter(Boolean).map((image) => image.startsWith('http') ? image : `${baseUrl}${image}`),
+  }))
+  const articlePages: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${baseUrl}/kien-thuc/${post.slug}`,
+    lastModified: validDate(post.updatedAt),
+    changeFrequency: 'monthly',
     priority: 0.7,
+    images: [post.featuredImage, ...post.gallery].filter(Boolean).map((image) => image.startsWith('http') ? image : `${baseUrl}${image}`),
   }))
-
-  // Brand filter pages - using san-pham?brand=slug format (removed individual brand pages)
-  const brands = await getBrands()
-  const brandPages = brands.map((brand) => ({
-    url: `${baseUrl}/san-pham?brand=${brand.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }))
-
-  return [
-    ...staticPages,
-    ...productPages,
-    ...categoryPages,
-    ...brandPages,
-  ]
+  return [...staticPages, ...productPages, ...articlePages]
 }

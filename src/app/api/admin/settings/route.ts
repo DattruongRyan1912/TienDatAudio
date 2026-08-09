@@ -1,38 +1,12 @@
 import { NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
+import fallbackSettings from '../../../../../data/settings.json'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
+import { getDb, hasMongoConfig } from '@/lib/mongodb'
 
-const SETTINGS_FILE = path.join(process.cwd(), 'data', 'settings.json')
+export const runtime = 'nodejs'
 
-interface SiteSettings {
-  siteName: string
-  siteDescription: string
-  siteUrl: string
-  contactEmail: string
-  contactPhone: string
-  address: string
-  businessHours: string
-  logo: string
+type SiteRuntimeSettings = {
   favicon: string
-  socialMedia: {
-    facebook: string
-    youtube: string
-    instagram: string
-    tiktok: string
-  }
-  seo: {
-    metaTitle: string
-    metaDescription: string
-    keywords: string[]
-    ogImage: string
-  }
-  smtp: {
-    host: string
-    port: number
-    username: string
-    password: string
-    secure: boolean
-  }
   analytics: {
     googleAnalyticsId: string
     facebookPixelId: string
@@ -41,75 +15,53 @@ interface SiteSettings {
   updatedAt: string
 }
 
-// Ensure data directory exists
-const ensureDataDir = () => {
-  const dataDir = path.dirname(SETTINGS_FILE)
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true })
-  }
+function text(value: unknown, max = 200) {
+  return String(value || '').trim().slice(0, max)
 }
 
-// Load settings from file
-const loadSettings = (): Partial<SiteSettings> => {
-  ensureDataDir()
-  if (fs.existsSync(SETTINGS_FILE)) {
-    const data = fs.readFileSync(SETTINGS_FILE, 'utf8')
-    return JSON.parse(data)
+function normalize(value: unknown): SiteRuntimeSettings {
+  const input = value && typeof value === 'object' ? value as Record<string, unknown> : {}
+  const analytics = input.analytics && typeof input.analytics === 'object' ? input.analytics as Record<string, unknown> : {}
+  return {
+    favicon: text(input.favicon || fallbackSettings.favicon, 500),
+    analytics: {
+      googleAnalyticsId: text(analytics.googleAnalyticsId),
+      facebookPixelId: text(analytics.facebookPixelId),
+      googleTagManagerId: text(analytics.googleTagManagerId),
+    },
+    updatedAt: text(input.updatedAt || fallbackSettings.updatedAt, 40),
   }
-  return {}
-}
-
-// Save settings to file
-const saveSettings = (settings: SiteSettings) => {
-  ensureDataDir()
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2))
 }
 
 export async function GET() {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+  if (!hasMongoConfig()) return NextResponse.json({ success: true, data: normalize(fallbackSettings), storage: 'json-fallback' })
   try {
-    const settings = loadSettings()
-    
-    return NextResponse.json({
-      success: true,
-      data: settings
-    })
+    const db = await getDb()
+    const record = await db.collection('site_settings').findOne({ key: 'site' })
+    return NextResponse.json({ success: true, data: normalize(record?.value || fallbackSettings), storage: 'mongodb' })
   } catch (error) {
-    console.error('Error in settings GET:', error)
-    return NextResponse.json(
-      { success: false, message: 'Lỗi khi tải cài đặt' },
-      { status: 500 }
-    )
+    console.error('[admin/settings GET]', error)
+    return NextResponse.json({ success: false, message: 'Không thể tải cài đặt MongoDB' }, { status: 503 })
   }
 }
 
-export async function POST(request: Request) {
+export async function PUT(request: Request) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+  if (!hasMongoConfig()) return NextResponse.json({ success: false, message: 'Cần kết nối MongoDB để lưu cài đặt' }, { status: 503 })
   try {
-    const { settings } = await request.json()
-    
-    if (!settings) {
-      return NextResponse.json(
-        { success: false, message: 'Dữ liệu cài đặt là bắt buộc' },
-        { status: 400 }
-      )
-    }
-
-    const updatedSettings: SiteSettings = {
-      ...settings,
-      updatedAt: new Date().toISOString()
-    }
-
-    saveSettings(updatedSettings)
-
-    return NextResponse.json({
-      success: true,
-      message: 'Lưu cài đặt thành công',
-      data: updatedSettings
-    })
-  } catch (error) {
-    console.error('Error in settings POST:', error)
-    return NextResponse.json(
-      { success: false, message: 'Lỗi khi lưu cài đặt' },
-      { status: 500 }
+    const body = await request.json() as { settings?: unknown }
+    const value = normalize(body.settings ?? body)
+    value.updatedAt = new Date().toISOString()
+    const db = await getDb()
+    await db.collection('site_settings').updateOne(
+      { key: 'site' },
+      { $set: { key: 'site', value, updatedAt: value.updatedAt } },
+      { upsert: true },
     )
+    return NextResponse.json({ success: true, data: value })
+  } catch (error) {
+    console.error('[admin/settings PUT]', error)
+    return NextResponse.json({ success: false, message: 'Không thể lưu cài đặt' }, { status: 500 })
   }
 }

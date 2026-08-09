@@ -116,8 +116,6 @@ export default function SEOPage() {
         keywords: finalKeywords
       };
       
-      console.log('Saving SEO:', seoToSave); // Debug log
-      
       const method = selectedSEO.id ? 'PUT' : 'POST';
       const response = await fetch('/api/admin/seo', {
         method,
@@ -128,8 +126,6 @@ export default function SEOPage() {
       });
       
       const result = await response.json();
-      console.log('Save result:', result); // Debug log
-      
       if (result.success) {
         showSuccess('Lưu cấu hình SEO thành công!');
         await loadSEOContents(); // Reload data
@@ -505,7 +501,6 @@ export default function SEOPage() {
                       // Chỉ cập nhật keywordsInput, không xử lý gì khác
                       const newValue = e.target.value;
                       setKeywordsInput(newValue);
-                      console.log('Keywords input changed:', newValue); // Debug log
                     }}
                     onBlur={() => {
                       // Chỉ xử lý khi blur để tạo keywords array
@@ -513,16 +508,10 @@ export default function SEOPage() {
                         .map(k => k.trim())
                         .filter(k => k.length > 0);
                       updateSelectedSEO('keywords', keywords);
-                      console.log('Keywords processed:', keywords); // Debug log
                     }}
                     onKeyDown={(e) => {
                       // Ngăn chặn tất cả event propagation nhưng cho phép input
                       e.stopPropagation();
-                      console.log('KeyDown:', e.key); // Debug log
-                    }}
-                    onInput={(e) => {
-                      // Đảm bảo input event được xử lý
-                      console.log('Input event:', (e.target as HTMLTextAreaElement).value);
                     }}
                     style={{ 
                       // Force style để đảm bảo không có CSS nào override

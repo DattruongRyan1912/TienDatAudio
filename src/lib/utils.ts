@@ -11,7 +11,3 @@ export function formatPrice(price: number): string {
     currency: 'VND',
   }).format(price)
 }
-
-export function calculateSalePercentage(originalPrice: number, salePrice: number): number {
-  return Math.round(((originalPrice - salePrice) / originalPrice) * 100)
-}

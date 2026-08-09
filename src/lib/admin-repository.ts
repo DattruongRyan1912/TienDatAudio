@@ -9,6 +9,20 @@ export type LeadInput = {
   budget?: string
   message?: string
   source?: string
+  attribution?: {
+    landingPath?: string
+    referrer?: string
+    sessionId?: string
+    articleId?: string
+    productId?: string
+    utm?: {
+      source?: string
+      medium?: string
+      campaign?: string
+      term?: string
+      content?: string
+    }
+  }
 }
 
 export async function createLead(input: LeadInput) {
@@ -128,4 +142,3 @@ export function serializeMongoDocument<T extends Record<string, unknown>>(docume
   const { _id, ...rest } = document
   return { ...rest, id: rest.id || String(_id) }
 }
-

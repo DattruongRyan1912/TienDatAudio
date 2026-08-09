@@ -98,9 +98,6 @@ export default function ProductSEOPage() {
         throw new Error('Failed to save SEO data')
       }
 
-      const result = await response.json()
-      console.log('SEO data saved successfully:', result)
-      
       // Update the product in the local state
       setProducts(prev => prev.map(p => 
         p.id === selectedProduct.id 

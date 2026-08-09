@@ -79,6 +79,28 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sonic-map-frame iframe { display: block; height: 100%; width: 100%; filter: grayscale(0.78) contrast(0.94); transition: filter 700ms ease; }
 .sonic-map-frame:hover iframe { filter: grayscale(0.1) contrast(1); }
 
+.sonic-prose { color: #c4c7c7; font-size: 1.05rem; line-height: 1.9; overflow-wrap: anywhere; }
+.sonic-prose > :first-child { margin-top: 0; }
+.sonic-prose > :last-child { margin-bottom: 0; }
+.sonic-prose h2, .sonic-prose h3 { color: var(--sonic-text); font-weight: 750; letter-spacing: -0.035em; scroll-margin-top: 7rem; }
+.sonic-prose h2 { margin: 3rem 0 1rem; font-size: clamp(1.55rem, 3vw, 2rem); line-height: 1.2; }
+.sonic-prose h3 { margin: 2rem 0 0.8rem; font-size: 1.25rem; line-height: 1.3; }
+.sonic-prose p, .sonic-prose ul, .sonic-prose ol, .sonic-prose blockquote, .sonic-prose table, .sonic-prose pre { margin: 1.25rem 0; }
+.sonic-prose ul, .sonic-prose ol { padding-left: 1.4rem; }
+.sonic-prose ul { list-style: disc; }
+.sonic-prose ol { list-style: decimal; }
+.sonic-prose li { margin: 0.5rem 0; padding-left: 0.25rem; }
+.sonic-prose a { color: var(--sonic-gold); text-decoration: underline; text-decoration-color: rgba(212, 175, 55, 0.45); text-underline-offset: 0.22em; }
+.sonic-prose a:hover { text-decoration-color: var(--sonic-gold); }
+.sonic-prose blockquote { border-left: 2px solid var(--sonic-gold); color: var(--sonic-text); font-size: 1.12rem; font-weight: 600; padding-left: 1.25rem; }
+.sonic-prose code { background: #181818; border: 1px solid rgba(229, 226, 225, 0.1); color: #e5c45a; font-size: 0.9em; padding: 0.12rem 0.35rem; }
+.sonic-prose pre { overflow-x: auto; border: 1px solid rgba(229, 226, 225, 0.12); background: #0d0d0d; padding: 1rem; }
+.sonic-prose pre code { border: 0; background: transparent; padding: 0; }
+.sonic-prose img { display: block; height: auto; max-width: 100%; border: 1px solid rgba(229, 226, 225, 0.12); }
+.sonic-prose table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 0.9rem; }
+.sonic-prose th, .sonic-prose td { border: 1px solid rgba(229, 226, 225, 0.14); padding: 0.7rem 0.9rem; text-align: left; }
+.sonic-prose th { background: #151515; color: var(--sonic-text); }
+
 @keyframes sonic-hero-breathe {
   from { transform: scale(1); }
   to { transform: scale(1.045); }

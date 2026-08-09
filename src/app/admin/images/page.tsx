@@ -64,14 +64,11 @@ export default function AdminImagesPage() {
       
       if (productsResponse.ok) {
         const productsData = await productsResponse.json()
-        console.log('Products data:', productsData) // Debug log
         
         // Check if response is array (new format) or object with success property
         if (Array.isArray(productsData)) {
-          console.log('Products loaded (array format):', productsData.length, 'items')
           setProducts(productsData)
         } else if (productsData.success && productsData.data) {
-          console.log('Products loaded (object format):', productsData.data.length, 'items')
           setProducts(productsData.data)
         } else {
           console.error('Unexpected products data format:', productsData)

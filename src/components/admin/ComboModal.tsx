@@ -1,11 +1,13 @@
 'use client'
 
+/* eslint-disable @next/next/no-img-element -- Admin previews may use arbitrary user-provided URLs. */
+
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Plus, Trash2, Upload, Play, Image as ImageIcon, Eye } from 'lucide-react'
+import { X, Plus, Trash2, Play, Image as ImageIcon, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import CloudinaryUpload from '@/components/CloudinaryUpload'
-import { type Combo, type Product, type ComboProduct } from '@/lib/data'
+import { type Combo, type Product } from '@/lib/data'
 import { useNotification } from '@/hooks/useNotification'
 
 interface CloudinaryUploadResult {
@@ -64,7 +66,6 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
     const [newTag, setNewTag] = useState('')
     const [newFeature, setNewFeature] = useState('')
     const [previewMode, setPreviewMode] = useState(false)
-    const [isUploading, setIsUploading] = useState(false)
     const [activeUploadTab, setActiveUploadTab] = useState<'thumbnail' | 'media'>('thumbnail')
     const [inputMethod, setInputMethod] = useState<'upload' | 'url'>('upload')
     const [urlInput, setUrlInput] = useState('')
@@ -99,7 +100,7 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
         }
     }, [combo, isOpen])
 
-    const handleInputChange = (field: keyof Combo, value: any) => {
+    const handleInputChange = (field: keyof Combo, value: Combo[keyof Combo]) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
@@ -107,7 +108,7 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
 
         // Auto-generate slug from title
         if (field === 'title') {
-            const slug = value.toLowerCase()
+            const slug = String(value).toLowerCase()
                 .replace(/[áàảãạăắằẳẵặâấầẩẫậ]/g, 'a')
                 .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
                 .replace(/[íìỉĩị]/g, 'i')
@@ -127,7 +128,7 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
         }
     }
 
-    const calculatePricing = () => {
+    useEffect(() => {
         // Only calculate pricing for combo content type
         if (formData.contentType !== 'combo') return
 
@@ -145,17 +146,23 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
         const savings = Math.max(0, totalOriginalPrice - comboPrice)
         const savingsPercent = totalOriginalPrice > 0 ? Math.round((savings / totalOriginalPrice) * 100) : 0
 
-        setFormData(prev => ({
-            ...prev,
-            originalPrice: totalOriginalPrice,
-            savings,
-            savingsPercent
-        }))
-    }
+        setFormData(prev => {
+            if (
+                prev.originalPrice === totalOriginalPrice &&
+                prev.savings === savings &&
+                prev.savingsPercent === savingsPercent
+            ) {
+                return prev
+            }
 
-    useEffect(() => {
-        calculatePricing()
-    }, [formData.products, formData.comboPrice, products])
+            return {
+                ...prev,
+                originalPrice: totalOriginalPrice,
+                savings,
+                savingsPercent
+            }
+        })
+    }, [formData.comboPrice, formData.contentType, formData.products, products])
 
     const addProduct = (productId: string) => {
         const existingProduct = formData.products?.find(p => p.id === productId)
@@ -241,16 +248,16 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
         }))
     }
 
-    const handleMediaChange = (field: string, value: any) => {
+    const handleMediaChange = (field: 'type' | 'url', value: string) => {
         setFormData(prev => {
             // Sync both formData.type and media.type
             if (field === 'type') {
                 return {
                     ...prev,
-                    type: value,
+                    type: value === 'video' ? 'video' : 'image',
                     media: {
                         ...prev.media!,
-                        type: value
+                        type: value === 'video' ? 'video' : 'image'
                     }
                 }
             }
@@ -266,8 +273,6 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
     }
 
     const handleCloudinaryUpload = (result: CloudinaryUploadResult, uploadType: 'thumbnail' | 'video' | 'image') => {
-        console.log('Cloudinary upload result:', result)
-        
         if (uploadType === 'thumbnail') {
             setFormData(prev => ({
                 ...prev,
@@ -293,7 +298,6 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
             }))
         }
         
-        setIsUploading(false)
     }
 
     const handleUrlInput = (uploadType: 'thumbnail' | 'video' | 'image') => {
@@ -339,31 +343,17 @@ export default function ComboModal({ isOpen, onClose, onSave, combo, products }:
     }
 
     const handleUploadError = (error: string) => {
-        console.error('Upload error:', error)
-        setIsUploading(false)
-        
+        const normalizedError = error.toLowerCase()
+
         // Provide more specific error messages
-        if (error.includes('File size too large')) {
+        if (normalizedError.includes('file size too large')) {
             showError('File quá lớn', 'Video không được vượt quá 50MB. Vui lòng nén video hoặc chọn file khác.')
-        } else if (error.includes('timeout') || error.includes('timeout')) {
+        } else if (normalizedError.includes('timeout')) {
             showError('Upload timeout', 'Video quá lớn hoặc mạng chậm. Vui lòng thử lại hoặc nén video.')
         } else if (error.includes('ENOENT') || error.includes('build')) {
             showError('Lỗi hệ thống', 'Lỗi build manifest. Vui lòng refresh trang và thử lại.')
         } else {
             showError('Upload thất bại', error || 'Có lỗi xảy ra khi upload. Vui lòng thử lại.')
-        }
-    }
-
-    const addImage = () => {
-        const imageUrl = prompt('Nhập URL hình ảnh:')
-        if (imageUrl) {
-            setFormData(prev => ({
-                ...prev,
-                media: {
-                    ...prev.media!,
-                    images: [...(prev.media?.images || []), imageUrl]
-                }
-            }))
         }
     }
 

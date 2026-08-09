@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { useDropzone, type FileRejection } from 'react-dropzone'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
     Upload, 
@@ -51,6 +51,14 @@ interface UploadProgress {
     error?: string
 }
 
+function formatFileSize(bytes: number) {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return `${Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
+}
+
 export default function CloudinaryUpload({
     onUploadComplete,
     onUploadError,
@@ -76,7 +84,7 @@ export default function CloudinaryUpload({
         }
     }
 
-    const uploadFile = async (file: File): Promise<CloudinaryUploadResult> => {
+    const uploadFile = useCallback(async (file: File): Promise<CloudinaryUploadResult> => {
         const formData = new FormData()
         formData.append('file', file)
         formData.append('type', type)
@@ -115,13 +123,13 @@ export default function CloudinaryUpload({
             }
             throw error
         }
-    }
+    }, [folder, type])
 
-    const onDrop = useCallback(async (acceptedFiles: File[], rejectedFiles: any[]) => {
+    const onDrop = useCallback(async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         // Handle rejected files
         if (rejectedFiles.length > 0) {
             rejectedFiles.forEach(({ file, errors }) => {
-                errors.forEach((error: any) => {
+                errors.forEach((error) => {
                     if (error.code === 'file-too-large') {
                         onUploadError?.(`File "${file.name}" quá lớn. Kích thước tối đa là ${maxSize}MB.`)
                     } else if (error.code === 'file-invalid-type') {
@@ -135,15 +143,11 @@ export default function CloudinaryUpload({
         }
 
         // Validate file sizes manually for better error messages
-        const validFiles = []
+        const validFiles: File[] = []
         for (const file of acceptedFiles) {
             if (file.size > maxSize * 1024 * 1024) {
                 onUploadError?.(`File "${file.name}" (${formatFileSize(file.size)}) vượt quá giới hạn ${maxSize}MB. Vui lòng nén file.`)
                 continue
-            }
-            if (type === 'video' && file.size > 20 * 1024 * 1024) {
-                // Warn about large video files
-                console.warn(`Large video file detected: ${file.name} (${formatFileSize(file.size)})`)
             }
             validFiles.push(file)
         }
@@ -210,7 +214,7 @@ export default function CloudinaryUpload({
                 onUploadError?.(error instanceof Error ? error.message : 'Upload failed')
             }
         }
-    }, [onUploadComplete, onUploadError, type, folder, uploads.length])
+    }, [maxSize, onUploadComplete, onUploadError, type, uploadFile, uploads.length])
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
@@ -224,14 +228,6 @@ export default function CloudinaryUpload({
 
     const removeUpload = (index: number) => {
         setUploads(prev => prev.filter((_, i) => i !== index))
-    }
-
-    const formatFileSize = (bytes: number) => {
-        if (bytes === 0) return '0 Bytes'
-        const k = 1024
-        const sizes = ['Bytes', 'KB', 'MB', 'GB']
-        const i = Math.floor(Math.log(bytes) / Math.log(k))
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
     }
 
     const getFileIcon = (file: File) => {

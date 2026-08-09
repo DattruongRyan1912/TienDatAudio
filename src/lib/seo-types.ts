@@ -9,6 +9,13 @@ export interface SEOKeyword {
   cluster: string
   priority: SEOKeywordPriority
   notes: string
+  brief?: {
+    audience: string
+    angle: string
+    questions: string[]
+    secondaryTerms: string[]
+    callToAction: string
+  }
   isActive: boolean
   updatedAt: string
 }
@@ -17,21 +24,6 @@ export interface SEOFAQ {
   id: string
   question: string
   answer: string
-}
-
-export interface SEOEntityProfile {
-  name: string
-  alternateName: string
-  description: string
-  url: string
-  logo: string
-  phone: string
-  email: string
-  address: string
-  areaServed: string[]
-  latitude?: number
-  longitude?: number
-  sameAs: string[]
 }
 
 export interface AIOConfig {
@@ -46,7 +38,6 @@ export interface AIOConfig {
 
 export interface SEOConfig {
   id: string
-  entity: SEOEntityProfile
   keywords: SEOKeyword[]
   ai: AIOConfig
   updatedAt: string

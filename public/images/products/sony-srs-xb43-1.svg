@@ -1,8 +1,0 @@
-<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
-  <rect width="300" height="300" fill="#ffffff"/>
-  <ellipse cx="150" cy="150" rx="80" ry="100" fill="#1f2937"/>
-  <circle cx="150" cy="120" r="25" fill="#374151"/>
-  <circle cx="150" cy="180" r="15" fill="#374151"/>
-  <rect x="130" y="220" width="40" height="10" rx="5" fill="#3b82f6"/>
-  <text x="150" y="270" text-anchor="middle" font-family="Arial" font-size="12" fill="#6b7280">Sony SRS-XB43</text>
-</svg>

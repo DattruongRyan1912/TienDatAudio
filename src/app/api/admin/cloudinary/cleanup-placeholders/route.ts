@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server'
-import { v2 as cloudinary } from 'cloudinary'
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+import cloudinary from '@/lib/cloudinary'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 export async function POST(request: Request) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { folderPath } = await request.json()
 
@@ -39,10 +35,7 @@ export async function POST(request: Request) {
         if (result.result === 'ok') {
           deletedFiles.push(pattern)
         }
-      } catch (error) {
-        // Continue if file doesn't exist
-        console.log(`Placeholder ${pattern} not found or already deleted`)
-      }
+      } catch {}
     }
 
     // Also try to delete image placeholders
@@ -55,12 +48,8 @@ export async function POST(request: Request) {
         if (result.result === 'ok') {
           deletedFiles.push(pattern)
         }
-      } catch (error) {
-        console.log(`Image placeholder ${pattern} not found`)
-      }
+      } catch {}
     }
-
-    console.log('Deleted placeholder files:', deletedFiles)
 
     return NextResponse.json({
       success: true,
@@ -68,13 +57,13 @@ export async function POST(request: Request) {
       deletedFiles
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Delete placeholder files error:', error)
     
     return NextResponse.json(
       { 
         success: false, 
-        message: error.message || 'Không thể xóa placeholder files'
+        message: error instanceof Error ? error.message : 'Không thể xóa placeholder files'
       },
       { status: 500 }
     )

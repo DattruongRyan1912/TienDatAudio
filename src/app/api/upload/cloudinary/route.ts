@@ -68,7 +68,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 }
         }
 
-        return new Promise<NextResponse>((resolve, reject) => {
+        return new Promise<NextResponse>((resolve) => {
             // Set a timeout for the upload
             const uploadTimeout = setTimeout(() => {
                 console.error('Upload timeout after 120 seconds')
@@ -149,14 +149,17 @@ export async function DELETE(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url)
         const publicId = searchParams.get('publicId')
-        const resourceType = searchParams.get('resourceType') || 'image'
+        const requestedResourceType = searchParams.get('resourceType')
+        const resourceType = requestedResourceType === 'video' || requestedResourceType === 'raw'
+            ? requestedResourceType
+            : 'image'
 
         if (!publicId) {
             return NextResponse.json({ error: 'Public ID required' }, { status: 400 })
         }
 
         const result = await cloudinary.uploader.destroy(publicId, {
-            resource_type: resourceType as any
+            resource_type: resourceType
         })
 
         return NextResponse.json({ 

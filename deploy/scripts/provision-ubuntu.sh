@@ -13,6 +13,8 @@ DEPLOY_USER="tda-deploy"
 APP_ROOT="${APP_ROOT:-/srv/tiendataudio}"
 APP_DB="${APP_DB:-tiendataudio}"
 APP_DB_USER="${APP_DB_USER:-tda_app}"
+REVERSE_PROXY_MODE="${REVERSE_PROXY_MODE:-nginx}"
+APP_BIND_HOST="${APP_BIND_HOST:-127.0.0.1}"
 ADMIN_USERNAME="${ADMIN_USERNAME:-admin}"
 ADMIN_PASSWORD_HASH_B64="${ADMIN_PASSWORD_HASH_B64:?ADMIN_PASSWORD_HASH_B64 is required}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -24,6 +26,10 @@ if [[ ! "$APP_DOMAIN" =~ ^[A-Za-z0-9.-]+$ ]]; then
 fi
 if [[ ! "$SSH_PORT" =~ ^[0-9]+$ ]] || ((SSH_PORT < 1 || SSH_PORT > 65535)); then
   echo "Invalid SSH_PORT." >&2
+  exit 2
+fi
+if [[ "$REVERSE_PROXY_MODE" != nginx && "$REVERSE_PROXY_MODE" != caddy ]]; then
+  echo "Supported reverse proxy modes: nginx or caddy." >&2
   exit 2
 fi
 if [[ ! "$DEPLOY_USER" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
@@ -38,8 +44,12 @@ if [[ "${ID:-}" != ubuntu || ! "${VERSION_CODENAME:-}" =~ ^(jammy|noble)$ ]]; th
 fi
 
 export DEBIAN_FRONTEND=noninteractive
+base_packages=(ca-certificates curl gnupg ufw rsync openssl xz-utils)
+if [[ "$REVERSE_PROXY_MODE" == nginx ]]; then
+  base_packages+=(nginx certbot python3-certbot-nginx)
+fi
 apt-get update
-apt-get install -y ca-certificates curl gnupg nginx certbot python3-certbot-nginx ufw rsync openssl xz-utils
+apt-get install -y "${base_packages[@]}"
 
 install -d -m 0755 /etc/apt/keyrings
 if [[ ! -f /etc/apt/keyrings/nodesource.gpg ]]; then
@@ -123,6 +133,7 @@ if [[ ! -f "$env_file" ]]; then
     write_env_value SESSION_SECRET "$session_secret"
     write_env_value NEXT_PUBLIC_SITE_URL "https://$APP_DOMAIN"
     write_env_value UPLOAD_DIR "$APP_ROOT/shared/uploads"
+    write_env_value APP_BIND_HOST "$APP_BIND_HOST"
   } > "$env_file"
   chown root:"$DEPLOY_USER" "$env_file"
   chmod 0640 "$env_file"
@@ -141,6 +152,11 @@ else
     chmod 0640 "$env_tmp"
     mv -f "$env_tmp" "$env_file"
   fi
+fi
+if ! grep -Eq '^APP_BIND_HOST=' "$env_file"; then
+  write_env_value APP_BIND_HOST "$APP_BIND_HOST" >> "$env_file"
+  chown root:"$DEPLOY_USER" "$env_file"
+  chmod 0640 "$env_file"
 fi
 
 if ! grep -Eq '^[[:space:]]*authorization:[[:space:]]*enabled' /etc/mongod.conf; then
@@ -168,14 +184,16 @@ EOF
 chmod 0440 /etc/sudoers.d/tiendataudio-deploy
 visudo -cf /etc/sudoers.d/tiendataudio-deploy
 
-install -m 0644 "$DEPLOY_DIR/nginx/websocket-map.conf" /etc/nginx/conf.d/tiendataudio-websocket-map.conf
-sed "s/__APP_DOMAIN__/$APP_DOMAIN/g" "$DEPLOY_DIR/nginx/tiendataudio.conf.template" \
-  > /etc/nginx/sites-available/tiendataudio
-ln -sfn /etc/nginx/sites-available/tiendataudio /etc/nginx/sites-enabled/tiendataudio
-rm -f /etc/nginx/sites-enabled/default
-nginx -t
-systemctl enable --now nginx
-systemctl reload nginx
+if [[ "$REVERSE_PROXY_MODE" == nginx ]]; then
+  install -m 0644 "$DEPLOY_DIR/nginx/websocket-map.conf" /etc/nginx/conf.d/tiendataudio-websocket-map.conf
+  sed "s/__APP_DOMAIN__/$APP_DOMAIN/g" "$DEPLOY_DIR/nginx/tiendataudio.conf.template" \
+    > /etc/nginx/sites-available/tiendataudio
+  ln -sfn /etc/nginx/sites-available/tiendataudio /etc/nginx/sites-enabled/tiendataudio
+  rm -f /etc/nginx/sites-enabled/default
+  nginx -t
+  systemctl enable --now nginx
+  systemctl reload nginx
+fi
 
 ufw allow "$SSH_PORT/tcp"
 ufw allow 80/tcp
@@ -188,9 +206,13 @@ systemctl daemon-reload
 systemctl enable tiendataudio.service
 systemctl enable --now tiendataudio-backup.timer
 
-if [[ -n "$LETSENCRYPT_EMAIL" ]]; then
+if [[ "$REVERSE_PROXY_MODE" == nginx && -n "$LETSENCRYPT_EMAIL" ]]; then
   certbot --nginx --non-interactive --agree-tos --redirect \
     --email "$LETSENCRYPT_EMAIL" -d "$APP_DOMAIN"
 fi
 
-echo "Provisioning complete. Add the dedicated CI public key to /home/$DEPLOY_USER/.ssh/authorized_keys, then run the first deployment."
+if [[ "$REVERSE_PROXY_MODE" == caddy ]]; then
+  echo "Provisioning complete. Configure the existing Caddy proxy for $APP_DOMAIN -> $APP_BIND_HOST:3000, then run the first deployment."
+else
+  echo "Provisioning complete. Add the dedicated CI public key to /home/$DEPLOY_USER/.ssh/authorized_keys, then run the first deployment."
+fi

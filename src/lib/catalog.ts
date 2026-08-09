@@ -3,9 +3,8 @@ import amplifiersData from '../../data/products/amplifiers.json'
 import categoriesData from '../../data/categories.json'
 import brandsData from '../../data/brands.json'
 import combosData from '../../data/combos.json'
-import postsData from '../../data/posts.json'
-import settingsData from '../../data/settings.json'
-import type { BlogPost, Brand, Category, Combo, Product, ProductSEO } from './data'
+import type { Brand, Category, Combo, Product, ProductSEO } from './data'
+import { getContentPostBySlug, listContentPosts } from './content-repository'
 import { getDb, hasMongoConfig } from './mongodb'
 
 type CatalogFilters = {
@@ -122,10 +121,6 @@ export async function getProducts(filters: CatalogFilters = {}) {
   )
 }
 
-export async function getAllProducts() {
-  return getProducts()
-}
-
 export async function getProductBySlug(slug: string) {
   return fallbackOr(
     () => fallbackProducts().find((product) => product.slug === slug) || null,
@@ -154,11 +149,6 @@ export async function getCategories() {
   )
 }
 
-export async function getCategoryBySlug(slug: string) {
-  const categories = await getCategories()
-  return categories.find((category) => category.slug === slug || category.id === slug) || null
-}
-
 export async function getBrands() {
   return fallbackOr(
     () => fallbackBrands.map((brand, index) => ({ ...brand, sortOrder: brand.sortOrder ?? index })),
@@ -173,11 +163,6 @@ export async function getBrands() {
   )
 }
 
-export async function getBrandBySlug(slug: string) {
-  const brands = await getBrands()
-  return brands.find((brand) => brand.slug === slug || brand.id === slug) || null
-}
-
 export async function getCombos() {
   return fallbackOr(
     () => combosData as Combo[],
@@ -186,25 +171,11 @@ export async function getCombos() {
 }
 
 export async function getPosts(published = true) {
-  return fallbackOr(
-    () => (postsData as BlogPost[]).filter((post) => (published ? post.published : true)),
-    async (db) => {
-      const query = published ? { published: true } : {}
-      return (await db.collection('posts').find(query).sort({ publishedAt: -1 }).toArray()) as unknown as BlogPost[]
-    },
-  )
+  return (await listContentPosts({ limit: 500 }, published)).items
 }
 
 export async function getPostBySlug(slug: string) {
-  const posts = await getPosts(false)
-  return posts.find((post) => post.slug === slug) || null
-}
-
-export async function getSettings() {
-  return fallbackOr(
-    () => settingsData,
-    async (db) => (await db.collection('site_settings').findOne({ key: 'site' }))?.value || settingsData,
-  )
+  return getContentPostBySlug(slug)
 }
 
 export async function getDashboardStats() {

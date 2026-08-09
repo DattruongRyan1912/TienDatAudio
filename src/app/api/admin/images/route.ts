@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 interface ProductImage {
   id: string
@@ -53,6 +54,8 @@ function saveImages(images: ProductImage[]) {
 
 // GET - Lấy danh sách hình ảnh
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { searchParams } = new URL(request.url)
     const productId = searchParams.get('productId')
@@ -83,6 +86,8 @@ export async function GET(request: NextRequest) {
 
 // POST - Thêm hình ảnh mới
 export async function POST(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { image } = await request.json()
     
@@ -143,6 +148,8 @@ export async function POST(request: NextRequest) {
 
 // PUT - Cập nhật hình ảnh
 export async function PUT(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { image } = await request.json()
     
@@ -204,6 +211,8 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Xóa hình ảnh
 export async function DELETE(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { imageId } = await request.json()
     

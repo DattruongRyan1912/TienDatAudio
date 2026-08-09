@@ -1,30 +1,9 @@
 {
-  "siteName": "Tiến Đạt Audio",
-  "siteDescription": "Địa chỉ uy tín số 1 về thiết bị âm thanh tại Quảng Ngãi. Chúng tôi cung cấp giải pháp âm thanh chuyên nghiệp cho gia đình, hội trường, quán karaoke với dịch vụ tư vấn tận tâm.",
-  "siteUrl": "https://tiendataudioquangngai.id.vn/",
-  "contactEmail": "contact@tiendataudio.com",
-  "contactPhone": "0934995657",
-  "address": "264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi, Việt Nam",
-  "businessHours": "8:00 - 22:00 (Thứ 2 - Chủ nhật)",
-  "logo": "/images/logo.png",
   "favicon": "/favicon.ico",
-  "socialMedia": {
-    "facebook": "https://www.facebook.com/amthanhtiendat",
-    "youtube": "https://youtube.com/@tiendataudio",
-    "instagram": "https://instagram.com/tiendataudio",
-    "tiktok": "https://tiktok.com/@tiendataudio"
-  },
-  "smtp": {
-    "host": "",
-    "port": 587,
-    "username": "",
-    "password": "",
-    "secure": false
-  },
   "analytics": {
     "googleAnalyticsId": "",
     "facebookPixelId": "",
     "googleTagManagerId": ""
   },
-  "updatedAt": "2025-09-14T08:01:54.595Z"
+  "updatedAt": "2026-08-09T00:00:00.000Z"
 }

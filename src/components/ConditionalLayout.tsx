@@ -4,12 +4,14 @@ import { usePathname } from 'next/navigation'
 import SonicHeader from '@/components/sonic/SonicHeader'
 import SonicFooter from '@/components/sonic/SonicFooter'
 import FloatingContact from '@/components/sonic/FloatingContact'
+import type { BusinessProfile } from '@/lib/business-profile'
 
 interface ConditionalLayoutProps {
   children: React.ReactNode
+  profile: BusinessProfile
 }
 
-export default function ConditionalLayout({ children }: ConditionalLayoutProps) {
+export default function ConditionalLayout({ children, profile }: ConditionalLayoutProps) {
   const pathname = usePathname()
   
   // Check if current route is admin
@@ -27,8 +29,8 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
       <main>
         {children}
       </main>
-      <FloatingContact />
-      <SonicFooter />
+      <FloatingContact profile={profile} />
+      <SonicFooter profile={profile} />
     </>
   )
 }

@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server'
-import { v2 as cloudinary } from 'cloudinary'
+import cloudinary from '@/lib/cloudinary'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+interface CloudinaryResource {
+  public_id: string
+  resource_type?: string
+}
 
 export async function DELETE(request: Request) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { searchParams } = new URL(request.url)
     const folderPath = searchParams.get('folderPath')
@@ -34,14 +35,14 @@ export async function DELETE(request: Request) {
         .execute()
     ])
 
-    const allFiles: any[] = []
+    const allFiles: CloudinaryResource[] = []
     
     if (imageResults.status === 'fulfilled' && imageResults.value.resources) {
-      allFiles.push(...imageResults.value.resources)
+      allFiles.push(...imageResults.value.resources as CloudinaryResource[])
     }
     
     if (videoResults.status === 'fulfilled' && videoResults.value.resources) {
-      allFiles.push(...videoResults.value.resources)
+      allFiles.push(...videoResults.value.resources as CloudinaryResource[])
     }
 
     // Filter files that belong to this folder or its subfolders
@@ -50,8 +51,6 @@ export async function DELETE(request: Request) {
       file.public_id === folderPath
     )
 
-    console.log(`Found ${folderFiles.length} files to delete in folder: ${folderPath}`)
-
     // Delete all files in the folder
     const deletedFiles = []
     const failedDeletes = []
@@ -59,7 +58,7 @@ export async function DELETE(request: Request) {
     for (const file of folderFiles) {
       try {
         const result = await cloudinary.uploader.destroy(file.public_id, {
-          resource_type: file.resource_type || 'image'
+          resource_type: file.resource_type === 'video' ? 'video' : 'image'
         })
         
         if (result.result === 'ok') {
@@ -67,18 +66,18 @@ export async function DELETE(request: Request) {
         } else {
           failedDeletes.push({ public_id: file.public_id, error: result.result })
         }
-      } catch (error: any) {
-        failedDeletes.push({ public_id: file.public_id, error: error.message })
+      } catch (error: unknown) {
+        failedDeletes.push({
+          public_id: file.public_id,
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
       }
     }
 
     // Try to delete the folder itself (if it exists as a folder in Cloudinary)
     try {
       await cloudinary.api.delete_folder(folderPath)
-      console.log(`Deleted folder: ${folderPath}`)
-    } catch (error) {
-      console.log(`Could not delete folder structure: ${folderPath}`)
-    }
+    } catch {}
 
     return NextResponse.json({
       success: true,
@@ -88,13 +87,13 @@ export async function DELETE(request: Request) {
       totalFiles: folderFiles.length
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Delete folder error:', error)
     
     return NextResponse.json(
       { 
         success: false, 
-        message: error.message || 'Không thể xóa thư mục'
+        message: error instanceof Error ? error.message : 'Không thể xóa thư mục'
       },
       { status: 500 }
     )

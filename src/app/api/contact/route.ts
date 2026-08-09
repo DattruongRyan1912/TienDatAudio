@@ -8,6 +8,25 @@ function clean(value: unknown, max = 500) {
   return String(value || '').trim().slice(0, max)
 }
 
+function cleanAttribution(value: unknown) {
+  const input = value && typeof value === 'object' ? value as Record<string, unknown> : {}
+  const utmInput = input.utm && typeof input.utm === 'object' ? input.utm as Record<string, unknown> : {}
+  return {
+    landingPath: clean(input.landingPath, 500),
+    referrer: clean(input.referrer, 1000),
+    sessionId: clean(input.sessionId, 100),
+    articleId: clean(input.articleId, 100),
+    productId: clean(input.productId, 100),
+    utm: {
+      source: clean(utmInput.source, 120),
+      medium: clean(utmInput.medium, 120),
+      campaign: clean(utmInput.campaign, 160),
+      term: clean(utmInput.term, 160),
+      content: clean(utmInput.content, 160),
+    },
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json() as Record<string, unknown>
@@ -34,6 +53,7 @@ export async function POST(request: Request) {
       budget: clean(body.budget, 80),
       message,
       source: clean(body.source, 80) || 'website',
+      attribution: cleanAttribution(body.attribution),
     })
 
     return NextResponse.json({ success: true, id: lead.id }, { status: 201 })
@@ -42,4 +62,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Không thể gửi yêu cầu lúc này' }, { status: 500 })
   }
 }
-

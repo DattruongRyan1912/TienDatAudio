@@ -1,23 +1,23 @@
-import type { Viewport } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Manrope } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
-import { SettingsProvider } from '@/contexts/SettingsContext'
 import { ToastProvider } from '@/components/ui/toast'
 import { buildAIReadableStructuredData, getSEOConfig } from '@/lib/seo-strategy'
+import { getBusinessProfile } from '@/lib/business-profile'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
+import SiteAnalytics from '@/components/analytics/SiteAnalytics'
 
 const manrope = Manrope({
   subsets: ["latin", "vietnamese"],
   variable: "--font-manrope",
 });
 
-// Metadata is handled by individual pages
-// export const metadata: Metadata = generateSEOMetadata({
-//   pagePath: '/'
-// })
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -31,8 +31,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const seoConfig = await getSEOConfig()
-  const discoveryStructuredData = buildAIReadableStructuredData(seoConfig)
+  const [seoConfig, profile] = await Promise.all([getSEOConfig(), getBusinessProfile()])
+  const discoveryStructuredData = buildAIReadableStructuredData(seoConfig, profile)
 
   return (
     <html lang="vi" data-scroll-behavior="smooth" className={`${manrope.variable} dark`}>
@@ -47,14 +47,13 @@ export default async function RootLayout({
       </head>
       <body className="antialiased min-h-screen">
         <ToastProvider>
-          <SettingsProvider>
-            <ThemeProvider>
-              <ConditionalLayout>
-                {children}
-              </ConditionalLayout>
-            </ThemeProvider>
-          </SettingsProvider>
+          <ThemeProvider>
+            <ConditionalLayout profile={profile}>
+              {children}
+            </ConditionalLayout>
+          </ThemeProvider>
         </ToastProvider>
+        <SiteAnalytics />
         <SpeedInsights />
         <Analytics />
       </body>

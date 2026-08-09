@@ -38,12 +38,6 @@ function parsePasswordHash(value: string) {
   return { salt, digest }
 }
 
-export async function hashAdminPassword(password: string) {
-  const salt = randomBytes(16).toString('hex')
-  const derivedKey = (await scrypt(password, salt, 64)) as Buffer
-  return `scrypt$${salt}$${derivedKey.toString('hex')}`
-}
-
 async function verifyPassword(password: string, storedHash: string) {
   const parsed = parsePasswordHash(storedHash)
   if (!parsed) return false
@@ -74,7 +68,7 @@ export function createAdminSession(username: string) {
   return `${encodedPayload}.${sign(encodedPayload)}`
 }
 
-export function readAdminSession(token?: string | null): AdminSession | null {
+function readAdminSession(token?: string | null): AdminSession | null {
   if (!token) return null
   const [payload, signature] = token.split('.')
   if (!payload || !signature) return null

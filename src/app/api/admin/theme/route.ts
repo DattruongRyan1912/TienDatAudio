@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 const THEME_FILE = path.join(process.cwd(), 'data', 'theme.json')
 
@@ -167,6 +168,8 @@ function saveTheme(theme: Theme) {
 
 // GET - Lấy cấu hình theme
 export async function GET() {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const theme = getTheme()
     
@@ -192,6 +195,8 @@ export async function GET() {
 
 // PUT - Cập nhật cấu hình theme
 export async function PUT(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { theme } = await request.json()
     
@@ -232,6 +237,8 @@ export async function PUT(request: NextRequest) {
 
 // POST - Tạo backup theme
 export async function POST() {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const theme = getTheme()
     

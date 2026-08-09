@@ -1,11 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
 import cloudinary from '@/lib/cloudinary'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
+
+interface CloudinaryResource {
+  public_id: string
+  secure_url?: string
+  url?: string
+  format?: string
+  resource_type?: string
+  width?: number
+  height?: number
+  bytes?: number
+  created_at?: string
+  folder?: string
+  duration?: number
+  tags?: string[]
+}
+
+interface CloudinaryFolder {
+  name: string
+  path: string
+  count: number
+}
 
 export async function GET(request: NextRequest) {
+  if (!(await requireAdmin())) return unauthorizedResponse()
+
   try {
     const { searchParams } = new URL(request.url)
     const folder = searchParams.get('folder') || 'tiendataudio'
-    const maxResults = parseInt(searchParams.get('max_results') || '50')
+    const requestedMax = Number.parseInt(searchParams.get('max_results') || '50', 10)
+    const maxResults = Number.isFinite(requestedMax) ? Math.min(Math.max(requestedMax, 1), 500) : 50
 
     // Get both images and videos separately since 'auto' doesn't work
     const [imageResults, videoResults] = await Promise.allSettled([
@@ -22,14 +47,14 @@ export async function GET(request: NextRequest) {
     ])
 
     // Combine results
-    const allFiles: any[] = []
+    const allFiles: CloudinaryResource[] = []
     
     if (imageResults.status === 'fulfilled' && imageResults.value.resources) {
-      allFiles.push(...imageResults.value.resources)
+      allFiles.push(...imageResults.value.resources as CloudinaryResource[])
     }
     
     if (videoResults.status === 'fulfilled' && videoResults.value.resources) {
-      allFiles.push(...videoResults.value.resources)
+      allFiles.push(...videoResults.value.resources as CloudinaryResource[])
     }
 
     // Filter by folder - exact folder match or subfolder
@@ -63,10 +88,14 @@ export async function GET(request: NextRequest) {
     })
 
     // Sort combined results by created_at
-    filteredFiles.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    filteredFiles.sort((a, b) => {
+      const bTime = b.created_at ? Date.parse(b.created_at) : 0
+      const aTime = a.created_at ? Date.parse(a.created_at) : 0
+      return bTime - aTime
+    })
 
     // Get folders using the admin API
-    let folders: any[] = []
+    let folders: CloudinaryFolder[] = []
     try {
       // Create folder structure from files
       const folderSet = new Set<string>()
@@ -124,23 +153,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Process files
-    const files = filteredFiles.map((resource: any) => ({
+    const files = filteredFiles.map((resource) => ({
       public_id: resource.public_id,
-      secure_url: resource.secure_url,
-      url: resource.url,
-      format: resource.format,
-      resource_type: resource.resource_type,
+      secure_url: resource.secure_url || '',
+      url: resource.url || '',
+      format: resource.format || '',
+      resource_type: resource.resource_type === 'video' || resource.resource_type === 'raw'
+        ? resource.resource_type
+        : 'image',
       width: resource.width,
       height: resource.height,
-      bytes: resource.bytes,
-      created_at: resource.created_at,
+      bytes: resource.bytes || 0,
+      created_at: resource.created_at || '',
       folder: resource.folder,
       duration: resource.duration,
       tags: resource.tags || []
     }))
 
     // Process folders
-    const processedFolders = folders.map((folder: any) => ({
+    const processedFolders = folders.map((folder) => ({
       name: folder.name,
       path: folder.path,
       count: folder.count
@@ -160,8 +191,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Failed to fetch files',
-        message: error instanceof Error ? error.message : 'Unknown error',
-        details: error
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     )

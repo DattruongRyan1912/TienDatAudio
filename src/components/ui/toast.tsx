@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react'
+import { useCallback, useMemo, useState, createContext, useContext, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle, AlertCircle, Info, XCircle } from 'lucide-react'
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info'
+type ToastType = 'success' | 'error' | 'warning' | 'info'
 
 export interface Toast {
   id: string
@@ -58,8 +58,12 @@ const iconColors = {
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const addToast = (toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9)
+  const removeToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id))
+  }, [])
+
+  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
+    const id = Math.random().toString(36).slice(2, 11)
     const newToast = { ...toast, id }
     setToasts(prev => [...prev, newToast])
 
@@ -68,14 +72,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       removeToast(id)
     }, duration)
-  }
+  }, [removeToast])
 
-  const removeToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id))
-  }
+  const value = useMemo(() => ({ addToast, removeToast, toasts }), [addToast, removeToast, toasts])
 
   return (
-    <ToastContext.Provider value={{ addToast, removeToast, toasts }}>
+    <ToastContext.Provider value={value}>
       {children}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </ToastContext.Provider>

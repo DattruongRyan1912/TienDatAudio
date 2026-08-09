@@ -1,28 +1,5 @@
 {
   "id": "seo-strategy",
-  "entity": {
-    "name": "Tiến Đạt Audio",
-    "alternateName": "Tiến Đạt Audio Quảng Ngãi",
-    "description": "Đơn vị tư vấn, phối ghép và cung cấp thiết bị âm thanh cho gia đình, phòng karaoke, cafe và không gian chuyên nghiệp tại Quảng Ngãi.",
-    "url": "https://tiendataudioquangngai.id.vn",
-    "logo": "/images/logo.png",
-    "phone": "0934995657",
-    "email": "contact@tiendataudio.com",
-    "address": "264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi, Việt Nam",
-    "areaServed": [
-      "Quảng Ngãi",
-      "Miền Trung",
-      "Việt Nam"
-    ],
-    "latitude": 15.11569782866824,
-    "longitude": 108.80262824033872,
-    "sameAs": [
-      "https://www.facebook.com/amthanhtiendat",
-      "https://youtube.com/@tiendataudio",
-      "https://instagram.com/tiendataudio",
-      "https://tiktok.com/@tiendataudio"
-    ]
-  },
   "keywords": [
     {
       "id": "kw-local-audio-quang-ngai",

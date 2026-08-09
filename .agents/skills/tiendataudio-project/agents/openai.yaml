@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tiến Đạt Audio Project"
+  short_description: "Workflow chuẩn cho dự án Tiến Đạt Audio"
+  default_prompt: "Dùng $tiendataudio-project để xử lý task này theo đúng kiến trúc và quy trình kiểm chứng của dự án."

@@ -1,7 +1,6 @@
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 
 export default async function LegacyBlogArticle({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  redirect(`/kien-thuc/${slug}`)
+  permanentRedirect(`/kien-thuc/${slug}`)
 }
-

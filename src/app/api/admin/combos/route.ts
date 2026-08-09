@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { getAllCombos, type Combo } from '@/lib/data'
+import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 
 const COMBOS_FILE = path.join(process.cwd(), 'data', 'combos.json')
 
@@ -21,9 +22,8 @@ async function readCombosFile(): Promise<Combo[]> {
         await ensureDataDirectory()
         const data = await fs.readFile(COMBOS_FILE, 'utf-8')
         return JSON.parse(data)
-    } catch (error) {
+    } catch {
         // If file doesn't exist, return empty array
-        console.log('Combos file not found, creating new one')
         return []
     }
 }
@@ -35,6 +35,8 @@ async function writeCombosFile(combos: Combo[]): Promise<void> {
 }
 
 export async function GET() {
+    if (!(await requireAdmin())) return unauthorizedResponse()
+
     try {
         const combos = await getAllCombos()
         return NextResponse.json({ combos })
@@ -48,6 +50,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+    if (!(await requireAdmin())) return unauthorizedResponse()
+
     try {
         const comboData = await request.json()
         
@@ -92,6 +96,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+    if (!(await requireAdmin())) return unauthorizedResponse()
+
     try {
         const comboData = await request.json()
         
@@ -138,6 +144,8 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+    if (!(await requireAdmin())) return unauthorizedResponse()
+
     try {
         const { searchParams } = new URL(request.url)
         const id = searchParams.get('id')
