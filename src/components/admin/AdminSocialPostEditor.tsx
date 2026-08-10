@@ -15,6 +15,7 @@ import { slugify } from '@/lib/slug'
 import { applyNativeSocialGalleryImport, applyNativeSocialLinkImport } from '@/modules/social/domain/native-import'
 import type { SocialGalleryScanResult, SocialLinkImportPreview, SocialLinkImportedAsset } from '@/modules/social/domain/link-preview'
 import { detectFacebookBrowserExtension, scanFacebookGalleryWithBrowserExtension } from '@/modules/social/infrastructure/facebook-browser-extension'
+import { buildImportedSocialSlug } from '@/modules/social/domain/slug'
 import { SOCIAL_CATEGORIES, SOCIAL_MEDIA_TYPES, SOCIAL_POST_TYPES, type SocialMediaItem, type SocialPost, type SocialPostRevision } from '@/modules/social/domain/types'
 
 function blankPost(): SocialPost {
@@ -337,7 +338,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
       ...current,
       ...(preview.kind === 'facebook' ? { postType: 'facebook_embed' as const, facebookSourceUrl: preview.sourceUrl, facebookEmbedUrl: preview.facebookEmbedUrl } : {}),
       title: current.title.trim() || preview.title,
-      slug: current.slug.trim() || slugify(preview.title),
+      slug: buildImportedSocialSlug(current.slug, current.title, preview.title, preview.sourceUrl),
       excerpt: current.excerpt.trim() || fallbackDescription,
       text: current.text.trim() || (preview.kind === 'facebook' ? '' : `Xem nội dung tại ${preview.sourceUrl}`),
       links: current.links.some((item) => item.url === link.url) ? current.links : [...current.links, link],

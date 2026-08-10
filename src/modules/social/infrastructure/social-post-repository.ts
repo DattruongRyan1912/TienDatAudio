@@ -22,6 +22,7 @@ async function ensureSocialIndexes() {
       db.collection('posts').createIndex({ contentType: 1, category: 1, publishedAt: -1 }, { name: 'posts_social_category_published' }),
       db.collection('posts').createIndex({ relatedProductIds: 1 }, { name: 'posts_related_product_ids' }),
       db.collection('posts').createIndex({ contentType: 1, tags: 1 }, { name: 'posts_social_tags' }),
+      db.collection('posts').createIndex({ contentType: 1, legacySlugs: 1 }, { name: 'posts_social_legacy_slugs' }),
     ])).catch((error) => {
       indexesPromise = null
       throw error
@@ -93,7 +94,7 @@ export async function getSocialPostBySlug(slug: string, publicOnly = true) {
   if (!hasMongoConfig()) return null
   try {
     const db = await getDb()
-    const document = await db.collection('posts').findOne({ contentType: 'social', slug })
+    const document = await db.collection('posts').findOne({ contentType: 'social', $or: [{ slug }, { legacySlugs: slug }] })
     if (!document) return null
     const post = normalizeSocialPost(document)
     return !publicOnly || hasPublicSocialStatus(post) ? post : null

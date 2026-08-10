@@ -60,6 +60,7 @@ export interface SocialPost {
   postType: SocialPostType
   title: string
   slug: string
+  legacySlugs?: string[]
   excerpt: string
   text: string
   category: string

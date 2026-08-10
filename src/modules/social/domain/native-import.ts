@@ -1,5 +1,5 @@
-import { slugify } from '@/lib/slug'
 import type { SocialLinkImportPreview, SocialLinkImportedAsset } from './link-preview'
+import { buildImportedSocialSlug } from './slug'
 import type { SocialPost } from './types'
 
 function stableLinkImage(currentImage: string, sourceImage: string, importedImage: string) {
@@ -32,7 +32,7 @@ export function applyNativeSocialGalleryImport(post: SocialPost, preview: Social
   }))
   const media = [...post.media, ...importedMedia.filter((asset) => !post.media.some((item) => item.publicId === asset.publicId || item.url === asset.url))].slice(0, 50)
   const title = post.title.trim() || preview.title
-  const slug = post.slug.trim() || slugify(title)
+  const slug = buildImportedSocialSlug(post.slug, post.title, title, preview.sourceUrl)
 
   return {
     ...post,

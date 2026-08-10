@@ -1,22 +1,22 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Phone } from 'lucide-react'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { getBusinessProfile } from '@/lib/business-profile'
 import { getProducts } from '@/lib/catalog'
 import { getPublicPosts } from '@/lib/content-repository'
-import { getSocialPostBySlug, listSocialPosts } from '@/modules/social/application/social-post-service'
+import { getSocialPostBySlug } from '@/modules/social/application/social-post-service'
 import SocialPostCard from '@/components/social/SocialPostCard'
 import SocialRelatedProduct from '@/components/social/SocialRelatedProduct'
 import SonicReveal from '@/components/sonic/SonicReveal'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
-export const revalidate = 300
-
-export async function generateStaticParams() {
-  return (await listSocialPosts({ limit: 100 })).items.map((post) => ({ slug: post.slug }))
-}
+// The root layout reads the theme cookie. Social posts are also created in
+// MongoDB after build time, so this CMS detail route must render dynamically.
+// Keeping it in the static/revalidate pipeline causes DYNAMIC_SERVER_USAGE and
+// a 500 response in production.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const post = await getSocialPostBySlug((await params).slug)
@@ -32,8 +32,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SocialPostDetailPage({ params }: PageProps) {
-  const post = await getSocialPostBySlug((await params).slug)
+  const requestedSlug = (await params).slug
+  const post = await getSocialPostBySlug(requestedSlug)
   if (!post) notFound()
+  if (post.slug !== requestedSlug) permanentRedirect(`/bai-viet/${post.slug}`)
   const [profile, products, editorialPosts] = await Promise.all([getBusinessProfile(), getProducts(), getPublicPosts(100)])
   const relatedProducts = products.filter((product) => post.relatedProductIds.includes(product.id)).slice(0, 4)
   const relatedArticles = editorialPosts.filter((article) => post.relatedArticleIds.includes(article.id)).slice(0, 4)

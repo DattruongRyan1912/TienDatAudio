@@ -11,6 +11,7 @@ import { parseFacebookCdpActivePort } from '../src/modules/social/infrastructure
 import { resolveFacebookStorageStatePath } from '../src/modules/social/infrastructure/facebook-session-state'
 import { normalizeFacebookExtensionGalleryResult } from '../src/modules/social/infrastructure/facebook-browser-extension'
 import { hasPublicSocialStatus, normalizeSocialPost, validateSocialPost } from '../src/modules/social/domain/validation'
+import { buildImportedSocialSlug, buildSocialPostSlug, extractFacebookPostIdentity } from '../src/modules/social/domain/slug'
 import type { SocialMediaItem } from '../src/modules/social/domain/types'
 
 test('social media layout follows the editorial gallery contract', () => {
@@ -36,6 +37,11 @@ test('social normalization keeps safe media hosts and derives stable metadata', 
   assert.equal(post.media.length, 1)
   assert.equal(post.media[0].type, 'youtube')
   assert.equal(post.seo.canonicalPath, '/bai-viet/setup-nghe-nhac-tai-showroom')
+})
+
+test('social normalization keeps legacy slugs for backward-compatible redirects', () => {
+  const post = normalizeSocialPost({ title: 'Facebook', slug: 'facebook-1774163126949309', legacySlugs: ['facebook', ''] })
+  assert.deepEqual(post.legacySlugs, ['facebook'])
 })
 
 test('public social status requires a publish time that has arrived', () => {
@@ -73,6 +79,19 @@ test('public link preview rejects local and non-http URLs before fetching', () =
   assert.throws(() => normalizePublicLinkUrl('http://[::1]/admin'), /PUBLIC_URL_INVALID/)
   assert.throws(() => normalizePublicLinkUrl('file:///etc/passwd'), /PUBLIC_URL_INVALID/)
   assert.throws(() => normalizePublicLinkUrl('https://localhost/'), /PUBLIC_URL_INVALID/)
+})
+
+test('social source slugs stay readable and unique for repeated Facebook imports', () => {
+  const source = 'https://www.facebook.com/story.php?story_fbid=1774163126949309&id=100030669150233'
+  assert.equal(extractFacebookPostIdentity(source), '1774163126949309')
+  assert.equal(buildSocialPostSlug('Bông Trương', source), 'bong-truong-1774163126949309')
+  assert.notEqual(
+    buildSocialPostSlug('Bông Trương', source),
+    buildSocialPostSlug('Bông Trương', 'https://www.facebook.com/story.php?story_fbid=1774163126949310&id=100030669150233'),
+  )
+  assert.equal(buildSocialPostSlug('Bài thủ công'), 'bai-thu-cong')
+  assert.equal(buildImportedSocialSlug('bong-truong', 'Bông Trương', 'Bông Trương', source), 'bong-truong-1774163126949309')
+  assert.equal(buildImportedSocialSlug('custom-slug', 'Bông Trương', 'Bông Trương', source), 'custom-slug')
 })
 
 test('facebook gallery accepts CDN media and maps selected assets in order', () => {
@@ -120,12 +139,14 @@ test('native social import uses cached media and removes the broken embed fallba
   const next = applyNativeSocialLinkImport(post, preview, { url: 'https://res.cloudinary.com/demo/image/upload/social.jpg', publicId: 'social/imported/social', width: 1200, height: 800, bytes: 1200, format: 'jpg' })
   assert.equal(next.postType, 'native')
   assert.equal(next.title, 'Bông Trương')
+  assert.equal(next.slug, 'bong-truong-1774163126949309')
   assert.equal(next.text, 'Bán cặp loa tại showroom.')
   assert.equal(next.facebookSourceUrl, preview.sourceUrl)
   assert.equal(next.facebookEmbedUrl, '')
   assert.equal(next.media[0].publicId, 'social/imported/social')
   assert.equal(next.links[0].imageUrl, 'https://res.cloudinary.com/demo/image/upload/social.jpg')
   assert.equal(next.seo.ogImage, 'https://res.cloudinary.com/demo/image/upload/social.jpg')
+  assert.equal(normalizeSocialPost(next).facebookSourceUrl, preview.sourceUrl)
 })
 
 test('browser extension gallery result is allowlisted, deduplicated and marked as browser session', () => {
@@ -143,7 +164,7 @@ test('browser extension gallery result is allowlisted, deduplicated and marked a
   assert.equal(result.sessionSource, 'browser_session')
 })
 
-test('browser extension manifest keeps narrow permissions and all scripts parse', () => {
+test('browser extension manifest keeps narrow permissions and all scripts initialize', () => {
   const extensionRoot = resolve(process.cwd(), 'extensions/facebook-import-bridge')
   const manifest = JSON.parse(readFileSync(resolve(extensionRoot, 'manifest.json'), 'utf8')) as {
     manifest_version?: number
@@ -156,6 +177,21 @@ test('browser extension manifest keeps narrow permissions and all scripts parse'
   assert.equal(manifest.permissions?.includes('debugger'), false)
   assert.ok(manifest.host_permissions?.includes('https://tiendataudioquangngai.id.vn/*'))
   for (const filename of ['admin-bridge.js', 'service-worker.js', 'facebook-scanner.js']) {
-    assert.doesNotThrow(() => new Script(readFileSync(resolve(extensionRoot, filename), 'utf8'), { filename }))
+    const script = new Script(readFileSync(resolve(extensionRoot, filename), 'utf8'), { filename })
+    assert.doesNotThrow(() => script.runInNewContext({
+      chrome: {
+        runtime: {
+          getManifest: () => manifest,
+          lastError: null,
+          onMessage: { addListener: () => undefined },
+          sendMessage: () => undefined,
+        },
+      },
+      window: {
+        addEventListener: () => undefined,
+        location: { href: 'https://tiendataudioquangngai.id.vn/admin/social-posts/new', origin: 'https://tiendataudioquangngai.id.vn', pathname: '/admin/social-posts/new' },
+        postMessage: () => undefined,
+      },
+    }))
   }
 })

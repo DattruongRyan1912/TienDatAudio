@@ -139,7 +139,8 @@ export function normalizeSocialPost(value: unknown): SocialPost {
   const mentions = list(input.mentions, 30, 120)
   const createdAt = dateOrNull(input.createdAt, now) || now
   const updatedAt = dateOrNull(input.updatedAt, createdAt) || createdAt
-  const facebook = record(input.facebook || input.source)
+  const facebook = record(input.facebook)
+  const source = record(input.source)
   const postType = SOCIAL_POST_TYPES.includes(input.postType as typeof SOCIAL_POST_TYPES[number]) ? input.postType as SocialPost['postType'] : 'native'
   const excerpt = inlineText(input.excerpt, textValue.replace(/\s+/g, ' ').slice(0, 240), 500)
   const engagement = normalizeEngagement(input.engagement)
@@ -150,6 +151,7 @@ export function normalizeSocialPost(value: unknown): SocialPost {
     postType,
     title,
     slug,
+    ...(list(input.legacySlugs, 20, 200).length ? { legacySlugs: list(input.legacySlugs, 20, 200) } : {}),
     excerpt,
     text: textValue,
     category: inlineText(input.category, 'Góc Audio', 120),
@@ -158,8 +160,8 @@ export function normalizeSocialPost(value: unknown): SocialPost {
     author: normalizeAuthor(input.author),
     media,
     links: (Array.isArray(input.links) ? input.links : []).map(normalizeLink).filter((item): item is SocialLinkPreview => Boolean(item)).slice(0, 10),
-    facebookSourceUrl: safeUrl(facebook.facebookSourceUrl ?? facebook.sourceUrl, '', ['facebook.com', 'www.facebook.com', 'm.facebook.com']),
-    facebookEmbedUrl: safeUrl(facebook.facebookEmbedUrl ?? facebook.embedUrl, '', ['facebook.com', 'www.facebook.com', 'm.facebook.com']),
+    facebookSourceUrl: safeUrl(facebook.facebookSourceUrl ?? facebook.sourceUrl ?? source.facebookSourceUrl ?? source.sourceUrl ?? input.facebookSourceUrl, '', ['facebook.com', 'www.facebook.com', 'm.facebook.com']),
+    facebookEmbedUrl: safeUrl(facebook.facebookEmbedUrl ?? facebook.embedUrl ?? source.facebookEmbedUrl ?? source.embedUrl ?? input.facebookEmbedUrl, '', ['facebook.com', 'www.facebook.com', 'm.facebook.com']),
     relatedProductIds: list(input.relatedProductIds, 30, 100),
     relatedArticleIds: list(input.relatedArticleIds ?? input.relatedPostIds, 30, 100),
     relatedProjectIds: list(input.relatedProjectIds, 20, 100),
