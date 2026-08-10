@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Tiến Đạt Audio — Facebook Import Bridge",
   "description": "Quét gallery Facebook bằng phiên Chrome hiện tại và trả dữ liệu về Social Post admin mà không xuất cookie hoặc token.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimum_chrome_version": "120",
   "permissions": [
     "tabs"

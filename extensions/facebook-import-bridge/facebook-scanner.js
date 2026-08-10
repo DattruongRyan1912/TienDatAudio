@@ -1,5 +1,5 @@
 /* global chrome */
-'use strict'
+'use strict';
 
 (() => {
   const nextLabels = new Set(['ảnh tiếp theo', 'next photo', 'next'])

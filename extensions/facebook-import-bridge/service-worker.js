@@ -1,5 +1,5 @@
 /* global chrome */
-'use strict'
+'use strict';
 
 const allowedAdminOrigins = new Set([
   'https://tiendataudioquangngai.id.vn',

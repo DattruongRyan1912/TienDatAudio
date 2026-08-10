@@ -1,5 +1,5 @@
 /* global chrome */
-'use strict'
+'use strict';
 
 (() => {
   const channel = 'tiendataudio.facebook.bridge.v1'
