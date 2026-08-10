@@ -3,12 +3,13 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { getBusinessProfile } from '@/lib/business-profile'
 import { getSEOConfig } from '@/lib/seo-strategy'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/faq',
   title: 'Câu hỏi thường gặp — Tiến Đạt Audio',
   description: 'Các câu hỏi thường gặp về tư vấn, nghe thử, phối ghép và lắp đặt âm thanh tại Tiến Đạt Audio.',
-  alternates: { canonical: '/faq' },
-}
+})
 export const revalidate = 300
 
 export default async function FAQPage() {

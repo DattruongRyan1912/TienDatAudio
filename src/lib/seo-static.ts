@@ -39,16 +39,16 @@ const staticSEOData: Record<string, SEOContent> = {
     ],
     "ogTitle": "Tiến Đạt Audio - Thiết bị âm thanh chuyên nghiệp",
     "ogDescription": "Chuyên cung cấp thiết bị âm thanh chất lượng cao: loa, tai nghe, micro, amply karaoke chính hãng. Giá tốt, chất lượng đảm bảo.",
-    "ogImage": "/images/og-home.jpg",
+    "ogImage": "/images/og-default.jpg",
     "structuredData": {
       "@context": "https://schema.org",
       "@type": "Store",
       "name": "Tiến Đạt Audio",
       "description": "Chuyên cung cấp thiết bị âm thanh chất lượng cao",
-      "url": "https://tien-dat-audio.vercel.app"
+      "url": "https://tiendataudioquangngai.id.vn"
     },
     "metaRobots": "index,follow",
-    "canonicalUrl": "https://tien-dat-audio.vercel.app",
+    "canonicalUrl": "https://tiendataudioquangngai.id.vn/",
     "h1": "Thiết bị âm thanh chuyên nghiệp - Tiến Đạt Audio",
     "h2": [
       "Sản phẩm nổi bật",
@@ -75,10 +75,10 @@ const staticSEOData: Record<string, SEOContent> = {
     ],
     "ogTitle": "Sản phẩm thiết bị âm thanh chính hãng",
     "ogDescription": "Khám phá bộ sưu tập thiết bị âm thanh đa dạng với giá tốt nhất tại Tiến Đạt Audio.",
-    "ogImage": "/images/og-products.jpg",
+    "ogImage": "/images/og-default.jpg",
     "structuredData": {},
     "metaRobots": "index,follow",
-    "canonicalUrl": "https://tien-dat-audio.vercel.app/products",
+    "canonicalUrl": "https://tiendataudioquangngai.id.vn/products",
     "h1": "Sản phẩm thiết bị âm thanh chính hãng",
     "h2": [
       "Loa Bluetooth",

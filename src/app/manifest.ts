@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Chuyên cung cấp thiết bị âm thanh chất lượng cao - Loa, Ampli, Phụ kiện âm thanh chính hãng',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#2563eb',
+    background_color: '#080808',
+    theme_color: '#080808',
     icons: [
       {
         src: '/images/icon-192x192.png',
@@ -19,6 +19,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: '/images/icon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
+        purpose: 'maskable',
       },
     ],
     categories: ['shopping', 'business', 'music'],

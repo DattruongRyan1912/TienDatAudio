@@ -9,6 +9,7 @@ import { getSocialPostBySlug } from '@/modules/social/application/social-post-se
 import SocialPostCard from '@/components/social/SocialPostCard'
 import SocialRelatedProduct from '@/components/social/SocialRelatedProduct'
 import SonicReveal from '@/components/sonic/SonicReveal'
+import { getSocialDiscoveryDescription, getSocialDiscoveryTitle } from '@/modules/social/domain/source-content'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
@@ -22,12 +23,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = await getSocialPostBySlug((await params).slug)
   if (!post) return { title: 'Không tìm thấy bài viết', robots: { index: false, follow: false } }
   const image = post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url
+  const canonicalPath = post.seo.canonicalPath || `/bai-viet/${post.slug}`
+  const discoveryTitle = getSocialDiscoveryTitle({ title: post.seo.metaTitle || post.title, text: post.text, excerpt: post.excerpt, category: post.category })
+  const description = getSocialDiscoveryDescription({ text: post.text, excerpt: post.excerpt, metaDescription: post.seo.metaDescription }) || `Cập nhật ${post.category.toLocaleLowerCase('vi')} từ Tiến Đạt Audio.`
+  const openGraphTitle = getSocialDiscoveryTitle({ title: post.seo.ogTitle || discoveryTitle, text: post.text, excerpt: post.excerpt, category: post.category })
+  const openGraphDescription = getSocialDiscoveryDescription({ text: post.text, excerpt: description, metaDescription: post.seo.ogDescription }) || description
   return {
-    title: post.seo.metaTitle || `${post.title} — Tiến Đạt Audio`,
-    description: post.seo.metaDescription || post.excerpt,
-    alternates: { canonical: post.seo.canonicalPath || `/bai-viet/${post.slug}` },
+    title: `${discoveryTitle} — Tiến Đạt Audio`,
+    description,
+    alternates: { canonical: canonicalPath },
     robots: { index: !post.seo.noIndex, follow: !post.seo.noIndex },
-    openGraph: { type: 'article', locale: 'vi_VN', title: post.seo.ogTitle || post.title, description: post.seo.ogDescription || post.excerpt, images: image ? [{ url: image, alt: post.title }] : [], publishedTime: post.publishedAt || undefined, modifiedTime: post.updatedAt, section: post.category, tags: post.tags },
+    openGraph: { type: 'article', locale: 'vi_VN', url: canonicalPath, siteName: 'Tiến Đạt Audio', title: openGraphTitle, description: openGraphDescription, images: image ? [{ url: image, alt: discoveryTitle }] : [], publishedTime: post.publishedAt || undefined, modifiedTime: post.updatedAt, section: post.category, tags: post.tags },
+    twitter: { card: 'summary_large_image', title: openGraphTitle, description: openGraphDescription, images: image ? [image] : [] },
   }
 }
 
@@ -41,11 +48,13 @@ export default async function SocialPostDetailPage({ params }: PageProps) {
   const relatedArticles = editorialPosts.filter((article) => post.relatedArticleIds.includes(article.id)).slice(0, 4)
   const publishedAt = post.publishedAt || post.createdAt
   const articleUrl = `${profile.siteUrl.replace(/\/$/, '')}/bai-viet/${post.slug}`
+  const discoveryTitle = getSocialDiscoveryTitle({ title: post.title, text: post.text, excerpt: post.excerpt, category: post.category })
+  const discoveryDescription = getSocialDiscoveryDescription({ text: post.text, excerpt: post.excerpt, metaDescription: post.seo.metaDescription }) || post.excerpt
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Article', '@id': `${articleUrl}#article`, headline: post.title, description: post.excerpt, datePublished: publishedAt, dateModified: post.updatedAt, author: { '@type': 'Organization', name: post.author.displayName }, publisher: { '@id': `${profile.siteUrl.replace(/\/$/, '')}#business` }, mainEntityOfPage: articleUrl, image: post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url, articleSection: post.category, keywords: post.tags.join(', '), inLanguage: 'vi-VN' },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Trang chủ', item: profile.siteUrl }, { '@type': 'ListItem', position: 2, name: 'Góc Audio', item: `${profile.siteUrl}/bai-viet` }, { '@type': 'ListItem', position: 3, name: post.title, item: articleUrl }] },
+      { '@type': 'Article', '@id': `${articleUrl}#article`, headline: discoveryTitle, description: discoveryDescription, datePublished: publishedAt, dateModified: post.updatedAt, author: { '@type': 'Organization', name: post.author.displayName }, publisher: { '@id': `${profile.siteUrl.replace(/\/$/, '')}#business` }, mainEntityOfPage: articleUrl, image: post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url, articleSection: post.category, keywords: post.tags.join(', '), inLanguage: 'vi-VN' },
+      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Trang chủ', item: profile.siteUrl }, { '@type': 'ListItem', position: 2, name: 'Góc Audio', item: `${profile.siteUrl}/bai-viet` }, { '@type': 'ListItem', position: 3, name: discoveryTitle, item: articleUrl }] },
     ],
   }
 

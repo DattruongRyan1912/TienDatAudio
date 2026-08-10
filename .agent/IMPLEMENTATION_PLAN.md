@@ -245,7 +245,7 @@ Code implementation của roadmap M0→M6 đã hoàn tất trong workspace và c
 - Dùng `/bai-viet` và `/bai-viet/[slug]` làm canonical Social Hub.
 - Giữ một `posts` source of truth, thêm `contentType: editorial | social`; use case/view model tách theo loại.
 - Native Post là MVP; Facebook Embed là official, lazy-loaded fallback.
-- Chưa triển khai user account, comment, reaction count hoặc Facebook scraping.
+- Chưa triển khai user account, comment, reaction count hoặc Facebook scraping trong public/production flow; gallery worker chỉ là capability admin local opt-in, ưu tiên attach CDP vào Chrome hiện tại để mở tab worker và có profile Playwright tạm làm fallback.
 - Related Project là optional relation; chỉ hiển thị khi project record thật tồn tại.
 
 ### S0 — Architecture gate và design foundation
@@ -362,7 +362,7 @@ Code implementation của roadmap M0→M6 đã hoàn tất trong workspace và c
 
 - nhập URL → preview metadata tối thiểu và kiểm tra allowlist;
 - chọn official embed hoặc tạo native draft;
-- không auto-publish, không hứa lấy được dữ liệu Facebook nếu API/permission không cho phép;
+- không auto-publish, không hứa lấy được dữ liệu Facebook nếu API/permission không cho phép; production admin ưu tiên Chrome Extension bridge allowlist để dùng session browser mà không truyền cookie/token, VPS chỉ nhận gallery do tab admin gửi qua API có auth; CDP Chrome/profile tạm/storage state dưới `.local/facebook/` là fallback local; bài từ profile cá nhân vẫn có multi-upload ảnh gốc + source URL làm fallback;
 - source URL phải hiển thị subtle trên public post.
 
 **Acceptance:** admin unauthenticated 401; create/save/reload/preview/publish; concurrent edit 409; media reorder giữ đúng order; import failure không làm hỏng draft; audit/revision đầy đủ.
@@ -468,7 +468,7 @@ Estimate chỉ dùng để lập capacity, không phải cam kết deadline: Fou
 
 1. Giữ canonical `/bai-viet` như đề xuất và giữ `/kien-thuc` cho editorial hay muốn hợp nhất tên hiển thị?
 2. MVP xác nhận không có comment/like count thật cho tới khi có user/account hoặc integration hợp lệ?
-3. Cho phép import Facebook theo manual fallback/official embed, không scrape và không auto-publish?
+3. Xác nhận dùng multi-upload ảnh gốc cho profile cá nhân và cấp Page ID/Page access token qua secret store nếu muốn bật Graph API cho Facebook Page; không scrape và không auto-publish?
 4. Dữ liệu Project/Case Study đã có source thật chưa; nếu chưa, phase MVP chỉ giữ relation optional và không tạo placeholder?
 
 ### Definition of done
@@ -479,7 +479,7 @@ Chỉ đánh dấu S0–S6 hoàn thành khi đạt `docs/ARCHITECTURE_STANDARD.m
 
 - Actor: Codex theo yêu cầu `tiến hành implement plan đi` của repository owner.
 - Scope/authority: triển khai local code theo S0–S5 và T0; không migration dữ liệu, không upload Cloudinary thật, không deploy hoặc mutate production.
-- Decisions locked for this slice: canonical Social Hub là `/bai-viet`; editorial giữ `/kien-thuc`; Social CMS dùng route riêng `/admin/social-posts` để không phá editor editorial hiện tại; Facebook chỉ official embed/allowlist, không scrape/auto-publish; `SOCIAL_HUB_ENABLED=false` và/hoặc `NEXT_PUBLIC_SOCIAL_HUB_ENABLED=false` là rollback switch.
+- Decisions locked for this slice: canonical Social Hub là `/bai-viet`; editorial giữ `/kien-thuc`; Social CMS dùng route riêng `/admin/social-posts` để không phá editor editorial hiện tại; public/production Facebook chỉ official embed/allowlist, không scrape/auto-publish; gallery worker chỉ admin local opt-in, ưu tiên tab mới qua CDP Chrome hiện tại, không serialize token/cookie/profile; profile tạm/storage state là fallback; `SOCIAL_HUB_ENABLED=false` và/hoặc `NEXT_PUBLIC_SOCIAL_HUB_ENABLED=false` là rollback switch.
 - Changes:
   - T0/S0: semantic Sonic tokens cho dark/light, SSR cookie + localStorage preference, `ThemeToggle` ở public/admin/login, system listener và local-only development session secret dùng chung giữa middleware/Node auth.
   - S1: Social domain types/normalization/invariants/media-layout, Mongo repository trên collection `posts` với `contentType: social`, slug/index/revision/version conflict và explicit editorial discriminator boundary.

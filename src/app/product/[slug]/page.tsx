@@ -1,7 +1,6 @@
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 
 export default async function LegacyProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  redirect(`/san-pham/${slug}`)
+  permanentRedirect(`/san-pham/${slug}`)
 }
-

@@ -559,7 +559,7 @@ export default function SEOPage() {
                       onChange={(e) => updateSelectedSEO('ogImage', e.target.value)}
                       onKeyDown={(e) => e.stopPropagation()}
                       className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
-                      placeholder="/images/og-image.jpg"
+                      placeholder="/images/og-default.jpg"
                     />
                   </div>
                 </div>

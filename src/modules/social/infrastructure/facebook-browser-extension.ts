@@ -5,6 +5,7 @@ import {
   type SocialGalleryImage,
   type SocialGalleryScanResult,
 } from '../domain/link-preview'
+import { normalizeSocialSourceText } from '../domain/source-content'
 
 const BRIDGE_CHANNEL = 'tiendataudio.facebook.bridge.v1'
 const WEB_TO_EXTENSION = 'web-to-extension'
@@ -67,9 +68,11 @@ export function normalizeFacebookExtensionGalleryResult(sourceValue: string, val
 
   if (!images.length) throw new Error('FACEBOOK_GALLERY_NOT_FOUND')
   const finalUrl = normalizeFacebookPhotoUrl(record.finalUrl) || sourceUrl
+  const postText = normalizeSocialSourceText(record.postText)
   return {
     images,
     finalUrl,
+    ...(postText ? { postText } : {}),
     loginRequired: record.loginRequired === true,
     partialGallery: record.partialGallery === true,
     provider: 'browser_extension',

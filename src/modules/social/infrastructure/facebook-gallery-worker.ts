@@ -27,6 +27,20 @@ async function resolvePostRoot(page: Page): Promise<Locator> {
   return (await dialogs.count()) > 0 ? dialogs.last() : page.locator('body')
 }
 
+async function readFacebookPostText(root: Locator) {
+  const preferred = await root.locator('[data-ad-preview="message"], [data-ad-comet-preview="message"], [data-ad-rendering-role="story_message"]').evaluateAll((elements) => elements
+    .map((element) => (element.textContent || '').replace(/\s+/g, ' ').trim())
+    .filter((value) => value.length >= 2)
+    .sort((left, right) => right.length - left.length)[0] || '')
+  if (preferred) return preferred.slice(0, 200_000)
+
+  return (await root.locator('[dir="auto"]').evaluateAll((elements) => elements
+    .map((element) => (element.textContent || '').replace(/\s+/g, ' ').trim())
+    .filter((value) => value.length >= 12 && value.length <= 4_000)
+    .filter((value) => !/email or phone|password|log in|đăng nhập/i.test(value))
+    .sort((left, right) => right.length - left.length)[0] || '')).slice(0, 200_000)
+}
+
 async function clickGalleryControl(context: BrowserContext, page: Page, click: () => Promise<void>, ownedPages?: Set<Page>) {
   const pagesBeforeClick = new Set(context.pages())
   await click().catch(() => undefined)
@@ -306,17 +320,20 @@ export async function scanFacebookGallery(options: FacebookGalleryScanOptions): 
     options.onStatus?.('collecting')
     let root = await resolvePostRoot(page)
     const initialImages = await collectGalleryImages(root)
+    const initialPostText = await readFacebookPostText(root)
     const initialBodyText = await page.locator('body').innerText().catch(() => '')
     if (options.waitForLogin && await hasBlockingLoginGate(page, initialImages.length)) await waitForManualLogin(page, options.onStatus, options.browserMode)
     options.onStatus?.('expanding')
     page = await expandGallery(context, page, root, ownedPages)
     const expandedRoot = await resolvePostRoot(page)
     const expandedImages = await collectGalleryImages(expandedRoot)
+    const expandedPostText = await readFacebookPostText(expandedRoot)
     if (options.waitForLogin && await hasBlockingLoginGate(page, expandedImages.length)) await waitForManualLogin(page, options.onStatus, options.browserMode)
     const viewerImages = page.url().includes('/photo/') ? await collectViewerGalleryImages(page, maxImages) : []
     root = await resolvePostRoot(page)
     const images = mergeGalleryImages(viewerImages, initialImages, expandedImages, await collectGalleryImages(root)).slice(0, maxImages)
     const bodyText = await page.locator('body').innerText().catch(() => '')
+    const postText = await readFacebookPostText(root) || expandedPostText || initialPostText
     const loginRequired = await hasBlockingLoginGate(page, images.length)
     if (!images.length && loginRequired) throw new Error('FACEBOOK_LOGIN_REQUIRED')
     if (!images.length) throw new Error('FACEBOOK_GALLERY_NOT_FOUND')
@@ -328,6 +345,7 @@ export async function scanFacebookGallery(options: FacebookGalleryScanOptions): 
     return {
       images,
       finalUrl: page.url(),
+      ...(postText ? { postText } : {}),
       loginRequired,
       partialGallery: loginRequired || (!galleryOpened && hasUnopenedGalleryCount(galleryText)),
       provider: useCdp ? 'cdp_browser' : options.waitForLogin ? 'manual_profile' : 'public_browser',

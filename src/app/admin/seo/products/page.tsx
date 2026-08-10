@@ -210,7 +210,7 @@ export default function ProductSEOPage() {
                   </button>
                   
                   <button
-                    onClick={() => window.open(`/product/${product.slug}`, '_blank')}
+                    onClick={() => window.open(`/san-pham/${product.slug}`, '_blank')}
                     className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
                     title="Xem sản phẩm"
                   >
@@ -380,7 +380,7 @@ export default function ProductSEOPage() {
                   value={seoData.canonicalUrl || ''}
                   onChange={(e) => updateSEOField('canonicalUrl', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="/product/slug-san-pham"
+                  placeholder="/san-pham/slug-san-pham"
                 />
               </div>
 

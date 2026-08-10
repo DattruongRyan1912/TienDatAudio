@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Tiến Đạt Audio</title>
+  <rect width="512" height="512" rx="72" fill="#080808"/>
+  <rect x="72" y="72" width="368" height="368" fill="none" stroke="#d4af37" stroke-width="10"/>
+  <text x="256" y="305" fill="#d4af37" font-family="Arial, Helvetica, sans-serif" font-size="142" font-weight="800" letter-spacing="8" text-anchor="middle">TD</text>
+  <path d="M154 350h204" stroke="#d4af37" stroke-width="6"/>
+</svg>

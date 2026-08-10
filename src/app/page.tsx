@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowDown, ArrowUpRight, Headphones, SlidersHorizontal, Sparkles } from 'lucide-react'
@@ -8,11 +9,13 @@ import SonicSectionHeading from '@/components/sonic/SonicSectionHeading'
 import { getCategories, getFeaturedProducts, getPosts } from '@/lib/catalog'
 import SocialPostCard from '@/components/social/SocialPostCard'
 import { listSocialPosts } from '@/modules/social/application/social-post-service'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata = {
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/',
   title: 'Tiến Đạt Audio — Âm thanh được tuyển chọn',
   description: 'Tư vấn, phối ghép và triển khai hệ thống âm thanh cao cấp tại Quảng Ngãi.',
-}
+})
 
 export default async function HomePage() {
   const [featuredProducts, categories, posts, socialFeed] = await Promise.all([

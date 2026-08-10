@@ -2,13 +2,14 @@ import { Metadata } from 'next'
 import { type Product, type Category, type Brand, type ProductSEO } from '@/lib/data'
 import { getSEODataForPage, type SEOContent } from '@/lib/seo-static'
 
-const defaultSiteUrl = 'https://tiendataudioquangngai.id.vn'
+export const defaultSiteUrl = 'https://tiendataudioquangngai.id.vn'
+export const defaultOpenGraphImage = '/images/og-default.jpg'
 
 const siteConfig = {
   name: 'Tiến Đạt Audio',
   description: 'Chuyên cung cấp thiết bị âm thanh chất lượng cao - Loa, Ampli, Phụ kiện âm thanh chính hãng với giá tốt nhất',
   url: process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl,
-  ogImage: '/images/og-image.jpg',
+  ogImage: defaultOpenGraphImage,
   keywords: [
     'thiết bị âm thanh',
     'loa chính hãng', 
@@ -52,25 +53,26 @@ export function generateSEOMetadata({
   keywords?: string[]
   pagePath?: string
 }): Metadata {
-  // Try to get SEO data from database first
   let seoData: SEOContent | null = null
   if (pagePath) {
     seoData = getSEODataForPage(pagePath)
   }
-  
-  // Use SEO data from database if available, otherwise use fallback
-  const seoTitle = seoData?.title || title || siteConfig.name;
-  const seoDescription = seoData?.description || description || siteConfig.description;
-  const seoKeywords = seoData?.keywords || keywords || siteConfig.keywords;
-  const seoImage = seoData?.ogImage || image || siteConfig.ogImage;
-  const seoUrl = seoData?.canonicalUrl || url || siteConfig.url;
-  const seoOgTitle = seoData?.ogTitle || seoTitle;
-  const seoOgDescription = seoData?.ogDescription || seoDescription;
-  
-  // Parse robots meta from seoData
-  const robotsMeta = seoData?.metaRobots || 'index,follow';
-  const isNoIndex = robotsMeta.includes('noindex') || noIndex;
-  const isNoFollow = robotsMeta.includes('nofollow');
+
+  // Explicit page values are the source of truth. The static SEO registry is
+  // only a fallback, so an older generated record cannot override a route.
+  const seoTitle = title || seoData?.title || siteConfig.name
+  const seoDescription = description || seoData?.description || siteConfig.description
+  const seoKeywords = keywords || seoData?.keywords || siteConfig.keywords
+  const seoImage = image || seoData?.ogImage || siteConfig.ogImage
+  const pageUrl = pagePath ? absoluteSiteUrl(pagePath) : siteConfig.url
+  const seoUrl = absoluteSiteUrl(url || seoData?.canonicalUrl || pageUrl)
+  const absoluteImage = absoluteSiteUrl(seoImage)
+  const seoOgTitle = seoData?.ogTitle && !title ? seoData.ogTitle : seoTitle
+  const seoOgDescription = seoData?.ogDescription && !description ? seoData.ogDescription : seoDescription
+
+  const robotsMeta = seoData?.metaRobots || 'index,follow'
+  const isNoIndex = robotsMeta.includes('noindex') || noIndex
+  const isNoFollow = robotsMeta.includes('nofollow')
 
   return {
     title: seoTitle,
@@ -91,7 +93,7 @@ export function generateSEOMetadata({
       siteName: siteConfig.name,
       images: [
         {
-          url: seoImage,
+          url: absoluteImage,
           width: 1200,
           height: 630,
           alt: seoOgTitle,
@@ -102,7 +104,7 @@ export function generateSEOMetadata({
       card: 'summary_large_image',
       title: seoOgTitle,
       description: seoOgDescription,
-      images: [seoImage],
+      images: [absoluteImage],
       creator: '@tiendataudio',
     },
     robots: {
@@ -119,77 +121,120 @@ export function generateSEOMetadata({
   }
 }
 
-function generateProductStructuredData(product: Product, category?: Category, brand?: Brand) {
-  const price = product.salePrice || product.price
-  
-  // Use custom schema markup if provided
-  if (product.seo?.schemaMarkup) {
-    return typeof product.seo.schemaMarkup === 'string' 
-      ? JSON.parse(product.seo.schemaMarkup)
-      : product.seo.schemaMarkup;
+export function absoluteSiteUrl(value = '/') {
+  try {
+    return new URL(value, `${siteConfig.url.replace(/\/$/, '')}/`).toString()
+  } catch {
+    return siteConfig.url
   }
-  
-  return {
-    '@context': 'https://schema.org',
+}
+
+export function getProductCanonicalPath(product: Product) {
+  const configured = product.seo?.canonicalUrl?.trim()
+  if (!configured) return `/san-pham/${product.slug}`
+
+  try {
+    const parsed = new URL(configured, `${siteConfig.url.replace(/\/$/, '')}/`)
+    if (parsed.pathname.startsWith('/product/')) {
+      parsed.pathname = parsed.pathname.replace(/^\/product\//, '/san-pham/')
+    }
+    return configured.startsWith('http://') || configured.startsWith('https://')
+      ? parsed.toString()
+      : `${parsed.pathname}${parsed.search}${parsed.hash}`
+  } catch {
+    return `/san-pham/${product.slug}`
+  }
+}
+
+export function generateProductStructuredData(product: Product, category?: Category, brand?: Brand) {
+  const customSchema = product.seo?.schemaMarkup as unknown
+  if (customSchema) {
+    if (typeof customSchema === 'string') {
+      try {
+        return JSON.parse(customSchema) as Record<string, unknown>
+      } catch {
+        // Fall back to the verified schema below when admin JSON is invalid.
+      }
+    } else if (typeof customSchema === 'object' && !Array.isArray(customSchema)) {
+      return customSchema as Record<string, unknown>
+    }
+  }
+
+  const canonicalUrl = absoluteSiteUrl(getProductCanonicalPath(product))
+  const price = Number(product.salePrice || product.price)
+  const images = product.images.filter(Boolean).map(absoluteSiteUrl)
+  const productNode: Record<string, unknown> = {
     '@type': 'Product',
+    '@id': `${canonicalUrl}#product`,
+    url: canonicalUrl,
     name: product.name,
     description: product.description,
+    image: images,
+    sku: product.id || product.slug,
     brand: {
       '@type': 'Brand',
-      name: brand?.name || product.brand,
-      logo: brand?.logo
+      name: brand?.name || product.brand || siteConfig.name,
+      ...(brand?.logo ? { logo: absoluteSiteUrl(brand.logo) } : {}),
     },
-    category: category?.name || product.category,
-    image: product.images,
-    sku: product.id,
-    offers: {
+    category: category?.name || product.category || 'Thiết bị âm thanh',
+  }
+
+  if (Number.isFinite(price) && price > 0) {
+    productNode.offers = {
       '@type': 'Offer',
-      price: price,
+      url: canonicalUrl,
+      price: String(price),
       priceCurrency: 'VND',
       availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
       seller: {
         '@type': 'Organization',
+        '@id': `${siteConfig.url.replace(/\/$/, '')}#business`,
         name: siteConfig.name,
-        url: siteConfig.url
+        url: siteConfig.url,
       },
-      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 30 days from now
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      reviewCount: '127'
-    },
-    breadcrumb: {
+    }
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      productNode,
+      {
       '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
       itemListElement: [
         {
           '@type': 'ListItem',
           position: 1,
           name: 'Trang chủ',
-          item: siteConfig.url
+          item: siteConfig.url,
         },
         {
           '@type': 'ListItem',
           position: 2,
-          name: category?.name || 'Sản phẩm',
-          item: `${siteConfig.url}/products?category=${category?.slug || ''}`
+          name: 'Sản phẩm',
+          item: absoluteSiteUrl('/products'),
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: product.name,
-          item: `${siteConfig.url}/product/${product.slug}`
-        }
-      ]
-    }
+          item: canonicalUrl,
+        },
+      ],
+      },
+    ],
   }
 }
 
 // Utility functions for SEO management
 export function generateProductSEODefaults(product: Product, category?: Category, brand?: Brand): ProductSEO {
+  const price = Number(product.salePrice || product.price)
+  const priceCopy = price > 0 ? `Giá tham khảo ${price.toLocaleString('vi-VN')}đ.` : 'Liên hệ để nhận báo giá theo thời điểm.'
   return {
     metaTitle: `${product.name} - ${brand?.name || 'Tiến Đạt Audio'} | Chính hãng, giá tốt`,
-    metaDescription: `${product.name} tại Tiến Đạt Audio. ${product.description.substring(0, 120)}... ✓ Chính hãng ✓ Bảo hành ✓ Giao hàng toàn quốc. Giá từ ${product.price.toLocaleString('vi-VN')}đ`,
+    metaDescription: `${product.name} tại Tiến Đạt Audio. ${product.description.substring(0, 105)} ${priceCopy} Chính hãng, bảo hành và tư vấn phối ghép.`,
     keywords: [
       product.name.toLowerCase(),
       brand?.name.toLowerCase() || '',
@@ -201,8 +246,8 @@ export function generateProductSEODefaults(product: Product, category?: Category
     ].filter(Boolean),
     ogTitle: `${product.name} - Tiến Đạt Audio`,
     ogDescription: `Mua ${product.name} chính hãng tại Tiến Đạt Audio với giá tốt nhất`,
-    ogImage: product.images[0] || '/images/default-product.jpg',
-    canonicalUrl: `/product/${product.slug}`,
+    ogImage: product.images[0] || defaultOpenGraphImage,
+    canonicalUrl: `/san-pham/${product.slug}`,
     noIndex: false,
     schemaMarkup: generateProductStructuredData(product, category, brand)
   };

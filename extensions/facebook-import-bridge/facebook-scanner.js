@@ -48,6 +48,21 @@
     return dialogs.length ? dialogs[dialogs.length - 1] : document.body
   }
 
+  function readFacebookPostText(root) {
+    const read = (element) => (element?.innerText || element?.textContent || '').replace(/\s+/g, ' ').trim()
+    const preferred = Array.from(root.querySelectorAll('[data-ad-preview="message"], [data-ad-comet-preview="message"], [data-ad-rendering-role="story_message"]'))
+      .map(read)
+      .filter((value) => value.length >= 2)
+      .sort((left, right) => right.length - left.length)[0] || ''
+    if (preferred) return preferred.slice(0, 200_000)
+
+    return Array.from(root.querySelectorAll('[dir="auto"]'))
+      .map(read)
+      .filter((value) => value.length >= 12 && value.length <= 4_000)
+      .filter((value) => !/email or phone|password|log in|đăng nhập/i.test(value))
+      .sort((left, right) => right.length - left.length)[0]?.slice(0, 200_000) || ''
+  }
+
   function collectImages(root) {
     const linked = Array.from(root.querySelectorAll('a[href*="/photo/"]')).flatMap((anchor) => {
       const image = anchor.querySelector('img')
@@ -157,6 +172,7 @@
       await delay(1_500)
       const root = postRoot()
       const initialImages = collectImages(root)
+      const postText = readFacebookPostText(root)
       const expansionUrl = message.mode === 'initial' ? findExpansionUrl(root) : ''
       const viewerDetected = /\/photo(?:\.php|\/)/i.test(window.location.pathname) || Boolean(document.querySelector('[role="dialog"]'))
       const viewerImages = message.mode === 'viewer' || (viewerDetected && !expansionUrl)
@@ -167,6 +183,7 @@
       const pageText = document.body?.innerText || ''
       return {
         images,
+        ...(postText ? { postText } : {}),
         expansionUrl,
         viewerDetected,
         finalUrl: window.location.href,

@@ -4,11 +4,13 @@ import { ArrowUpRight } from 'lucide-react'
 import SonicBrandCard from '@/components/sonic/SonicBrandCard'
 import SonicReveal from '@/components/sonic/SonicReveal'
 import { getBrands, getProducts } from '@/lib/catalog'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/brands',
   title: 'Thương hiệu — Tiến Đạt Audio',
   description: 'Các thương hiệu thiết bị âm thanh được Tiến Đạt Audio tuyển chọn và tư vấn theo không gian nghe thực tế.',
-}
+})
 
 type BrandsPageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> }
 type BrandSort = 'all' | 'az' | 'country'

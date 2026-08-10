@@ -35,6 +35,7 @@ export type SocialGallerySessionSource = 'none' | 'local_storage_state' | 'manua
 export interface SocialGalleryScanResult {
   images: SocialGalleryImage[]
   finalUrl: string
+  postText?: string
   loginRequired: boolean
   partialGallery: boolean
   provider?: SocialGalleryProvider

@@ -9,14 +9,22 @@ import { getProductBySlug, getRelatedProducts } from '@/lib/catalog'
 import { formatPrice } from '@/lib/utils'
 import { getBusinessProfile } from '@/lib/business-profile'
 import ContentViewTracker from '@/components/analytics/ContentViewTracker'
+import { defaultOpenGraphImage, generateProductStructuredData, generateSEOMetadata, getProductCanonicalPath } from '@/lib/seo'
 
 type ProductPageProps = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params
   const product = await getProductBySlug(slug)
-  if (!product) return { title: 'Không tìm thấy sản phẩm — Tiến Đạt Audio' }
-  return { title: product.seo?.metaTitle || `${product.name} — Tiến Đạt Audio`, description: product.seo?.metaDescription || product.description }
+  if (!product) return { title: 'Không tìm thấy sản phẩm — Tiến Đạt Audio', robots: { index: false, follow: false } }
+  return generateSEOMetadata({
+    title: product.seo?.metaTitle || `${product.name} — Tiến Đạt Audio`,
+    description: product.seo?.metaDescription || product.description,
+    keywords: product.seo?.keywords,
+    image: product.seo?.ogImage || product.images[0] || defaultOpenGraphImage,
+    url: getProductCanonicalPath(product),
+    noIndex: product.seo?.noIndex,
+  })
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
@@ -25,9 +33,11 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   if (!product) notFound()
   const related = await getRelatedProducts(product.id, 3)
   const specs = Object.entries(product.specifications)
+  const structuredData = generateProductStructuredData(product)
 
   return (
     <div className="sonic-page pt-28 md:pt-36">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <ContentViewTracker type="product" id={product.id} />
       <div className="sonic-container">
         <SonicReveal><Link href="/products" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#858989] transition-colors hover:text-[#d4af37]"><ArrowLeft size={14} /> Quay lại catalog</Link></SonicReveal>

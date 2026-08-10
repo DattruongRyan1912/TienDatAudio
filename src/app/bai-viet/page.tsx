@@ -9,12 +9,13 @@ import { isSocialHubEnabled } from '@/modules/social/domain/feature-flag'
 import SocialPostCard from '@/components/social/SocialPostCard'
 import SocialRelatedProduct from '@/components/social/SocialRelatedProduct'
 import SonicReveal from '@/components/sonic/SonicReveal'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/bai-viet',
   title: 'Góc Audio — Tiến Đạt Audio',
   description: 'Những câu chuyện, setup, sản phẩm và trải nghiệm âm thanh mới nhất từ Tiến Đạt Audio.',
-  alternates: { canonical: '/bai-viet' },
-}
+})
 
 export const revalidate = 300
 

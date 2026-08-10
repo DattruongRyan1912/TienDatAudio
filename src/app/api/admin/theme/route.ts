@@ -89,18 +89,18 @@ function ensureThemeFile() {
         tagline: 'Thiết bị âm thanh chất lượng cao',
         logo: '/images/logo.png',
         favicon: '/favicon.ico',
-        ogImage: '/images/og-image.jpg'
+        ogImage: '/images/og-default.jpg'
       },
       contact: {
-        phone: '+84 123 456 789',
+        phone: '0934995657',
         email: 'contact@tiendataudio.com',
-        address: 'Số 123, Đường ABC, Quận 1, TP.HCM',
-        workingHours: 'T2-T7: 8:00-18:00, CN: 9:00-17:00',
+        address: '264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi, Việt Nam',
+        workingHours: 'Thứ 2 - Chủ nhật: 08:00 - 22:00',
         socialLinks: {
-          facebook: 'https://facebook.com/tiendataudio',
+          facebook: 'https://www.facebook.com/amthanhtiendat',
           instagram: 'https://instagram.com/tiendataudio',
-          youtube: 'https://youtube.com/tiendataudio',
-          zalo: 'https://zalo.me/tiendataudio'
+          youtube: 'https://youtube.com/@tiendataudio',
+          zalo: 'https://zalo.me/0934995657'
         }
       },
       features: {

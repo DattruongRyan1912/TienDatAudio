@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import MarkdownContent from './MarkdownContent'
+import ArticleMeta from './ArticleMeta'
 import SonicProductCard from '@/components/sonic/SonicProductCard'
 import SonicReveal from '@/components/sonic/SonicReveal'
 import type { BusinessProfile } from '@/lib/business-profile'
@@ -75,7 +76,7 @@ export default function PublicArticle({
     {preview && <div className="fixed inset-x-0 top-16 z-30 border-y border-amber-300/30 bg-amber-300 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.14em] text-[#080808]">Preview admin · {post.status} · version {post.version}</div>}
     <article className={`sonic-container max-w-6xl pb-20 md:pb-28 ${preview ? 'pt-12' : ''}`}>
       <SonicReveal><Link href="/kien-thuc" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#858989] hover:text-[#d4af37]"><ArrowLeft size={14} /> Kiến thức</Link></SonicReveal>
-      <SonicReveal><header className="mt-10 max-w-5xl"><p className="sonic-label">{post.category} / {post.readingTime} phút đọc</p><h1 className="sonic-title mt-5">{post.title}</h1><p className="sonic-copy mt-6 max-w-3xl text-lg">{post.excerpt}</p><div className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-xs text-[#707474]"><span>Xuất bản {new Intl.DateTimeFormat('vi-VN', { dateStyle: 'long' }).format(new Date(publishedAt))}</span><span>Cập nhật {new Intl.DateTimeFormat('vi-VN', { dateStyle: 'long' }).format(new Date(post.updatedAt))}</span><span>Tác giả: {post.author}</span>{post.reviewer && <span>Kiểm duyệt: {post.reviewer}</span>}</div></header></SonicReveal>
+      <SonicReveal><header className="mt-10 max-w-5xl"><h1 className="sonic-title">{post.title}</h1><ArticleMeta author={post.author} publishedAt={publishedAt} readingTime={post.readingTime} bodyMarkdown={post.bodyMarkdown} /><p className="sonic-copy mt-7 max-w-3xl text-lg">{post.excerpt}</p></header></SonicReveal>
       {post.featuredImage && <SonicReveal direction="scale"><div className="relative mt-12 aspect-[2/1] overflow-hidden border border-white/10"><Image src={post.featuredImage} alt={post.title} fill priority sizes="(min-width: 1200px) 1100px, 100vw" className="object-cover" /></div></SonicReveal>}
       <div className="mt-12 grid gap-12 lg:grid-cols-[220px_minmax(0,720px)] lg:justify-center">
         {headings.length > 1 && <SonicReveal direction="left"><aside className="lg:sticky lg:top-28 lg:self-start"><p className="sonic-label">Trong bài viết</p><nav className="mt-4 grid gap-2 border-l border-white/10 pl-4">{headings.map((heading) => <a key={heading.id} href={`#${heading.id}`} className={`text-xs leading-5 text-[#858989] hover:text-[#d4af37] ${heading.depth === 3 ? 'pl-3' : ''}`}>{heading.text}</a>)}</nav></aside></SonicReveal>}

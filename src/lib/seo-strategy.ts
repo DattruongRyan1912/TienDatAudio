@@ -122,12 +122,52 @@ function absoluteUrl(value: string, baseUrl: string) {
   return `${baseUrl}${value.startsWith('/') ? value : `/${value}`}`
 }
 
+const schemaWeek = [
+  { label: 'thứ 2', value: 'https://schema.org/Monday' },
+  { label: 'thứ 3', value: 'https://schema.org/Tuesday' },
+  { label: 'thứ 4', value: 'https://schema.org/Wednesday' },
+  { label: 'thứ 5', value: 'https://schema.org/Thursday' },
+  { label: 'thứ 6', value: 'https://schema.org/Friday' },
+  { label: 'thứ 7', value: 'https://schema.org/Saturday' },
+  { label: 'chủ nhật', value: 'https://schema.org/Sunday' },
+]
+
+export function buildOpeningHoursSpecification(hours: string[]) {
+  return hours.flatMap((entry) => {
+    const time = entry.match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/)
+    if (!time) return []
+    const dayLabel = entry.slice(0, time.index).toLocaleLowerCase('vi')
+    const mentionedDays = schemaWeek
+      .map((day, index) => ({ ...day, index }))
+      .filter((day) => dayLabel.includes(day.label))
+    if (!mentionedDays.length) return []
+
+    const first = mentionedDays[0].index
+    const last = mentionedDays.at(-1)?.index ?? first
+    const dayOfWeek = mentionedDays.length > 1
+      ? schemaWeek.slice(Math.min(first, last), Math.max(first, last) + 1).map((day) => day.value)
+      : [schemaWeek[first].value]
+    return [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek,
+      opens: time[1],
+      closes: time[2],
+    }]
+  })
+}
+
+export function buildMarkdownLink(label: string, pathOrUrl: string, baseUrl: string) {
+  const safeLabel = cleanText(label, 'Link', 300).replace(/[\[\]]/g, '')
+  return `[${safeLabel}](${absoluteUrl(pathOrUrl, baseUrl)})`
+}
+
 export function buildAIReadableStructuredData(config: SEOConfig, profile: BusinessProfile) {
   const baseUrl = profile.siteUrl.replace(/\/$/, '')
   const businessId = `${baseUrl}#business`
   const activeKeywords = config.ai.enabled ? config.keywords.filter((keyword) => keyword.isActive) : []
   const services = Array.from(new Set([...profile.services, ...(config.ai.enabled ? config.ai.services : [])]))
   const topics = Array.from(new Set([...activeKeywords.map((keyword) => keyword.term), ...services])).slice(0, 50)
+  const openingHoursSpecification = buildOpeningHoursSpecification(profile.businessHours)
   const business: UnknownRecord = {
     '@type': ['Store', 'LocalBusiness'],
     '@id': businessId,
@@ -148,10 +188,19 @@ export function buildAIReadableStructuredData(config: SEOConfig, profile: Busine
       addressCountry: profile.address.addressCountry,
     },
     openingHours: profile.businessHours,
+    ...(openingHoursSpecification.length ? { openingHoursSpecification } : {}),
     areaServed: profile.areaServed,
     sameAs: profile.socialLinks,
     knowsAbout: topics,
     hasMap: profile.mapUrl,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: profile.phone,
+      email: profile.email,
+      contactType: 'sales',
+      areaServed: profile.areaServed,
+      availableLanguage: ['vi'],
+    },
   }
   if (profile.latitude !== undefined && profile.longitude !== undefined) {
     business.geo = { '@type': 'GeoCoordinates', latitude: profile.latitude, longitude: profile.longitude }
@@ -191,7 +240,7 @@ export function buildAIReadableStructuredData(config: SEOConfig, profile: Busine
 
 export function buildLLMSText(config: SEOConfig, profile: BusinessProfile, posts: ContentPost[] = []) {
   const baseUrl = profile.siteUrl.replace(/\/$/, '')
-  const linkFor = (pathOrUrl: string) => absoluteUrl(pathOrUrl, baseUrl)
+  const markdownLink = (label: string, pathOrUrl: string) => buildMarkdownLink(label, pathOrUrl, baseUrl)
   const activeKeywords = config.ai.enabled ? config.keywords.filter((keyword) => keyword.isActive) : []
   const services = Array.from(new Set([...profile.services, ...(config.ai.enabled ? config.ai.services : [])]))
   const publishedFAQs = posts.flatMap((post) => post.faqs.map((faq) => ({ ...faq, post })))
@@ -204,7 +253,7 @@ export function buildLLMSText(config: SEOConfig, profile: BusinessProfile, posts
     `> ${profile.description}`,
     '',
     '## Canonical identity',
-    `- Website: ${baseUrl}`,
+    `- Website: ${markdownLink(profile.name, baseUrl)}`,
     `- Address: ${profile.address.formatted}`,
     `- Areas served: ${profile.areaServed.join(', ')}`,
     `- Phone: ${profile.phone}`,
@@ -212,13 +261,13 @@ export function buildLLMSText(config: SEOConfig, profile: BusinessProfile, posts
     `- Business hours: ${profile.businessHours.join('; ')}`,
     '',
     '## Services',
-    ...services.map((service) => `- ${service}`),
+    ...services.map((service) => `- ${markdownLink(service, '/contact')}: Tư vấn theo không gian, nhu cầu và ngân sách thực tế.`),
     '',
     '## Topics and search intents',
-    ...activeKeywords.map((keyword) => `- ${keyword.term} | intent=${keyword.intent} | page=${linkFor(keyword.targetPage)} | cluster=${keyword.cluster}`),
+    ...activeKeywords.map((keyword) => `- ${markdownLink(keyword.term, keyword.targetPage)}: intent=${keyword.intent}; cluster=${keyword.cluster}`),
     '',
     '## Published knowledge',
-    ...posts.flatMap((post) => [`### ${post.title}`, `${post.excerpt} Source: ${linkFor(`/kien-thuc/${post.slug}`)}`, '']),
+    ...posts.map((post) => `- ${markdownLink(post.title, `/kien-thuc/${post.slug}`)}: ${post.excerpt}`),
     ...(config.ai.enabled ? [
       '## Positioning',
       config.ai.positioning,
@@ -227,10 +276,10 @@ export function buildLLMSText(config: SEOConfig, profile: BusinessProfile, posts
       ...config.ai.entityFacts.map((fact) => `- ${fact}`),
       '',
       '## Public questions and answers',
-      ...config.ai.faqs.flatMap((faq) => [`### ${faq.question}`, `${faq.answer} Source: ${linkFor('/faq')}`, '']),
-      ...publishedFAQs.flatMap(({ post, ...faq }) => [`### ${faq.question}`, `${faq.answer} Source: ${linkFor(`/kien-thuc/${post.slug}`)}`, '']),
+      ...config.ai.faqs.map((faq) => `- ${markdownLink(faq.question, '/faq')}: ${faq.answer}`),
+      ...publishedFAQs.map(({ post, ...faq }) => `- ${markdownLink(faq.question, `/kien-thuc/${post.slug}`)}: ${faq.answer}`),
       '## Preferred source pages',
-      ...publicSources.map((source) => `- ${linkFor(source)}`),
+      ...publicSources.map((source) => `- ${markdownLink(source === '/' ? 'Homepage' : source, source)}`),
       '',
       '## Answer guidance',
       ...config.ai.answerGuidelines.map((guideline) => `- ${guideline}`),

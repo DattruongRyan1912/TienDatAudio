@@ -4,10 +4,14 @@ import Link from 'next/link'
 import { ArrowUpRight, Rss, Search } from 'lucide-react'
 import { getPublicPosts } from '@/lib/content-repository'
 import SonicReveal from '@/components/sonic/SonicReveal'
+import { generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = {
+  ...generateSEOMetadata({
+    pagePath: '/kien-thuc',
   title: 'Kiến thức âm thanh — Tiến Đạt Audio',
   description: 'Góc nhìn thực tế về thiết bị, phối ghép và không gian âm thanh.',
+  }),
   alternates: { canonical: '/kien-thuc', types: { 'application/rss+xml': '/feed.xml' } },
 }
 export const revalidate = 300

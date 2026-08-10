@@ -13,6 +13,7 @@ import type { ContentPost } from '@/lib/content-types'
 import type { Product } from '@/lib/data'
 import { slugify } from '@/lib/slug'
 import { applyNativeSocialGalleryImport, applyNativeSocialLinkImport } from '@/modules/social/domain/native-import'
+import { resolveImportedSocialText } from '@/modules/social/domain/source-content'
 import type { SocialGalleryScanResult, SocialLinkImportPreview, SocialLinkImportedAsset } from '@/modules/social/domain/link-preview'
 import { detectFacebookBrowserExtension, scanFacebookGalleryWithBrowserExtension } from '@/modules/social/infrastructure/facebook-browser-extension'
 import { buildImportedSocialSlug } from '@/modules/social/domain/slug'
@@ -59,6 +60,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
   const [sourceUrl, setSourceUrl] = useState('')
   const [sourcePreview, setSourcePreview] = useState<SocialLinkImportPreview | null>(null)
   const [sourceGallery, setSourceGallery] = useState<SocialGalleryScanResult | null>(null)
+  const [sourcePostText, setSourcePostText] = useState('')
   const [selectedGalleryUrls, setSelectedGalleryUrls] = useState<string[]>([])
   const [sourceUploadedAssets, setSourceUploadedAssets] = useState<SocialLinkImportedAsset[]>([])
   const [sourceLoading, setSourceLoading] = useState(false)
@@ -232,9 +234,11 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
       setSourceGallery(null)
       setSelectedGalleryUrls([])
       setSourceUploadedAssets([])
+      setSourcePostText('')
       setSourcePreview(result.data)
     } catch (error) {
       setSourcePreview(null)
+      setSourcePostText('')
       setMessage(error instanceof Error ? error.message : 'Không thể tạo preview liên kết')
     } finally {
       setSourceLoading(false)
@@ -246,6 +250,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
     setSourceGallery(null)
     setSelectedGalleryUrls([])
     setSourceUploadedAssets([])
+    setSourcePostText('')
     setSourceUrl('')
   }
 
@@ -267,6 +272,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
         const data = await scanFacebookGalleryWithBrowserExtension(sourcePreview.sourceUrl)
         setBrowserBridgeAvailable(true)
         setSourceGallery(data)
+        setSourcePostText(data.postText || '')
         setSelectedGalleryUrls(data.images.map((image) => image.imageUrl))
         setMessage(data.partialGallery
           ? `Chrome Bridge tìm thấy ${data.images.length} ảnh nhưng Facebook vẫn báo gallery chưa mở hết.`
@@ -282,6 +288,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
       if (!response.ok || !result.data) throw new Error(result.message || 'Không thể quét gallery Facebook')
       setSourcePreview(result.data.preview)
       setSourceGallery(result.data)
+      setSourcePostText(result.data.postText || '')
       setSelectedGalleryUrls(result.data.images.map((image) => image.imageUrl))
       const sessionMessage = result.data.sessionSource === 'local_storage_state'
         ? ' bằng session local'
@@ -291,6 +298,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
         : `Đã tìm thấy ${result.data.images.length} ảnh trong gallery${sessionMessage}.`)
     } catch (error) {
       setSourceGallery(null)
+      setSourcePostText('')
       setSelectedGalleryUrls([])
       const code = error instanceof Error ? error.message : ''
       if (mode === 'extension' && code === 'FACEBOOK_EXTENSION_UNAVAILABLE') setBrowserBridgeAvailable(false)
@@ -311,16 +319,16 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
     setSelectedGalleryUrls((current) => current.includes(imageUrl) ? current.filter((item) => item !== imageUrl) : [...current, imageUrl])
   }
 
-  function applyNativePreview(preview: SocialLinkImportPreview, asset?: SocialLinkImportedAsset) {
-    change((current) => applyNativeSocialLinkImport(current, preview, asset))
+  function applyNativePreview(preview: SocialLinkImportPreview, asset?: SocialLinkImportedAsset, sourceText = sourcePostText) {
+    change((current) => applyNativeSocialLinkImport(current, preview, asset, sourceText))
     clearSourceImport()
     setMessage(asset
       ? 'Đã lưu ảnh lên Cloudinary và chuyển thành Native Post. Bấm Lưu để ghi metadata vào MongoDB.'
       : 'Đã chèn Native Post từ metadata public. Hãy kiểm tra và bổ sung nội dung trước khi lưu.')
   }
 
-  function applyNativeGalleryPreview(preview: SocialLinkImportPreview, assets: SocialLinkImportedAsset[]) {
-    change((current) => applyNativeSocialGalleryImport(current, preview, assets))
+  function applyNativeGalleryPreview(preview: SocialLinkImportPreview, assets: SocialLinkImportedAsset[], sourceText = sourcePostText) {
+    change((current) => applyNativeSocialGalleryImport(current, preview, assets, sourceText))
     clearSourceImport()
     setMessage(`Đã lưu ${assets.length} ảnh lên Cloudinary và chuyển thành Native Post. Bấm Lưu để ghi metadata vào MongoDB.`)
   }
@@ -330,7 +338,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
     applyNativeGalleryPreview(sourcePreview, sourceUploadedAssets)
   }
 
-  function applyFacebookEmbedPreview(preview: SocialLinkImportPreview) {
+  function applyFacebookEmbedPreview(preview: SocialLinkImportPreview, sourceText = sourcePostText) {
     const linkUrl = preview.sourceUrl
     const fallbackDescription = preview.description || `Liên kết public từ ${preview.domain}.`
     const link = { url: linkUrl, domain: preview.domain, title: preview.title, description: preview.description, imageUrl: preview.imageUrl }
@@ -340,7 +348,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
       title: current.title.trim() || preview.title,
       slug: buildImportedSocialSlug(current.slug, current.title, preview.title, preview.sourceUrl),
       excerpt: current.excerpt.trim() || fallbackDescription,
-      text: current.text.trim() || (preview.kind === 'facebook' ? '' : `Xem nội dung tại ${preview.sourceUrl}`),
+      text: resolveImportedSocialText({ currentText: current.text, sourceText, description: preview.description }),
       links: current.links.some((item) => item.url === link.url) ? current.links : [...current.links, link],
       seo: {
         ...current.seo,
@@ -435,7 +443,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
           <div>
             <p className="sonic-label">Quick import</p>
             <h2 className="mt-2 font-bold text-[var(--sonic-text)]">Chèn từ liên kết public</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--sonic-muted)]">Dán link Facebook hoặc bài viết public để lấy title, mô tả và ảnh. Chrome Bridge dùng session đang đăng nhập trên laptop, mở một tab quét gallery rồi tự đóng mà không gửi cookie/token lên server.</p>
+            <p className="mt-2 text-sm leading-6 text-[var(--sonic-muted)]">Dán link Facebook hoặc bài viết public để lấy nội dung, title, mô tả và ảnh. Chrome Bridge dùng session đang đăng nhập trên laptop, mở một tab quét gallery rồi tự đóng mà không gửi cookie/token lên server.</p>
           </div>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void previewSourceLink() }} className="sonic-input flex-1" placeholder="https://www.facebook.com/story.php?..." aria-label="Liên kết public cần chèn" />
@@ -471,6 +479,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
               <div>
                 <p className="sonic-label">Facebook gallery · {sourceGallery.sessionSource === 'browser_session' ? 'Chrome Bridge' : sourceGallery.sessionSource === 'cdp_browser' ? 'session Chrome hiện tại' : sourceGallery.sessionSource === 'local_storage_state' ? 'session local' : sourceGallery.provider === 'manual_profile' ? 'profile tạm' : 'public browser'}</p>
                 <p className="mt-2 text-sm text-[var(--sonic-muted)]">Đã tìm thấy {sourceGallery.images.length} ảnh · đang chọn {selectedGalleryUrls.length}</p>
+                {sourcePostText && <p className="mt-2 max-w-2xl whitespace-pre-wrap text-sm leading-6 text-[var(--sonic-text)]"><span className="font-bold">Nội dung đã đọc:</span> {sourcePostText}</p>}
               </div>
               {sourceGallery.partialGallery && <p className="max-w-md text-xs leading-5 text-amber-700 dark:text-amber-200">Facebook còn báo gallery chưa mở hết. Kiểm tra session/quyền truy cập trong Chrome rồi quét lại, hoặc chọn các ảnh hiện có.</p>}
             </div>
@@ -485,7 +494,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               <button type="button" disabled={sourceGalleryImportLoading || selectedGalleryUrls.length === 0} onClick={() => void importSourceGallery()} className="sonic-button sonic-button-gold">{sourceGalleryImportLoading ? 'Đang lưu gallery...' : `Lưu ${selectedGalleryUrls.length} ảnh & chuyển Native`}</button>
-              <button type="button" disabled={sourceGalleryImportLoading} onClick={() => { setSourceGallery(null); setSelectedGalleryUrls([]) }} className="sonic-button sonic-button-ghost">Bỏ gallery</button>
+              <button type="button" disabled={sourceGalleryImportLoading} onClick={() => { setSourceGallery(null); setSourcePostText(''); setSelectedGalleryUrls([]) }} className="sonic-button sonic-button-ghost">Bỏ gallery</button>
             </div>
           </div>}
         </section>

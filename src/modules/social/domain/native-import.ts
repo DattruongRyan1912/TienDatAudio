@@ -1,5 +1,6 @@
 import type { SocialLinkImportPreview, SocialLinkImportedAsset } from './link-preview'
 import { buildImportedSocialSlug } from './slug'
+import { resolveImportedSocialText } from './source-content'
 import type { SocialPost } from './types'
 
 function stableLinkImage(currentImage: string, sourceImage: string, importedImage: string) {
@@ -7,7 +8,7 @@ function stableLinkImage(currentImage: string, sourceImage: string, importedImag
   return currentImage
 }
 
-export function applyNativeSocialGalleryImport(post: SocialPost, preview: SocialLinkImportPreview, assets: SocialLinkImportedAsset[] = []): SocialPost {
+export function applyNativeSocialGalleryImport(post: SocialPost, preview: SocialLinkImportPreview, assets: SocialLinkImportedAsset[] = [], sourceText = ''): SocialPost {
   const fallbackDescription = preview.description || `Liên kết public từ ${preview.domain}.`
   const uniqueAssets = assets.filter((asset, index, all) => asset.url && all.findIndex((candidate) => (candidate.publicId && candidate.publicId === asset.publicId) || candidate.url === asset.url) === index)
   const imageUrl = uniqueAssets[0]?.url || preview.imageUrl
@@ -40,7 +41,7 @@ export function applyNativeSocialGalleryImport(post: SocialPost, preview: Social
     title,
     slug,
     excerpt: post.excerpt.trim() || fallbackDescription,
-    text: post.text.trim() || preview.description || `Xem nội dung tại ${preview.sourceUrl}`,
+    text: resolveImportedSocialText({ currentText: post.text, sourceText, description: preview.description }),
     media,
     links: post.links.some((item) => item.url === link.url)
       ? post.links.map((item) => item.url === link.url ? { ...item, ...link } : item)
@@ -59,6 +60,6 @@ export function applyNativeSocialGalleryImport(post: SocialPost, preview: Social
   }
 }
 
-export function applyNativeSocialLinkImport(post: SocialPost, preview: SocialLinkImportPreview, asset?: SocialLinkImportedAsset): SocialPost {
-  return applyNativeSocialGalleryImport(post, preview, asset ? [asset] : [])
+export function applyNativeSocialLinkImport(post: SocialPost, preview: SocialLinkImportPreview, asset?: SocialLinkImportedAsset, sourceText = ''): SocialPost {
+  return applyNativeSocialGalleryImport(post, preview, asset ? [asset] : [], sourceText)
 }

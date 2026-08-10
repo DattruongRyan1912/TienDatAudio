@@ -122,6 +122,7 @@ async function scanFacebookGallery(sourceValue, adminTab) {
 
     return {
       images,
+      ...(viewer?.postText || initial.postText ? { postText: viewer?.postText || initial.postText } : {}),
       finalUrl: viewer?.finalUrl || initial.finalUrl || sourceUrl,
       loginRequired: viewer?.loginRequired === true || initial.loginRequired === true,
       partialGallery: viewer ? viewer.partialGallery === true : initial.partialGallery === true,

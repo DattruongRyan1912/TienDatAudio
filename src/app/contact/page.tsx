@@ -1,10 +1,16 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react'
 import SonicContactForm from '@/components/sonic/SonicContactForm'
 import { getBusinessProfile } from '@/lib/business-profile'
 import SonicReveal from '@/components/sonic/SonicReveal'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata = { title: 'Đặt lịch trải nghiệm — Tiến Đạt Audio', description: 'Gửi nhu cầu để nhận tư vấn phối ghép âm thanh từ Tiến Đạt Audio.' }
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/contact',
+  title: 'Đặt lịch trải nghiệm — Tiến Đạt Audio',
+  description: 'Đặt lịch nghe thử và nhận tư vấn phối ghép tại Tiến Đạt Audio, 264 Phan Đình Phùng, Quảng Ngãi. Hotline 0934995657.',
+})
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string; productId?: string; article?: string }> }) {
   const [profile, params] = await Promise.all([getBusinessProfile(), searchParams])

@@ -1,14 +1,17 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Check, ChevronLeft, ChevronRight, Filter, Search, SlidersHorizontal } from 'lucide-react'
 import SonicCatalogFeaturedCard from '@/components/sonic/SonicCatalogFeaturedCard'
 import SonicCatalogProductCard from '@/components/sonic/SonicCatalogProductCard'
 import SonicReveal from '@/components/sonic/SonicReveal'
 import { getBrands, getCategories, getProducts } from '@/lib/catalog'
+import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata = {
+export const metadata: Metadata = generateSEOMetadata({
+  pagePath: '/products',
   title: 'Sản phẩm — Tiến Đạt Audio',
   description: 'Khám phá bộ sưu tập loa, vang số và thiết bị âm thanh được tuyển chọn tại Tiến Đạt Audio.',
-}
+})
 
 type ProductsPageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> }
 type QueryOverrides = Partial<{ search: string; category: string; brand: string; sort: string; page: number }>

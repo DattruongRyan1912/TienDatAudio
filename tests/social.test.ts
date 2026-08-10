@@ -10,6 +10,7 @@ import { isFacebookBlockingLoginText } from '../src/modules/social/infrastructur
 import { parseFacebookCdpActivePort } from '../src/modules/social/infrastructure/facebook-cdp-browser'
 import { resolveFacebookStorageStatePath } from '../src/modules/social/infrastructure/facebook-session-state'
 import { normalizeFacebookExtensionGalleryResult } from '../src/modules/social/infrastructure/facebook-browser-extension'
+import { getDisplaySocialText, getSocialDiscoveryDescription, getSocialDiscoveryTitle, isGeneratedSocialSourceText, resolveImportedSocialText } from '../src/modules/social/domain/source-content'
 import { hasPublicSocialStatus, normalizeSocialPost, validateSocialPost } from '../src/modules/social/domain/validation'
 import { buildImportedSocialSlug, buildSocialPostSlug, extractFacebookPostIdentity } from '../src/modules/social/domain/slug'
 import type { SocialMediaItem } from '../src/modules/social/domain/types'
@@ -81,6 +82,20 @@ test('public link preview rejects local and non-http URLs before fetching', () =
   assert.throws(() => normalizePublicLinkUrl('https://localhost/'), /PUBLIC_URL_INVALID/)
 })
 
+test('social source content prefers captured post text and hides URL-only fallback', () => {
+  assert.equal(isGeneratedSocialSourceText('Xem nội dung tại https://www.facebook.com/story.php?id=1'), true)
+  assert.equal(getDisplaySocialText('Xem nội dung tại https://www.facebook.com/story.php?id=1'), '')
+  assert.equal(resolveImportedSocialText({ currentText: 'Xem nội dung tại https://www.facebook.com/story.php?id=1', sourceText: 'Bán cặp loa tại showroom.' }), 'Bán cặp loa tại showroom.')
+  assert.equal(resolveImportedSocialText({ currentText: 'Xem nội dung tại https://www.facebook.com/story.php?id=1' }), '')
+})
+
+test('social discovery metadata replaces generic Facebook labels with real post content', () => {
+  const text = 'Bán cặp loa monitor đồng trục bãi, đẹp như hình và đang có tại showroom.'
+  assert.equal(getSocialDiscoveryTitle({ title: 'Facebook', text, category: 'Sản phẩm mới' }), text)
+  assert.equal(getSocialDiscoveryDescription({ text, excerpt: 'Xem nội dung tại https://www.facebook.com/story.php?id=1' }), text)
+  assert.equal(getSocialDiscoveryTitle({ title: 'Bông Trương', text }), 'Bông Trương')
+})
+
 test('social source slugs stay readable and unique for repeated Facebook imports', () => {
   const source = 'https://www.facebook.com/story.php?story_fbid=1774163126949309&id=100030669150233'
   assert.equal(extractFacebookPostIdentity(source), '1774163126949309')
@@ -107,6 +122,13 @@ test('facebook gallery accepts CDN media and maps selected assets in order', () 
   assert.deepEqual(next.media.map((item) => item.publicId), ['social/one', 'social/two'])
   assert.deepEqual(next.media.map((item) => item.order), [0, 1])
   assert.equal(next.media[1].alt, 'Ảnh hai')
+})
+
+test('native Facebook gallery import stores captured post text instead of the source URL', () => {
+  const post = normalizeSocialPost({ title: 'Facebook', text: 'Xem nội dung tại https://www.facebook.com/story.php?id=1', status: 'draft' })
+  const preview = buildPublicLinkImportPreview({ sourceUrl: 'https://www.facebook.com/story.php?story_fbid=1&id=2' })
+  const next = applyNativeSocialGalleryImport(post, preview, [], 'Bán cặp loa tại showroom.')
+  assert.equal(next.text, 'Bán cặp loa tại showroom.')
 })
 
 test('facebook worker ignores the public header login form but detects blocking login copy', () => {
@@ -156,12 +178,14 @@ test('browser extension gallery result is allowlisted, deduplicated and marked a
       { imageUrl: 'https://scontent.fsgn2-7.fna.fbcdn.net/photo-one.jpg?token=1', photoUrl: 'https://www.facebook.com/photo/?fbid=1', label: 'Trùng' },
       { imageUrl: 'https://evil.example/private.jpg', photoUrl: 'https://evil.example/post', label: 'Không hợp lệ' },
     ],
+    postText: 'Bán cặp loa tại showroom.',
     finalUrl: 'https://www.facebook.com/photo/?fbid=1',
   })
   assert.equal(result.images.length, 1)
   assert.equal(result.images[0].label, 'Ảnh một')
   assert.equal(result.provider, 'browser_extension')
   assert.equal(result.sessionSource, 'browser_session')
+  assert.equal(result.postText, 'Bán cặp loa tại showroom.')
 })
 
 test('browser extension manifest keeps narrow permissions and all scripts initialize', () => {

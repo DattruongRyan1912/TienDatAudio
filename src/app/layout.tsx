@@ -18,7 +18,16 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudioquangngai.id.vn'),
+  applicationName: 'Tiến Đạt Audio',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/images/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/favicon.ico', type: 'image/x-icon' },
+    ],
+    apple: [{ url: '/images/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
+  },
 }
 
 export const viewport: Viewport = {

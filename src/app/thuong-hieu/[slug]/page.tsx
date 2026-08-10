@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import SonicCatalogProductCard from '@/components/sonic/SonicCatalogProductCard'
 import { getBrandBySlug, getBrands, getProducts } from '@/lib/catalog'
+import { absoluteSiteUrl, generateSEOMetadata } from '@/lib/seo'
 
 type BrandDetailPageProps = { params: Promise<{ slug: string }> }
 
@@ -16,11 +17,12 @@ export async function generateMetadata({ params }: BrandDetailPageProps): Promis
   const { slug } = await params
   const brand = await getBrandBySlug(slug)
   if (!brand) return { title: 'Thương hiệu không tồn tại — Tiến Đạt Audio' }
-  return {
+  return generateSEOMetadata({
     title: `${brand.name} — Thương hiệu âm thanh | Tiến Đạt Audio`,
     description: brand.description || `Khám phá các thiết bị ${brand.name} được Tiến Đạt Audio tuyển chọn và tư vấn.`,
-    alternates: { canonical: `/thuong-hieu/${brand.slug}` },
-  }
+    image: brand.logo,
+    url: `/thuong-hieu/${brand.slug}`,
+  })
 }
 
 export default async function BrandDetailPage({ params }: BrandDetailPageProps) {
@@ -29,9 +31,34 @@ export default async function BrandDetailPage({ params }: BrandDetailPageProps) 
   if (!brand) notFound()
   const products = await getProducts({ brand: brand.id })
   const productCount = typeof brand.productCount === 'number' ? brand.productCount : products.length
+  const canonicalUrl = absoluteSiteUrl(`/thuong-hieu/${brand.slug}`)
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Brand',
+        '@id': `${canonicalUrl}#brand`,
+        name: brand.name,
+        description: brand.description,
+        logo: absoluteSiteUrl(brand.logo),
+        url: canonicalUrl,
+        ...(brand.website ? { sameAs: [brand.website] } : {}),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: absoluteSiteUrl('/') },
+          { '@type': 'ListItem', position: 2, name: 'Thương hiệu', item: absoluteSiteUrl('/brands') },
+          { '@type': 'ListItem', position: 3, name: brand.name, item: canonicalUrl },
+        ],
+      },
+    ],
+  }
 
   return (
     <div className="sonic-page pt-28 md:pt-36">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <section className="sonic-container max-w-[1360px] pb-16 md:pb-24">
         <Link href="/brands" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-muted)] transition-colors hover:text-[var(--sonic-gold)]"><span aria-hidden="true">←</span> Brand archive</Link>
         <div className="mt-12 grid gap-10 border-t border-[var(--sonic-line)] pt-8 md:grid-cols-[1fr_auto] md:items-end md:gap-16 md:pt-12">
