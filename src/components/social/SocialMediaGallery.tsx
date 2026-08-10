@@ -12,7 +12,7 @@ export default function SocialMediaGallery({ media }: { media: SocialMediaItem[]
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   if (!media.length) return null
   const layout = getSocialMediaLayout(media)
-  const visible = media.slice(0, layout === 'overflow-grid' ? 4 : media.length)
+  const visible = media.slice(0, layout === 'overflow-grid' ? 5 : media.length)
   const remaining = media.length - visible.length
 
   return (
