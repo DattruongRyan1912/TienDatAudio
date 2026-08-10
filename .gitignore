@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local browser authentication state (contains Facebook cookies)
+/.local/facebook/
+
 # vercel
 .vercel
 

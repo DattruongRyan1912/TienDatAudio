@@ -9,6 +9,10 @@ cloudinary.config({
   upload_timeout: 120000, // Upload specific timeout
 })
 
+export function hasCloudinaryConfig() {
+  return Boolean(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET)
+}
+
 // Video upload options
 export const videoUploadOptions = {
   resource_type: 'video' as const,

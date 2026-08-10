@@ -1,5 +1,8 @@
 'use client'
 
+/* External preview/gallery URLs are user-selected and are intentionally rendered without next/image remote host configuration. */
+/* eslint-disable @next/next/no-img-element */
+
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import { ArrowLeft, Check, ExternalLink, History, Plus, Rocket, Save, Trash2 } from 'lucide-react'
@@ -9,6 +12,8 @@ import SocialPostCard from '@/components/social/SocialPostCard'
 import type { ContentPost } from '@/lib/content-types'
 import type { Product } from '@/lib/data'
 import { slugify } from '@/lib/slug'
+import { applyNativeSocialGalleryImport, applyNativeSocialLinkImport } from '@/modules/social/domain/native-import'
+import type { SocialGalleryScanResult, SocialLinkImportPreview, SocialLinkImportedAsset } from '@/modules/social/domain/link-preview'
 import { SOCIAL_CATEGORIES, SOCIAL_MEDIA_TYPES, SOCIAL_POST_TYPES, type SocialMediaItem, type SocialPost, type SocialPostRevision } from '@/modules/social/domain/types'
 
 function blankPost(): SocialPost {
@@ -27,7 +32,8 @@ function toLocalDateTime(value: string | null) {
   return new Date(date.getTime() - offset).toISOString().slice(0, 16)
 }
 
-type UploadResult = { public_id: string; secure_url: string; resource_type: string; width?: number; height?: number }
+type UploadResult = { public_id: string; secure_url: string; resource_type: string; format?: string; bytes?: number; width?: number; height?: number }
+type GalleryScanResponse = SocialGalleryScanResult & { preview: SocialLinkImportPreview }
 
 export default function AdminSocialPostEditor({ postId }: { postId: string }) {
   const router = useRouter()
@@ -48,6 +54,15 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
   const [linkUrl, setLinkUrl] = useState('')
   const [linkTitle, setLinkTitle] = useState('')
   const [linkDescription, setLinkDescription] = useState('')
+  const [sourceUrl, setSourceUrl] = useState('')
+  const [sourcePreview, setSourcePreview] = useState<SocialLinkImportPreview | null>(null)
+  const [sourceGallery, setSourceGallery] = useState<SocialGalleryScanResult | null>(null)
+  const [selectedGalleryUrls, setSelectedGalleryUrls] = useState<string[]>([])
+  const [sourceUploadedAssets, setSourceUploadedAssets] = useState<SocialLinkImportedAsset[]>([])
+  const [sourceLoading, setSourceLoading] = useState(false)
+  const [sourceImportLoading, setSourceImportLoading] = useState(false)
+  const [sourceGalleryLoading, setSourceGalleryLoading] = useState(false)
+  const [sourceGalleryImportLoading, setSourceGalleryImportLoading] = useState(false)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -152,7 +167,19 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
 
   function addUploaded(result: UploadResult) {
     const type: SocialMediaItem['type'] = result.resource_type === 'video' ? 'video' : 'image'
+    const asset: SocialLinkImportedAsset = {
+      url: result.secure_url,
+      publicId: result.public_id,
+      width: result.width || null,
+      height: result.height || null,
+      bytes: result.bytes || 0,
+      format: result.format || '',
+      alt: 'Media Social Hub',
+    }
     change((current) => ({ ...current, media: [...current.media, { id: `media-${Date.now()}`, type, url: result.secure_url, thumbnailUrl: '', publicId: result.public_id, width: result.width || null, height: result.height || null, aspectRatio: result.width && result.height ? result.width / result.height : null, alt: 'Media Social Hub', order: current.media.length }] }))
+    if (sourcePreview && type === 'image') {
+      setSourceUploadedAssets((current) => current.some((item) => item.publicId === asset.publicId) ? current : [...current, asset])
+    }
     setMessage('Đã thêm media từ Cloudinary')
   }
 
@@ -166,6 +193,168 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
       setLinkDescription('')
     } catch {
       setMessage('URL liên kết không hợp lệ')
+    }
+  }
+
+  async function previewSourceLink() {
+    if (!sourceUrl.trim()) {
+      setMessage('Hãy dán liên kết public trước')
+      return
+    }
+    setSourceLoading(true)
+    setMessage('')
+    try {
+      const response = await fetch('/api/admin/social-posts/import/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: sourceUrl.trim() }),
+      })
+      const result = await response.json() as { data?: SocialLinkImportPreview; message?: string }
+      if (!response.ok || !result.data) throw new Error(result.message || 'Không thể tạo preview liên kết')
+      setSourceGallery(null)
+      setSelectedGalleryUrls([])
+      setSourceUploadedAssets([])
+      setSourcePreview(result.data)
+    } catch (error) {
+      setSourcePreview(null)
+      setMessage(error instanceof Error ? error.message : 'Không thể tạo preview liên kết')
+    } finally {
+      setSourceLoading(false)
+    }
+  }
+
+  function clearSourceImport() {
+    setSourcePreview(null)
+    setSourceGallery(null)
+    setSelectedGalleryUrls([])
+    setSourceUploadedAssets([])
+    setSourceUrl('')
+  }
+
+  async function scanSourceGallery(mode: 'public' | 'manual') {
+    if (!sourcePreview || sourcePreview.kind !== 'facebook') return
+    setSourceGalleryLoading(true)
+    setMessage(mode === 'manual'
+      ? 'Đang mở tab Facebook mới trong Chrome hiện tại để quét gallery...'
+      : 'Đang quét gallery public...')
+    try {
+      const response = await fetch('/api/admin/social-posts/import/gallery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: sourcePreview.sourceUrl, mode }),
+      })
+      const result = await response.json() as { data?: GalleryScanResponse; message?: string }
+      if (!response.ok || !result.data) throw new Error(result.message || 'Không thể quét gallery Facebook')
+      setSourcePreview(result.data.preview)
+      setSourceGallery(result.data)
+      setSelectedGalleryUrls(result.data.images.map((image) => image.imageUrl))
+      const sessionMessage = result.data.sessionSource === 'local_storage_state'
+        ? ' bằng session local'
+        : result.data.sessionSource === 'cdp_browser' ? ' bằng session Chrome hiện tại' : ''
+      setMessage(result.data.partialGallery
+        ? `Đã tìm thấy ${result.data.images.length} ảnh${sessionMessage}. Facebook vẫn còn phần gallery chưa mở; hãy kiểm tra quyền truy cập hoặc đăng nhập lại trong Chrome rồi quét lại.`
+        : `Đã tìm thấy ${result.data.images.length} ảnh trong gallery${sessionMessage}.`)
+    } catch (error) {
+      setSourceGallery(null)
+      setSelectedGalleryUrls([])
+      setMessage(error instanceof Error ? error.message : 'Không thể quét gallery Facebook')
+    } finally {
+      setSourceGalleryLoading(false)
+    }
+  }
+
+  function toggleGalleryImage(imageUrl: string) {
+    setSelectedGalleryUrls((current) => current.includes(imageUrl) ? current.filter((item) => item !== imageUrl) : [...current, imageUrl])
+  }
+
+  function applyNativePreview(preview: SocialLinkImportPreview, asset?: SocialLinkImportedAsset) {
+    change((current) => applyNativeSocialLinkImport(current, preview, asset))
+    clearSourceImport()
+    setMessage(asset
+      ? 'Đã lưu ảnh lên Cloudinary và chuyển thành Native Post. Bấm Lưu để ghi metadata vào MongoDB.'
+      : 'Đã chèn Native Post từ metadata public. Hãy kiểm tra và bổ sung nội dung trước khi lưu.')
+  }
+
+  function applyNativeGalleryPreview(preview: SocialLinkImportPreview, assets: SocialLinkImportedAsset[]) {
+    change((current) => applyNativeSocialGalleryImport(current, preview, assets))
+    clearSourceImport()
+    setMessage(`Đã lưu ${assets.length} ảnh lên Cloudinary và chuyển thành Native Post. Bấm Lưu để ghi metadata vào MongoDB.`)
+  }
+
+  function applyUploadedSourceImages() {
+    if (!sourcePreview || sourceUploadedAssets.length === 0) return
+    applyNativeGalleryPreview(sourcePreview, sourceUploadedAssets)
+  }
+
+  function applyFacebookEmbedPreview(preview: SocialLinkImportPreview) {
+    const linkUrl = preview.sourceUrl
+    const fallbackDescription = preview.description || `Liên kết public từ ${preview.domain}.`
+    const link = { url: linkUrl, domain: preview.domain, title: preview.title, description: preview.description, imageUrl: preview.imageUrl }
+    change((current) => ({
+      ...current,
+      ...(preview.kind === 'facebook' ? { postType: 'facebook_embed' as const, facebookSourceUrl: preview.sourceUrl, facebookEmbedUrl: preview.facebookEmbedUrl } : {}),
+      title: current.title.trim() || preview.title,
+      slug: current.slug.trim() || slugify(preview.title),
+      excerpt: current.excerpt.trim() || fallbackDescription,
+      text: current.text.trim() || (preview.kind === 'facebook' ? '' : `Xem nội dung tại ${preview.sourceUrl}`),
+      links: current.links.some((item) => item.url === link.url) ? current.links : [...current.links, link],
+      seo: {
+        ...current.seo,
+        metaTitle: current.seo.metaTitle.trim() || preview.title,
+        metaDescription: current.seo.metaDescription.trim() || fallbackDescription,
+        ogImage: current.seo.ogImage.trim() || preview.imageUrl,
+      },
+    }))
+    clearSourceImport()
+    setMessage('Đã chèn Facebook source và official embed. Đây là fallback, hãy kiểm tra lại bài trước khi lưu.')
+  }
+
+  async function importSourceImage() {
+    if (!sourcePreview?.imageUrl) {
+      if (sourcePreview) applyNativePreview(sourcePreview)
+      return
+    }
+    const preview = sourcePreview
+    setSourceImportLoading(true)
+    setMessage('')
+    try {
+      const response = await fetch('/api/admin/social-posts/import/image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: preview.sourceUrl }),
+      })
+      const result = await response.json() as { data?: { asset?: SocialLinkImportedAsset }; message?: string }
+      if (!response.ok || !result.data?.asset) throw new Error(result.message || 'Không thể lưu ảnh từ liên kết')
+      applyNativePreview(preview, result.data.asset)
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Không thể lưu ảnh từ liên kết')
+    } finally {
+      setSourceImportLoading(false)
+    }
+  }
+
+  async function importSourceGallery() {
+    if (!sourcePreview || !sourceGallery) return
+    const images = sourceGallery.images.filter((image) => selectedGalleryUrls.includes(image.imageUrl))
+    if (!images.length) {
+      setMessage('Hãy chọn ít nhất một ảnh trong gallery')
+      return
+    }
+    setSourceGalleryImportLoading(true)
+    setMessage('Đang lưu gallery lên Cloudinary...')
+    try {
+      const response = await fetch('/api/admin/social-posts/import/gallery/images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sourceUrl: sourcePreview.sourceUrl, images }),
+      })
+      const result = await response.json() as { data?: { assets?: SocialLinkImportedAsset[] }; message?: string }
+      if (!response.ok || !result.data?.assets?.length) throw new Error(result.message || 'Không thể lưu gallery ảnh')
+      applyNativeGalleryPreview(sourcePreview, result.data.assets)
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Không thể lưu gallery ảnh')
+    } finally {
+      setSourceGalleryImportLoading(false)
     }
   }
 
@@ -198,11 +387,68 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
 
     {tab === 'preview' ? <div className="mx-auto mt-7 max-w-[760px]"><SocialPostCard post={post} relatedProducts={products.filter((product) => post.relatedProductIds.includes(product.id))} detail /></div> : <div className="mt-7 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
       <main className="space-y-6">
+        <section className="sonic-panel border-[var(--sonic-gold)]/40 p-6">
+          <div>
+            <p className="sonic-label">Quick import</p>
+            <h2 className="mt-2 font-bold text-[var(--sonic-text)]">Chèn từ liên kết public</h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--sonic-muted)]">Dán link Facebook hoặc bài viết public để lấy title, mô tả và ảnh. Gallery đầy đủ sẽ mở một tab mới trong Chrome hiện tại, dùng session đang đăng nhập rồi tự đóng tab sau khi quét.</p>
+          </div>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void previewSourceLink() }} className="sonic-input flex-1" placeholder="https://www.facebook.com/story.php?..." aria-label="Liên kết public cần chèn" />
+            <button type="button" disabled={sourceLoading || sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void previewSourceLink()} className="sonic-button sonic-button-ghost">{sourceLoading ? 'Đang đọc...' : 'Lấy preview'}</button>
+          </div>
+          {sourcePreview && <div className="mt-5 border border-[var(--sonic-line)] bg-[var(--sonic-surface)] p-4">
+            <div className="flex gap-4">
+              {sourcePreview.imageUrl && <img src={sourcePreview.imageUrl} alt={sourcePreview.title} className="h-20 w-28 shrink-0 object-cover" />}
+              <div className="min-w-0">
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--sonic-subtle)]">{sourcePreview.domain} · {sourcePreview.kind === 'facebook' ? 'Facebook source' : 'Public Link'}</p>
+                <p className="mt-2 font-bold text-[var(--sonic-text)]">{sourcePreview.title}</p>
+                {sourcePreview.description && <p className="mt-1 text-sm leading-6 text-[var(--sonic-muted)]">{sourcePreview.description}</p>}
+                <p className="mt-2 truncate text-xs text-[var(--sonic-subtle)]">{sourcePreview.sourceUrl}</p>
+              </div>
+            </div>
+            {sourcePreview.warning && <p className="mt-3 text-xs leading-5 text-amber-700 dark:text-amber-200">{sourcePreview.warning}</p>}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void importSourceImage()} className="sonic-button sonic-button-gold">{sourceImportLoading ? 'Đang lưu ảnh...' : sourcePreview.imageUrl ? 'Lưu ảnh & chuyển Native' : 'Chèn Native'}</button>
+              {sourcePreview.imageUrl && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => applyNativePreview(sourcePreview)} className="sonic-button sonic-button-ghost">Native không lưu ảnh</button>}
+              {sourcePreview.kind === 'facebook' && <>
+                <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('public')} className="sonic-button sonic-button-ghost">{sourceGalleryLoading ? 'Đang quét gallery...' : 'Quét gallery public'}</button>
+                <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('manual')} className="sonic-button sonic-button-gold">Mở tab Chrome · quét đủ gallery</button>
+                <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => applyFacebookEmbedPreview(sourcePreview)} className="sonic-button sonic-button-ghost">Dùng Facebook Embed</button>
+              </>}
+              {sourceUploadedAssets.length > 0 && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={applyUploadedSourceImages} className="sonic-button sonic-button-gold">Gắn {sourceUploadedAssets.length} ảnh đã upload & chuyển Native</button>}
+              <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={clearSourceImport} className="sonic-button sonic-button-ghost">Bỏ preview</button>
+            </div>
+            {sourcePreview.kind === 'facebook' && <p className="mt-4 border-l-2 border-[var(--sonic-gold)] pl-3 text-xs leading-5 text-[var(--sonic-muted)]">Full gallery dùng CDP local để mở một tab mới trong Chrome hiện tại. Worker không trích xuất hoặc lưu token/cookie, chỉ đọc gallery trong tab đó rồi đóng đúng tab worker; Chrome và các tab đang mở vẫn được giữ nguyên.</p>}
+          </div>}
+          {sourceGallery && <div className="mt-5 border border-[var(--sonic-gold)]/30 bg-[var(--sonic-surface)] p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="sonic-label">Facebook gallery · {sourceGallery.sessionSource === 'cdp_browser' ? 'session Chrome hiện tại' : sourceGallery.sessionSource === 'local_storage_state' ? 'session local' : sourceGallery.provider === 'manual_profile' ? 'profile tạm' : 'public browser'}</p>
+                <p className="mt-2 text-sm text-[var(--sonic-muted)]">Đã tìm thấy {sourceGallery.images.length} ảnh · đang chọn {selectedGalleryUrls.length}</p>
+              </div>
+              {sourceGallery.partialGallery && <p className="max-w-md text-xs leading-5 text-amber-700 dark:text-amber-200">Facebook còn báo gallery chưa mở hết. Kiểm tra session/quyền truy cập trong Chrome rồi quét lại, hoặc chọn các ảnh hiện có.</p>}
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              {sourceGallery.images.map((image, index) => {
+                const selected = selectedGalleryUrls.includes(image.imageUrl)
+                return <button key={image.imageUrl} type="button" aria-pressed={selected} aria-label={`${selected ? 'Bỏ chọn' : 'Chọn'} ảnh ${index + 1}`} onClick={() => toggleGalleryImage(image.imageUrl)} className={`overflow-hidden border text-left transition ${selected ? 'border-[var(--sonic-gold)] ring-2 ring-[var(--sonic-gold)]/30' : 'border-[var(--sonic-line)] opacity-60 hover:opacity-100'}`}>
+                  <img src={image.imageUrl} alt={image.label || `Ảnh ${index + 1}`} className="aspect-square w-full object-cover" />
+                  <span className="block px-2 py-2 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[var(--sonic-muted)]">{selected ? 'Đã chọn' : 'Chọn'} · {index + 1}</span>
+                </button>
+              })}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button type="button" disabled={sourceGalleryImportLoading || selectedGalleryUrls.length === 0} onClick={() => void importSourceGallery()} className="sonic-button sonic-button-gold">{sourceGalleryImportLoading ? 'Đang lưu gallery...' : `Lưu ${selectedGalleryUrls.length} ảnh & chuyển Native`}</button>
+              <button type="button" disabled={sourceGalleryImportLoading} onClick={() => { setSourceGallery(null); setSelectedGalleryUrls([]) }} className="sonic-button sonic-button-ghost">Bỏ gallery</button>
+            </div>
+          </div>}
+        </section>
         <section className="sonic-panel p-6"><div className="grid gap-4"><label className="text-xs text-[var(--sonic-muted)]">Tiêu đề<input value={post.title} onChange={(event) => change((current) => ({ ...current, title: event.target.value, slug: current.slug || slugify(event.target.value) }))} className="sonic-input mt-2 text-lg font-bold" /></label><label className="text-xs text-[var(--sonic-muted)]">Slug<input value={post.slug} onChange={(event) => update('slug', slugify(event.target.value))} className="sonic-input mt-2" /></label><label className="text-xs text-[var(--sonic-muted)]">Excerpt<textarea value={post.excerpt} maxLength={500} onChange={(event) => update('excerpt', event.target.value)} className="sonic-input mt-2 min-h-24" /><span className="mt-1 block text-right text-[0.65rem] text-[var(--sonic-subtle)]">{post.excerpt.length}/500</span></label></div></section>
 
         <section className="sonic-panel p-6"><div className="flex items-center justify-between"><div><p className="sonic-label">Native content</p><h2 className="mt-2 font-bold text-[var(--sonic-text)]">Nội dung Social</h2></div><span className="text-xs text-[var(--sonic-subtle)]">{post.text.length.toLocaleString('vi-VN')} ký tự</span></div><textarea value={post.text} onChange={(event) => update('text', event.target.value)} className="sonic-input mt-5 min-h-[360px] resize-y leading-7" placeholder="Viết nội dung đã được xác minh, có ngữ cảnh và lời kêu gọi hành động..." /></section>
 
-        <section className="sonic-panel p-6"><div className="flex items-center justify-between"><div><p className="sonic-label">Media</p><h2 className="mt-2 font-bold text-[var(--sonic-text)]">Ảnh, video hoặc embed</h2></div><span className="text-xs text-[var(--sonic-subtle)]">{post.media.length}/50</span></div><div className="mt-5 grid gap-3 md:grid-cols-[140px_1fr_1fr_auto]"><select value={mediaType} onChange={(event) => setMediaType(event.target.value as SocialMediaItem['type'])} className="sonic-input">{SOCIAL_MEDIA_TYPES.map((item) => <option key={item} value={item}>{item}</option>)}</select><input value={mediaUrl} onChange={(event) => setMediaUrl(event.target.value)} className="sonic-input" placeholder="URL media / YouTube / Facebook" /><input value={mediaAlt} onChange={(event) => setMediaAlt(event.target.value)} className="sonic-input" placeholder="Alt text" /><button type="button" onClick={addMedia} className="sonic-button sonic-button-ghost"><Plus size={15} /> Thêm</button></div><div className="mt-4 border border-dashed border-[var(--sonic-line)] p-4"><p className="text-xs text-[var(--sonic-muted)]">Upload media trực tiếp vào Cloudinary</p><CloudinaryUpload accept="both" type="social" folder="social" maxSize={50} onUploadComplete={addUploaded} onUploadError={setMessage} className="mt-3" /></div><div className="mt-5 grid gap-3">{post.media.length === 0 ? <p className="text-sm text-[var(--sonic-subtle)]">Chưa có media.</p> : post.media.map((media, index) => <div key={media.id} className="grid gap-3 border border-[var(--sonic-line)] p-3 md:grid-cols-[100px_100px_1fr_auto] md:items-center"><span className="text-xs font-bold uppercase text-[var(--sonic-gold)]">{index + 1} · {media.type}</span><input value={media.alt} onChange={(event) => change((current) => ({ ...current, media: current.media.map((item) => item.id === media.id ? { ...item, alt: event.target.value } : item) }))} className="sonic-input" placeholder="Alt text" /><input value={media.url} onChange={(event) => change((current) => ({ ...current, media: current.media.map((item) => item.id === media.id ? { ...item, url: event.target.value } : item) }))} className="sonic-input" /><button type="button" onClick={() => update('media', post.media.filter((item) => item.id !== media.id))} className="text-[var(--sonic-subtle)] hover:text-red-500" aria-label="Xóa media"><Trash2 size={16} /></button></div>)}</div></section>
+        <section className="sonic-panel p-6"><div className="flex items-center justify-between"><div><p className="sonic-label">Media</p><h2 className="mt-2 font-bold text-[var(--sonic-text)]">Ảnh, video hoặc embed</h2></div><span className="text-xs text-[var(--sonic-subtle)]">{post.media.length}/50</span></div><div className="mt-5 grid gap-3 md:grid-cols-[140px_1fr_1fr_auto]"><select value={mediaType} onChange={(event) => setMediaType(event.target.value as SocialMediaItem['type'])} className="sonic-input">{SOCIAL_MEDIA_TYPES.map((item) => <option key={item} value={item}>{item}</option>)}</select><input value={mediaUrl} onChange={(event) => setMediaUrl(event.target.value)} className="sonic-input" placeholder="URL media / YouTube / Facebook" /><input value={mediaAlt} onChange={(event) => setMediaAlt(event.target.value)} className="sonic-input" placeholder="Alt text" /><button type="button" onClick={addMedia} className="sonic-button sonic-button-ghost"><Plus size={15} /> Thêm</button></div><div className="mt-4 border border-dashed border-[var(--sonic-line)] p-4"><p className="text-xs text-[var(--sonic-muted)]">Upload trực tiếp vào Cloudinary — có thể chọn nhiều ảnh cùng lúc. Đây là luồng ổn định cho gallery từ Facebook cá nhân.</p><CloudinaryUpload accept="image" multiple type="social" folder="social" maxSize={50} onUploadComplete={addUploaded} onUploadError={setMessage} className="mt-3" /></div><div className="mt-5 grid gap-3">{post.media.length === 0 ? <p className="text-sm text-[var(--sonic-subtle)]">Chưa có media.</p> : post.media.map((media, index) => <div key={media.id} className="grid gap-3 border border-[var(--sonic-line)] p-3 md:grid-cols-[100px_100px_1fr_auto] md:items-center"><span className="text-xs font-bold uppercase text-[var(--sonic-gold)]">{index + 1} · {media.type}</span><input value={media.alt} onChange={(event) => change((current) => ({ ...current, media: current.media.map((item) => item.id === media.id ? { ...item, alt: event.target.value } : item) }))} className="sonic-input" placeholder="Alt text" /><input value={media.url} onChange={(event) => change((current) => ({ ...current, media: current.media.map((item) => item.id === media.id ? { ...item, url: event.target.value } : item) }))} className="sonic-input" /><button type="button" onClick={() => update('media', post.media.filter((item) => item.id !== media.id))} className="text-[var(--sonic-subtle)] hover:text-red-500" aria-label="Xóa media"><Trash2 size={16} /></button></div>)}</div></section>
 
         <section className="sonic-panel p-6"><div><p className="sonic-label">Link preview</p><h2 className="mt-2 font-bold text-[var(--sonic-text)]">Liên kết trong nội dung</h2></div><div className="mt-5 grid gap-3 md:grid-cols-3"><input value={linkUrl} onChange={(event) => setLinkUrl(event.target.value)} className="sonic-input" placeholder="https://..." /><input value={linkTitle} onChange={(event) => setLinkTitle(event.target.value)} className="sonic-input" placeholder="Tiêu đề card" /><input value={linkDescription} onChange={(event) => setLinkDescription(event.target.value)} className="sonic-input" placeholder="Mô tả ngắn" /></div><button type="button" onClick={addLink} className="sonic-button sonic-button-ghost mt-3"><Plus size={15} /> Thêm liên kết</button><div className="mt-4 grid gap-2">{post.links.map((link) => <div key={link.url} className="flex items-center justify-between gap-3 border border-[var(--sonic-line)] p-3 text-xs"><span className="min-w-0 truncate text-[var(--sonic-muted)]">{link.title} · {link.domain}</span><button type="button" onClick={() => update('links', post.links.filter((item) => item.url !== link.url))} className="text-[var(--sonic-subtle)] hover:text-red-500" aria-label={`Xóa link ${link.title}`}><Trash2 size={15} /></button></div>)}</div></section>
 

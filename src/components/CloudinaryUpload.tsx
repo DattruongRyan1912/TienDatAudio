@@ -23,6 +23,7 @@ interface CloudinaryUploadProps {
     type?: 'video' | 'combo-image' | 'product' | 'social'
     folder?: string
     maxSize?: number // in MB
+    multiple?: boolean
     className?: string
 }
 
@@ -66,6 +67,7 @@ export default function CloudinaryUpload({
     type = 'combo-image',
     folder = 'general',
     maxSize = 100, // 100MB default
+    multiple = true,
     className = ''
 }: CloudinaryUploadProps) {
     const [uploads, setUploads] = useState<UploadProgress[]>([])
@@ -219,6 +221,7 @@ export default function CloudinaryUpload({
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         accept: acceptedTypes[accept],
+        multiple,
         maxSize: maxSize * 1024 * 1024, // Convert MB to bytes
         onDragEnter: () => setIsDragActive(true),
         onDragLeave: () => setIsDragActive(false),
@@ -268,7 +271,7 @@ export default function CloudinaryUpload({
                             {isDragActive ? 'Thả file vào đây...' : 'Upload lên Cloudinary'}
                         </p>
                         <p className="text-sm text-gray-500 mt-1">
-                            Kéo thả hoặc click để chọn {accept === 'video' ? 'video' : accept === 'image' ? 'hình ảnh' : 'file'}
+                            Kéo thả hoặc click để chọn {multiple ? 'một hoặc nhiều ' : ''}{accept === 'video' ? 'video' : accept === 'image' ? 'hình ảnh' : 'file'}
                         </p>
                         <p className="text-xs text-gray-400 mt-2">
                             Tối đa {maxSize}MB • Auto-optimize • CDN delivery

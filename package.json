@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "tsx --test tests/*.test.ts",
+    "social:facebook-gallery": "node --env-file-if-exists=.env.local node_modules/tsx/dist/cli.mjs scripts/facebook-gallery-worker.ts",
     "db:seed": "node scripts/seed-mongodb.mjs",
     "db:migrate-content": "node scripts/migrate-content.mjs",
     "db:hash-password": "node scripts/hash-password.mjs"
@@ -44,6 +45,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9.35.0",
     "eslint-config-next": "15.5.23",
+    "playwright": "^1.62.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.11",
     "typescript": "^5"
