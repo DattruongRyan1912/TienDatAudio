@@ -2,7 +2,15 @@
 
 This is an opt-in local convenience for the admin gallery importer. It is not a production authentication mechanism.
 
-## Preferred setup: current Chrome tab through CDP
+## Preferred setup: Chrome Extension bridge
+
+Production admin có thể dùng session Facebook trên laptop thông qua extension tại [`extensions/facebook-import-bridge`](../extensions/facebook-import-bridge/README.md). Extension mở một tab Facebook trong cùng Chrome profile, quét gallery và trả URL ảnh về đúng tab admin. Tab admin tiếp tục gọi API production bằng session admin hiện tại; extension không nhận admin cookie và không gửi Facebook cookie/token lên VPS.
+
+1. Mở `chrome://extensions`, bật Developer mode.
+2. Chọn Load unpacked và trỏ tới `extensions/facebook-import-bridge`.
+3. Reload `/admin/social-posts/new` và kiểm tra trạng thái `Chrome Bridge đã kết nối`.
+
+## Local fallback: current Chrome tab through CDP
 
 The admin button opens a new tab in the already-running Chrome profile, uses the existing Facebook session, walks the gallery with the `Ảnh tiếp theo` control, and closes only the worker-created tab. It does not export or persist cookies/tokens.
 
@@ -13,7 +21,7 @@ SOCIAL_FACEBOOK_WORKER_ENABLED=true
 SOCIAL_FACEBOOK_CDP_ENABLED=true
 ```
 
-The CDP bridge is local-only, must stay bound to `127.0.0.1`, and is never available to production/serverless requests. If Chrome is restarted, enable Remote Debugging again before using the button.
+CDP là fallback local-only, phải giữ trên `127.0.0.1` và không được dùng cho production/serverless request. Nếu Chrome restart, bật lại Remote Debugging trước khi dùng.
 
 ## Fallback: isolated local storage state
 
@@ -45,6 +53,7 @@ Restart the local Next.js server after creating the file. The CLI can seed a fre
 - Never commit, upload, print, or paste its contents into chat.
 - The path must remain under `.local/facebook/`; other paths are rejected.
 - The CDP mode never serializes the original Chrome profile or session into an API/request/file; it only controls a new tab and closes that tab after scanning.
+- Chrome Extension không yêu cầu quyền `cookies` hoặc `debugger`; chỉ trả media URL/metadata về đúng admin origin allowlist.
 - The fallback storage-state mode never reads or copies the original Chrome profile.
 - Production/serverless keeps the Facebook worker disabled.
 

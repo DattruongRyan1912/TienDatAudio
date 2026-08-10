@@ -14,6 +14,7 @@ import type { Product } from '@/lib/data'
 import { slugify } from '@/lib/slug'
 import { applyNativeSocialGalleryImport, applyNativeSocialLinkImport } from '@/modules/social/domain/native-import'
 import type { SocialGalleryScanResult, SocialLinkImportPreview, SocialLinkImportedAsset } from '@/modules/social/domain/link-preview'
+import { detectFacebookBrowserExtension, scanFacebookGalleryWithBrowserExtension } from '@/modules/social/infrastructure/facebook-browser-extension'
 import { SOCIAL_CATEGORIES, SOCIAL_MEDIA_TYPES, SOCIAL_POST_TYPES, type SocialMediaItem, type SocialPost, type SocialPostRevision } from '@/modules/social/domain/types'
 
 function blankPost(): SocialPost {
@@ -63,6 +64,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
   const [sourceImportLoading, setSourceImportLoading] = useState(false)
   const [sourceGalleryLoading, setSourceGalleryLoading] = useState(false)
   const [sourceGalleryImportLoading, setSourceGalleryImportLoading] = useState(false)
+  const [browserBridgeAvailable, setBrowserBridgeAvailable] = useState<boolean | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -88,6 +90,21 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
   }, [isNew, postId])
 
   useEffect(() => { void load() }, [load])
+
+  useEffect(() => {
+    let active = true
+    const probe = () => {
+      void detectFacebookBrowserExtension().then((available) => {
+        if (active) setBrowserBridgeAvailable(available)
+      })
+    }
+    probe()
+    window.addEventListener('focus', probe)
+    return () => {
+      active = false
+      window.removeEventListener('focus', probe)
+    }
+  }, [])
 
   function change(mutator: (current: SocialPost) => SocialPost) {
     setDirty(true)
@@ -231,13 +248,30 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
     setSourceUrl('')
   }
 
-  async function scanSourceGallery(mode: 'public' | 'manual') {
+  async function refreshBrowserBridge() {
+    setBrowserBridgeAvailable(null)
+    const available = await detectFacebookBrowserExtension()
+    setBrowserBridgeAvailable(available)
+    setMessage(available ? 'Chrome Bridge đã kết nối.' : 'Chưa tìm thấy Chrome Bridge. Cài hoặc reload extension rồi kiểm tra lại.')
+  }
+
+  async function scanSourceGallery(mode: 'public' | 'manual' | 'extension') {
     if (!sourcePreview || sourcePreview.kind !== 'facebook') return
     setSourceGalleryLoading(true)
-    setMessage(mode === 'manual'
-      ? 'Đang mở tab Facebook mới trong Chrome hiện tại để quét gallery...'
-      : 'Đang quét gallery public...')
+    setMessage(mode === 'extension'
+      ? 'Chrome Bridge đang mở bài Facebook bằng session hiện tại...'
+      : mode === 'manual' ? 'Đang mở tab Facebook mới bằng CDP local...' : 'Đang quét gallery public...')
     try {
+      if (mode === 'extension') {
+        const data = await scanFacebookGalleryWithBrowserExtension(sourcePreview.sourceUrl)
+        setBrowserBridgeAvailable(true)
+        setSourceGallery(data)
+        setSelectedGalleryUrls(data.images.map((image) => image.imageUrl))
+        setMessage(data.partialGallery
+          ? `Chrome Bridge tìm thấy ${data.images.length} ảnh nhưng Facebook vẫn báo gallery chưa mở hết.`
+          : `Chrome Bridge đã tìm thấy ${data.images.length} ảnh bằng session Chrome hiện tại.`)
+        return
+      }
       const response = await fetch('/api/admin/social-posts/import/gallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -257,7 +291,16 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
     } catch (error) {
       setSourceGallery(null)
       setSelectedGalleryUrls([])
-      setMessage(error instanceof Error ? error.message : 'Không thể quét gallery Facebook')
+      const code = error instanceof Error ? error.message : ''
+      if (mode === 'extension' && code === 'FACEBOOK_EXTENSION_UNAVAILABLE') setBrowserBridgeAvailable(false)
+      const messages: Record<string, string> = {
+        FACEBOOK_EXTENSION_UNAVAILABLE: 'Chrome Bridge chưa được cài, chưa reload hoặc không có quyền trên domain này.',
+        FACEBOOK_EXTENSION_CONNECTION_FAILED: 'Không kết nối được Chrome Bridge. Hãy reload extension và trang admin.',
+        FACEBOOK_EXTENSION_NAVIGATION_TIMEOUT: 'Facebook tải quá lâu trong tab extension. Hãy kiểm tra mạng rồi thử lại.',
+        FACEBOOK_LOGIN_REQUIRED: 'Chrome hiện tại chưa đăng nhập Facebook hoặc không có quyền xem bài này.',
+        FACEBOOK_GALLERY_NOT_FOUND: 'Không tìm thấy ảnh gallery trong bài Facebook.',
+      }
+      setMessage(messages[code] || code || 'Không thể quét gallery Facebook')
     } finally {
       setSourceGalleryLoading(false)
     }
@@ -391,7 +434,7 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
           <div>
             <p className="sonic-label">Quick import</p>
             <h2 className="mt-2 font-bold text-[var(--sonic-text)]">Chèn từ liên kết public</h2>
-            <p className="mt-2 text-sm leading-6 text-[var(--sonic-muted)]">Dán link Facebook hoặc bài viết public để lấy title, mô tả và ảnh. Gallery đầy đủ sẽ mở một tab mới trong Chrome hiện tại, dùng session đang đăng nhập rồi tự đóng tab sau khi quét.</p>
+            <p className="mt-2 text-sm leading-6 text-[var(--sonic-muted)]">Dán link Facebook hoặc bài viết public để lấy title, mô tả và ảnh. Chrome Bridge dùng session đang đăng nhập trên laptop, mở một tab quét gallery rồi tự đóng mà không gửi cookie/token lên server.</p>
           </div>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <input value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void previewSourceLink() }} className="sonic-input flex-1" placeholder="https://www.facebook.com/story.php?..." aria-label="Liên kết public cần chèn" />
@@ -412,19 +455,20 @@ export default function AdminSocialPostEditor({ postId }: { postId: string }) {
               <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void importSourceImage()} className="sonic-button sonic-button-gold">{sourceImportLoading ? 'Đang lưu ảnh...' : sourcePreview.imageUrl ? 'Lưu ảnh & chuyển Native' : 'Chèn Native'}</button>
               {sourcePreview.imageUrl && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => applyNativePreview(sourcePreview)} className="sonic-button sonic-button-ghost">Native không lưu ảnh</button>}
               {sourcePreview.kind === 'facebook' && <>
-                <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('public')} className="sonic-button sonic-button-ghost">{sourceGalleryLoading ? 'Đang quét gallery...' : 'Quét gallery public'}</button>
-                <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('manual')} className="sonic-button sonic-button-gold">Mở tab Chrome · quét đủ gallery</button>
+                <button type="button" disabled={browserBridgeAvailable !== true || sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('extension')} className="sonic-button sonic-button-gold">{sourceGalleryLoading ? 'Đang quét gallery...' : browserBridgeAvailable === true ? 'Chrome session · quét full gallery' : browserBridgeAvailable === null ? 'Đang kiểm tra Chrome Bridge...' : 'Cần cài Chrome Bridge'}</button>
+                {process.env.NODE_ENV !== 'production' && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('public')} className="sonic-button sonic-button-ghost">Quét gallery public · local</button>}
+                {process.env.NODE_ENV !== 'production' && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => void scanSourceGallery('manual')} className="sonic-button sonic-button-ghost">CDP local · quét gallery</button>}
                 <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={() => applyFacebookEmbedPreview(sourcePreview)} className="sonic-button sonic-button-ghost">Dùng Facebook Embed</button>
               </>}
               {sourceUploadedAssets.length > 0 && <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={applyUploadedSourceImages} className="sonic-button sonic-button-gold">Gắn {sourceUploadedAssets.length} ảnh đã upload & chuyển Native</button>}
               <button type="button" disabled={sourceImportLoading || sourceGalleryLoading || sourceGalleryImportLoading} onClick={clearSourceImport} className="sonic-button sonic-button-ghost">Bỏ preview</button>
             </div>
-            {sourcePreview.kind === 'facebook' && <p className="mt-4 border-l-2 border-[var(--sonic-gold)] pl-3 text-xs leading-5 text-[var(--sonic-muted)]">Full gallery dùng CDP local để mở một tab mới trong Chrome hiện tại. Worker không trích xuất hoặc lưu token/cookie, chỉ đọc gallery trong tab đó rồi đóng đúng tab worker; Chrome và các tab đang mở vẫn được giữ nguyên.</p>}
+            {sourcePreview.kind === 'facebook' && <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-l-2 border-[var(--sonic-gold)] pl-3 text-xs leading-5 text-[var(--sonic-muted)]"><p>Chrome Bridge: <strong className={browserBridgeAvailable ? 'text-emerald-600 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-200'}>{browserBridgeAvailable === true ? 'đã kết nối' : browserBridgeAvailable === null ? 'đang kiểm tra' : 'chưa kết nối'}</strong>. Extension chỉ trả gallery về tab này; tab admin tự lưu qua API production hiện có.</p><button type="button" onClick={() => void refreshBrowserBridge()} className="text-xs font-bold text-[var(--sonic-gold)]">Kiểm tra lại</button></div>}
           </div>}
           {sourceGallery && <div className="mt-5 border border-[var(--sonic-gold)]/30 bg-[var(--sonic-surface)] p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="sonic-label">Facebook gallery · {sourceGallery.sessionSource === 'cdp_browser' ? 'session Chrome hiện tại' : sourceGallery.sessionSource === 'local_storage_state' ? 'session local' : sourceGallery.provider === 'manual_profile' ? 'profile tạm' : 'public browser'}</p>
+                <p className="sonic-label">Facebook gallery · {sourceGallery.sessionSource === 'browser_session' ? 'Chrome Bridge' : sourceGallery.sessionSource === 'cdp_browser' ? 'session Chrome hiện tại' : sourceGallery.sessionSource === 'local_storage_state' ? 'session local' : sourceGallery.provider === 'manual_profile' ? 'profile tạm' : 'public browser'}</p>
                 <p className="mt-2 text-sm text-[var(--sonic-muted)]">Đã tìm thấy {sourceGallery.images.length} ảnh · đang chọn {selectedGalleryUrls.length}</p>
               </div>
               {sourceGallery.partialGallery && <p className="max-w-md text-xs leading-5 text-amber-700 dark:text-amber-200">Facebook còn báo gallery chưa mở hết. Kiểm tra session/quyền truy cập trong Chrome rồi quét lại, hoặc chọn các ảnh hiện có.</p>}

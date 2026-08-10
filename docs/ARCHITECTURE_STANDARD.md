@@ -21,7 +21,7 @@ Collection `posts` dùng discriminator `contentType`. Các use case, validator v
 
 - Native Post là đường chính: nội dung, media, liên kết và quan hệ được lưu trên website.
 - Facebook Embed chỉ dùng official embed của Meta cho trường hợp cần giữ nguyên nguồn gốc hoặc branding.
-- Production không scrape Facebook, không giả lập giao diện official embed và không phụ thuộc Facebook SDK ở toàn site. Gallery worker chỉ là capability admin local opt-in: ưu tiên attach CDP vào Chrome đang mở để tạo một tab mới, đọc gallery rồi đóng đúng tab worker; không serialize token/cookie/profile vào API, file hoặc MongoDB. Fallback là profile Playwright tạm có thể nạp storage state local đã lọc chỉ còn Facebook cookie/localStorage và cho admin đăng nhập thủ công nếu session hết hạn. CDP/storage state chỉ được bật local, không chạy production/serverless; public/official embed và multi-upload là fallback khi chạy ngoài local.
+- Production không scrape Facebook ở VPS, không giả lập official embed và không phụ thuộc Facebook SDK ở toàn site. Admin production ưu tiên Chrome Extension bridge allowlist: extension mở một tab bằng session browser hiện tại và chỉ trả media URL/metadata về đúng tab admin; không yêu cầu quyền cookie/debugger và không gửi session lên server. Tab admin vẫn gọi API có `requireAdmin` để validate media rồi lưu Cloudinary/MongoDB. CDP/storage-state/Playwright worker chỉ là fallback local; public metadata, official embed và multi-upload vẫn là fallback chung.
 - Import Facebook phải có bước preview và lựa chọn rõ ràng: lưu source URL/embed hoặc tạo native post để admin hoàn thiện thủ công.
 
 ### 1.3 MVP không tạo số liệu giả

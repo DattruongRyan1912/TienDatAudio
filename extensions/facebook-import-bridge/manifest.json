@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Tiến Đạt Audio — Facebook Import Bridge",
+  "description": "Quét gallery Facebook bằng phiên Chrome hiện tại và trả dữ liệu về Social Post admin mà không xuất cookie hoặc token.",
+  "version": "0.1.0",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://tiendataudioquangngai.id.vn/*",
+    "https://tien-dat-audio.vercel.app/*",
+    "http://127.0.0.1:3000/*",
+    "http://localhost:3000/*",
+    "https://facebook.com/*",
+    "https://*.facebook.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://tiendataudioquangngai.id.vn/admin/social-posts/*",
+        "https://tien-dat-audio.vercel.app/admin/social-posts/*",
+        "http://127.0.0.1:3000/admin/social-posts/*",
+        "http://localhost:3000/admin/social-posts/*"
+      ],
+      "js": [
+        "admin-bridge.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://facebook.com/*",
+        "https://*.facebook.com/*"
+      ],
+      "js": [
+        "facebook-scanner.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Tiến Đạt Audio Facebook Import Bridge"
+  }
+}

@@ -29,8 +29,8 @@ export interface SocialGalleryImage {
   label: string
 }
 
-export type SocialGalleryProvider = 'graph_api' | 'public_browser' | 'manual_profile' | 'cdp_browser'
-export type SocialGallerySessionSource = 'none' | 'local_storage_state' | 'manual_login' | 'cdp_browser'
+export type SocialGalleryProvider = 'graph_api' | 'public_browser' | 'manual_profile' | 'cdp_browser' | 'browser_extension'
+export type SocialGallerySessionSource = 'none' | 'local_storage_state' | 'manual_login' | 'cdp_browser' | 'browser_session'
 
 export interface SocialGalleryScanResult {
   images: SocialGalleryImage[]

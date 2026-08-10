@@ -1,11 +1,15 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { test } from 'node:test'
+import { Script } from 'node:vm'
 import { getSocialMediaLayout } from '../src/modules/social/domain/media-layout'
 import { buildPublicLinkImportPreview, isFacebookMediaLink, normalizePublicLinkUrl } from '../src/modules/social/domain/link-preview'
 import { applyNativeSocialGalleryImport, applyNativeSocialLinkImport } from '../src/modules/social/domain/native-import'
 import { isFacebookBlockingLoginText } from '../src/modules/social/infrastructure/facebook-gallery-worker'
 import { parseFacebookCdpActivePort } from '../src/modules/social/infrastructure/facebook-cdp-browser'
 import { resolveFacebookStorageStatePath } from '../src/modules/social/infrastructure/facebook-session-state'
+import { normalizeFacebookExtensionGalleryResult } from '../src/modules/social/infrastructure/facebook-browser-extension'
 import { hasPublicSocialStatus, normalizeSocialPost, validateSocialPost } from '../src/modules/social/domain/validation'
 import type { SocialMediaItem } from '../src/modules/social/domain/types'
 
@@ -122,4 +126,36 @@ test('native social import uses cached media and removes the broken embed fallba
   assert.equal(next.media[0].publicId, 'social/imported/social')
   assert.equal(next.links[0].imageUrl, 'https://res.cloudinary.com/demo/image/upload/social.jpg')
   assert.equal(next.seo.ogImage, 'https://res.cloudinary.com/demo/image/upload/social.jpg')
+})
+
+test('browser extension gallery result is allowlisted, deduplicated and marked as browser session', () => {
+  const result = normalizeFacebookExtensionGalleryResult('https://www.facebook.com/story.php?story_fbid=1&id=2', {
+    images: [
+      { imageUrl: 'https://scontent.fsgn2-7.fna.fbcdn.net/photo-one.jpg?token=1', photoUrl: 'https://www.facebook.com/photo/?fbid=1', label: 'Ảnh một' },
+      { imageUrl: 'https://scontent.fsgn2-7.fna.fbcdn.net/photo-one.jpg?token=1', photoUrl: 'https://www.facebook.com/photo/?fbid=1', label: 'Trùng' },
+      { imageUrl: 'https://evil.example/private.jpg', photoUrl: 'https://evil.example/post', label: 'Không hợp lệ' },
+    ],
+    finalUrl: 'https://www.facebook.com/photo/?fbid=1',
+  })
+  assert.equal(result.images.length, 1)
+  assert.equal(result.images[0].label, 'Ảnh một')
+  assert.equal(result.provider, 'browser_extension')
+  assert.equal(result.sessionSource, 'browser_session')
+})
+
+test('browser extension manifest keeps narrow permissions and all scripts parse', () => {
+  const extensionRoot = resolve(process.cwd(), 'extensions/facebook-import-bridge')
+  const manifest = JSON.parse(readFileSync(resolve(extensionRoot, 'manifest.json'), 'utf8')) as {
+    manifest_version?: number
+    permissions?: string[]
+    host_permissions?: string[]
+  }
+  assert.equal(manifest.manifest_version, 3)
+  assert.deepEqual(manifest.permissions, ['tabs'])
+  assert.equal(manifest.permissions?.includes('cookies'), false)
+  assert.equal(manifest.permissions?.includes('debugger'), false)
+  assert.ok(manifest.host_permissions?.includes('https://tiendataudioquangngai.id.vn/*'))
+  for (const filename of ['admin-bridge.js', 'service-worker.js', 'facebook-scanner.js']) {
+    assert.doesNotThrow(() => new Script(readFileSync(resolve(extensionRoot, filename), 'utf8'), { filename }))
+  }
 })
