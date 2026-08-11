@@ -51,6 +51,7 @@ export async function updateLead(id: string, update: Partial<LeadInput> & { stat
 
 function compactProduct(product: Partial<Product> & Record<string, unknown>) {
   const now = new Date().toISOString()
+  const seo = product.seo && typeof product.seo === 'object' && !Array.isArray(product.seo) ? product.seo : undefined
   return {
     id: String(product.id || crypto.randomUUID()),
     name: String(product.name || '').trim(),
@@ -68,6 +69,7 @@ function compactProduct(product: Partial<Product> & Record<string, unknown>) {
     inStock: Boolean(product.inStock),
     featured: Boolean(product.featured),
     bestseller: Boolean(product.bestseller),
+    ...(seo ? { seo } : {}),
     createdAt: String(product.createdAt || now),
     updatedAt: now,
   }
@@ -78,6 +80,12 @@ export async function createProduct(input: Partial<Product> & Record<string, unk
   const product = compactProduct(input)
   await db.collection('products').insertOne(product)
   return product
+}
+
+export async function getProductSlugById(id: string) {
+  const db = await getDb()
+  const product = await db.collection('products').findOne({ id }, { projection: { slug: 1 } })
+  return product ? String(product.slug || '') : ''
 }
 
 export async function updateProduct(id: string, input: Partial<Product> & Record<string, unknown>) {
@@ -132,6 +140,12 @@ export async function upsertBrand(input: Partial<Brand>) {
   }
   await db.collection('brands').updateOne({ id: brand.id }, { $set: brand }, { upsert: true })
   return brand
+}
+
+export async function getBrandSlugById(id: string) {
+  const db = await getDb()
+  const brand = await db.collection('brands').findOne({ id }, { projection: { slug: 1 } })
+  return brand ? String(brand.slug || '') : ''
 }
 
 export async function deleteBrand(id: string) {

@@ -131,6 +131,16 @@ export async function getProductBySlug(slug: string) {
   )
 }
 
+export async function getProductById(id: string) {
+  return fallbackOr(
+    () => fallbackProducts().find((product) => product.id === id) || null,
+    async (db) => {
+      const document = await db.collection('products').findOne({ id })
+      return document ? normalizeProduct(document as unknown as Record<string, unknown>) : null
+    },
+  )
+}
+
 export async function getFeaturedProducts(limit = 4) {
   return getProducts({ featured: true, limit })
 }

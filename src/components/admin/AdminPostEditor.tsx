@@ -17,7 +17,7 @@ function blankPost(): ContentPost {
   const now = new Date().toISOString()
   return {
     id: '', title: '', slug: '', excerpt: '', bodyMarkdown: '', category: 'Kiến thức âm thanh', tags: [], author: 'Tiến Đạt Audio', reviewer: '', featuredImage: '', gallery: [], primaryKeywordId: '', keywordIds: [], relatedProductIds: [], relatedPostIds: [], faqs: [],
-    seo: { metaTitle: '', metaDescription: '', canonicalPath: '', ogTitle: '', ogDescription: '', ogImage: '', noIndex: true },
+    seo: { metaTitle: '', metaDescription: '', canonicalPath: '', ogTitle: '', ogDescription: '', ogImage: '', noIndex: false },
     status: 'draft', scheduledAt: null, publishedAt: null, archivedAt: null, createdAt: now, updatedAt: now, version: 1, readingTime: 1,
   }
 }

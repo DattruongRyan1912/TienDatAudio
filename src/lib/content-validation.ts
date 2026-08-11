@@ -129,6 +129,7 @@ export function validateContentPost(value: unknown) {
     if (post.excerpt.length < 20) errors.push('Bài xuất bản cần mô tả ngắn tối thiểu 20 ký tự')
     if (post.bodyMarkdown.length < 80) errors.push('Nội dung bài xuất bản quá ngắn')
     if (!post.author) errors.push('Bài xuất bản cần tên tác giả')
+    if (post.seo.noIndex) errors.push('Bài xuất bản đang bật noindex; hãy tắt noindex để cho phép công cụ tìm kiếm lập chỉ mục')
   }
   return { post, errors }
 }

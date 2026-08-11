@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { getProducts, type Product, type ProductSEO } from '@/lib/data'
+import type { Product, ProductSEO } from '@/lib/data'
 import { generateProductSEODefaults, validateProductSEO } from '@/lib/seo'
 import { Search, Edit, Eye, Save, X, AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react'
 import SEOHelp from '@/components/SEOHelp'
@@ -25,8 +25,9 @@ export default function ProductSEOPage() {
 
   const loadProducts = async () => {
     try {
-      const allProducts = await getProducts({})
-      setProducts(allProducts)
+      const response = await fetch('/api/admin/products', { cache: 'no-store' })
+      if (!response.ok) throw new Error('Failed to load products')
+      setProducts(await response.json() as Product[])
     } catch (error) {
       console.error('Error loading products:', error)
     } finally {

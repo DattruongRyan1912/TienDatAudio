@@ -55,13 +55,16 @@ async function clickGalleryControl(context: BrowserContext, page: Page, click: (
 }
 
 async function findGalleryExpansionLink(root: Locator) {
-  const links = root.locator('a[href*="/photo/"]')
-  for (let index = 0; index < await links.count(); index += 1) {
-    const link = links.nth(index)
-    const label = `${await link.getAttribute('aria-label') || ''} ${await link.innerText().catch(() => '')}`
-    if (hasUnopenedGalleryCount(label)) return link
+  const controls = root.locator('a, button, [role="button"], [tabindex="0"]')
+  let fallback: Locator | null = null
+  for (let index = 0; index < await controls.count(); index += 1) {
+    const control = controls.nth(index)
+    const label = `${await control.getAttribute('aria-label') || ''} ${await control.getAttribute('title') || ''} ${await control.innerText().catch(() => '')}`.replace(/\s+/g, ' ').trim()
+    if (!hasUnopenedGalleryCount(label) && !/xem\s+(tất\s+cả|thêm)|see\s+all|view\s+all|all\s+photos|tất\s+cả\s+ảnh/i.test(label)) continue
+    if (hasUnopenedGalleryCount(label)) return control
+    fallback ||= control
   }
-  return null
+  return fallback
 }
 
 async function expandGallery(context: BrowserContext, page: Page, root: Locator, ownedPages?: Set<Page>) {
@@ -71,7 +74,7 @@ async function expandGallery(context: BrowserContext, page: Page, root: Locator,
     return clickGalleryControl(context, page, () => moreLink.click({ timeout: 5_000 }), ownedPages)
   }
 
-  const moreText = page.getByText(/^\+\d+$/).last()
+  const moreText = page.getByText(/^\+\s*\d+$/).last()
   if (await moreText.count()) {
     return clickGalleryControl(context, page, () => moreText.click({ timeout: 5_000 }), ownedPages)
   }
@@ -222,7 +225,7 @@ async function hasBlockingLoginGate(page: Page, imageCount = Number.MAX_SAFE_INT
 }
 
 function hasUnopenedGalleryCount(value: string) {
-  return /\+\d+|còn\s+\d+(?:\s+mục)?|more\s+\d+/i.test(value)
+  return /\+\s*\d+|còn\s+\d+(?:\s+mục)?|more\s+\d+/i.test(value)
 }
 
 function imageKey(value: string) {

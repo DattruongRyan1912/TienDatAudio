@@ -11,6 +11,7 @@ export async function notifyIndexNow(paths: string[]) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ host, key, keyLocation: `${baseUrl}/indexnow-key.txt`, urlList }),
+      signal: AbortSignal.timeout(4_000),
     })
     if (!response.ok && response.status !== 202) throw new Error(`IndexNow returned ${response.status}`)
     return { submitted: true }

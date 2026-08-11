@@ -27,6 +27,14 @@ test('draft is not public and published content validates', () => {
   assert.deepEqual(errors, [])
 })
 
+test('published editorial content rejects an accidental noindex flag', () => {
+  const { errors } = validateContentPost(normalizeContentPost({
+    ...base,
+    seo: { metaTitle: 'Bài viết về phối ghép loa', metaDescription: 'Mô tả đủ dài cho bài viết đã được kiểm thử.', noIndex: true },
+  }))
+  assert.ok(errors.some((error) => error.includes('noindex')))
+})
+
 test('scheduled content only becomes public after schedule time', () => {
   const scheduled = normalizeContentPost({ ...base, status: 'scheduled', scheduledAt: '2026-12-01T00:00:00.000Z', publishedAt: null })
   assert.equal(hasPublicStatus(scheduled, new Date('2026-11-30T00:00:00.000Z')), false)

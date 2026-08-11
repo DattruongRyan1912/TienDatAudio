@@ -1,4 +1,4 @@
-import { isFacebookLink, isFacebookMediaLink, normalizePublicLinkUrl } from '../domain/link-preview'
+import { isFacebookLink, isFacebookMediaLink, normalizePublicLinkUrl, type SocialLinkImportedAsset } from '../domain/link-preview'
 import { fetchPublicLinkPreview } from '../infrastructure/public-link-preview'
 import { importSocialLinkImage } from '../infrastructure/social-image-import'
 
@@ -46,14 +46,21 @@ export async function importPublicSocialGalleryImages(value: unknown, valueImage
     }
   }).filter((item, index, all) => all.findIndex((candidate) => candidate.imageUrl === item.imageUrl) === index)
 
-  const assets = []
-  for (const candidate of candidates) {
-    const asset = await importSocialLinkImage(candidate.imageUrl)
-    assets.push({
-      ...asset,
-      alt: candidate.label || 'Hình ảnh trong bài viết',
-      sourcePhotoUrl: candidate.photoUrl,
-    })
+  const assets: Array<SocialLinkImportedAsset> = new Array(candidates.length)
+  let cursor = 0
+  const worker = async () => {
+    while (cursor < candidates.length) {
+      const index = cursor
+      cursor += 1
+      const candidate = candidates[index]
+      const asset = await importSocialLinkImage(candidate.imageUrl)
+      assets[index] = {
+        ...asset,
+        alt: candidate.label || 'Hình ảnh trong bài viết',
+        sourcePhotoUrl: candidate.photoUrl,
+      }
+    }
   }
+  await Promise.all(Array.from({ length: Math.min(3, candidates.length) }, () => worker()))
   return { sourceUrl, assets }
 }

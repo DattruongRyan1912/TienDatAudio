@@ -86,16 +86,40 @@
   }
 
   function unopenedGalleryCount(value) {
-    return /\+\d+|còn\s+\d+(?:\s+mục)?|more\s+\d+/i.test(value)
+    return /\+\s*\d+|còn\s+\d+(?:\s+mục)?|more\s+\d+/i.test(value)
   }
 
-  function findExpansionUrl(root) {
-    for (const anchor of root.querySelectorAll('a[href*="/photo/"]')) {
-      const image = anchor.querySelector('img')
-      const label = `${anchor.getAttribute('aria-label') || ''} ${anchor.textContent || ''} ${image?.alt || ''}`
-      if (unopenedGalleryCount(label) && anchor.href) return anchor.href
+  function isGalleryExpansionLabel(value) {
+    return unopenedGalleryCount(value) || /xem\s+(tất\s+cả|thêm)|see\s+all|view\s+all|all\s+photos|tất\s+cả\s+ảnh/i.test(value)
+  }
+
+  function photoHref(element) {
+    try {
+      const href = element.href || ''
+      return /\/photos?\//i.test(new URL(href).pathname) ? href : ''
+    } catch {
+      return ''
     }
-    return ''
+  }
+
+  function findExpansionControl(root) {
+    const candidates = root.querySelectorAll('a, button, [role="button"], [tabindex="0"]')
+    let fallback = null
+    for (const element of candidates) {
+      const image = element.querySelector('img')
+      const label = `${element.getAttribute('aria-label') || ''} ${element.getAttribute('title') || ''} ${element.textContent || ''} ${image?.alt || ''}`.replace(/\s+/g, ' ').trim()
+      if (!isGalleryExpansionLabel(label)) continue
+      const result = { element, href: photoHref(element) }
+      if (unopenedGalleryCount(label)) return result
+      fallback ||= result
+    }
+    for (const element of root.querySelectorAll('*')) {
+      const label = (element.textContent || '').replace(/\s+/g, ' ').trim()
+      if (!/^\+\s*\d+$/.test(label)) continue
+      const clickable = element.closest('a, button, [role="button"], [tabindex="0"]') || element.parentElement || element
+      return { element: clickable, href: photoHref(clickable) }
+    }
+    return fallback
   }
 
   function visibleViewerImage() {
@@ -172,13 +196,25 @@
       await delay(1_500)
       const root = postRoot()
       const initialImages = collectImages(root)
-      const postText = readFacebookPostText(root)
-      const expansionUrl = message.mode === 'initial' ? findExpansionUrl(root) : ''
+      const initialPostText = readFacebookPostText(root)
+      const expansion = message.mode === 'initial' ? findExpansionControl(root) : null
+      const expansionUrl = expansion?.href || ''
+      let expandedByClick = false
+      if (expansion && !expansionUrl) {
+        expansion.element.click()
+        expandedByClick = true
+        await delay(2_200)
+      }
+
+      const expandedRoot = postRoot()
+      const expandedImages = expandedByClick ? collectImages(expandedRoot) : []
+      const expandedPostText = expandedByClick ? readFacebookPostText(expandedRoot) : ''
+      const postText = [initialPostText, expandedPostText].sort((left, right) => right.length - left.length)[0] || ''
       const viewerDetected = /\/photo(?:\.php|\/)/i.test(window.location.pathname) || Boolean(document.querySelector('[role="dialog"]'))
       const viewerImages = message.mode === 'viewer' || (viewerDetected && !expansionUrl)
         ? await collectViewerImages(Math.min(50, Math.max(1, Number(message.maxImages) || 50)))
         : []
-      const images = mergeImages(viewerImages, initialImages).slice(0, 50)
+      const images = mergeImages(viewerImages, expandedImages, initialImages).slice(0, 50)
       const blocked = loginRequired()
       const pageText = document.body?.innerText || ''
       return {
@@ -188,7 +224,7 @@
         viewerDetected,
         finalUrl: window.location.href,
         loginRequired: blocked,
-        partialGallery: blocked || (!viewerImages.length && unopenedGalleryCount(pageText)),
+        partialGallery: blocked || (!viewerImages.length && !expandedByClick && unopenedGalleryCount(pageText)),
         warning: blocked ? 'Facebook yêu cầu đăng nhập hoặc tài khoản hiện tại chưa có quyền xem toàn bộ gallery.' : '',
       }
     }

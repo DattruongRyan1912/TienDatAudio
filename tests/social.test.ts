@@ -218,4 +218,7 @@ test('browser extension manifest keeps narrow permissions and all scripts initia
       },
     }))
   }
+  const scannerSource = readFileSync(resolve(extensionRoot, 'facebook-scanner.js'), 'utf8')
+  assert.match(scannerSource, /findExpansionControl/)
+  assert.match(scannerSource, /expansion\.element\.click\(\)/)
 })

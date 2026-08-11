@@ -114,6 +114,8 @@ async function scanFacebookGallery(sourceValue, adminTab) {
       viewer = await sendScannerMessage(workerTab.id, 'viewer')
     } else if (initial.viewerDetected) {
       viewer = initial
+    } else if (initial.partialGallery && !initial.loginRequired) {
+      viewer = await sendScannerMessage(workerTab.id, 'viewer')
     }
 
     const images = mergeImages(viewer?.images, initial.images)
