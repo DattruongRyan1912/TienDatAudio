@@ -5,6 +5,8 @@ import { getPublicPosts } from '@/lib/content-repository'
 import { getAllPublicSocialPosts } from '@/modules/social/application/social-post-service'
 import { isSocialHubEnabled } from '@/modules/social/domain/feature-flag'
 
+export const revalidate = 300
+
 function validDate(value: string) {
   const date = new Date(value)
   return Number.isFinite(date.getTime()) ? date : new Date(0)
