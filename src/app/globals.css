@@ -102,6 +102,74 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sonic-container { width: min(1440px, calc(100% - 40px)); margin-inline: auto; }
 @media (min-width: 768px) { .sonic-container { width: min(1440px, calc(100% - 128px)); } }
 
+.article-container {
+  --article-flow-width: 1004px;
+  --article-toc-width: 220px;
+  --article-body-width: 720px;
+  --article-grid-gap: 64px;
+  width: min(1200px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+.article-flow-anchor,
+.article-content-grid {
+  width: min(100%, var(--article-flow-width));
+  margin-inline: auto;
+}
+
+.article-header { max-width: var(--article-flow-width); }
+.article-title { max-width: 960px; }
+.article-excerpt { max-width: 860px; }
+.article-media { max-width: var(--article-flow-width); }
+.article-content-grid {
+  display: grid;
+  grid-template-columns: var(--article-toc-width) minmax(0, var(--article-body-width));
+  gap: var(--article-grid-gap);
+  align-items: start;
+  margin-top: 64px;
+}
+.article-content-grid--without-toc {
+  grid-template-columns: minmax(0, var(--article-body-width));
+  max-width: var(--article-body-width);
+}
+.article-toc-reveal { min-width: 0; }
+.article-toc {
+  position: sticky;
+  top: 7rem;
+  width: 100%;
+  align-self: start;
+}
+.article-body { min-width: 0; width: 100%; max-width: var(--article-body-width); }
+.article-gallery { width: 100%; }
+.article-faq { width: 100%; }
+
+@media (max-width: 1099px) {
+  .article-container { width: min(1200px, calc(100% - 64px)); }
+  .article-flow-anchor { max-width: 100%; }
+  .article-content-grid,
+  .article-content-grid--without-toc {
+    display: block;
+    width: min(100%, var(--article-body-width));
+    max-width: var(--article-body-width);
+  }
+  .article-toc {
+    position: static;
+    margin-bottom: 48px;
+    padding: 1.25rem;
+    border: 1px solid var(--sonic-line);
+    background: var(--sonic-surface);
+  }
+  .article-toc nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .article-body { max-width: none; }
+}
+
+@media (max-width: 767px) {
+  .article-container { width: calc(100% - 32px); }
+  .article-content-grid { margin-top: 48px; }
+  .article-toc { margin-bottom: 40px; }
+  .article-toc nav { grid-template-columns: minmax(0, 1fr); }
+}
+
 .sonic-label {
   color: var(--sonic-gold);
   font-size: 0.68rem;
