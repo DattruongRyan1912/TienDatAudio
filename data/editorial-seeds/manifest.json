@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "posts": [
+    {
+      "id": "seed-2026-08-family-karaoke-budget",
+      "title": "Dàn karaoke gia đình giá bao nhiêu? Cách chia ngân sách theo không gian",
+      "slug": "dan-karaoke-gia-dinh-gia-bao-nhieu",
+      "excerpt": "Dàn karaoke gia đình giá bao nhiêu phụ thuộc vào diện tích phòng, cách dùng và mức độ cần lắp đặt. Đây là cách chia ngân sách để chọn đúng ưu tiên.",
+      "category": "Giải pháp",
+      "tags": ["karaoke gia đình", "phối ghép", "ngân sách"],
+      "author": "Tiến Đạt Audio",
+      "reviewer": "",
+      "featuredImage": "/images/editorial-temp/family-karaoke.png",
+      "primaryKeywordId": "kw-family-karaoke-budget",
+      "keywordIds": ["kw-family-karaoke-budget"],
+      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx330pro", "arf-vx660"],
+      "relatedPostIds": ["post-2"],
+      "faqs": [
+        {
+          "id": "faq-family-karaoke-budget-components",
+          "question": "Một dàn karaoke gia đình thường gồm những thiết bị nào?",
+          "answer": "Một cấu hình thường có loa, thiết bị khuếch đại hoặc xử lý tín hiệu, micro, nguồn phát và hệ thống dây kết nối. Tùy phòng và nhu cầu, có thể bổ sung loa trầm hoặc thiết bị bảo vệ nguồn."
+        },
+        {
+          "id": "faq-family-karaoke-budget-price",
+          "question": "Có thể báo chính xác giá dàn karaoke gia đình chỉ từ một từ khóa không?",
+          "answer": "Không nên. Giá phụ thuộc vào thiết bị, số lượng loa, hiện trạng phòng, dây dẫn và phần lắp đặt. Cần chốt cấu hình sau khi biết diện tích, nhu cầu và ngân sách thực tế."
+        }
+      ],
+      "seo": {
+        "metaTitle": "Dàn karaoke gia đình giá bao nhiêu? Cách chọn cấu hình",
+        "metaDescription": "Tìm hiểu dàn karaoke gia đình giá bao nhiêu và cách chia ngân sách theo diện tích phòng, nhu cầu sử dụng, thiết bị và chi phí lắp đặt.",
+        "canonicalPath": "/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu",
+        "ogTitle": "Dàn karaoke gia đình giá bao nhiêu?",
+        "ogDescription": "Chia ngân sách theo không gian và nhu cầu trước khi chọn thiết bị.",
+        "ogImage": "/images/editorial-temp/family-karaoke.png",
+        "noIndex": true
+      },
+      "status": "draft",
+      "bodyFile": "family-karaoke-budget.md"
+    },
+    {
+      "id": "seed-2026-08-karaoke-feedback",
+      "title": "Loa karaoke bị hú: nguyên nhân và cách xử lý theo từng bước",
+      "slug": "loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+      "excerpt": "Loa karaoke bị hú thường liên quan đến vòng lặp giữa micro và loa, vị trí đặt, gain hoặc EQ. Hãy khoanh vùng theo thứ tự trước khi thay thiết bị.",
+      "category": "Kiến thức âm thanh",
+      "tags": ["loa karaoke", "chống hú", "micro"],
+      "author": "Tiến Đạt Audio",
+      "reviewer": "",
+      "featuredImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+      "primaryKeywordId": "kw-karaoke-feedback",
+      "keywordIds": ["kw-karaoke-feedback"],
+      "relatedProductIds": ["arf-vx330pro", "arf-vx660", "arf-fs12"],
+      "relatedPostIds": ["post-2"],
+      "faqs": [
+        {
+          "id": "faq-karaoke-feedback-first-step",
+          "question": "Nên làm gì đầu tiên khi loa karaoke bị hú?",
+          "answer": "Hạ âm lượng hoặc tắt micro đang gây hú, sau đó kiểm tra hướng loa và vị trí micro. Không nên tiếp tục tăng gain hoặc thử EQ ngẫu nhiên khi chưa khoanh vùng nguyên nhân."
+        },
+        {
+          "id": "faq-karaoke-feedback-technician",
+          "question": "Khi nào nên nhờ kỹ thuật viên cân chỉnh chống hú?",
+          "answer": "Nên nhờ kỹ thuật viên khi tiếng hú lặp lại dù đã tách vị trí, khi hệ thống có nhiều micro hoặc DSP, hoặc khi cần đo và cân chỉnh theo đúng mặt bằng phòng."
+        }
+      ],
+      "seo": {
+        "metaTitle": "Loa karaoke bị hú: nguyên nhân và cách khắc phục",
+        "metaDescription": "Loa karaoke bị hú do đâu? Xem cách kiểm tra vị trí, gain, micro và EQ theo thứ tự an toàn để giảm hú trước khi thay thiết bị.",
+        "canonicalPath": "/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+        "ogTitle": "Loa karaoke bị hú: xử lý từ nguyên nhân gốc",
+        "ogDescription": "Khoanh vùng vị trí, gain và EQ trước khi thay thiết bị.",
+        "ogImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+        "noIndex": true
+      },
+      "status": "draft",
+      "bodyFile": "karaoke-feedback.md"
+    },
+    {
+      "id": "seed-2026-08-quang-ngai-installation",
+      "title": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình và chi phí",
+      "slug": "lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+      "excerpt": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi nên bắt đầu từ khảo sát phòng, nhu cầu và đường dây. Bài viết giúp bạn chuẩn bị thông tin trước khi nhận tư vấn.",
+      "category": "Giải pháp",
+      "tags": ["Quảng Ngãi", "lắp đặt", "karaoke gia đình"],
+      "author": "Tiến Đạt Audio",
+      "reviewer": "",
+      "featuredImage": "/images/editorial-temp/local-quang-ngai.png",
+      "primaryKeywordId": "kw-karaoke-quang-ngai",
+      "keywordIds": ["kw-karaoke-quang-ngai"],
+      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx660", "arf-nx4-800"],
+      "relatedPostIds": ["post-1"],
+      "faqs": [
+        {
+          "id": "faq-quang-ngai-installation-survey",
+          "question": "Trước khi lắp đặt dàn karaoke gia đình cần khảo sát gì?",
+          "answer": "Cần biết diện tích, hình dạng phòng, vị trí ngồi, nguồn điện, đường đi dây, vật liệu tường và thói quen sử dụng. Hình ảnh hoặc video phòng giúp tư vấn ban đầu sát hơn."
+        },
+        {
+          "id": "faq-quang-ngai-installation-cost",
+          "question": "Chi phí lắp đặt có giống nhau cho mọi gia đình không?",
+          "answer": "Không. Chi phí thay đổi theo thiết bị, số lượng loa, dây dẫn, độ phức tạp của đường đi dây, hiện trạng phòng và hạng mục cân chỉnh. Báo giá nên đi kèm cấu hình và phạm vi công việc rõ ràng."
+        }
+      ],
+      "seo": {
+        "metaTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi",
+        "metaDescription": "Quy trình lắp đặt dàn karaoke gia đình tại Quảng Ngãi: khảo sát phòng, chọn cấu hình, đi dây, cân chỉnh và nghiệm thu theo nhu cầu.",
+        "canonicalPath": "/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+        "ogTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi",
+        "ogDescription": "Chuẩn bị đúng thông tin để nhận tư vấn cấu hình và chi phí sát thực tế.",
+        "ogImage": "/images/editorial-temp/local-quang-ngai.png",
+        "noIndex": true
+      },
+      "status": "draft",
+      "bodyFile": "quang-ngai-installation.md"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "purpose": "Temporary editorial images for draft content. Replace with verified real photography before publishing.",
+  "images": {
+    "family-karaoke": "/images/editorial-temp/family-karaoke.png",
+    "karaoke-troubleshooting": "/images/editorial-temp/karaoke-troubleshooting.png",
+    "local-quang-ngai": "/images/editorial-temp/local-quang-ngai.png",
+    "equipment-selection": "/images/editorial-temp/equipment-selection.png",
+    "speaker-hi-fi": "/images/editorial-temp/speaker-hi-fi.png",
+    "room-acoustics": "/images/editorial-temp/room-acoustics.png",
+    "setup-maintenance": "/images/editorial-temp/setup-maintenance.png",
+    "commercial-event": "/images/editorial-temp/commercial-event.png",
+    "audio-technology": "/images/editorial-temp/audio-technology.png",
+    "buying-decisions": "/images/editorial-temp/buying-decisions.png"
+  }
+}

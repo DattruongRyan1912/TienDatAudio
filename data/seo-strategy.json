@@ -55,6 +55,84 @@
       "notes": "Liên kết tới danh mục sản phẩm và bài đánh giá chuyên sâu.",
       "isActive": true,
       "updatedAt": "2026-08-09T00:00:00.000Z"
+    },
+    {
+      "id": "kw-family-karaoke-budget",
+      "term": "dàn karaoke gia đình giá bao nhiêu",
+      "intent": "commercial",
+      "targetPage": "/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu",
+      "cluster": "family-karaoke",
+      "priority": "high",
+      "notes": "Cụm từ có ý định thương mại; giải thích cách lập ngân sách thay vì hứa một mức giá cố định.",
+      "brief": {
+        "audience": "Gia đình đang chuẩn bị mua hoặc nâng cấp dàn karaoke.",
+        "angle": "Chia ngân sách theo không gian, thói quen sử dụng và mức độ cần lắp đặt.",
+        "questions": [
+          "Dàn karaoke gia đình gồm những thiết bị nào?",
+          "Ngân sách trung bình nên ưu tiên hạng mục nào?",
+          "Vì sao không nên chọn cấu hình chỉ theo công suất?"
+        ],
+        "secondaryTerms": [
+          "dàn karaoke gia đình 20 triệu",
+          "bộ dàn karaoke gia đình",
+          "dàn karaoke phòng khách"
+        ],
+        "callToAction": "Gửi diện tích phòng và ngân sách để được tư vấn cấu hình phù hợp."
+      },
+      "isActive": true,
+      "updatedAt": "2026-08-11T00:00:00.000Z"
+    },
+    {
+      "id": "kw-karaoke-feedback",
+      "term": "loa karaoke bị hú",
+      "intent": "informational",
+      "targetPage": "/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+      "cluster": "karaoke-troubleshooting",
+      "priority": "high",
+      "notes": "Bài giải quyết vấn đề, ưu tiên hướng dẫn theo thứ tự an toàn và dẫn về tư vấn kỹ thuật khi cần.",
+      "brief": {
+        "audience": "Người dùng karaoke gia đình gặp tiếng hú hoặc rít khi mở micro.",
+        "angle": "Khoanh vùng nguyên nhân từ vị trí, gain, EQ và phòng trước khi thay thiết bị.",
+        "questions": [
+          "Vì sao micro và loa tạo tiếng hú?",
+          "Nên xử lý theo thứ tự nào để không làm hỏng hệ thống?",
+          "Khi nào cần kỹ thuật viên cân chỉnh?"
+        ],
+        "secondaryTerms": [
+          "cách chỉnh micro karaoke không bị hú",
+          "micro karaoke bị rít",
+          "chống hú karaoke"
+        ],
+        "callToAction": "Mô tả không gian và cấu hình hiện tại để được hỗ trợ khoanh vùng lỗi."
+      },
+      "isActive": true,
+      "updatedAt": "2026-08-11T00:00:00.000Z"
+    },
+    {
+      "id": "kw-karaoke-quang-ngai",
+      "term": "dàn karaoke gia đình Quảng Ngãi",
+      "intent": "local",
+      "targetPage": "/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Landing editorial địa phương, kết nối nhu cầu khảo sát, phối ghép và lắp đặt với trang liên hệ.",
+      "brief": {
+        "audience": "Gia đình tại Quảng Ngãi cần tư vấn, lắp đặt hoặc nâng cấp hệ thống karaoke.",
+        "angle": "Mô tả quy trình khảo sát và nghiệm thu minh bạch, không dùng báo giá ảo.",
+        "questions": [
+          "Kỹ thuật viên cần khảo sát những gì trước khi báo cấu hình?",
+          "Một quy trình lắp đặt gia đình gồm các bước nào?",
+          "Khách hàng nên chuẩn bị gì để dự toán sát thực tế?"
+        ],
+        "secondaryTerms": [
+          "lắp đặt âm thanh Quảng Ngãi",
+          "tư vấn karaoke Quảng Ngãi",
+          "cửa hàng âm thanh Quảng Ngãi"
+        ],
+        "callToAction": "Liên hệ Tiến Đạt Audio để đặt lịch khảo sát tại Quảng Ngãi."
+      },
+      "isActive": true,
+      "updatedAt": "2026-08-11T00:00:00.000Z"
     }
   ],
   "ai": {

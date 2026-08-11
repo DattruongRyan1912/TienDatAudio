@@ -1,0 +1,83 @@
+name: Seed editorial production
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: Full Git SHA of the active production release
+        required: true
+        type: string
+      confirmation:
+        description: Type SEED-100-DRAFT-NOINDEX to confirm a draft-only production seed
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-editorial-seed
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    if: inputs.confirmation == 'SEED-100-DRAFT-NOINDEX'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+
+    steps:
+      - name: Validate release SHA
+        id: release
+        env:
+          RELEASE_SHA_INPUT: ${{ inputs.release_sha }}
+        run: |
+          if [[ ! "$RELEASE_SHA_INPUT" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "release_sha must be a full 40-character Git commit SHA" >&2
+            exit 1
+          fi
+          echo "sha=$RELEASE_SHA_INPUT" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.release.outputs.sha }}
+
+      - name: Configure pinned SSH transport
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          test -n "$VPS_SSH_KEY"
+          test -n "$VPS_KNOWN_HOSTS"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_KEY" > "$HOME/.ssh/tiendataudio_deploy"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/tiendataudio_deploy" "$HOME/.ssh/known_hosts"
+
+      - name: Apply idempotent draft-only seed
+        env:
+          RELEASE_SHA: ${{ steps.release.outputs.sha }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh_args=(-i "$HOME/.ssh/tiendataudio_deploy" -p "$VPS_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          ssh "${ssh_args[@]}" "$VPS_USER@$VPS_HOST" "
+            set -Eeuo pipefail
+            release_dir=/srv/tiendataudio/releases/$RELEASE_SHA
+            test -d \"\$release_dir\"
+            test \"\$(readlink -f /srv/tiendataudio/current)\" = \"\$release_dir\"
+            cd \"\$release_dir\"
+            set -a
+            source /etc/tiendataudio/tiendataudio.env
+            set +a
+            export EDITORIAL_SEED_TARGET=production
+            export EDITORIAL_SEED_CONFIRM=SEED-100-DRAFT-NOINDEX
+            npm run db:seed-editorial-queue -- --apply
+            npm run db:assign-editorial-images -- --apply
+          "
+
+      - name: Remove runner credential
+        if: always()
+        run: rm -f "$HOME/.ssh/tiendataudio_deploy"
