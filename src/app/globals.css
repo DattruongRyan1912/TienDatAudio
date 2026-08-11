@@ -134,7 +134,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   grid-template-columns: minmax(0, var(--article-body-width));
   max-width: var(--article-body-width);
 }
-.article-toc-reveal { min-width: 0; }
+.article-toc-reveal { min-width: 0; align-self: stretch; }
 .article-toc {
   position: sticky;
   top: 7rem;
