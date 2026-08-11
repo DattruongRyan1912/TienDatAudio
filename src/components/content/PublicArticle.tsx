@@ -70,7 +70,7 @@ export default function PublicArticle({
     })
   }
 
-  return <div className="sonic-page pt-28 md:pt-36">
+  return <div className="sonic-page article-page pt-28 md:pt-36">
     {!preview && <ContentViewTracker type="article" id={post.id} />}
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }) }} />
     {preview && <div className="fixed inset-x-0 top-16 z-30 border-y border-amber-300/30 bg-amber-300 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.14em] text-[#080808]">Preview admin · {post.status} · version {post.version}</div>}

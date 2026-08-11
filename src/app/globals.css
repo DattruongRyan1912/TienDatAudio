@@ -102,6 +102,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .sonic-container { width: min(1440px, calc(100% - 40px)); margin-inline: auto; }
 @media (min-width: 768px) { .sonic-container { width: min(1440px, calc(100% - 128px)); } }
 
+.article-page { overflow: visible; }
+
 .article-container {
   --article-flow-width: 1004px;
   --article-toc-width: 220px;
