@@ -18,7 +18,8 @@
     "db:hash-password": "node scripts/hash-password.mjs",
     "db:seed-editorial": "node --env-file-if-exists=.env.local scripts/seed-editorial-drafts.mjs",
     "db:seed-editorial-queue": "node --env-file-if-exists=.env.local scripts/seed-editorial-research-queue.mjs",
-    "db:assign-editorial-images": "node --env-file-if-exists=.env.local scripts/assign-editorial-temp-images.mjs"
+    "db:assign-editorial-images": "node --env-file-if-exists=.env.local scripts/assign-editorial-temp-images.mjs",
+    "db:publish-editorial-queue": "node --env-file-if-exists=.env.local scripts/publish-editorial-queue.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
