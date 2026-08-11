@@ -105,25 +105,30 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .article-page { overflow: visible; }
 
 .article-container {
-  --article-flow-width: 1004px;
+  --article-outer-width: 1180px;
   --article-toc-width: 220px;
   --article-body-width: 720px;
-  --article-grid-gap: 64px;
-  width: min(1200px, calc(100% - 40px));
+  --article-grid-gap: 56px;
+  width: min(var(--article-outer-width), calc(100% - 64px));
   margin-inline: auto;
 }
 
 .article-flow-anchor,
 .article-content-grid {
-  width: min(100%, var(--article-flow-width));
-  margin-inline: auto;
+  width: 100%;
+  margin-inline: 0;
 }
 
-.article-header { max-width: var(--article-flow-width); }
-.article-title { max-width: 960px; }
-.article-excerpt { max-width: 860px; }
-.article-media { max-width: var(--article-flow-width); }
+.article-header { max-width: 860px; }
+.article-title { max-width: none; }
+.article-excerpt { max-width: none; }
+.article-media {
+  width: min(960px, 100%);
+  max-width: 960px;
+}
 .article-content-grid {
+  width: min(100%, calc(var(--article-toc-width) + var(--article-grid-gap) + var(--article-body-width)));
+  max-width: calc(var(--article-toc-width) + var(--article-grid-gap) + var(--article-body-width));
   display: grid;
   grid-template-columns: var(--article-toc-width) minmax(0, var(--article-body-width));
   gap: var(--article-grid-gap);
@@ -146,13 +151,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .article-faq { width: 100%; }
 
 @media (max-width: 1099px) {
-  .article-container { width: min(1200px, calc(100% - 64px)); }
+  .article-container { width: min(var(--article-outer-width), calc(100% - 64px)); }
   .article-flow-anchor { max-width: 100%; }
   .article-content-grid,
   .article-content-grid--without-toc {
     display: block;
-    width: min(100%, var(--article-body-width));
-    max-width: var(--article-body-width);
+    width: min(100%, 760px);
+    max-width: 760px;
   }
   .article-toc {
     position: static;
