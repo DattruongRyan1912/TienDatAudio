@@ -18,12 +18,23 @@ function getHashTarget() {
   return document.getElementById(`${SANITIZED_ID_PREFIX}${hash}`) || document.getElementById(hash)
 }
 
+function alignHashTarget(target: HTMLElement, behavior: ScrollBehavior) {
+  const headerBottom = document.querySelector('header')?.getBoundingClientRect().bottom || 0
+  const scrollMarginTop = Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0
+  const offset = Math.max(headerBottom, scrollMarginTop)
+  const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset)
+  window.scrollTo({ top, behavior })
+}
+
 function scrollToHashTarget() {
   const target = getHashTarget()
   if (!target) return
 
   const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
-  window.requestAnimationFrame(() => target.scrollIntoView({ behavior, block: 'start' }))
+  window.requestAnimationFrame(() => {
+    alignHashTarget(target, behavior)
+    window.setTimeout(() => alignHashTarget(target, 'auto'), 400)
+  })
 }
 
 export default function ArticleHashNavigation() {
