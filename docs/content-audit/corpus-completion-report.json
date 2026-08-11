@@ -1,0 +1,908 @@
+{
+  "generatedAt": "2026-08-11T15:19:10.611Z",
+  "mode": "apply",
+  "target": {
+    "hostname": "127.0.0.1",
+    "database": "tiendataudio"
+  },
+  "completionVersion": "editorial-completion-v4-2026-08-11",
+  "queueSize": 100,
+  "preservedBatch1": 5,
+  "updated": 95,
+  "statusAfterApply": "review",
+  "noIndexAfterApply": true,
+  "humanGate": "Reviewer, valid image/license, fact check, SERP review and browser/mobile/schema QA remain required; no publish/index mutation was performed.",
+  "quality": {
+    "minWords": 1451,
+    "maxWords": 1663,
+    "missingSources": 0,
+    "missingInternalLinks": 0
+  },
+  "actions": [
+    {
+      "action": "preserved-batch-1",
+      "slug": "dan-karaoke-gia-dinh-gia-bao-nhieu",
+      "status": "review",
+      "noIndex": true
+    },
+    {
+      "action": "preserved-batch-1",
+      "slug": "loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+      "status": "review",
+      "noIndex": true
+    },
+    {
+      "action": "preserved-batch-1",
+      "slug": "lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+      "status": "review",
+      "noIndex": true
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-phong-15m2",
+      "type": "Setup Guide",
+      "clusterRole": "supporting",
+      "wordCount": 1589,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-phong-20m2-can-bao-nhieu-loa",
+      "type": "Setup Guide",
+      "clusterRole": "supporting",
+      "wordCount": 1585,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-cho-phong-khach-mo",
+      "type": "Setup Guide",
+      "clusterRole": "angle",
+      "wordCount": 1582,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-cho-chung-cu",
+      "type": "Setup Guide",
+      "clusterRole": "angle",
+      "wordCount": 1592,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-nghe-nhac-va-hat",
+      "type": "Setup Guide",
+      "clusterRole": "angle",
+      "wordCount": 1631,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-hai-hay-bon-micro",
+      "type": "Setup Guide",
+      "clusterRole": "angle",
+      "wordCount": 1652,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dan-karaoke-gia-dinh-co-can-loa-sub-khong",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1663,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "nen-chon-amply-hay-vang-so-karaoke-gia-dinh",
+      "type": "Comparison",
+      "clusterRole": "pillar",
+      "wordCount": 1637,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "vang-co-hay-vang-so-phu-hop-gia-dinh",
+      "type": "Comparison",
+      "clusterRole": "supporting",
+      "wordCount": 1560,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cuc-day-cong-suat-la-gi-khi-nao-can-dung",
+      "type": "Buying Guide",
+      "clusterRole": "supporting",
+      "wordCount": 1547,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "phoi-cong-suat-loa-va-amply-on-dinh",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1560,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-full-range-la-gi-khi-nao-nen-dung",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1536,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-active-va-loa-passive-khac-nhau-the-nao",
+      "type": "Comparison",
+      "clusterRole": "angle",
+      "wordCount": 1517,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-hai-duong-tieng-va-ba-duong-tieng",
+      "type": "Comparison",
+      "clusterRole": "angle",
+      "wordCount": 1624,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "micro-co-day-va-khong-day-karaoke",
+      "type": "Comparison",
+      "clusterRole": "angle",
+      "wordCount": 1569,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "micro-khong-day-bi-nhieu-nguyen-nhan-cach-kiem-tra",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1520,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dau-karaoke-online-hay-smart-tv",
+      "type": "Comparison",
+      "clusterRole": "angle",
+      "wordCount": 1563,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "micro-karaoke-bi-rit-phan-biet-hu-nhieu-meo",
+      "type": "Troubleshooting",
+      "clusterRole": "supporting",
+      "wordCount": 1524,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-chinh-micro-karaoke-khong-bi-hu",
+      "type": "Troubleshooting",
+      "clusterRole": "supporting",
+      "wordCount": 1587,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-karaoke-bi-re-kiem-tra-nguyen-nhan",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1514,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-karaoke-mat-tieng-mot-ben",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1563,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "am-thanh-karaoke-bi-u-xu-ly-nguon-dien",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1543,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "hat-karaoke-bi-tre-tieng",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1540,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tieng-bass-bi-u-trong-phong-karaoke",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1559,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "vang-so-bi-mat-cau-hinh-cach-khoi-phuc",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1548,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "micro-karaoke-khong-nhan-tin-hieu",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1555,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "amply-karaoke-bi-nong-khi-nao-can-dung",
+      "type": "Troubleshooting",
+      "clusterRole": "angle",
+      "wordCount": 1494,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "preserved-batch-1",
+      "slug": "cach-chon-loa-nghe-nhac-cho-phong-khach",
+      "status": "review",
+      "noIndex": true
+    },
+    {
+      "action": "updated",
+      "slug": "loa-bookshelf-va-floorstanding-chon-theo-khong-gian",
+      "type": "Acoustic / Placement",
+      "clusterRole": "supporting",
+      "wordCount": 1480,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-nghe-nhac-cho-phong-20m2",
+      "type": "Acoustic / Placement",
+      "clusterRole": "supporting",
+      "wordCount": 1552,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-chon-loa-nghe-nhac-vocal",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1512,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-chon-loa-nghe-nhac-bolero",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1490,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-nghe-nhac-acoustic-khong-bi-choi",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1478,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "loa-hi-fi-co-can-amply-khong",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1559,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "mua-loa-nghe-nhac-chinh-hang-quang-ngai",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1572,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-bo-tri-he-thong-stereo-hai-kenh",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1556,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "nghe-nhac-lossless-tai-nha-can-thiet-bi-gi",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1560,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tieu-am-va-cach-am-khac-nhau",
+      "type": "Acoustic / Placement",
+      "clusterRole": "pillar",
+      "wordCount": 1604,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "phong-karaoke-gia-dinh-co-can-tieu-am",
+      "type": "Acoustic / Placement",
+      "clusterRole": "supporting",
+      "wordCount": 1637,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "xu-ly-tieng-vang-phong-khach-nhieu-kinh",
+      "type": "Acoustic / Placement",
+      "clusterRole": "supporting",
+      "wordCount": 1591,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dat-loa-karaoke-cach-tuong-bao-nhieu",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1557,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "dat-loa-sub-o-dau-bass-gon-deu",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1545,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "ke-loa-bookshelf-dung-cach",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1528,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "huong-loa-karaoke-chong-hu",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1539,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "rem-tham-anh-huong-am-thanh-phong-khach",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1582,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "do-am-thanh-phong-gia-dinh-truoc-lap-dat",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1596,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "thiet-ke-phong-nghe-nhac-tai-nha",
+      "type": "Acoustic / Placement",
+      "clusterRole": "angle",
+      "wordCount": 1588,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-dau-noi-loa-va-amply-karaoke-an-toan",
+      "type": "How-to",
+      "clusterRole": "pillar",
+      "wordCount": 1544,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "thu-tu-bat-tat-he-thong-am-thanh",
+      "type": "How-to",
+      "clusterRole": "supporting",
+      "wordCount": 1550,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "ve-sinh-loa-karaoke-dung-cach",
+      "type": "How-to",
+      "clusterRole": "supporting",
+      "wordCount": 1525,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "bao-quan-micro-khong-day",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1484,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "cach-kiem-tra-day-loa-day-tin-hieu",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1548,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "nguon-dien-cho-dan-am-thanh",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1535,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "bao-duong-vang-so-thiet-bi-dsp",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1465,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "khi-nao-nen-thay-day-loa-day-tin-hieu",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1526,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-test-loa-truoc-khi-nhan-hang",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1518,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "checklist-nghiem-thu-dan-karaoke-gia-dinh",
+      "type": "How-to",
+      "clusterRole": "angle",
+      "wordCount": 1500,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "mua-loa-karaoke-o-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "supporting",
+      "wordCount": 1593,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tu-van-phoi-ghep-am-thanh-tai-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "supporting",
+      "wordCount": 1633,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "lap-dat-am-thanh-gia-dinh-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1640,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "lap-dat-karaoke-phong-khach-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1596,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tu-van-am-thanh-hoi-truong-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1573,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "am-thanh-quan-cafe-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1580,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "giai-phap-am-thanh-nha-tho-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1584,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cho-thue-am-thanh-su-kien-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1630,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "kiem-tra-he-thong-am-thanh-quang-ngai-truoc-nang-cap",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1632,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "nghe-thu-loa-tu-van-am-thanh-quang-ngai",
+      "type": "Commercial Investigation",
+      "clusterRole": "angle",
+      "wordCount": 1533,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "chon-loa-cho-quan-cafe-do-phu-deu",
+      "type": "System Design",
+      "clusterRole": "pillar",
+      "wordCount": 1516,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "thiet-ke-am-thanh-quan-cafe-nho",
+      "type": "System Design",
+      "clusterRole": "supporting",
+      "wordCount": 1512,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "chon-am-thanh-cho-nha-hang",
+      "type": "System Design",
+      "clusterRole": "supporting",
+      "wordCount": 1508,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "am-thanh-cho-cua-hang-showroom",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1527,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "thiet-ke-am-thanh-phong-hop",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1491,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "am-thanh-lop-hoc-trung-tam-dao-tao",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1501,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "chon-am-thanh-hoi-truong-nho",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1506,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "am-thanh-san-khau-mini-cau-hinh-co-ban",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1512,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "micro-phat-bieu-khong-day-cho-hoi-nghi",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1517,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loa-ngoai-troi-cho-su-kien",
+      "type": "System Design",
+      "clusterRole": "angle",
+      "wordCount": 1541,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "preserved-batch-1",
+      "slug": "dsp-audio-la-gi",
+      "status": "review",
+      "noIndex": true
+    },
+    {
+      "action": "updated",
+      "slug": "crossover-la-gi-tan-so-cat",
+      "type": "Definition",
+      "clusterRole": "supporting",
+      "wordCount": 1452,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "eq-graphic-va-eq-parametric-khac-nhau",
+      "type": "Technical Explanation",
+      "clusterRole": "supporting",
+      "wordCount": 1466,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "compressor-am-thanh-la-gi",
+      "type": "Definition",
+      "clusterRole": "angle",
+      "wordCount": 1479,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "limiter-am-thanh-la-gi-bao-ve-loa",
+      "type": "Definition",
+      "clusterRole": "angle",
+      "wordCount": 1508,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "feedback-suppressor-la-gi",
+      "type": "Definition",
+      "clusterRole": "angle",
+      "wordCount": 1491,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tro-khang-loa-la-gi",
+      "type": "Definition",
+      "clusterRole": "angle",
+      "wordCount": 1496,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "do-nhay-loa-la-gi",
+      "type": "Definition",
+      "clusterRole": "angle",
+      "wordCount": 1495,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cong-suat-rms-va-peak",
+      "type": "Technical Explanation",
+      "clusterRole": "angle",
+      "wordCount": 1492,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "tin-hieu-balanced-va-unbalanced",
+      "type": "Technical Explanation",
+      "clusterRole": "angle",
+      "wordCount": 1451,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "mua-dan-karaoke-moi-hay-nang-cap-tung-phan",
+      "type": "Buying Guide",
+      "clusterRole": "pillar",
+      "wordCount": 1599,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "mua-combo-am-thanh-hay-chon-tung-mon",
+      "type": "Buying Guide",
+      "clusterRole": "supporting",
+      "wordCount": 1589,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-doc-so-sanh-bao-gia-dan-karaoke",
+      "type": "FAQ / Quick Answer",
+      "clusterRole": "supporting",
+      "wordCount": 1585,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "co-nen-nghe-thu-loa-truoc-khi-mua",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1639,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "chon-thiet-bi-am-thanh-theo-ngan-sach",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1625,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "loi-thuong-gap-khi-tu-lap-dan-karaoke",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1571,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "bao-lau-nen-can-chinh-he-thong-am-thanh",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1655,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "cach-chuan-bi-phong-truoc-lap-dat-am-thanh",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1638,
+      "sourceCount": 2,
+      "internalLinks": 4
+    },
+    {
+      "action": "updated",
+      "slug": "checklist-cau-hoi-khi-tu-van-mua-thiet-bi-am-thanh",
+      "type": "FAQ / Quick Answer",
+      "clusterRole": "angle",
+      "wordCount": 1615,
+      "sourceCount": 2,
+      "internalLinks": 3
+    },
+    {
+      "action": "updated",
+      "slug": "xu-huong-karaoke-gia-dinh-2026",
+      "type": "Buying Guide",
+      "clusterRole": "angle",
+      "wordCount": 1631,
+      "sourceCount": 2,
+      "internalLinks": 4
+    }
+  ]
+}

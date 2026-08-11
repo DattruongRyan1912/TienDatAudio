@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-08-11T15:57:39.487Z",
+  "target": {
+    "hostname": "127.0.0.1",
+    "database": "tiendataudio",
+    "readOnly": true,
+    "mode": "local"
+  },
+  "corpus": {
+    "expected": 100,
+    "found": 100,
+    "review": 100,
+    "published": 0,
+    "noIndex": 100,
+    "sourceReady": 100,
+    "imageRequired": 100,
+    "internalLinkReady": 100
+  },
+  "articleTypes": {
+    "Buying Guide": 15,
+    "Troubleshooting": 11,
+    "Commercial Investigation": 11,
+    "Setup Guide": 6,
+    "Comparison": 6,
+    "Acoustic / Placement": 19,
+    "How-to": 10,
+    "System Design": 10,
+    "Definition": 7,
+    "Technical Explanation": 3,
+    "FAQ / Quick Answer": 2
+  },
+  "duplicates": {
+    "titles": [],
+    "metaTitles": [],
+    "paragraphs": []
+  },
+  "links": {
+    "invalidInternalLinks": []
+  },
+  "failures": [],
+  "warnings": [],
+  "humanGates": [
+    "reviewer assignment",
+    "valid owned/licensed/original image for each image plan",
+    "fact and source claim review",
+    "SERP/cannibalization review",
+    "browser/mobile/structured-data QA"
+  ]
+}

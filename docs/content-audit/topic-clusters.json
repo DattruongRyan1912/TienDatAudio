@@ -1,0 +1,1106 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-08-11T15:30:48.538Z",
+  "methodology": "Cluster assignment uses the stored SEO keyword/queue cluster. Pillar/supporting roles are candidates only; SERP intent review is still required.",
+  "clusters": [
+    {
+      "cluster": "audio-technology",
+      "articleCount": 10,
+      "intents": [
+        "informational"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "dsp-audio-la-gi"
+        ],
+        "supportingCandidates": [
+          "crossover-la-gi-tan-so-cat",
+          "eq-graphic-va-eq-parametric-khac-nhau",
+          "compressor-am-thanh-la-gi",
+          "limiter-am-thanh-la-gi-bao-ve-loa",
+          "feedback-suppressor-la-gi",
+          "tro-khang-loa-la-gi",
+          "do-nhay-loa-la-gi",
+          "cong-suat-rms-va-peak",
+          "tin-hieu-balanced-va-unbalanced"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "dsp-audio-la-gi",
+          "keyword": "DSP audio là gì",
+          "keywordId": "kw-q-081",
+          "intent": "informational"
+        },
+        {
+          "slug": "crossover-la-gi-tan-so-cat",
+          "keyword": "crossover là gì",
+          "keywordId": "kw-q-082",
+          "intent": "informational"
+        },
+        {
+          "slug": "eq-graphic-va-eq-parametric-khac-nhau",
+          "keyword": "EQ graphic hay parametric",
+          "keywordId": "kw-q-083",
+          "intent": "informational"
+        },
+        {
+          "slug": "compressor-am-thanh-la-gi",
+          "keyword": "compressor audio là gì",
+          "keywordId": "kw-q-084",
+          "intent": "informational"
+        },
+        {
+          "slug": "limiter-am-thanh-la-gi-bao-ve-loa",
+          "keyword": "limiter âm thanh là gì",
+          "keywordId": "kw-q-085",
+          "intent": "informational"
+        },
+        {
+          "slug": "feedback-suppressor-la-gi",
+          "keyword": "feedback suppressor là gì",
+          "keywordId": "kw-q-086",
+          "intent": "informational"
+        },
+        {
+          "slug": "tro-khang-loa-la-gi",
+          "keyword": "trở kháng loa là gì",
+          "keywordId": "kw-q-087",
+          "intent": "informational"
+        },
+        {
+          "slug": "do-nhay-loa-la-gi",
+          "keyword": "độ nhạy loa là gì",
+          "keywordId": "kw-q-088",
+          "intent": "informational"
+        },
+        {
+          "slug": "cong-suat-rms-va-peak",
+          "keyword": "công suất RMS và peak",
+          "keywordId": "kw-q-089",
+          "intent": "informational"
+        },
+        {
+          "slug": "tin-hieu-balanced-va-unbalanced",
+          "keyword": "balanced và unbalanced audio",
+          "keywordId": "kw-q-090",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "buying-decisions",
+      "articleCount": 10,
+      "intents": [
+        "commercial",
+        "informational"
+      ],
+      "roles": {
+        "pillarCandidates": [],
+        "supportingCandidates": [
+          "mua-dan-karaoke-moi-hay-nang-cap-tung-phan",
+          "mua-combo-am-thanh-hay-chon-tung-mon",
+          "cach-doc-so-sanh-bao-gia-dan-karaoke",
+          "co-nen-nghe-thu-loa-truoc-khi-mua",
+          "chon-thiet-bi-am-thanh-theo-ngan-sach",
+          "loi-thuong-gap-khi-tu-lap-dan-karaoke",
+          "bao-lau-nen-can-chinh-he-thong-am-thanh",
+          "cach-chuan-bi-phong-truoc-lap-dat-am-thanh",
+          "checklist-cau-hoi-khi-tu-van-mua-thiet-bi-am-thanh",
+          "xu-huong-karaoke-gia-dinh-2026"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "mua-dan-karaoke-moi-hay-nang-cap-tung-phan",
+          "keyword": "mua dàn karaoke mới hay nâng cấp",
+          "keywordId": "kw-q-091",
+          "intent": "commercial"
+        },
+        {
+          "slug": "mua-combo-am-thanh-hay-chon-tung-mon",
+          "keyword": "mua combo âm thanh hay từng món",
+          "keywordId": "kw-q-092",
+          "intent": "commercial"
+        },
+        {
+          "slug": "cach-doc-so-sanh-bao-gia-dan-karaoke",
+          "keyword": "cách so sánh báo giá dàn karaoke",
+          "keywordId": "kw-q-093",
+          "intent": "commercial"
+        },
+        {
+          "slug": "co-nen-nghe-thu-loa-truoc-khi-mua",
+          "keyword": "có nên nghe thử loa trước khi mua",
+          "keywordId": "kw-q-094",
+          "intent": "commercial"
+        },
+        {
+          "slug": "chon-thiet-bi-am-thanh-theo-ngan-sach",
+          "keyword": "chọn thiết bị âm thanh theo ngân sách",
+          "keywordId": "kw-q-095",
+          "intent": "commercial"
+        },
+        {
+          "slug": "loi-thuong-gap-khi-tu-lap-dan-karaoke",
+          "keyword": "lỗi khi tự lắp dàn karaoke",
+          "keywordId": "kw-q-096",
+          "intent": "informational"
+        },
+        {
+          "slug": "bao-lau-nen-can-chinh-he-thong-am-thanh",
+          "keyword": "bao lâu nên cân chỉnh hệ thống âm thanh",
+          "keywordId": "kw-q-097",
+          "intent": "informational"
+        },
+        {
+          "slug": "cach-chuan-bi-phong-truoc-lap-dat-am-thanh",
+          "keyword": "chuẩn bị phòng trước khi lắp đặt âm thanh",
+          "keywordId": "kw-q-098",
+          "intent": "informational"
+        },
+        {
+          "slug": "checklist-cau-hoi-khi-tu-van-mua-thiet-bi-am-thanh",
+          "keyword": "checklist tư vấn mua thiết bị âm thanh",
+          "keywordId": "kw-q-099",
+          "intent": "commercial"
+        },
+        {
+          "slug": "xu-huong-karaoke-gia-dinh-2026",
+          "keyword": "xu hướng karaoke gia đình 2026",
+          "keywordId": "kw-q-100",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "commercial-event",
+      "articleCount": 10,
+      "intents": [
+        "commercial"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "thiet-ke-am-thanh-quan-cafe-nho"
+        ],
+        "supportingCandidates": [
+          "chon-loa-cho-quan-cafe-do-phu-deu",
+          "chon-am-thanh-cho-nha-hang",
+          "am-thanh-cho-cua-hang-showroom",
+          "thiet-ke-am-thanh-phong-hop",
+          "am-thanh-lop-hoc-trung-tam-dao-tao",
+          "chon-am-thanh-hoi-truong-nho",
+          "am-thanh-san-khau-mini-cau-hinh-co-ban",
+          "micro-phat-bieu-khong-day-cho-hoi-nghi",
+          "loa-ngoai-troi-cho-su-kien"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "chon-loa-cho-quan-cafe-do-phu-deu",
+          "keyword": "chọn loa cho quán cafe",
+          "keywordId": "kw-q-071",
+          "intent": "commercial"
+        },
+        {
+          "slug": "thiet-ke-am-thanh-quan-cafe-nho",
+          "keyword": "âm thanh quán cafe nhỏ",
+          "keywordId": "kw-q-072",
+          "intent": "commercial"
+        },
+        {
+          "slug": "chon-am-thanh-cho-nha-hang",
+          "keyword": "âm thanh cho nhà hàng",
+          "keywordId": "kw-q-073",
+          "intent": "commercial"
+        },
+        {
+          "slug": "am-thanh-cho-cua-hang-showroom",
+          "keyword": "âm thanh cho cửa hàng",
+          "keywordId": "kw-q-074",
+          "intent": "commercial"
+        },
+        {
+          "slug": "thiet-ke-am-thanh-phong-hop",
+          "keyword": "âm thanh phòng họp",
+          "keywordId": "kw-q-075",
+          "intent": "commercial"
+        },
+        {
+          "slug": "am-thanh-lop-hoc-trung-tam-dao-tao",
+          "keyword": "âm thanh lớp học",
+          "keywordId": "kw-q-076",
+          "intent": "commercial"
+        },
+        {
+          "slug": "chon-am-thanh-hoi-truong-nho",
+          "keyword": "âm thanh hội trường nhỏ",
+          "keywordId": "kw-q-077",
+          "intent": "commercial"
+        },
+        {
+          "slug": "am-thanh-san-khau-mini-cau-hinh-co-ban",
+          "keyword": "âm thanh sân khấu mini",
+          "keywordId": "kw-q-078",
+          "intent": "commercial"
+        },
+        {
+          "slug": "micro-phat-bieu-khong-day-cho-hoi-nghi",
+          "keyword": "micro phát biểu không dây",
+          "keywordId": "kw-q-079",
+          "intent": "commercial"
+        },
+        {
+          "slug": "loa-ngoai-troi-cho-su-kien",
+          "keyword": "loa ngoài trời cho sự kiện",
+          "keywordId": "kw-q-080",
+          "intent": "commercial"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "core-local",
+      "articleCount": 1,
+      "intents": [
+        "local"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "lap-dat-dan-karaoke-gia-dinh-quang-ngai"
+        ],
+        "supportingCandidates": []
+      },
+      "primaryKeywords": [
+        {
+          "slug": "lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+          "keyword": "lắp đặt dàn karaoke gia đình Quảng Ngãi",
+          "keywordId": "kw-karaoke-quang-ngai",
+          "intent": "local"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 1,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer"
+      ]
+    },
+    {
+      "cluster": "equipment-selection",
+      "articleCount": 10,
+      "intents": [
+        "commercial",
+        "informational"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "cuc-day-cong-suat-la-gi-khi-nao-can-dung"
+        ],
+        "supportingCandidates": [
+          "nen-chon-amply-hay-vang-so-karaoke-gia-dinh",
+          "vang-co-hay-vang-so-phu-hop-gia-dinh",
+          "phoi-cong-suat-loa-va-amply-on-dinh",
+          "loa-full-range-la-gi-khi-nao-nen-dung",
+          "loa-active-va-loa-passive-khac-nhau-the-nao",
+          "loa-hai-duong-tieng-va-ba-duong-tieng",
+          "micro-co-day-va-khong-day-karaoke",
+          "micro-khong-day-bi-nhieu-nguyen-nhan-cach-kiem-tra",
+          "dau-karaoke-online-hay-smart-tv"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "nen-chon-amply-hay-vang-so-karaoke-gia-dinh",
+          "keyword": "amply hay vang số cho karaoke gia đình",
+          "keywordId": "kw-q-011",
+          "intent": "commercial"
+        },
+        {
+          "slug": "vang-co-hay-vang-so-phu-hop-gia-dinh",
+          "keyword": "vang cơ hay vang số",
+          "keywordId": "kw-q-012",
+          "intent": "commercial"
+        },
+        {
+          "slug": "cuc-day-cong-suat-la-gi-khi-nao-can-dung",
+          "keyword": "cục đẩy công suất là gì",
+          "keywordId": "kw-q-013",
+          "intent": "informational"
+        },
+        {
+          "slug": "phoi-cong-suat-loa-va-amply-on-dinh",
+          "keyword": "phối công suất loa và amply",
+          "keywordId": "kw-q-014",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-full-range-la-gi-khi-nao-nen-dung",
+          "keyword": "loa full range là gì",
+          "keywordId": "kw-q-015",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-active-va-loa-passive-khac-nhau-the-nao",
+          "keyword": "loa active hay passive",
+          "keywordId": "kw-q-016",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-hai-duong-tieng-va-ba-duong-tieng",
+          "keyword": "loa 2 đường tiếng hay 3 đường tiếng",
+          "keywordId": "kw-q-017",
+          "intent": "informational"
+        },
+        {
+          "slug": "micro-co-day-va-khong-day-karaoke",
+          "keyword": "micro có dây hay không dây karaoke",
+          "keywordId": "kw-q-018",
+          "intent": "commercial"
+        },
+        {
+          "slug": "micro-khong-day-bi-nhieu-nguyen-nhan-cach-kiem-tra",
+          "keyword": "micro không dây bị nhiễu",
+          "keywordId": "kw-q-019",
+          "intent": "informational"
+        },
+        {
+          "slug": "dau-karaoke-online-hay-smart-tv",
+          "keyword": "đầu karaoke online hay smart tv",
+          "keywordId": "kw-q-020",
+          "intent": "commercial"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "family-karaoke",
+      "articleCount": 8,
+      "intents": [
+        "commercial",
+        "informational"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "dan-karaoke-gia-dinh-gia-bao-nhieu"
+        ],
+        "supportingCandidates": [
+          "dan-karaoke-gia-dinh-phong-15m2",
+          "dan-karaoke-gia-dinh-phong-20m2-can-bao-nhieu-loa",
+          "dan-karaoke-gia-dinh-cho-phong-khach-mo",
+          "dan-karaoke-gia-dinh-cho-chung-cu",
+          "dan-karaoke-gia-dinh-nghe-nhac-va-hat",
+          "dan-karaoke-gia-dinh-hai-hay-bon-micro",
+          "dan-karaoke-gia-dinh-co-can-loa-sub-khong"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "dan-karaoke-gia-dinh-gia-bao-nhieu",
+          "keyword": "dàn karaoke gia đình giá bao nhiêu",
+          "keywordId": "kw-family-karaoke-budget",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-phong-15m2",
+          "keyword": "dàn karaoke gia đình phòng 15m2",
+          "keywordId": "kw-q-004",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-phong-20m2-can-bao-nhieu-loa",
+          "keyword": "dàn karaoke gia đình phòng 20m2",
+          "keywordId": "kw-q-005",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-cho-phong-khach-mo",
+          "keyword": "dàn karaoke cho phòng khách mở",
+          "keywordId": "kw-q-006",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-cho-chung-cu",
+          "keyword": "dàn karaoke gia đình cho chung cư",
+          "keywordId": "kw-q-007",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-nghe-nhac-va-hat",
+          "keyword": "dàn karaoke gia đình nghe nhạc và hát",
+          "keywordId": "kw-q-008",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-hai-hay-bon-micro",
+          "keyword": "dàn karaoke gia đình 2 micro hay 4 micro",
+          "keywordId": "kw-q-009",
+          "intent": "commercial"
+        },
+        {
+          "slug": "dan-karaoke-gia-dinh-co-can-loa-sub-khong",
+          "keyword": "dàn karaoke gia đình có cần loa sub không",
+          "keywordId": "kw-q-010",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 8,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "karaoke-troubleshooting",
+      "articleCount": 11,
+      "intents": [
+        "informational"
+      ],
+      "roles": {
+        "pillarCandidates": [],
+        "supportingCandidates": [
+          "loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+          "micro-karaoke-bi-rit-phan-biet-hu-nhieu-meo",
+          "cach-chinh-micro-karaoke-khong-bi-hu",
+          "loa-karaoke-bi-re-kiem-tra-nguyen-nhan",
+          "loa-karaoke-mat-tieng-mot-ben",
+          "am-thanh-karaoke-bi-u-xu-ly-nguon-dien",
+          "hat-karaoke-bi-tre-tieng",
+          "tieng-bass-bi-u-trong-phong-karaoke",
+          "vang-so-bi-mat-cau-hinh-cach-khoi-phuc",
+          "micro-karaoke-khong-nhan-tin-hieu",
+          "amply-karaoke-bi-nong-khi-nao-can-dung"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+          "keyword": "loa karaoke bị hú",
+          "keywordId": "kw-karaoke-feedback",
+          "intent": "informational"
+        },
+        {
+          "slug": "micro-karaoke-bi-rit-phan-biet-hu-nhieu-meo",
+          "keyword": "micro karaoke bị rít",
+          "keywordId": "kw-q-021",
+          "intent": "informational"
+        },
+        {
+          "slug": "cach-chinh-micro-karaoke-khong-bi-hu",
+          "keyword": "cách chỉnh micro karaoke không bị hú",
+          "keywordId": "kw-q-022",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-karaoke-bi-re-kiem-tra-nguyen-nhan",
+          "keyword": "loa karaoke bị rè",
+          "keywordId": "kw-q-023",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-karaoke-mat-tieng-mot-ben",
+          "keyword": "loa karaoke mất tiếng một bên",
+          "keywordId": "kw-q-024",
+          "intent": "informational"
+        },
+        {
+          "slug": "am-thanh-karaoke-bi-u-xu-ly-nguon-dien",
+          "keyword": "âm thanh karaoke bị ù",
+          "keywordId": "kw-q-025",
+          "intent": "informational"
+        },
+        {
+          "slug": "hat-karaoke-bi-tre-tieng",
+          "keyword": "hát karaoke bị trễ tiếng",
+          "keywordId": "kw-q-026",
+          "intent": "informational"
+        },
+        {
+          "slug": "tieng-bass-bi-u-trong-phong-karaoke",
+          "keyword": "tiếng bass bị ù phòng karaoke",
+          "keywordId": "kw-q-027",
+          "intent": "informational"
+        },
+        {
+          "slug": "vang-so-bi-mat-cau-hinh-cach-khoi-phuc",
+          "keyword": "vang số bị mất cấu hình",
+          "keywordId": "kw-q-028",
+          "intent": "informational"
+        },
+        {
+          "slug": "micro-karaoke-khong-nhan-tin-hieu",
+          "keyword": "micro karaoke không nhận tín hiệu",
+          "keywordId": "kw-q-029",
+          "intent": "informational"
+        },
+        {
+          "slug": "amply-karaoke-bi-nong-khi-nao-can-dung",
+          "keyword": "amply karaoke bị nóng",
+          "keywordId": "kw-q-030",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 11,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "local-quang-ngai",
+      "articleCount": 10,
+      "intents": [
+        "local"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "mua-loa-karaoke-o-quang-ngai"
+        ],
+        "supportingCandidates": [
+          "tu-van-phoi-ghep-am-thanh-tai-quang-ngai",
+          "lap-dat-am-thanh-gia-dinh-quang-ngai",
+          "lap-dat-karaoke-phong-khach-quang-ngai",
+          "tu-van-am-thanh-hoi-truong-quang-ngai",
+          "am-thanh-quan-cafe-quang-ngai",
+          "giai-phap-am-thanh-nha-tho-quang-ngai",
+          "cho-thue-am-thanh-su-kien-quang-ngai",
+          "kiem-tra-he-thong-am-thanh-quang-ngai-truoc-nang-cap",
+          "nghe-thu-loa-tu-van-am-thanh-quang-ngai"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "mua-loa-karaoke-o-quang-ngai",
+          "keyword": "mua loa karaoke ở Quảng Ngãi",
+          "keywordId": "kw-q-061",
+          "intent": "local"
+        },
+        {
+          "slug": "tu-van-phoi-ghep-am-thanh-tai-quang-ngai",
+          "keyword": "tư vấn phối ghép âm thanh Quảng Ngãi",
+          "keywordId": "kw-q-062",
+          "intent": "local"
+        },
+        {
+          "slug": "lap-dat-am-thanh-gia-dinh-quang-ngai",
+          "keyword": "lắp đặt âm thanh gia đình Quảng Ngãi",
+          "keywordId": "kw-q-063",
+          "intent": "local"
+        },
+        {
+          "slug": "lap-dat-karaoke-phong-khach-quang-ngai",
+          "keyword": "lắp đặt karaoke phòng khách Quảng Ngãi",
+          "keywordId": "kw-q-064",
+          "intent": "local"
+        },
+        {
+          "slug": "tu-van-am-thanh-hoi-truong-quang-ngai",
+          "keyword": "âm thanh hội trường Quảng Ngãi",
+          "keywordId": "kw-q-065",
+          "intent": "local"
+        },
+        {
+          "slug": "am-thanh-quan-cafe-quang-ngai",
+          "keyword": "âm thanh quán cafe Quảng Ngãi",
+          "keywordId": "kw-q-066",
+          "intent": "local"
+        },
+        {
+          "slug": "giai-phap-am-thanh-nha-tho-quang-ngai",
+          "keyword": "âm thanh nhà thờ Quảng Ngãi",
+          "keywordId": "kw-q-067",
+          "intent": "local"
+        },
+        {
+          "slug": "cho-thue-am-thanh-su-kien-quang-ngai",
+          "keyword": "cho thuê âm thanh sự kiện Quảng Ngãi",
+          "keywordId": "kw-q-068",
+          "intent": "local"
+        },
+        {
+          "slug": "kiem-tra-he-thong-am-thanh-quang-ngai-truoc-nang-cap",
+          "keyword": "kiểm tra hệ thống âm thanh Quảng Ngãi",
+          "keywordId": "kw-q-069",
+          "intent": "local"
+        },
+        {
+          "slug": "nghe-thu-loa-tu-van-am-thanh-quang-ngai",
+          "keyword": "nghe thử loa Quảng Ngãi",
+          "keywordId": "kw-q-070",
+          "intent": "local"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "room-acoustics",
+      "articleCount": 10,
+      "intents": [
+        "informational",
+        "commercial"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "thiet-ke-phong-nghe-nhac-tai-nha"
+        ],
+        "supportingCandidates": [
+          "tieu-am-va-cach-am-khac-nhau",
+          "phong-karaoke-gia-dinh-co-can-tieu-am",
+          "xu-ly-tieng-vang-phong-khach-nhieu-kinh",
+          "dat-loa-karaoke-cach-tuong-bao-nhieu",
+          "dat-loa-sub-o-dau-bass-gon-deu",
+          "ke-loa-bookshelf-dung-cach",
+          "huong-loa-karaoke-chong-hu",
+          "rem-tham-anh-huong-am-thanh-phong-khach",
+          "do-am-thanh-phong-gia-dinh-truoc-lap-dat"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "tieu-am-va-cach-am-khac-nhau",
+          "keyword": "tiêu âm và cách âm khác nhau",
+          "keywordId": "kw-q-041",
+          "intent": "informational"
+        },
+        {
+          "slug": "phong-karaoke-gia-dinh-co-can-tieu-am",
+          "keyword": "phòng karaoke gia đình có cần tiêu âm không",
+          "keywordId": "kw-q-042",
+          "intent": "informational"
+        },
+        {
+          "slug": "xu-ly-tieng-vang-phong-khach-nhieu-kinh",
+          "keyword": "cách xử lý tiếng vang phòng khách",
+          "keywordId": "kw-q-043",
+          "intent": "informational"
+        },
+        {
+          "slug": "dat-loa-karaoke-cach-tuong-bao-nhieu",
+          "keyword": "đặt loa karaoke cách tường",
+          "keywordId": "kw-q-044",
+          "intent": "informational"
+        },
+        {
+          "slug": "dat-loa-sub-o-dau-bass-gon-deu",
+          "keyword": "đặt loa sub vị trí nào",
+          "keywordId": "kw-q-045",
+          "intent": "informational"
+        },
+        {
+          "slug": "ke-loa-bookshelf-dung-cach",
+          "keyword": "kê loa bookshelf đúng cách",
+          "keywordId": "kw-q-046",
+          "intent": "informational"
+        },
+        {
+          "slug": "huong-loa-karaoke-chong-hu",
+          "keyword": "hướng loa karaoke chống hú",
+          "keywordId": "kw-q-047",
+          "intent": "informational"
+        },
+        {
+          "slug": "rem-tham-anh-huong-am-thanh-phong-khach",
+          "keyword": "rèm thảm ảnh hưởng âm thanh",
+          "keywordId": "kw-q-048",
+          "intent": "informational"
+        },
+        {
+          "slug": "do-am-thanh-phong-gia-dinh-truoc-lap-dat",
+          "keyword": "đo âm thanh phòng gia đình",
+          "keywordId": "kw-q-049",
+          "intent": "commercial"
+        },
+        {
+          "slug": "thiet-ke-phong-nghe-nhac-tai-nha",
+          "keyword": "thiết kế phòng nghe nhạc tại nhà",
+          "keywordId": "kw-q-050",
+          "intent": "commercial"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "setup-maintenance",
+      "articleCount": 10,
+      "intents": [
+        "informational",
+        "commercial"
+      ],
+      "roles": {
+        "pillarCandidates": [],
+        "supportingCandidates": [
+          "cach-dau-noi-loa-va-amply-karaoke-an-toan",
+          "thu-tu-bat-tat-he-thong-am-thanh",
+          "ve-sinh-loa-karaoke-dung-cach",
+          "bao-quan-micro-khong-day",
+          "cach-kiem-tra-day-loa-day-tin-hieu",
+          "nguon-dien-cho-dan-am-thanh",
+          "bao-duong-vang-so-thiet-bi-dsp",
+          "khi-nao-nen-thay-day-loa-day-tin-hieu",
+          "cach-test-loa-truoc-khi-nhan-hang",
+          "checklist-nghiem-thu-dan-karaoke-gia-dinh"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "cach-dau-noi-loa-va-amply-karaoke-an-toan",
+          "keyword": "cách đấu nối loa và amply karaoke",
+          "keywordId": "kw-q-051",
+          "intent": "informational"
+        },
+        {
+          "slug": "thu-tu-bat-tat-he-thong-am-thanh",
+          "keyword": "thứ tự bật tắt dàn âm thanh",
+          "keywordId": "kw-q-052",
+          "intent": "informational"
+        },
+        {
+          "slug": "ve-sinh-loa-karaoke-dung-cach",
+          "keyword": "vệ sinh loa karaoke đúng cách",
+          "keywordId": "kw-q-053",
+          "intent": "informational"
+        },
+        {
+          "slug": "bao-quan-micro-khong-day",
+          "keyword": "bảo quản micro không dây",
+          "keywordId": "kw-q-054",
+          "intent": "informational"
+        },
+        {
+          "slug": "cach-kiem-tra-day-loa-day-tin-hieu",
+          "keyword": "cách kiểm tra dây loa bị lỗi",
+          "keywordId": "kw-q-055",
+          "intent": "informational"
+        },
+        {
+          "slug": "nguon-dien-cho-dan-am-thanh",
+          "keyword": "nguồn điện cho dàn âm thanh",
+          "keywordId": "kw-q-056",
+          "intent": "informational"
+        },
+        {
+          "slug": "bao-duong-vang-so-thiet-bi-dsp",
+          "keyword": "bảo dưỡng vang số",
+          "keywordId": "kw-q-057",
+          "intent": "informational"
+        },
+        {
+          "slug": "khi-nao-nen-thay-day-loa-day-tin-hieu",
+          "keyword": "khi nào nên thay dây loa",
+          "keywordId": "kw-q-058",
+          "intent": "informational"
+        },
+        {
+          "slug": "cach-test-loa-truoc-khi-nhan-hang",
+          "keyword": "cách test loa trước khi nhận",
+          "keywordId": "kw-q-059",
+          "intent": "commercial"
+        },
+        {
+          "slug": "checklist-nghiem-thu-dan-karaoke-gia-dinh",
+          "keyword": "checklist nghiệm thu dàn karaoke",
+          "keywordId": "kw-q-060",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    },
+    {
+      "cluster": "speaker-hi-fi",
+      "articleCount": 10,
+      "intents": [
+        "informational",
+        "commercial",
+        "local"
+      ],
+      "roles": {
+        "pillarCandidates": [
+          "cach-chon-loa-nghe-nhac-bolero"
+        ],
+        "supportingCandidates": [
+          "cach-chon-loa-nghe-nhac-cho-phong-khach",
+          "loa-bookshelf-va-floorstanding-chon-theo-khong-gian",
+          "loa-nghe-nhac-cho-phong-20m2",
+          "cach-chon-loa-nghe-nhac-vocal",
+          "loa-nghe-nhac-acoustic-khong-bi-choi",
+          "loa-hi-fi-co-can-amply-khong",
+          "mua-loa-nghe-nhac-chinh-hang-quang-ngai",
+          "cach-bo-tri-he-thong-stereo-hai-kenh",
+          "nghe-nhac-lossless-tai-nha-can-thiet-bi-gi"
+        ]
+      },
+      "primaryKeywords": [
+        {
+          "slug": "cach-chon-loa-nghe-nhac-cho-phong-khach",
+          "keyword": "cách chọn loa nghe nhạc cho phòng khách",
+          "keywordId": "kw-q-031",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-bookshelf-va-floorstanding-chon-theo-khong-gian",
+          "keyword": "loa bookshelf hay floorstanding",
+          "keywordId": "kw-q-032",
+          "intent": "commercial"
+        },
+        {
+          "slug": "loa-nghe-nhac-cho-phong-20m2",
+          "keyword": "loa nghe nhạc cho phòng 20m2",
+          "keywordId": "kw-q-033",
+          "intent": "commercial"
+        },
+        {
+          "slug": "cach-chon-loa-nghe-nhac-vocal",
+          "keyword": "loa nghe nhạc vocal",
+          "keywordId": "kw-q-034",
+          "intent": "commercial"
+        },
+        {
+          "slug": "cach-chon-loa-nghe-nhac-bolero",
+          "keyword": "loa nghe nhạc bolero",
+          "keywordId": "kw-q-035",
+          "intent": "commercial"
+        },
+        {
+          "slug": "loa-nghe-nhac-acoustic-khong-bi-choi",
+          "keyword": "loa nghe nhạc acoustic",
+          "keywordId": "kw-q-036",
+          "intent": "informational"
+        },
+        {
+          "slug": "loa-hi-fi-co-can-amply-khong",
+          "keyword": "loa hi-fi có cần amply không",
+          "keywordId": "kw-q-037",
+          "intent": "informational"
+        },
+        {
+          "slug": "mua-loa-nghe-nhac-chinh-hang-quang-ngai",
+          "keyword": "loa nghe nhạc chính hãng Quảng Ngãi",
+          "keywordId": "kw-q-038",
+          "intent": "local"
+        },
+        {
+          "slug": "cach-bo-tri-he-thong-stereo-hai-kenh",
+          "keyword": "cách bố trí loa stereo 2 kênh",
+          "keywordId": "kw-q-039",
+          "intent": "informational"
+        },
+        {
+          "slug": "nghe-nhac-lossless-tai-nha-can-thiet-bi-gi",
+          "keyword": "nghe nhạc lossless cần thiết bị gì",
+          "keywordId": "kw-q-040",
+          "intent": "informational"
+        }
+      ],
+      "internalLinkCoverage": {
+        "withInternalLinks": 10,
+        "withoutInternalLinks": []
+      },
+      "editorialGaps": [
+        "owned-or-licensed-image",
+        "image-metadata-and-license",
+        "human-reviewer",
+        "verified-product-relation"
+      ]
+    }
+  ],
+  "recommendedBatch": [
+    {
+      "id": "seed-2026-08-quang-ngai-installation",
+      "slug": "lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+      "title": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình và hạng mục cần hỏi",
+      "cluster": "core-local",
+      "intent": "local",
+      "articleType": "Setup Guide / How-to",
+      "priorityScore": 9,
+      "reasons": [
+        "local commercial relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-061",
+      "slug": "mua-loa-karaoke-o-quang-ngai",
+      "title": "Mua loa karaoke ở Quảng Ngãi: cách chọn nơi tư vấn đáng tin",
+      "cluster": "local-quang-ngai",
+      "intent": "local",
+      "articleType": "Commercial Investigation / Project Guide",
+      "priorityScore": 9,
+      "reasons": [
+        "local commercial relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-035",
+      "slug": "cach-chon-loa-nghe-nhac-bolero",
+      "title": "Cách chọn loa nghe nhạc bolero cho không gian gia đình",
+      "cluster": "speaker-hi-fi",
+      "intent": "commercial",
+      "articleType": "Buying Guide",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-006",
+      "slug": "dan-karaoke-gia-dinh-cho-phong-khach-mo",
+      "title": "Dàn karaoke gia đình cho phòng khách mở: cách chọn và bố trí",
+      "cluster": "family-karaoke",
+      "intent": "commercial",
+      "articleType": "Acoustic / Placement",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-079",
+      "slug": "micro-phat-bieu-khong-day-cho-hoi-nghi",
+      "title": "Micro phát biểu không dây: cách chọn cho hội nghị và sự kiện",
+      "cluster": "commercial-event",
+      "intent": "commercial",
+      "articleType": "Commercial Investigation / Project Guide",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-075",
+      "slug": "thiet-ke-am-thanh-phong-hop",
+      "title": "Thiết kế âm thanh phòng họp: ưu tiên giọng nói rõ và ít hú",
+      "cluster": "commercial-event",
+      "intent": "commercial",
+      "articleType": "Commercial Investigation / Project Guide",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-072",
+      "slug": "thiet-ke-am-thanh-quan-cafe-nho",
+      "title": "Thiết kế âm thanh quán cafe nhỏ: tránh chỗ quá to chỗ quá nhỏ",
+      "cluster": "commercial-event",
+      "intent": "commercial",
+      "articleType": "Acoustic / Placement",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    },
+    {
+      "id": "kw-q-050",
+      "slug": "thiet-ke-phong-nghe-nhac-tai-nha",
+      "title": "Thiết kế phòng nghe nhạc tại nhà: bắt đầu từ đâu?",
+      "cluster": "room-acoustics",
+      "intent": "commercial",
+      "articleType": "Acoustic / Placement",
+      "priorityScore": 8,
+      "reasons": [
+        "commercial investigation relevance",
+        "has source links to verify",
+        "requires non-placeholder visual plan",
+        "has existing relations to audit"
+      ]
+    }
+  ]
+}

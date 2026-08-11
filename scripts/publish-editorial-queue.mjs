@@ -76,7 +76,18 @@ try {
     if (String(document.bodyMarkdown || '').trim().length < 80) errors.push('body is too short')
     if (!String(document.author || '').trim()) errors.push('author is missing')
     if (!String(document.featuredImage || '').trim()) errors.push('featuredImage is missing')
+    if (/editorial-temp|sonic-hero\.png|placeholder/i.test(String(document.featuredImage || ''))) errors.push('featuredImage is a temporary or placeholder asset')
     if (!String(seo.ogImage || '').trim()) errors.push('seo.ogImage is missing')
+    if (!String(document.reviewer || '').trim()) errors.push('reviewer is missing')
+    const research = document.seoResearch && typeof document.seoResearch === 'object' ? document.seoResearch : {}
+    if (!String(research.researchedAt || '').trim()) errors.push('seoResearch.researchedAt is missing')
+    if (!Number(research.sourceCount) && (!Array.isArray(research.serpObservations) || !research.serpObservations.length)) errors.push('seoResearch source or SERP evidence is missing')
+    if (!String(research.primaryKeyword || '').trim() || !String(research.primaryIntent || '').trim()) errors.push('seoResearch keyword or intent is missing')
+    if (!Array.isArray(research.imagePlan) || !research.imagePlan.length || research.imagePlan.some((image) => ['IMAGE_REQUIRED', 'NEEDS_VERIFICATION'].includes(String(image?.licenseStatus || '')))) errors.push('seoResearch.imagePlan is not publish-ready')
+    const hasInternalLink = /\[[^\]]+\]\(\/[^)]+\)/.test(String(document.bodyMarkdown || ''))
+    const hasRelation = (Array.isArray(document.relatedPostIds) && document.relatedPostIds.length > 0) || (Array.isArray(document.relatedProductIds) && document.relatedProductIds.length > 0)
+    if (!hasInternalLink && !hasRelation) errors.push('internal link relation is missing')
+    if (/bản nháp|reviewer cần|nội dung seed|placeholder|trước khi xuất bản/i.test(String(document.bodyMarkdown || ''))) errors.push('body contains internal editorial notes')
     if (!Number.isSafeInteger(Number(document.version)) || Number(document.version) < 1) errors.push('version is invalid')
     if (errors.length) invalid.push({ slug: item.slug, errors })
   }

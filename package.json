@@ -19,7 +19,10 @@
     "db:seed-editorial": "node --env-file-if-exists=.env.local scripts/seed-editorial-drafts.mjs",
     "db:seed-editorial-queue": "node --env-file-if-exists=.env.local scripts/seed-editorial-research-queue.mjs",
     "db:assign-editorial-images": "node --env-file-if-exists=.env.local scripts/assign-editorial-temp-images.mjs",
-    "db:publish-editorial-queue": "node --env-file-if-exists=.env.local scripts/publish-editorial-queue.mjs"
+    "db:publish-editorial-queue": "node --env-file-if-exists=.env.local scripts/publish-editorial-queue.mjs",
+    "db:apply-editorial-batch": "node --env-file-if-exists=.env.local scripts/apply-editorial-batch.mjs",
+    "db:complete-editorial": "node --env-file-if-exists=.env.local scripts/complete-editorial-corpus.mjs",
+    "db:qa-editorial": "node --env-file-if-exists=.env.local scripts/qa-editorial-corpus.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",

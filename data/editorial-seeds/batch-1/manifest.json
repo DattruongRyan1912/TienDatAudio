@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "batchId": "editorial-batch-1-2026-08-11",
+  "researchedAt": "2026-08-11T00:00:00.000Z",
+  "humanGate": "review-only; no article is published or made indexable by this manifest",
+  "posts": [
+    {
+      "id": "seed-2026-08-family-karaoke-budget",
+      "slug": "dan-karaoke-gia-dinh-gia-bao-nhieu",
+      "title": "Dàn karaoke gia đình giá bao nhiêu? Cách chia ngân sách theo không gian",
+      "excerpt": "Dàn karaoke gia đình không có một mức giá chung. Hãy bắt đầu từ phòng, cách dùng, thiết bị đang có và phạm vi lắp đặt trước khi nhận báo giá.",
+      "category": "Giải pháp",
+      "tags": ["karaoke gia đình", "ngân sách", "phối ghép", "lắp đặt"],
+      "primaryKeywordId": "kw-family-karaoke-budget",
+      "keywordIds": ["kw-family-karaoke-budget"],
+      "relatedPostIds": ["seed-2026-08-karaoke-feedback", "seed-2026-08-quang-ngai-installation"],
+      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx330pro", "arf-vx660"],
+      "featuredImage": "/images/editorial-temp/family-karaoke.png",
+      "seo": {
+        "metaTitle": "Dàn karaoke gia đình giá bao nhiêu? Cách chia ngân sách",
+        "metaDescription": "Tìm hiểu dàn karaoke gia đình giá bao nhiêu và cách chia ngân sách theo phòng, nhu cầu, thiết bị, lắp đặt và cân chỉnh.",
+        "canonicalPath": "/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu",
+        "ogTitle": "Dàn karaoke gia đình giá bao nhiêu?",
+        "ogDescription": "Chia ngân sách theo không gian và nhu cầu trước khi chọn thiết bị.",
+        "ogImage": "/images/editorial-temp/family-karaoke.png",
+        "noIndex": true
+      },
+      "seoResearch": {
+        "researchedAt": "2026-08-11T00:00:00.000Z",
+        "articleType": "Buying Guide",
+        "primaryKeyword": "dàn karaoke gia đình giá bao nhiêu",
+        "secondaryKeywords": ["giá dàn karaoke gia đình", "tư vấn dàn karaoke gia đình", "chi phí lắp đặt karaoke"],
+        "semanticTerms": ["diện tích phòng", "trở kháng", "công suất liên tục", "headroom", "micro", "cân chỉnh", "phạm vi thi công"],
+        "questionKeywords": ["Dàn karaoke gia đình gồm những gì?", "Có nên chọn theo công suất không?", "Có cần loa trầm ngay từ đầu không?"],
+        "longTailKeywords": ["dàn karaoke gia đình cho phòng khách", "cách chia ngân sách dàn karaoke gia đình", "báo giá dàn karaoke gia đình cần hỏi gì"],
+        "commercialModifiers": ["tư vấn", "lắp đặt", "nghe thử", "báo giá"],
+        "entities": ["Tiến Đạt Audio", "Quảng Ngãi", "Crown Audio", "HARMAN Professional"],
+        "primaryIntent": "commercial investigation",
+        "secondaryIntent": "informational",
+        "serpObservations": ["Official manufacturer resources explain power, impedance and headroom; a useful Vietnamese page should translate those constraints into a room-and-scope checklist.", "No volume, keyword difficulty or ranking metric was used; priority is editorial recommendation based on business relevance and search intent."],
+        "cannibalizationNotes": ["Keep this as the broad family-karaoke budget pillar; room-size and equipment-specific articles should answer narrower questions and link back here."],
+        "clusterRole": "pillar",
+        "sourceCount": 3,
+        "sources": [
+          {"url": "https://www.crownaudio.com/en/how-much-amplifier-power", "title": "How Much Amplifier Power Do I Need?", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use only the conditional guidance about impedance, continuous rating, headroom and clipping."]},
+          {"url": "https://pro.harman.com/insights/enterprise/design-requirements-for-amps-and-speakers-part-three-low-vs-high-impedance/", "title": "Design Requirements for Amps and Speakers, Part Three", "publisher": "HARMAN Professional Solutions", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Distinguish low-impedance and constant-voltage use cases; do not generalize across every home system."]},
+          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Tiến Đạt Audio contact and service context", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Only for the public contact CTA; current price, stock and schedule still require confirmation."]}
+        ],
+        "imagePlan": [
+          {"url": "", "alt": "Sơ đồ phân bổ ngân sách cho dàn karaoke gia đình theo vai trò thiết bị và lắp đặt", "caption": "Minh họa nguyên tắc phân bổ, không phải bảng giá cố định.", "section": "Chia ngân sách theo ưu tiên", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
+          {"url": "", "alt": "Phòng khách gia đình với vị trí loa, micro và vùng nghe được đánh dấu", "caption": "Minh họa vị trí; cần thay bằng ảnh sở hữu hoặc sơ đồ nguyên bản trước khi publish.", "section": "Bắt đầu từ căn phòng", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+        ]
+      },
+      "bodyFile": "family-karaoke-budget.md"
+    },
+    {
+      "id": "seed-2026-08-karaoke-feedback",
+      "slug": "loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+      "title": "Loa karaoke bị hú: nguyên nhân và cách xử lý theo từng bước",
+      "excerpt": "Loa karaoke bị hú thường liên quan đến vòng lặp giữa micro, loa, gain, EQ và phòng. Hãy khoanh vùng theo thứ tự trước khi thay thiết bị.",
+      "category": "Kiến thức âm thanh",
+      "tags": ["loa karaoke", "feedback", "micro", "xử lý lỗi"],
+      "primaryKeywordId": "kw-karaoke-feedback",
+      "keywordIds": ["kw-karaoke-feedback"],
+      "relatedPostIds": ["seed-2026-08-family-karaoke-budget", "kw-q-022", "kw-q-047"],
+      "relatedProductIds": ["arf-vx330pro", "arf-vx660", "arf-fs12"],
+      "featuredImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+      "seo": {
+        "metaTitle": "Loa karaoke bị hú: nguyên nhân và cách khắc phục",
+        "metaDescription": "Loa karaoke bị hú do đâu? Kiểm tra vị trí, micro, gain, EQ và phòng theo thứ tự an toàn trước khi thay thiết bị.",
+        "canonicalPath": "/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
+        "ogTitle": "Loa karaoke bị hú: xử lý từ nguyên nhân gốc",
+        "ogDescription": "Khoanh vùng vị trí, gain, EQ và phòng trước khi thay thiết bị.",
+        "ogImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+        "noIndex": true
+      },
+      "seoResearch": {
+        "researchedAt": "2026-08-11T00:00:00.000Z",
+        "articleType": "Troubleshooting",
+        "primaryKeyword": "loa karaoke bị hú",
+        "secondaryKeywords": ["micro karaoke bị hú", "cách chống hú karaoke", "feedback âm thanh"],
+        "semanticTerms": ["vòng lặp âm thanh", "vị trí micro", "gain", "EQ", "hướng loa", "âm học phòng", "feedback suppressor"],
+        "questionKeywords": ["Vì sao loa karaoke bị hú?", "Nên xử lý vị trí hay giảm gain trước?", "Feedback suppressor có thay được cân chỉnh không?"],
+        "longTailKeywords": ["loa karaoke bị hú khi hát", "micro karaoke bị rít phải làm sao", "cách xử lý feedback karaoke tại nhà"],
+        "commercialModifiers": ["tư vấn", "cân chỉnh", "kiểm tra", "lắp đặt"],
+        "entities": ["Shure", "Yamaha Pro", "Tiến Đạt Audio"],
+        "primaryIntent": "informational",
+        "secondaryIntent": "service investigation",
+        "serpObservations": ["Official Shure and Yamaha resources prioritize placement, microphone technique and gain before equalization or feedback-reduction tools.", "No metric claims were made; the article is structured as a troubleshooting flow with a safety stop condition."],
+        "cannibalizationNotes": ["This is the feedback troubleshooting pillar. The micro-rít and placement articles should cover narrower symptoms and link here rather than repeat the full flow."],
+        "clusterRole": "pillar",
+        "sourceCount": 3,
+        "sources": [
+          {"url": "https://service.shure.com/articles/en_US/Knowledge/how-do-i-fix-my-feedback-problem", "title": "How do I fix my feedback problem?", "publisher": "Shure", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Feedback depends on speaker, microphone, placement and room; no microphone is completely feedback-proof."]},
+          {"url": "https://service.shure.com/articles/en_US/Knowledge/basics-of-equalization-and-feedback", "title": "Basics of Equalization and Feedback", "publisher": "Shure", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["EQ and feedback reducers cannot repair a poorly designed or poorly placed system by themselves."]},
+          {"url": "https://hub.yamaha.com/proaudio/pa-how-to/how-to-fight-feedback-part-1/", "title": "How to Fight Feedback, Part 1", "publisher": "Yamaha Pro Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use placement, pickup pattern and microphone technique as the first troubleshooting layer."]}
+        ],
+        "imagePlan": [
+          {"url": "", "alt": "Sơ đồ vòng lặp feedback giữa micro và loa karaoke", "caption": "Minh họa nguyên lý feedback, không phải phép đo của một hệ thống cụ thể.", "section": "Phân biệt feedback", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
+          {"url": "", "alt": "Các vị trí đặt micro và loa cần tránh trong phòng karaoke", "caption": "Sơ đồ placement cần được thiết kế nguyên bản.", "section": "Bốn nguyên nhân thường gặp", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+        ]
+      },
+      "bodyFile": "karaoke-feedback.md"
+    },
+    {
+      "id": "seed-2026-08-quang-ngai-installation",
+      "slug": "lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+      "title": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình và hạng mục cần hỏi",
+      "excerpt": "Quy trình lắp đặt dàn karaoke tại Quảng Ngãi nên bắt đầu từ khảo sát phòng, cách dùng và phạm vi thi công thay vì một combo cố định.",
+      "category": "Giải pháp",
+      "tags": ["Quảng Ngãi", "lắp đặt karaoke", "khảo sát", "cân chỉnh"],
+      "primaryKeywordId": "kw-karaoke-quang-ngai",
+      "keywordIds": ["kw-karaoke-quang-ngai"],
+      "relatedPostIds": ["seed-2026-08-family-karaoke-budget", "seed-2026-08-karaoke-feedback"],
+      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx660", "arf-nx4-800"],
+      "featuredImage": "/images/editorial-temp/local-quang-ngai.png",
+      "seo": {
+        "metaTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình",
+        "metaDescription": "Tìm hiểu quy trình khảo sát, phối ghép, đi dây, cân chỉnh và nghiệm thu khi lắp đặt dàn karaoke gia đình tại Quảng Ngãi.",
+        "canonicalPath": "/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai",
+        "ogTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi",
+        "ogDescription": "Các hạng mục cần hỏi trước khi chốt khảo sát và thi công.",
+        "ogImage": "/images/editorial-temp/local-quang-ngai.png",
+        "noIndex": true
+      },
+      "seoResearch": {
+        "researchedAt": "2026-08-11T00:00:00.000Z",
+        "articleType": "Commercial Investigation",
+        "primaryKeyword": "lắp đặt dàn karaoke gia đình Quảng Ngãi",
+        "secondaryKeywords": ["lắp đặt karaoke Quảng Ngãi", "tư vấn âm thanh Quảng Ngãi", "phối ghép karaoke gia đình"],
+        "semanticTerms": ["khảo sát phòng", "đi dây", "nguồn điện", "phối ghép", "cân chỉnh", "nghiệm thu", "bảo hành"],
+        "questionKeywords": ["Cần chuẩn bị gì trước khi khảo sát?", "Báo giá lắp đặt gồm những hạng mục nào?", "Cần hỏi gì khi bàn giao?"],
+        "longTailKeywords": ["lắp đặt dàn karaoke gia đình tại Quảng Ngãi", "tư vấn phối ghép karaoke Quảng Ngãi", "chi phí lắp đặt karaoke cần hỏi gì"],
+        "commercialModifiers": ["khảo sát", "tư vấn", "lắp đặt", "cân chỉnh", "báo giá"],
+        "entities": ["Tiến Đạt Audio", "Quảng Ngãi", "264 Phan Đình Phùng", "Crown Audio", "HARMAN Professional"],
+        "primaryIntent": "local service investigation",
+        "secondaryIntent": "commercial investigation",
+        "serpObservations": ["Local intent is inferred from the geographic modifier and service language; current local pack position and query volume were not claimed.", "First-party business profile supplies address and service context; schedule, price, stock and project history remain verification gates."],
+        "cannibalizationNotes": ["Keep this as the local installation process page. Separate local pages for cafe, hall and event audio should use their own scope and not duplicate the family-karaoke workflow."],
+        "clusterRole": "pillar",
+        "sourceCount": 3,
+        "sources": [
+          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Contact and service information", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["First-party address and service context only; do not infer current schedule or pricing beyond the profile."]},
+          {"url": "https://www.crownaudio.com/en/how-much-amplifier-power", "title": "How Much Amplifier Power Do I Need?", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use as general guidance for checking impedance, continuous rating, headroom and clipping during design review."]},
+          {"url": "https://pro.harman.com/insights/enterprise/design-requirements-for-amps-and-speakers-part-three-low-vs-high-impedance/", "title": "Low vs. High Impedance Systems", "publisher": "HARMAN Professional Solutions", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use to explain why long runs and distributed speakers can require a different system design."]}
+        ],
+        "imagePlan": [
+          {"url": "", "alt": "Checklist khảo sát phòng trước khi lắp đặt dàn karaoke tại Quảng Ngãi", "caption": "Minh họa quy trình khảo sát; không phải ảnh của một công trình cụ thể.", "section": "Trước khi khảo sát", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
+          {"url": "", "alt": "Sơ đồ các hạng mục thiết bị, dây dẫn và cân chỉnh trong một báo giá lắp đặt", "caption": "Minh họa phạm vi công việc cần tách rõ.", "section": "Chốt phạm vi báo giá", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+        ]
+      },
+      "bodyFile": "quang-ngai-installation.md"
+    },
+    {
+      "id": "kw-q-031",
+      "slug": "cach-chon-loa-nghe-nhac-cho-phong-khach",
+      "title": "Cách chọn loa nghe nhạc cho phòng khách theo diện tích và gu nghe",
+      "excerpt": "Cách chọn loa nghe nhạc cho phòng khách nên bắt đầu từ khoảng cách nghe, vị trí đặt, âm lượng và gu nhạc thay vì chỉ nhìn thương hiệu hoặc công suất.",
+      "category": "Kiến thức âm thanh",
+      "tags": ["loa nghe nhạc", "phòng khách", "hi-fi", "nghe thử"],
+      "primaryKeywordId": "kw-q-031",
+      "keywordIds": ["kw-q-031"],
+      "relatedPostIds": ["kw-q-039", "kw-q-046"],
+      "relatedProductIds": [],
+      "featuredImage": "/images/editorial-temp/speaker-hi-fi.png",
+      "seo": {
+        "metaTitle": "Cách chọn loa nghe nhạc cho phòng khách theo gu nghe",
+        "metaDescription": "Chọn loa nghe nhạc cho phòng khách theo diện tích, khoảng cách nghe, vị trí đặt, gu vocal và điều kiện phối ghép.",
+        "canonicalPath": "/kien-thuc/cach-chon-loa-nghe-nhac-cho-phong-khach",
+        "ogTitle": "Cách chọn loa nghe nhạc cho phòng khách",
+        "ogDescription": "Bắt đầu từ căn phòng và bản nhạc bạn thực sự nghe.",
+        "ogImage": "/images/editorial-temp/speaker-hi-fi.png",
+        "noIndex": true
+      },
+      "seoResearch": {
+        "researchedAt": "2026-08-11T00:00:00.000Z",
+        "articleType": "Buying Guide",
+        "primaryKeyword": "cách chọn loa nghe nhạc cho phòng khách",
+        "secondaryKeywords": ["loa bookshelf hay loa đứng", "loa nghe nhạc phòng khách", "bố trí loa stereo"],
+        "semanticTerms": ["khoảng cách nghe", "tam giác stereo", "toe-in", "tầm tai", "phản xạ phòng", "ampli", "gu vocal"],
+        "questionKeywords": ["Phòng khách nhỏ nên dùng bookshelf hay loa đứng?", "Loa nghe vocal có cần dải trầm lớn không?", "Đặt loa cách tường thế nào?"],
+        "longTailKeywords": ["cách chọn loa nghe nhạc cho phòng khách nhỏ", "loa bookshelf hay floorstanding cho phòng khách", "cách bố trí loa nghe nhạc stereo tại nhà"],
+        "commercialModifiers": ["nghe thử", "tư vấn", "phối ghép", "chính hãng"],
+        "entities": ["Bowers & Wilkins", "Tiến Đạt Audio"],
+        "primaryIntent": "informational",
+        "secondaryIntent": "commercial investigation",
+        "serpObservations": ["Manufacturer guides consistently connect room size, speaker position, symmetry and listening distance; the article turns those into a Vietnamese pre-purchase checklist.", "Subjective taste claims are framed as listening criteria, not universal rankings."],
+        "cannibalizationNotes": ["This is the broad living-room speaker selection pillar. Separate vocal, bolero and bookshelf/floorstanding articles should answer a narrower choice and link back here."],
+        "clusterRole": "pillar",
+        "sourceCount": 2,
+        "sources": [
+          {"url": "https://www.bowerswilkins.com/en-gb/blog/products/speaker-placement-expert-guide.html", "title": "Speaker Placement: Our Expert Guide", "publisher": "Bowers & Wilkins", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Room size, boundaries and listening position affect speaker choice and placement."]},
+          {"url": "https://www.bowerswilkins.com/en-ca/blog/sound-lab/how-to-set-up-a-loudspeaker.html", "title": "Hi-Fi Essentials: How to set up a loudspeaker", "publisher": "Bowers & Wilkins", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use as placement guidance: symmetry, relative height, listening triangle and experimentation."]}
+        ],
+        "imagePlan": [
+          {"url": "", "alt": "Sơ đồ tam giác stereo giữa hai loa và vị trí nghe trong phòng khách", "caption": "Minh họa nguyên tắc bố trí, không phải kích thước bắt buộc.", "section": "Bố trí stereo cơ bản", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
+          {"url": "", "alt": "Phòng khách với các bề mặt phản xạ và vị trí đặt loa được chú thích", "caption": "Minh họa ảnh hưởng của phòng tới lựa chọn loa.", "section": "Bốn dữ liệu cần ghi", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+        ]
+      },
+      "bodyFile": "speaker-living-room.md"
+    },
+    {
+      "id": "kw-q-081",
+      "slug": "dsp-audio-la-gi",
+      "title": "DSP audio là gì và vì sao hệ thống karaoke cần xử lý tín hiệu?",
+      "excerpt": "DSP audio là lớp xử lý tín hiệu số cho EQ, crossover, delay, compressor, limiter, routing và preset. Hãy chọn theo vấn đề cần giải quyết, không theo số lượng tính năng.",
+      "category": "Kiến thức âm thanh",
+      "tags": ["DSP", "xử lý tín hiệu", "vang số", "karaoke"],
+      "primaryKeywordId": "kw-q-081",
+      "keywordIds": ["kw-q-081", "kw-q-082"],
+      "relatedPostIds": ["kw-q-082", "kw-q-085", "seed-2026-08-karaoke-feedback"],
+      "relatedProductIds": ["arf-vx330pro", "arf-vx660"],
+      "featuredImage": "/images/editorial-temp/audio-technology.png",
+      "seo": {
+        "metaTitle": "DSP audio là gì? Vai trò trong hệ thống karaoke",
+        "metaDescription": "DSP audio xử lý EQ, crossover, delay, compressor, limiter và routing. Tìm hiểu khi nào gia đình thực sự cần DSP.",
+        "canonicalPath": "/kien-thuc/dsp-audio-la-gi",
+        "ogTitle": "DSP audio là gì?",
+        "ogDescription": "Hiểu DSP qua các nhiệm vụ thật trong đường tín hiệu karaoke.",
+        "ogImage": "/images/editorial-temp/audio-technology.png",
+        "noIndex": true
+      },
+      "seoResearch": {
+        "researchedAt": "2026-08-11T00:00:00.000Z",
+        "articleType": "Definition",
+        "primaryKeyword": "DSP audio là gì",
+        "secondaryKeywords": ["bộ xử lý tín hiệu số", "DSP karaoke", "vang số DSP", "digital signal processor"],
+        "semanticTerms": ["EQ", "crossover", "delay", "compressor", "limiter", "routing", "preset", "A/D", "D/A", "gain structure"],
+        "questionKeywords": ["DSP có thay được kỹ thuật viên không?", "Gia đình nào cần DSP?", "DSP có làm loa nghe lớn hơn không?"],
+        "longTailKeywords": ["DSP audio dùng để làm gì", "có nên mua vang số có DSP không", "DSP karaoke khác mixer thường thế nào"],
+        "commercialModifiers": ["tư vấn", "phối ghép", "cân chỉnh", "nâng cấp"],
+        "entities": ["Yamaha Pro Audio", "dbx Professional Audio", "Shure", "Tiến Đạt Audio"],
+        "primaryIntent": "informational",
+        "secondaryIntent": "commercial investigation",
+        "serpObservations": ["Official Yamaha documentation explains DSP as real-time change and mixing of audio signals in a larger digital signal chain; the article avoids claiming a single sound-quality outcome.", "Product pages show that DSP feature sets vary by device; readers need a signal-flow and operation checklist rather than a feature count."],
+        "cannibalizationNotes": ["Keep this as the DSP concept pillar. Crossover, limiter and compressor articles should define one function each and link back to this overview."],
+        "clusterRole": "pillar",
+        "sourceCount": 3,
+        "sources": [
+          {"url": "https://usa.yamaha.com/products/contents/proaudio/docs/audio_quality/02_audio_quality.html", "title": "Audio quality in networked systems", "publisher": "Yamaha Pro Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["DSP performs real-time change and mixing of audio signals; use the signal-chain explanation without copying proprietary wording."]},
+          {"url": "https://usa.yamaha.com/products/proaudio/processors/index.html", "title": "Processors", "publisher": "Yamaha Pro Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Device capabilities differ; do not generalize a product feature to every DSP."]},
+          {"url": "https://dbxpro.com/en-US/products/641/specifications", "title": "641 6x4 Digital Zone Processor", "publisher": "dbx Professional Audio", "tier": 1, "accessedAt": "2026-08-11T00:00:00.000Z", "claimNotes": ["Use as an example of routing and processing functions, not as a recommendation for every home system."]}
+        ],
+        "imagePlan": [
+          {"url": "", "alt": "Sơ đồ đường tín hiệu từ micro và nguồn phát qua DSP tới loa", "caption": "Minh họa signal flow; không gắn với một model cụ thể.", "section": "DSP nằm ở đâu", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
+          {"url": "", "alt": "Các khối EQ crossover delay compressor limiter và routing trong DSP", "caption": "Minh họa các nhiệm vụ xử lý tín hiệu.", "section": "Những nhiệm vụ DSP", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+        ]
+      },
+      "bodyFile": "dsp-audio.md"
+    }
+  ]
+}

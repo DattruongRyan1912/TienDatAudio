@@ -93,7 +93,9 @@ export function getContentChecklist(post: ContentPost, keyword?: SEOKeyword) {
     { id: 'keyword', label: 'Primary keyword xuất hiện tự nhiên trong title/excerpt/body', pass: !primaryTerm || title.includes(primaryTerm) || excerpt.includes(primaryTerm) || body.includes(primaryTerm) },
     { id: 'meta', label: 'Meta title và description đã biên tập', pass: post.seo.metaTitle.length >= 20 && post.seo.metaDescription.length >= 80 },
     { id: 'image', label: 'Có featured image và OG image', pass: Boolean(post.featuredImage && (post.seo.ogImage || post.featuredImage)) },
+    { id: 'image-plan', label: 'Image plan có alt, vị trí và license đã xác nhận', pass: post.seoResearch.imagePlan.length > 0 && post.seoResearch.imagePlan.every((image) => Boolean(image.alt && image.section && image.licenseStatus && !['IMAGE_REQUIRED', 'NEEDS_VERIFICATION'].includes(image.licenseStatus))) },
     { id: 'links', label: 'Có liên kết nội bộ hoặc bài liên quan', pass: post.relatedPostIds.length > 0 || /\]\(\/(kien-thuc|products|san-pham)\//.test(post.bodyMarkdown) },
+    { id: 'research', label: 'Có SEO research: ngày, intent và nguồn/quan sát SERP', pass: Boolean(post.seoResearch.researchedAt && post.seoResearch.primaryKeyword && post.seoResearch.primaryIntent && (post.seoResearch.sourceCount > 0 || post.seoResearch.serpObservations.length > 0)) },
     { id: 'reviewer', label: 'Có người kiểm duyệt nội dung', pass: Boolean(post.reviewer) },
   ]
 }
