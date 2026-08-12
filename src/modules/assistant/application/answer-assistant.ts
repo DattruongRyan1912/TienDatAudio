@@ -17,6 +17,7 @@ import type {
   AssistantTrace,
 } from '../domain/types'
 import { recommendAudioSystem } from './recommend-audio-system'
+import { collectAssistantToolEvidence } from './run-assistant-tools'
 
 export type AnswerAssistantContext = {
   constraints?: AssistantConversationConstraints
@@ -155,9 +156,28 @@ export async function answerAssistant(
 
   if (ports.knowledgeEnabled === false) return withTrace(noKnowledgeAnswer(intent, constraints), trace, runtime.includeTrace)
 
-  startedAt = performance.now()
-  const documents = retrieveKnowledge(question, await ports.listKnowledge(question), 5)
-  traceStage(trace, 'retrieval', startedAt, documents.length ? `${documents.length}_sources` : 'no_evidence')
+  let documents = [] as Awaited<ReturnType<AssistantPorts['listKnowledge']>>
+  if (ports.toolsEnabled && ports.selectTools) {
+    startedAt = performance.now()
+    try {
+      const toolEvidence = await collectAssistantToolEvidence(messages, ports)
+      documents = toolEvidence.documents
+      const outcome = toolEvidence.calls.length
+        ? toolEvidence.calls.map((call) => `${call.name}:${call.outcome}:${call.resultCount}`).join(',')
+        : 'no_call'
+      traceStage(trace, 'tools', startedAt, outcome)
+    } catch (error) {
+      traceStage(trace, 'tools', startedAt, error instanceof Error ? error.message : 'failed')
+    }
+  }
+
+  if (!documents.length) {
+    startedAt = performance.now()
+    documents = retrieveKnowledge(question, await ports.listKnowledge(question), 5)
+    traceStage(trace, 'retrieval', startedAt, documents.length ? `${documents.length}_sources` : 'no_evidence')
+  } else {
+    traceStage(trace, 'retrieval', performance.now(), `${documents.length}_tool_sources`)
+  }
   if (!documents.length) return withTrace(noKnowledgeAnswer(intent, constraints), trace, runtime.includeTrace)
 
   const sources = documents.map(({ id, type, title, url, excerpt, authority, updatedAt }) => ({

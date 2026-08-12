@@ -95,6 +95,8 @@ test('critical business aliases route to deterministic intents', () => {
   assert.equal(detectExactFactIntent('Showroom ở đâu?'), 'business_location')
   assert.equal(detectExactFactIntent('Giờ mở cửa hôm nay'), 'business_hours')
   assert.equal(detectExactFactIntent('Tiến Đạt Audio là ai?'), 'business_identity')
+  assert.equal(detectExactFactIntent('Có bao nhiêu sản phẩm ARF?'), 'product_count')
+  assert.equal(detectExactFactIntent('JBL hiện có mấy model?'), 'product_count')
   assert.equal(detectExactFactIntent('Giá loa JBL EON 610?'), 'product_price')
   assert.equal(detectExactFactIntent('Tư vấn loa cho gia đình'), null)
 })
@@ -171,6 +173,36 @@ test('product price is deterministic and does not call the model', async () => {
   assert.equal(result.intent, 'product_price')
   assert.match(result.answer, /10\.500\.000 đ/)
   assert.equal(result.sources[0]?.id, 'jbl-eon-610')
+})
+
+test('product count by brand uses the live catalog and bypasses retrieval and the model', async () => {
+  let generated = 0
+  let retrieved = 0
+  const result = await answerAssistant(
+    [{ role: 'user', content: 'Có bao nhiêu sản phẩm JBL?' }],
+    ports({
+      listKnowledge: async () => { retrieved += 1; return [] },
+      generateAnswer: async () => { generated += 1; return 'Không được gọi' },
+    }),
+  )
+  assert.equal(generated, 0)
+  assert.equal(retrieved, 0)
+  assert.equal(result.answerKind, 'exact')
+  assert.equal(result.intent, 'product_count')
+  assert.match(result.answer, /2 sản phẩm thuộc thương hiệu JBL/i)
+  assert.deepEqual(result.sources.map((source) => source.id), ['jbl-eon-610', 'jbl-eon-612'])
+  assert.equal(result.actions[0]?.href, '/products?brand=JBL')
+})
+
+test('generic product count is exact while an unknown brand asks for clarification', async () => {
+  const total = await answerAssistant([{ role: 'user', content: 'Website hiện có bao nhiêu sản phẩm?' }], ports())
+  assert.equal(total.answerKind, 'exact')
+  assert.match(total.answer, /2 sản phẩm:/i)
+
+  const unknown = await answerAssistant([{ role: 'user', content: 'Có bao nhiêu sản phẩm XYZ?' }], ports())
+  assert.equal(unknown.answerKind, 'clarification')
+  assert.equal(unknown.sources.length, 0)
+  assert.match(unknown.answer, /chưa xác định được thương hiệu/i)
 })
 
 test('product availability and specifications preserve catalog semantics', async () => {

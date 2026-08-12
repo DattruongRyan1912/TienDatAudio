@@ -4,8 +4,9 @@ import {
   assistantExactFactsEnabled,
   assistantGraphMode,
   assistantKnowledgeEnabled,
+  assistantToolsEnabled,
 } from './assistant-config'
-import { createDeepSeekAnswer } from './deepseek-client'
+import { createDeepSeekAnswer, selectDeepSeekTools } from './deepseek-client'
 import { listAssistantProducts, loadAssistantBusinessProfile } from './exact-fact-repository'
 import { listAssistantKnowledge } from './knowledge-repository'
 import { listVerifiedCompatibility } from '@/modules/knowledge/infrastructure/knowledge-repository'
@@ -14,6 +15,7 @@ import { queryGraphRecommendations } from '@/modules/knowledge-graph/infrastruct
 export function createAssistantPorts(overrides: Partial<AssistantPorts> = {}): AssistantPorts {
   return {
     exactFactsEnabled: assistantExactFactsEnabled(),
+    toolsEnabled: assistantToolsEnabled(),
     knowledgeEnabled: assistantKnowledgeEnabled(),
     advisorEnabled: assistantAdvisorEnabled(),
     graphMode: assistantGraphMode(),
@@ -23,6 +25,7 @@ export function createAssistantPorts(overrides: Partial<AssistantPorts> = {}): A
     listVerifiedCompatibility,
     queryGraphRecommendations,
     generateAnswer: createDeepSeekAnswer,
+    selectTools: selectDeepSeekTools,
     ...overrides,
   }
 }

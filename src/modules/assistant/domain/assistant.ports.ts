@@ -6,6 +6,7 @@ import type {
   AssistantProductFact,
 } from './types'
 import type { CompatibilityAssessment } from '@/modules/knowledge/domain/types'
+import type { AssistantToolCall, AssistantToolSelectorInput } from './tool-calling'
 
 export type AssistantAnswerGeneratorInput = {
   messages: AssistantMessage[]
@@ -29,10 +30,12 @@ export type AssistantGraphQuery = {
 
 export type AssistantPorts = {
   exactFactsEnabled: boolean
+  toolsEnabled?: boolean
   loadBusinessProfile: () => Promise<AssistantBusinessProfile>
   listProducts: () => Promise<AssistantProductFact[]>
   listKnowledge: (query?: string) => Promise<AssistantKnowledgeDocument[]>
   generateAnswer: (input: AssistantAnswerGeneratorInput) => Promise<string>
+  selectTools?: (input: AssistantToolSelectorInput) => Promise<AssistantToolCall[]>
   listVerifiedCompatibility?: () => Promise<CompatibilityAssessment[]>
   queryGraphRecommendations?: (input: AssistantGraphQuery) => Promise<AssistantGraphRecommendation[]>
   knowledgeEnabled?: boolean

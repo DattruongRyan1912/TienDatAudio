@@ -27,6 +27,11 @@ export function assistantKnowledgeEnabled() {
   return booleanSetting('ASSISTANT_KNOWLEDGE_ENABLED', !['off', 'admin_only', 'exact_public'].includes(mode))
 }
 
+export function assistantToolsEnabled() {
+  const mode = assistantRolloutMode()
+  return booleanSetting('ASSISTANT_TOOLS_ENABLED', !['off', 'admin_only', 'exact_public'].includes(mode))
+}
+
 export function assistantAdvisorEnabled() {
   return booleanSetting('ASSISTANT_ADVISOR_ENABLED', assistantRolloutMode() === 'advisor_public')
 }

@@ -42,12 +42,18 @@ const PRODUCT_INTENT_PHRASES: Array<{ intent: AssistantExactIntent; phrases: str
   },
 ]
 
+const PRODUCT_COUNT_PATTERNS = [
+  /\b(?:(?:co|hien co)\s+)?(?:tong cong\s+)?(?:bao nhieu|may)\s+(?:san pham|mat hang|model|mau)\b/,
+  /\b(?:tong so|so luong)\s+(?:san pham|mat hang|model|mau)\b/,
+]
+
 function containsPhrase(normalizedQuery: string, phrase: string) {
   return ` ${normalizedQuery} `.includes(` ${phrase} `)
 }
 
 export function detectExactFactIntent(query: string): AssistantExactIntent | null {
   const normalizedQuery = normalizeSearchText(query)
+  if (PRODUCT_COUNT_PATTERNS.some((pattern) => pattern.test(normalizedQuery))) return 'product_count'
   if (/\bmua\b.*\bngay duoc khong\b/.test(normalizedQuery)) return 'product_availability'
   for (const candidate of [BUSINESS_INTENT_PHRASES[0], BUSINESS_INTENT_PHRASES[1], ...PRODUCT_INTENT_PHRASES, BUSINESS_INTENT_PHRASES[2], BUSINESS_INTENT_PHRASES[3]]) {
     if (candidate.phrases.some((phrase) => containsPhrase(normalizedQuery, phrase))) return candidate.intent
@@ -190,6 +196,98 @@ function productActions(product: AssistantProductFact): AssistantAction[] {
   ]
 }
 
+const PRODUCT_COUNT_SCOPE_WORDS = new Set([
+  'ai', 'ban', 'bao', 'ben', 'catalog', 'co', 'cong', 'cua', 'dang', 'hang', 'hien', 'hieu', 'mat', 'mau',
+  'may', 'model', 'nay', 'nhieu', 'o', 'pham', 'san', 'shop', 'so', 'thuoc', 'thuong', 'toi', 'tong', 'tren',
+  'trong', 'tai', 'web', 'website', 'luong',
+])
+
+type ProductBrandGroup = {
+  name: string
+  aliases: string[]
+  products: AssistantProductFact[]
+}
+
+function eligibleCatalogProducts(products: AssistantProductFact[]) {
+  return products.filter((product) => product.id && product.name && product.slug)
+}
+
+function productBrandGroups(products: AssistantProductFact[]) {
+  const groups = new Map<string, ProductBrandGroup>()
+  for (const product of products) {
+    const name = product.brand?.trim() || product.brandId?.trim() || ''
+    const key = normalizeSearchText(name)
+    if (!name || !key) continue
+    const current = groups.get(key) || { name, aliases: [], products: [] }
+    current.products.push(product)
+    current.aliases = Array.from(new Set([
+      ...current.aliases,
+      normalizeSearchText(product.brand || ''),
+      normalizeSearchText(product.brandId || ''),
+    ].filter((alias) => alias.length > 1)))
+    groups.set(key, current)
+  }
+  return Array.from(groups.values())
+}
+
+function resolveProductCount(query: string, products: AssistantProductFact[]): AssistantAnswer {
+  const intent = 'product_count' as const
+  const eligible = eligibleCatalogProducts(products)
+  if (!eligible.length) {
+    return {
+      answerKind: 'fallback', intent,
+      answer: 'Catalog hiện chưa có dữ liệu sản phẩm đủ tin cậy để thống kê.',
+      confidence: 0, sources: [], actions: [], needsHuman: true,
+    }
+  }
+
+  const normalizedQuery = normalizeSearchText(query)
+  const matchedGroups = productBrandGroups(eligible)
+    .map((group) => ({
+      group,
+      score: Math.max(0, ...group.aliases.filter((alias) => containsPhrase(normalizedQuery, alias)).map((alias) => alias.length)),
+    }))
+    .filter((candidate) => candidate.score > 0)
+  const bestScore = Math.max(0, ...matchedGroups.map((candidate) => candidate.score))
+  const bestGroups = matchedGroups.filter((candidate) => candidate.score === bestScore).map((candidate) => candidate.group)
+
+  if (bestGroups.length > 1) {
+    return {
+      answerKind: 'clarification', intent,
+      answer: `Tôi nhận thấy nhiều thương hiệu trong câu hỏi: ${bestGroups.map((group) => group.name).join(', ')}. Bạn muốn đếm thương hiệu nào?`,
+      confidence: 0.4, sources: [], actions: [], needsHuman: false,
+    }
+  }
+
+  const brandGroup = bestGroups[0]
+  if (!brandGroup) {
+    const scopeTerms = normalizedQuery.split(' ').filter((term) => term && !PRODUCT_COUNT_SCOPE_WORDS.has(term))
+    if (scopeTerms.length) {
+      return {
+        answerKind: 'clarification', intent,
+        answer: 'Tôi chưa xác định được thương hiệu cần thống kê. Bạn hãy nhập đúng tên thương hiệu đang có trong catalog.',
+        confidence: 0, sources: [], actions: [{ type: 'product', label: 'Xem catalog', href: '/products' }], needsHuman: false,
+      }
+    }
+  }
+
+  const selected = brandGroup?.products || eligible
+  const preview = selected.slice(0, 5)
+  const subject = brandGroup ? ` thuộc thương hiệu ${brandGroup.name}` : ''
+  const remaining = selected.length - preview.length
+  const previewText = preview.map((product) => product.name).join(', ')
+  const suffix = remaining > 0 ? `, cùng ${remaining} sản phẩm khác` : ''
+  const brandFilter = brandGroup ? `?brand=${encodeURIComponent(brandGroup.name)}` : ''
+  return {
+    answerKind: 'exact', intent,
+    answer: `Catalog hiện có ${selected.length} sản phẩm${subject}: ${previewText}${suffix}.`,
+    confidence: 1,
+    sources: preview.map(productSource),
+    actions: [{ type: 'product', label: brandGroup ? `Xem sản phẩm ${brandGroup.name}` : 'Xem catalog', href: `/products${brandFilter}` }],
+    needsHuman: false,
+  }
+}
+
 function formatPrice(value: number) {
   return `${new Intl.NumberFormat('vi-VN').format(value)} đ`
 }
@@ -203,6 +301,7 @@ export function resolveProductFact(
   query: string,
   products: AssistantProductFact[],
 ): AssistantAnswer {
+  if (intent === 'product_count') return resolveProductCount(query, products)
   const match = matchAssistantProduct(query, products)
   if (match.kind === 'missing') {
     return {

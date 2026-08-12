@@ -78,6 +78,7 @@ function deterministicPorts(base: AssistantPorts): AssistantPorts {
   return {
     ...base,
     exactFactsEnabled: true,
+    toolsEnabled: false,
     knowledgeEnabled: true,
     advisorEnabled: true,
     graphMode: 'shadow',

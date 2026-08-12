@@ -8,6 +8,7 @@ import {
   assistantGraphMode,
   assistantKnowledgeEnabled,
   assistantRolloutMode,
+  assistantToolsEnabled,
 } from '@/modules/assistant/infrastructure/assistant-config'
 import { knowledgeOperationsOverview } from '@/modules/knowledge/infrastructure/knowledge-repository'
 import { getNeo4jHealth } from '@/modules/knowledge-graph/infrastructure/neo4j-http-client'
@@ -27,6 +28,7 @@ export async function GET() {
         rollout: assistantRolloutMode(),
         flags: {
           exactFacts: assistantExactFactsEnabled(),
+          tools: assistantToolsEnabled(),
           knowledge: assistantKnowledgeEnabled(),
           advisor: assistantAdvisorEnabled(),
           conversations: assistantConversationsEnabled(),
