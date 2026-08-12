@@ -135,6 +135,8 @@ ASSISTANT_MIGRATION_CONFIRM=APPLY-ASSISTANT-KNOWLEDGE npm run assistant:migrate 
 
 Migration phân trang toàn bộ bài editorial đã publish để rebuild chunk, tạo index additive và backfill TTL cho feedback cũ. Nó không publish knowledge, không verify AI suggestions và không xóa catalog/bài viết. Kiểm tra số lượng báo cáo và `/admin/assistant` sau khi hoàn tất.
 
+Các CLI Assistant dùng `tsx` như production runtime dependency và phải tiếp tục hoạt động sau `npm prune --omit=dev`; CI kiểm tra ràng buộc này trước release.
+
 ### Rollout modes
 
 `ASSISTANT_ROLLOUT_MODE` hỗ trợ:

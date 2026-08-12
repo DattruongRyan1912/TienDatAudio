@@ -37,6 +37,9 @@ jobs:
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
 
+      - name: Verify production assistant CLI runtime
+        run: npm ls --omit=dev tsx
+
       - name: Unit tests
         run: npm test
 
