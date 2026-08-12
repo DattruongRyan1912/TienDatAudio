@@ -22,7 +22,10 @@
     "db:publish-editorial-queue": "node --env-file-if-exists=.env.local scripts/publish-editorial-queue.mjs",
     "db:apply-editorial-batch": "node --env-file-if-exists=.env.local scripts/apply-editorial-batch.mjs",
     "db:complete-editorial": "node --env-file-if-exists=.env.local scripts/complete-editorial-corpus.mjs",
-    "db:qa-editorial": "node --env-file-if-exists=.env.local scripts/qa-editorial-corpus.mjs"
+    "db:qa-editorial": "node --env-file-if-exists=.env.local scripts/qa-editorial-corpus.mjs",
+    "assistant:migrate": "node --env-file-if-exists=.env.local node_modules/tsx/dist/cli.mjs scripts/migrate-assistant-knowledge.ts",
+    "assistant:eval": "node --env-file-if-exists=.env.local node_modules/tsx/dist/cli.mjs scripts/run-assistant-evaluations.ts",
+    "assistant:graph": "node --env-file-if-exists=.env.local node_modules/tsx/dist/cli.mjs scripts/manage-assistant-graph.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",

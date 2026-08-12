@@ -11,6 +11,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import SiteAnalytics from '@/components/analytics/SiteAnalytics'
 import type { ThemeMode } from '@/contexts/ThemeContext'
+import { assistantPublicEnabled } from '@/modules/assistant/infrastructure/assistant-config'
 
 const manrope = Manrope({
   subsets: ["latin", "vietnamese"],
@@ -65,7 +66,7 @@ export default async function RootLayout({
       <body className="antialiased min-h-screen">
         <ToastProvider>
           <ThemeProvider initialMode={initialMode}>
-            <ConditionalLayout profile={profile} assistantEnabled={Boolean(process.env.DEEPSEEK_API_KEY?.trim())}>
+            <ConditionalLayout profile={profile} assistantEnabled={assistantPublicEnabled()}>
               {children}
             </ConditionalLayout>
           </ThemeProvider>

@@ -11,8 +11,8 @@ export function normalizeSearchText(value: string) {
   return value
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd')
     .toLocaleLowerCase('vi')
+    .replace(/đ/g, 'd')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
 }
@@ -21,8 +21,9 @@ export function queryTerms(query: string) {
   return [...new Set(normalizeSearchText(query).split(/\s+/).filter((term) => term.length > 1 && !STOP_WORDS.has(term)))]
 }
 
-function occurrenceScore(haystack: string, terms: string[], weight: number) {
-  return terms.reduce((score, term) => score + (haystack.includes(term) ? weight : 0), 0)
+function matchingTerms(haystack: string, terms: string[]) {
+  const tokens = new Set(haystack.split(/\s+/).filter(Boolean))
+  return terms.filter((term) => tokens.has(term))
 }
 
 export function retrieveKnowledge(query: string, documents: AssistantKnowledgeDocument[], limit = 5) {
@@ -32,14 +33,19 @@ export function retrieveKnowledge(query: string, documents: AssistantKnowledgeDo
 
   return documents
     .map((document) => {
-      let score = occurrenceScore(document.titleTerms, terms, 8)
-      score += occurrenceScore(document.keywordTerms, terms, 5)
-      score += occurrenceScore(document.bodyTerms, terms, 1)
-      if (normalizedQuery.length > 5 && document.titleTerms.includes(normalizedQuery)) score += 18
-      if (normalizedQuery.length > 5 && document.bodyTerms.includes(normalizedQuery)) score += 6
-      return { document, score }
+      const titleMatches = matchingTerms(document.titleTerms, terms)
+      const keywordMatches = matchingTerms(document.keywordTerms, terms)
+      const bodyMatches = matchingTerms(document.bodyTerms, terms)
+      let score = titleMatches.length * 8
+      score += keywordMatches.length * 5
+      score += bodyMatches.length
+      if (normalizedQuery.length > 5 && ` ${document.titleTerms} `.includes(` ${normalizedQuery} `)) score += 18
+      if (normalizedQuery.length > 5 && ` ${document.bodyTerms} `.includes(` ${normalizedQuery} `)) score += 6
+      const strongMatches = new Set([...titleMatches, ...keywordMatches]).size
+      const relevant = score >= 5 && (strongMatches > 0 || (terms.length >= 3 && bodyMatches.length >= Math.min(3, terms.length)))
+      return { document, score, relevant }
     })
-    .filter((result) => result.score > 0)
+    .filter((result) => result.relevant)
     .sort((a, b) => b.score - a.score || a.document.title.localeCompare(b.document.title, 'vi'))
     .slice(0, Math.max(1, limit))
     .map((result) => result.document)

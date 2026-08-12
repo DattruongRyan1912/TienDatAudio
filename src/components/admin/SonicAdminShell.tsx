@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileText, LayoutDashboard, LogOut, Menu, Package, Radio, Settings, Sparkles, Tags, Users, X } from 'lucide-react'
+import { Bot, FileText, LayoutDashboard, LogOut, Menu, Package, Radio, Settings, Sparkles, Tags, Users, X } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from '@/components/ui/ThemeToggle'
 
@@ -14,6 +14,7 @@ const links = [
   { href: '/admin/posts', label: 'Bài viết', icon: FileText },
   { href: '/admin/social-posts', label: 'Góc Audio', icon: Radio },
   { href: '/admin/contacts', label: 'Yêu cầu tư vấn', icon: Users },
+  { href: '/admin/assistant', label: 'Audio Assistant', icon: Bot },
   { href: '/admin/seo/strategy', label: 'Keyword + GEO/AIO', icon: Sparkles },
   { href: '/admin/settings', label: 'Cài đặt', icon: Settings },
 ]

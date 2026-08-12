@@ -107,3 +107,84 @@ journalctl -u tiendataudio --since '-10 minutes' --no-pager
 ```
 
 Expected exposure: SSH custom port, 80 and 443 only. Ports 3000 and 27017 remain loopback-only. Set Cloudflare SSL/TLS mode to **Full (strict)** after the origin certificate is active.
+
+## Audio Assistant / Knowledge Center
+
+### Thành phần và ranh giới dữ liệu
+
+- MongoDB là source of truth cho catalog, bài viết, knowledge, source, claim, compatibility, conversation và evaluation.
+- Critical facts (liên hệ, địa chỉ, giờ làm việc, giá, tồn kho, thông số) đọc trực tiếp từ MongoDB và bỏ qua model.
+- Knowledge chỉ được public sau workflow `draft -> review -> published` và phải tham chiếu nguồn `verified`.
+- Claim/phối ghép do AI gợi ý luôn bắt đầu ở `suggested`; chỉ tham gia retrieval sau khi admin `verify`.
+- Neo4j là projection tùy chọn. Mất Neo4j không được làm hỏng chat; graph shadow không được đổi thứ tự kết quả public.
+- Session chat dùng cookie ký phía server, TTL tối đa 90 ngày; email/số điện thoại được che trước khi lưu. Người dùng và admin đều có luồng xóa phiên.
+
+### Migration additive trước rollout
+
+Lệnh mặc định chỉ dry-run:
+
+```bash
+npm run assistant:migrate
+```
+
+Sau khi backup MongoDB và kiểm tra đúng environment, tạo index additive và rebuild article chunks:
+
+```bash
+ASSISTANT_MIGRATION_CONFIRM=APPLY-ASSISTANT-KNOWLEDGE npm run assistant:migrate -- --apply
+```
+
+Migration phân trang toàn bộ bài editorial đã publish để rebuild chunk, tạo index additive và backfill TTL cho feedback cũ. Nó không publish knowledge, không verify AI suggestions và không xóa catalog/bài viết. Kiểm tra số lượng báo cáo và `/admin/assistant` sau khi hoàn tất.
+
+### Rollout modes
+
+`ASSISTANT_ROLLOUT_MODE` hỗ trợ:
+
+- `off`: tắt toàn bộ public widget/API;
+- `admin_only`: chỉ test trong admin;
+- `exact_public`: chỉ deterministic exact facts;
+- `knowledge_public`: exact facts + retrieval MongoDB + model grounded;
+- `graph_shadow`: chạy graph để đo nhưng không ảnh hưởng kết quả public;
+- `graph_public`: graph được dùng cho scoring đã kiểm chứng;
+- `advisor_public`: bật tư vấn cấu hình dựa trên compatibility verified.
+
+Luôn đi tuần tự, chỉ nâng mode sau khi evaluation và smoke của mode trước đạt gate. `ASSISTANT_ADVISOR_ENABLED=false` là kill switch riêng cho advisor.
+
+### Evaluation gate
+
+```bash
+# 120 case deterministic, không ghi DB
+npm run assistant:eval
+
+# Lưu kết quả vào MongoDB để xem trong admin
+npm run assistant:eval -- --persist
+
+# Full model, mặc định tối đa 20 case
+npm run assistant:eval -- --full --limit=10 --persist
+```
+
+Không promote rollout nếu critical exact facts, prompt-injection, grounding validator hoặc failure-mode case bị fail.
+
+### Neo4j tùy chọn
+
+Chỉ cấu hình khi đã chốt AuraDB hay self-hosted. Dùng HTTPS endpoint và hai account riêng:
+
+- reader: chỉ quyền đọc graph phục vụ assistant;
+- writer: chỉ dùng bởi migration/sync worker để quản lý projection của ứng dụng.
+
+Không đưa credential Neo4j vào repo hay biến `NEXT_PUBLIC_*`. Các lệnh:
+
+```bash
+npm run assistant:graph -- verify
+ASSISTANT_GRAPH_CONFIRM=APPLY-ASSISTANT-GRAPH npm run assistant:graph -- sync --apply
+ASSISTANT_GRAPH_CONFIRM=APPLY-ASSISTANT-GRAPH npm run assistant:graph -- rebuild --apply
+```
+
+Rebuild chỉ prune node có `projection=tiendataudio-v1`; không chạy Cypher do người dùng cung cấp. Sau mỗi sync/rebuild phải verify drift bằng admin hoặc CLI.
+
+### Smoke sau deploy
+
+1. `/admin/assistant`: overview tải được, Knowledge/Source/Claim/Compatibility CRUD hoạt động và version conflict trả `409`.
+2. Test console: câu hỏi số điện thoại trả đúng dữ liệu MongoDB và trace không có stage model.
+3. Widget public: multi-turn giữ context server-side, recommendation chỉ xuất hiện từ compatibility verified, thumbs up/down lưu được.
+4. Tắt Neo4j hoặc để chưa cấu hình: chat exact/knowledge vẫn hoạt động.
+5. Xóa phiên từ widget và admin: session/messages/feedback liên quan bị xóa.

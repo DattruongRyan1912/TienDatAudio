@@ -109,6 +109,13 @@ jobs:
             printf 'DEEPSEEK_API_KEY=%s\n' "$DEEPSEEK_API_KEY"
             printf 'DEEPSEEK_MODEL=deepseek-v4-flash\n'
             printf 'DEEPSEEK_BASE_URL=https://api.deepseek.com\n'
+            printf 'ASSISTANT_ROLLOUT_MODE=knowledge_public\n'
+            printf 'ASSISTANT_EXACT_FACTS_ENABLED=true\n'
+            printf 'ASSISTANT_KNOWLEDGE_ENABLED=true\n'
+            printf 'ASSISTANT_ADVISOR_ENABLED=false\n'
+            printf 'ASSISTANT_CONVERSATIONS_ENABLED=true\n'
+            printf 'ASSISTANT_RETENTION_DAYS=30\n'
+            printf 'ASSISTANT_GRAPH_ENABLED=false\n'
           } | ssh -i "$HOME/.ssh/tiendataudio_deploy" -p "$VPS_PORT" \
             -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
             "$VPS_USER@$VPS_HOST" \
