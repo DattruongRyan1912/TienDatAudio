@@ -4,6 +4,7 @@ set -Eeuo pipefail
 APP_ROOT="${APP_ROOT:-/srv/tiendataudio}"
 ENV_FILE="${ENV_FILE:-/etc/tiendataudio/tiendataudio.env}"
 AI_ENV_FILE="${AI_ENV_FILE:-$APP_ROOT/shared/runtime-ai.env}"
+GRAPH_ENV_FILE="${GRAPH_ENV_FILE:-$APP_ROOT/shared/runtime-graph.env}"
 SERVICE_NAME="${SERVICE_NAME:-tiendataudio.service}"
 KEEP_RELEASES="${KEEP_RELEASES:-5}"
 release_sha="${1:-}"
@@ -59,6 +60,9 @@ write_release_env() {
     if [[ -r "$AI_ENV_FILE" ]]; then
       cat "$AI_ENV_FILE"
     fi
+    if [[ -r "$GRAPH_ENV_FILE" ]]; then
+      cat "$GRAPH_ENV_FILE"
+    fi
   } > "$temporary_file"
   chmod 0600 "$temporary_file"
   mv -f "$temporary_file" "$target_file"
@@ -92,6 +96,10 @@ source "$ENV_FILE"
 if [[ -r "$AI_ENV_FILE" ]]; then
   # shellcheck disable=SC1090
   source "$AI_ENV_FILE"
+fi
+if [[ -r "$GRAPH_ENV_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$GRAPH_ENV_FILE"
 fi
 set +a
 export NODE_ENV=production NEXT_TELEMETRY_DISABLED=1

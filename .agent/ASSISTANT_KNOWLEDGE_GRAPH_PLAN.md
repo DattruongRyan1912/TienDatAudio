@@ -1,7 +1,7 @@
 # Tiến Đạt Audio — Assistant, Knowledge Base và Knowledge Graph Plan
 
-**Trạng thái:** Local feature implementation complete — production data/Neo4j rollout pending human gates
-**Cập nhật:** 2026-08-12
+**Trạng thái:** Production `graph_shadow` active — graph/advisor public rollout pending security and evaluation gates
+**Cập nhật:** 2026-08-13
 **Phạm vi:** Public chatbot, admin knowledge center, MongoDB knowledge domain, Neo4j projection, retrieval/evaluation và production rollout.
 **Nguồn thiết kế:** plan MongoDB + Neo4j do repository owner cung cấp, source hiện tại và `docs/ARCHITECTURE_STANDARD.md`.
 
@@ -1025,10 +1025,10 @@ Rollback:
 
 Preflight/human decisions:
 
-- AuraDB hay self-hosted Neo4j.
-- VPS RAM/CPU/disk/resource audit nếu self-host.
-- Network/TLS/backup plan.
-- Exact Neo4j version/driver compatibility.
+- Owner chọn self-hosted Neo4j Community tạm thời; RBAC exception được ghi nhận và không được promote `graph_public`.
+- VPS resource audit hoàn tất; container giới hạn `1.5 CPU / 2 GiB RAM`.
+- Network chỉ bind loopback; offline backup hằng ngày, checksum và restore consistency drill đã pass.
+- Neo4j `5.26.28` LTS được pin theo image digest và HTTP transactional endpoint đã verify.
 
 Scope:
 
@@ -1215,7 +1215,7 @@ Mỗi release phải có exact commit SHA, green CI, backup khi có data mutatio
 
 Không được tự quyết định khi triển khai tới boundary tương ứng:
 
-1. Neo4j AuraDB hay self-hosted sau resource/cost audit.
+1. Chuyển Community sang AuraDB Business Critical/Virtual Dedicated Cloud hoặc Neo4j Enterprise để có RBAC thật trước `graph_public`.
 2. Semantic provider/model/dimension sau Phase 2 benchmark.
 3. Danh sách nguồn được coi là official/verified.
 4. Người có quyền verify claims và compatibility.

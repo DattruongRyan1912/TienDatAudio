@@ -115,7 +115,6 @@ jobs:
             printf 'ASSISTANT_ADVISOR_ENABLED=false\n'
             printf 'ASSISTANT_CONVERSATIONS_ENABLED=true\n'
             printf 'ASSISTANT_RETENTION_DAYS=30\n'
-            printf 'ASSISTANT_GRAPH_ENABLED=false\n'
           } | ssh -i "$HOME/.ssh/tiendataudio_deploy" -p "$VPS_PORT" \
             -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
             "$VPS_USER@$VPS_HOST" \

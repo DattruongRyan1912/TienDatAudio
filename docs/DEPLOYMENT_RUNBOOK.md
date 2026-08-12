@@ -4,6 +4,7 @@
 
 ```text
 Visitor -> Cloudflare -> Nginx :443 -> Next.js 127.0.0.1:3000 -> MongoDB 127.0.0.1:27017
+                                                     └-------> Neo4j 127.0.0.1:7474 (optional projection)
 GitHub main -> CI -> SSH/rsync -> immutable release -> health check -> atomic current symlink
 ```
 
@@ -13,6 +14,8 @@ Production paths:
 - Active release: `/srv/tiendataudio/current`
 - Shared state: `/srv/tiendataudio/shared`
 - Runtime secrets: `/etc/tiendataudio/tiendataudio.env`
+- CI-managed Assistant runtime: `/srv/tiendataudio/shared/runtime-ai.env`
+- Infrastructure-managed graph runtime: `/srv/tiendataudio/shared/runtime-graph.env`
 - Deployment receipts: `/srv/tiendataudio/deployments.jsonl`
 - MongoDB backups: `/var/backups/tiendataudio`
 
@@ -168,7 +171,7 @@ Không promote rollout nếu critical exact facts, prompt-injection, grounding v
 
 ### Neo4j tùy chọn
 
-Chỉ cấu hình khi đã chốt AuraDB hay self-hosted. Dùng HTTPS endpoint và hai account riêng:
+Chỉ cấu hình khi đã chốt AuraDB hay self-hosted. Dùng HTTPS cho endpoint remote; self-host cùng VPS chỉ được dùng HTTP qua loopback. Tách hai account ứng dụng:
 
 - reader: chỉ quyền đọc graph phục vụ assistant;
 - writer: chỉ dùng bởi migration/sync worker để quản lý projection của ứng dụng.
@@ -182,6 +185,12 @@ ASSISTANT_GRAPH_CONFIRM=APPLY-ASSISTANT-GRAPH npm run assistant:graph -- rebuild
 ```
 
 Rebuild chỉ prune node có `projection=tiendataudio-v1`; không chạy Cypher do người dùng cung cấp. Sau mỗi sync/rebuild phải verify drift bằng admin hoặc CLI.
+
+Production tạm thời dùng Neo4j Community `5.26.28` self-hosted, chỉ bind `127.0.0.1:7474/7687`, giới hạn `1.5 CPU / 2 GiB RAM` và chạy ở `graph_shadow`. Community không có RBAC: hai username reader/writer giúp tách credential vận hành nhưng đều có implied administrator privilege. Không nâng `graph_public` trước khi chuyển sang AuraDB Business Critical/Virtual Dedicated Cloud hoặc Neo4j Enterprise để thực thi quyền reader/writer thật.
+
+CI chỉ thay `runtime-ai.env`; graph credential và rollout override nằm trong `runtime-graph.env`. `deploy-release.sh` ghép graph env sau AI env để deploy mới không tắt cấu hình hạ tầng. Không thêm graph secret vào GitHub Actions hoặc checkout.
+
+Backup projection chạy bằng `tiendataudio-neo4j-backup.timer` mỗi ngày, giữ 14 ngày tại `/srv/tiendataudio/neo4j/backups/<UTC timestamp>/`. Mỗi snapshot phải giữ tên chuẩn `neo4j.dump`, `system.dump`, có `SHA256SUMS`, và phải qua restore drill + consistency check trước khi coi là recoverable. MongoDB vẫn là source of truth nên graph luôn có thể rebuild khi cần.
 
 ### Smoke sau deploy
 
