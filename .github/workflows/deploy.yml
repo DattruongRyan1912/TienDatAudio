@@ -96,6 +96,24 @@ jobs:
             -e "ssh -i $HOME/.ssh/tiendataudio_deploy -p $VPS_PORT -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
             ./ "$VPS_USER@$VPS_HOST:/srv/tiendataudio/releases/$RELEASE_SHA/"
 
+      - name: Configure private AI runtime
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          test -n "$DEEPSEEK_API_KEY"
+          [[ "$DEEPSEEK_API_KEY" =~ ^sk-[A-Za-z0-9_-]+$ ]]
+          {
+            printf 'DEEPSEEK_API_KEY=%s\n' "$DEEPSEEK_API_KEY"
+            printf 'DEEPSEEK_MODEL=deepseek-v4-flash\n'
+            printf 'DEEPSEEK_BASE_URL=https://api.deepseek.com\n'
+          } | ssh -i "$HOME/.ssh/tiendataudio_deploy" -p "$VPS_PORT" \
+            -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            "$VPS_USER@$VPS_HOST" \
+            'umask 077; runtime_file=/srv/tiendataudio/shared/runtime-ai.env; temporary_file="${runtime_file}.tmp"; cat > "$temporary_file"; chmod 0600 "$temporary_file"; mv -f "$temporary_file" "$runtime_file"'
+
       - name: Activate and verify release
         env:
           RELEASE_SHA: ${{ steps.release.outputs.sha }}

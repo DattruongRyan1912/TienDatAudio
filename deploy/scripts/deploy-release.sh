@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 APP_ROOT="${APP_ROOT:-/srv/tiendataudio}"
 ENV_FILE="${ENV_FILE:-/etc/tiendataudio/tiendataudio.env}"
+AI_ENV_FILE="${AI_ENV_FILE:-$APP_ROOT/shared/runtime-ai.env}"
 SERVICE_NAME="${SERVICE_NAME:-tiendataudio.service}"
 KEEP_RELEASES="${KEEP_RELEASES:-5}"
 release_sha="${1:-}"
@@ -46,6 +47,23 @@ fi
 previous_release="$(readlink -f "$current_link" 2>/dev/null || true)"
 started_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
+write_release_env() {
+  local active_release="$1"
+  local deployed_at="$2"
+  local target_file="$APP_ROOT/shared/release.env"
+  local temporary_file="${target_file}.tmp"
+
+  umask 077
+  {
+    printf 'APP_RELEASE=%s\nDEPLOYED_AT=%s\n' "$active_release" "$deployed_at"
+    if [[ -r "$AI_ENV_FILE" ]]; then
+      cat "$AI_ENV_FILE"
+    fi
+  } > "$temporary_file"
+  chmod 0600 "$temporary_file"
+  mv -f "$temporary_file" "$target_file"
+}
+
 receipt() {
   local status="$1"
   local detail="$2"
@@ -58,7 +76,7 @@ rollback() {
   if [[ -n "$previous_release" && -d "$previous_release" ]]; then
     ln -sfn "$previous_release" "$APP_ROOT/current.next"
     mv -Tf "$APP_ROOT/current.next" "$current_link"
-    printf 'APP_RELEASE=%s\nDEPLOYED_AT=%s\n' "${previous_release##*/}" "$started_at" > "$APP_ROOT/shared/release.env"
+    write_release_env "${previous_release##*/}" "$started_at"
     sudo systemctl restart "$SERVICE_NAME" || true
     receipt "rolled_back" "$reason"
   else
@@ -71,6 +89,10 @@ rollback() {
 set -a
 # shellcheck disable=SC1090
 source "$ENV_FILE"
+if [[ -r "$AI_ENV_FILE" ]]; then
+  # shellcheck disable=SC1090
+  source "$AI_ENV_FILE"
+fi
 set +a
 export NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 
@@ -113,7 +135,7 @@ if ! npm prune --omit=dev; then
   exit 1
 fi
 
-printf 'APP_RELEASE=%s\nDEPLOYED_AT=%s\n' "$release_sha" "$started_at" > "$APP_ROOT/shared/release.env"
+write_release_env "$release_sha" "$started_at"
 ln -sfn "$release_dir" "$APP_ROOT/current.next"
 mv -Tf "$APP_ROOT/current.next" "$current_link"
 

@@ -65,7 +65,7 @@ export default async function RootLayout({
       <body className="antialiased min-h-screen">
         <ToastProvider>
           <ThemeProvider initialMode={initialMode}>
-            <ConditionalLayout profile={profile}>
+            <ConditionalLayout profile={profile} assistantEnabled={Boolean(process.env.DEEPSEEK_API_KEY?.trim())}>
               {children}
             </ConditionalLayout>
           </ThemeProvider>
