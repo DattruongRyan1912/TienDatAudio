@@ -127,6 +127,23 @@ test('LLM product search uses tool evidence instead of unrelated article retriev
   assert.ok(result.trace?.stages.some((stage) => stage.name === 'tools' && stage.outcome.includes('search_products:completed:2')))
 })
 
+test('product tool evidence remains useful when the model summary fails grounding', async () => {
+  const result = await answerAssistant(
+    [{ role: 'user', content: 'Trong catalog hiện có những mẫu ARF nào dưới 10 triệu?' }],
+    ports({
+      selectTools: async () => [toolCall('search_products', { brand: 'ARF', maxPrice: 10_000_000 })],
+      generateAnswer: async () => 'Có 2 mẫu ARF dưới 10 triệu [1] [2].',
+    }),
+    { includeTrace: true },
+  )
+  assert.equal(result.answerKind, 'exact')
+  assert.equal(result.needsHuman, false)
+  assert.match(result.answer, /ARF VX330PRO \[1\]/)
+  assert.equal(result.sources.length, 1)
+  assert.equal(result.trace?.validator.passed, false)
+  assert.ok(result.trace?.validator.violations.some((violation) => violation.includes('UNSUPPORTED_NUMBER:10')))
+})
+
 test('count_products provides a server-computed catalog fact when exact routing is disabled', async () => {
   const result = await answerAssistant(
     [{ role: 'user', content: 'ARF hiện có tổng cộng mấy model?' }],

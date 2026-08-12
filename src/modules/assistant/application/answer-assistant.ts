@@ -80,6 +80,28 @@ function sourceActions(sources: AssistantAnswer['sources']): AssistantAction[] {
   return actions
 }
 
+function summarizeProductToolEvidence(
+  intent: AssistantIntent,
+  sources: AssistantAnswer['sources'],
+  constraints?: AssistantConversationConstraints,
+): AssistantAnswer | null {
+  if (!sources.length || sources.some((source) => source.type !== 'product')) return null
+  const catalogResult = sources.find((source) => source.id.startsWith('catalog:'))
+  const answer = catalogResult
+    ? `Kết quả từ catalog công khai: ${catalogResult.excerpt || catalogResult.title} [1].`
+    : `Tôi tìm thấy ${sources.length} sản phẩm phù hợp trong catalog công khai: ${sources.map((source, index) => `${source.title} [${index + 1}]`).join(', ')}.`
+  return {
+    answerKind: 'exact',
+    intent,
+    answer,
+    confidence: 0.95,
+    sources,
+    actions: sourceActions(sources),
+    ...(constraints ? { constraints } : {}),
+    needsHuman: false,
+  }
+}
+
 export async function answerAssistant(
   messages: AssistantMessage[],
   ports: AssistantPorts,
@@ -157,11 +179,13 @@ export async function answerAssistant(
   if (ports.knowledgeEnabled === false) return withTrace(noKnowledgeAnswer(intent, constraints), trace, runtime.includeTrace)
 
   let documents = [] as Awaited<ReturnType<AssistantPorts['listKnowledge']>>
+  let usedToolEvidence = false
   if (ports.toolsEnabled && ports.selectTools) {
     startedAt = performance.now()
     try {
       const toolEvidence = await collectAssistantToolEvidence(messages, ports)
       documents = toolEvidence.documents
+      usedToolEvidence = documents.length > 0
       const outcome = toolEvidence.calls.length
         ? toolEvidence.calls.map((call) => `${call.name}:${call.outcome}:${call.resultCount}`).join(',')
         : 'no_call'
@@ -205,6 +229,8 @@ export async function answerAssistant(
     traceStage(trace, 'model', startedAt, 'completed')
   } catch (error) {
     traceStage(trace, 'model', startedAt, error instanceof Error ? error.message : 'failed')
+    const productSummary = usedToolEvidence ? summarizeProductToolEvidence(intent, sources, constraints) : null
+    if (productSummary) return withTrace(productSummary, trace, runtime.includeTrace)
     return withTrace({
       answerKind: 'fallback', intent,
       answer: 'Tôi đã tìm thấy tài liệu phù hợp nhưng chưa thể tổng hợp câu trả lời lúc này. Bạn có thể mở các nguồn bên dưới hoặc gửi yêu cầu để kỹ thuật viên hỗ trợ.',
@@ -221,6 +247,8 @@ export async function answerAssistant(
   trace.validator = validation
   traceStage(trace, 'grounding_validator', startedAt, validation.passed ? 'passed' : validation.violations.join(','))
   if (!validation.passed) {
+    const productSummary = usedToolEvidence ? summarizeProductToolEvidence(intent, sources, constraints) : null
+    if (productSummary) return withTrace(productSummary, trace, runtime.includeTrace)
     return withTrace({
       answerKind: 'fallback', intent,
       answer: 'Tôi đã tìm thấy nguồn liên quan nhưng bản tổng hợp chưa vượt qua kiểm tra dữ kiện. Bạn hãy xem nguồn bên dưới hoặc liên hệ kỹ thuật viên để được xác nhận.',
