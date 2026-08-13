@@ -15,6 +15,22 @@ test('product hero is server-visible and gives its LCP image high priority', asy
   assert.match(gallery, /priority fetchPriority="high"/)
 })
 
+test('social hub keeps its LCP copy visible and optimizes only the leading gallery image eagerly', async () => {
+  const [page, card, gallery] = await Promise.all([
+    readSource('src/app/bai-viet/page.tsx'),
+    readSource('src/components/social/SocialPostCard.tsx'),
+    readSource('src/components/social/SocialMediaGallery.tsx'),
+  ])
+
+  assert.doesNotMatch(page, /<SonicReveal><section className="sonic-container pb-12 md:pb-16">/)
+  assert.match(page, /index === 0\) return <SocialPostCard[^>]*priorityMedia/)
+  assert.match(card, /<SocialMediaGallery media=\{post\.media\} priority=\{priorityMedia \|\| detail\}/)
+  assert.match(gallery, /f_webp,fl_lossy,q_auto:eco,w_\$\{width\},c_limit/)
+  assert.match(gallery, /srcSet=\{image\.srcSet\}/)
+  assert.match(gallery, /fetchPriority=\{isPriority \? 'high' : undefined\}/)
+  assert.doesNotMatch(gallery, /loading=\{index === 0 \? 'eager' : 'lazy'\}/)
+})
+
 test('footer map uses a deferred facade instead of an eager iframe', async () => {
   const [footer, deferredMap] = await Promise.all([
     readSource('src/components/sonic/SonicFooter.tsx'),
@@ -40,8 +56,12 @@ test('public layout avoids request cookies and caches shared site settings', asy
 })
 
 test('theme hydration preserves the mode selected by the pre-paint bootstrap', async () => {
-  const themeContext = await readSource('src/contexts/ThemeContext.tsx')
+  const [layout, themeContext] = await Promise.all([
+    readSource('src/app/layout.tsx'),
+    readSource('src/contexts/ThemeContext.tsx'),
+  ])
 
+  assert.match(layout, /<script blocking="render" dangerouslySetInnerHTML=\{\{ __html: themeBootstrapScript \}\} \/>/)
   assert.match(themeContext, /const \[modeReady, setModeReady\] = useState\(false\)/)
   assert.match(themeContext, /applyMode\(nextResolved\)\s+setModeReady\(true\)/)
   assert.match(themeContext, /if \(!modeReady\) return/)

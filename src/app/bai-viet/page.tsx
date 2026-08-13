@@ -40,7 +40,7 @@ export default async function SocialHubPage({ searchParams }: { searchParams: Pr
   const totalPages = Math.max(1, Math.ceil(total / limit))
 
   return <div className="sonic-page pt-28 md:pt-36">
-    <SonicReveal><section className="sonic-container pb-12 md:pb-16">
+    <section className="sonic-container pb-12 md:pb-16">
       <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
         <div><p className="sonic-label">Social / Audio lifestyle</p><h1 className="sonic-title mt-5 max-w-3xl">Góc Audio.</h1><p className="sonic-copy mt-5 max-w-xl">Những gì đang diễn ra tại showroom, trong các hệ thống đã lắp đặt và giữa những người yêu âm thanh.</p></div>
         <form action="/bai-viet" className="relative w-full lg:max-w-sm"><Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--sonic-subtle)]" /><input name="q" defaultValue={params.q || ''} className="sonic-input sonic-input-with-leading-icon" placeholder="Tìm bài viết, sản phẩm..." aria-label="Tìm Social Post" /></form>
@@ -49,13 +49,14 @@ export default async function SocialHubPage({ searchParams }: { searchParams: Pr
         <Link href={queryLink(params, { category: '' })} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-bold transition-colors ${!params.category ? 'border-[var(--sonic-gold)] bg-[var(--sonic-gold-soft)] text-[var(--sonic-gold)]' : 'border-[var(--sonic-line)] text-[var(--sonic-muted)] hover:border-[var(--sonic-gold)]'}`}>Tất cả</Link>
         {SOCIAL_CATEGORIES.map((category) => <Link key={category} href={queryLink(params, { category })} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-bold transition-colors ${params.category === category ? 'border-[var(--sonic-gold)] bg-[var(--sonic-gold-soft)] text-[var(--sonic-gold)]' : 'border-[var(--sonic-line)] text-[var(--sonic-muted)] hover:border-[var(--sonic-gold)]'}`}>{category}</Link>)}
       </nav>
-    </section></SonicReveal>
+    </section>
 
     <section className="border-y border-[var(--sonic-line)] bg-[var(--sonic-surface-strong)] py-10 md:py-14">
       <div className="sonic-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_250px_250px] lg:items-start">
         <main className="mx-auto w-full max-w-[760px] space-y-5" aria-label="Social feed">
           {posts.length === 0 ? <div className="social-post-card py-16 text-center"><p className="sonic-label">Chưa có bài viết public</p><h2 className="mt-4 text-2xl font-bold text-[var(--sonic-text)]">Góc Audio đang được biên tập.</h2><p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[var(--sonic-muted)]">Khi bài viết đầu tiên được xuất bản, feed sẽ xuất hiện tại đây.</p><Link href="/contact" className="sonic-button sonic-button-gold mt-7">Nhận tư vấn <ArrowUpRight size={15} /></Link></div> : posts.map((post, index) => {
             const relatedProducts = trendingProducts.filter((product) => post.relatedProductIds.includes(product.id))
+            if (index === 0) return <SocialPostCard key={post.id} post={post} relatedProducts={relatedProducts} priorityMedia />
             return <SonicReveal key={post.id} delay={Math.min(index * 0.06, 0.24)}><SocialPostCard post={post} relatedProducts={relatedProducts} /></SonicReveal>
           })}
           {totalPages > 1 && <nav className="flex items-center justify-between border-t border-[var(--sonic-line)] pt-5" aria-label="Phân trang Social Hub"><div>{page > 1 && <Link href={`/bai-viet?${new URLSearchParams({ ...(params.q ? { q: params.q } : {}), ...(params.category ? { category: params.category } : {}), page: String(page - 1) })}`} className="text-xs font-bold text-[var(--sonic-gold)]">← Trang trước</Link>}</div><span className="text-xs text-[var(--sonic-subtle)]">{page} / {totalPages}</span><div>{page < totalPages && <Link href={`/bai-viet?${new URLSearchParams({ ...(params.q ? { q: params.q } : {}), ...(params.category ? { category: params.category } : {}), page: String(page + 1) })}`} className="text-xs font-bold text-[var(--sonic-gold)]">Trang sau →</Link>}</div></nav>}
