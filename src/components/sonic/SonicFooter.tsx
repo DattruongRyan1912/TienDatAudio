@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { BusinessProfile } from '@/lib/business-profile'
 import { isSocialHubEnabled } from '@/modules/social/domain/feature-flag'
+import SonicDeferredMap from './SonicDeferredMap'
 
 const productLinks = [
   ['Loa hi-end', '/products?category=loa-thung'],
@@ -42,9 +43,7 @@ export default function SonicFooter({ profile }: { profile: BusinessProfile }) {
           <a href={`tel:${phoneDigits}`} data-analytics-event="phone_click" className="mt-4 inline-block text-lg font-bold text-[#d4af37]">{phoneDisplay}</a>
           <p className="mt-2 text-xs text-[var(--sonic-subtle)]">{profile.businessHours.join(' / ')}</p>
           <p className="mt-6 sonic-label text-[#858989]">Vị trí showroom</p>
-          <div className="sonic-map-frame relative mt-3 h-44 overflow-hidden border border-[var(--sonic-line)] bg-[var(--sonic-surface)] sm:h-48 md:h-40 lg:h-44">
-            <iframe src={profile.mapEmbedUrl} width="600" height="450" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" title={`Bản đồ ${profile.name}`} />
-          </div>
+          <SonicDeferredMap embedUrl={profile.mapEmbedUrl} name={profile.name} />
           <a href={profile.mapUrl} data-analytics-event="map_click" target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-[#d4af37] transition-colors hover:text-[#e5c45a]">Mở bản đồ <span aria-hidden="true" className="ml-2">↗</span></a>
         </div>
       </div>

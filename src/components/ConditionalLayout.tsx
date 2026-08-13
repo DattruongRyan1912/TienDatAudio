@@ -5,15 +5,14 @@ import SonicHeader from '@/components/sonic/SonicHeader'
 import SonicFooter from '@/components/sonic/SonicFooter'
 import FloatingContact from '@/components/sonic/FloatingContact'
 import type { BusinessProfile } from '@/lib/business-profile'
-import AssistantWidget from '@/modules/assistant/presentation/AssistantWidget'
+import AssistantWidgetGate from '@/modules/assistant/presentation/AssistantWidgetGate'
 
 interface ConditionalLayoutProps {
   children: React.ReactNode
   profile: BusinessProfile
-  assistantEnabled: boolean
 }
 
-export default function ConditionalLayout({ children, profile, assistantEnabled }: ConditionalLayoutProps) {
+export default function ConditionalLayout({ children, profile }: ConditionalLayoutProps) {
   const pathname = usePathname()
   
   // Check if current route is admin
@@ -31,7 +30,7 @@ export default function ConditionalLayout({ children, profile, assistantEnabled 
       <main>
         {children}
       </main>
-      {assistantEnabled && <AssistantWidget />}
+      <AssistantWidgetGate />
       <FloatingContact profile={profile} />
       <SonicFooter profile={profile} />
     </>

@@ -29,6 +29,7 @@ release_dir="$releases_dir/$release_sha"
 current_link="$APP_ROOT/current"
 receipt_file="$APP_ROOT/deployments.jsonl"
 lock_file="$APP_ROOT/.deploy.lock"
+image_cache_dir="$APP_ROOT/shared/next-image-cache"
 
 if [[ ! -d "$release_dir" || ! -r "$release_dir/package-lock.json" ]]; then
   echo "Release directory is incomplete: $release_dir" >&2
@@ -134,6 +135,17 @@ if ! npm run build; then
   receipt "failed" "build"
   exit 1
 fi
+
+# Runtime image variants must survive immutable releases and remain writable
+# inside the systemd sandbox. The release itself stays read-only.
+install -d -m 0750 "$image_cache_dir" "$release_dir/.next/cache"
+release_image_cache="$release_dir/.next/cache/images"
+if [[ -L "$release_image_cache" ]]; then
+  rm -f -- "$release_image_cache"
+elif [[ -e "$release_image_cache" ]]; then
+  rm -rf -- "$release_image_cache"
+fi
+ln -s "$image_cache_dir" "$release_image_cache"
 
 rm -rf -- "$release_dir/public/uploads"
 ln -s "$APP_ROOT/shared/uploads" "$release_dir/public/uploads"

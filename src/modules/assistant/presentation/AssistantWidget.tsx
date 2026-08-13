@@ -29,8 +29,8 @@ function sourceLabel(source: AssistantSource) {
   return labels[source.type]
 }
 
-export default function AssistantWidget() {
-  const [open, setOpen] = useState(false)
+export default function AssistantWidget({ initialOpen = false }: { initialOpen?: boolean }) {
+  const [open, setOpen] = useState(initialOpen)
   const [messages, setMessages] = useState<DisplayMessage[]>([greeting])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)

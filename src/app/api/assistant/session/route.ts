@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server'
 import { deleteAssistantConversation } from '@/modules/assistant/infrastructure/assistant-operations-repository'
+import { assistantPublicEnabled } from '@/modules/assistant/infrastructure/assistant-config'
 import { assistantSessionCookieName, readAssistantSessionToken, readCookieValue } from '@/modules/assistant/infrastructure/assistant-session'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+
+export async function GET() {
+  return NextResponse.json(
+    { success: true, data: { enabled: assistantPublicEnabled() } },
+    { headers: { 'Cache-Control': 'private, no-store' } },
+  )
+}
 
 export async function DELETE(request: Request) {
   const token = readAssistantSessionToken(readCookieValue(request, assistantSessionCookieName))

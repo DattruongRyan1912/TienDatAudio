@@ -121,19 +121,23 @@ export function ThemeProvider({ children, initialMode = 'dark' }: ThemeProviderP
   const pathname = usePathname()
   const [mode, setModeState] = useState<ThemeMode>(initialMode)
   const [resolvedMode, setResolvedMode] = useState<ResolvedThemeMode>(initialMode === 'light' ? 'light' : 'dark')
+  const [modeReady, setModeReady] = useState(false)
   const [theme, setTheme] = useState<ThemeData | null>(defaultTheme)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const stored = window.localStorage.getItem(THEME_STORAGE_KEY)
     const nextMode = isThemeMode(stored) ? stored : initialMode
+    const nextResolved = nextMode === 'system' ? getSystemMode() : nextMode
     setModeState(nextMode)
+    setResolvedMode(nextResolved)
     persistMode(nextMode)
-
-    if (nextMode !== 'system') applyMode(nextMode)
+    applyMode(nextResolved)
+    setModeReady(true)
   }, [initialMode])
 
   useEffect(() => {
+    if (!modeReady) return
     const nextResolved = mode === 'system' ? getSystemMode() : mode
     setResolvedMode(nextResolved)
     applyMode(nextResolved)
@@ -146,7 +150,7 @@ export function ThemeProvider({ children, initialMode = 'dark' }: ThemeProviderP
     }
     media.addEventListener?.('change', handleSystemChange)
     return () => media.removeEventListener?.('change', handleSystemChange)
-  }, [mode])
+  }, [mode, modeReady])
 
   function setMode(nextMode: ThemeMode) {
     setModeState(nextMode)

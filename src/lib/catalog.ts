@@ -145,11 +145,30 @@ export async function getFeaturedProducts(limit = 4) {
   return getProducts({ featured: true, limit })
 }
 
-export async function getRelatedProducts(productId: string, limit = 4) {
-  const product = await getProducts()
-  const current = product.find((item) => item.id === productId)
-  if (!current) return []
-  return product.filter((item) => item.id !== productId && item.category_id === current.category_id).slice(0, limit)
+export async function getRelatedProducts(productId: string, limit = 4, categoryId?: string) {
+  const safeLimit = Math.max(1, Math.min(limit, 12))
+  return fallbackOr(
+    () => {
+      const products = fallbackProducts()
+      const currentCategoryId = categoryId || products.find((item) => item.id === productId)?.category_id
+      if (!currentCategoryId) return []
+      return products.filter((item) => item.id !== productId && item.category_id === currentCategoryId).slice(0, safeLimit)
+    },
+    async (db) => {
+      let currentCategoryId = categoryId
+      if (!currentCategoryId) {
+        const current = await db.collection('products').findOne({ id: productId }, { projection: { category_id: 1 } })
+        currentCategoryId = current?.category_id ? String(current.category_id) : ''
+      }
+      if (!currentCategoryId) return []
+      const documents = await db.collection('products')
+        .find({ id: { $ne: productId }, category_id: currentCategoryId })
+        .sort({ featured: -1, createdAt: -1 })
+        .limit(safeLimit)
+        .toArray()
+      return documents.map((document) => normalizeProduct(document as unknown as Record<string, unknown>))
+    },
+  )
 }
 
 export async function getCategories() {

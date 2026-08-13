@@ -1,7 +1,8 @@
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { requireAdmin, unauthorizedResponse } from '@/lib/admin-guard'
 import { getBusinessProfile, saveBusinessProfile } from '@/lib/business-profile'
+import { PUBLIC_SITE_SETTINGS_CACHE_TAG } from '@/lib/public-site-settings'
 
 export const runtime = 'nodejs'
 
@@ -15,6 +16,7 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json() as { profile?: unknown }
     const profile = await saveBusinessProfile(body.profile ?? body)
+    revalidateTag(PUBLIC_SITE_SETTINGS_CACHE_TAG)
     revalidatePath('/', 'layout')
     revalidatePath('/contact')
     revalidatePath('/about')

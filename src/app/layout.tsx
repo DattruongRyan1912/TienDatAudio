@@ -1,22 +1,21 @@
 import type { Metadata, Viewport } from 'next'
-import { cookies } from 'next/headers'
 import { Manrope } from 'next/font/google'
 import './globals.css'
 import ConditionalLayout from '@/components/ConditionalLayout'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import { ToastProvider } from '@/components/ui/toast'
-import { buildAIReadableStructuredData, getSEOConfig } from '@/lib/seo-strategy'
-import { getBusinessProfile } from '@/lib/business-profile'
+import { buildAIReadableStructuredData } from '@/lib/seo-strategy'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import SiteAnalytics from '@/components/analytics/SiteAnalytics'
-import type { ThemeMode } from '@/contexts/ThemeContext'
-import { assistantPublicEnabled } from '@/modules/assistant/infrastructure/assistant-config'
+import { getPublicSiteSettings } from '@/lib/public-site-settings'
 
 const manrope = Manrope({
   subsets: ["latin", "vietnamese"],
   variable: "--font-manrope",
 });
+
+const themeBootstrapScript = `(()=>{try{const stored=localStorage.getItem('sonic_theme_mode');const preferred=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';const mode=stored==='light'||stored==='dark'?stored:stored==='system'?preferred:'dark';const root=document.documentElement;root.dataset.theme=mode;root.classList.toggle('dark',mode==='dark');root.classList.toggle('light',mode==='light');root.style.colorScheme=mode}catch{}})()`
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudioquangngai.id.vn'),
@@ -47,14 +46,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const themeCookie = (await cookies()).get('sonic_theme')?.value
-  const initialMode: ThemeMode = themeCookie === 'light' || themeCookie === 'system' ? themeCookie : 'dark'
-  const [seoConfig, profile] = await Promise.all([getSEOConfig(), getBusinessProfile()])
+  const { seoConfig, profile } = await getPublicSiteSettings()
   const discoveryStructuredData = buildAIReadableStructuredData(seoConfig, profile)
 
   return (
-    <html lang="vi" data-scroll-behavior="smooth" data-theme={initialMode === 'light' ? 'light' : 'dark'} className={`${manrope.variable} ${initialMode === 'light' ? 'light' : 'dark'}`}>
+    <html lang="vi" data-scroll-behavior="smooth" data-theme="dark" className={`${manrope.variable} dark`} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site information" />
         <script
           type="application/ld+json"
@@ -65,8 +63,8 @@ export default async function RootLayout({
       </head>
       <body className="antialiased min-h-screen">
         <ToastProvider>
-          <ThemeProvider initialMode={initialMode}>
-            <ConditionalLayout profile={profile} assistantEnabled={assistantPublicEnabled()}>
+          <ThemeProvider initialMode="dark">
+            <ConditionalLayout profile={profile}>
               {children}
             </ConditionalLayout>
           </ThemeProvider>
