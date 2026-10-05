@@ -17,7 +17,7 @@ export default function SonicProductCard({ product, featured = false, variant = 
             <Image src={image} alt={product.name} fill sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw" className="sonic-home-product-image object-contain p-7 md:p-9" />
             <div className="relative z-10 flex items-start justify-between gap-4 px-5 pt-5">
               <span className="sonic-home-product-eyebrow">{eyebrow || (product.featured ? 'Tuyển chọn' : `01 / ${product.category || 'Thiết bị'}`)}</span>
-              <span className="sonic-home-product-index" aria-hidden="true">Audio archive</span>
+              <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-[0.62rem] font-bold text-emerald-500 uppercase tracking-wide">Chính Hãng</span>
             </div>
           </div>
           <div className="sonic-home-product-content flex flex-1 flex-col justify-between gap-7 p-5 md:p-6">
@@ -26,7 +26,10 @@ export default function SonicProductCard({ product, featured = false, variant = 
               <h3 className="sonic-home-product-title mt-3">{product.name}</h3>
             </div>
             <div className="flex items-end justify-between gap-4">
-              <p className="sonic-home-product-price">{product.price ? formatPrice(product.salePrice || product.price) : 'Liên hệ tư vấn'}</p>
+              <div>
+                <p className="sonic-home-product-price">{product.price ? formatPrice(product.salePrice || product.price) : 'Báo giá tốt qua Zalo'}</p>
+                {!product.price && <p className="text-[0.65rem] text-[var(--sonic-muted)]">Hotline: 0934 995 657</p>}
+              </div>
               <span className="sonic-home-product-arrow flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true"><ArrowUpRight size={17} /></span>
             </div>
           </div>

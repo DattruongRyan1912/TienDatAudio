@@ -1137,4 +1137,47 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `npm run build`: pass clean (76 routes render thành công).
 - Rollback reference: Git restore thư mục `data/editorial-seeds/batch-1/`.
 
+## 2026-10-06 00:20 +0700 — Xây dựng Interactive HTML Demo giao diện thân thiện & thực chiến
+
+- Scope/authorization: Người dùng phản hồi giao diện hiện tại của website bị cảm giác "AI-gen", dù đẹp nhưng lạnh lẽo, thiếu thân thiện và không phù hợp với thói quen mua sắm âm thanh thực tế; yêu cầu cung cấp 1 bản demo giao diện mới.
+- Deliverables:
+  + Xuất bản bản Prototype Interactive HTML độc lập tại [`docs/DEMO_FRIENDLY_ECOMMERCE_UI.html`](file:///Users/ryantruong/Project/Orther/TienDatAudio/docs/DEMO_FRIENDLY_ECOMMERCE_UI.html).
+  + Bản demo tích hợp sẵn:
+    * Chế độ so sánh trực tiếp Before/After (Giao diện cũ AI Dark Concept vs Giao diện mới Clean E-Commerce).
+    * Bố cục bán hàng thực chiến: Top bar showroom 264 Phan Đình Phùng, Hotline nhấp nháy, thanh tìm kiếm lớn.
+    * Hero Banner đánh trúng nhu cầu: "Hát nhẹ hơi, chống hú 100%, giá tận kho", cam kết 4 tiêu chí vàng (Chính hãng, Cắt hú, Lắp đặt trong 2h, Đổi mới 30 ngày).
+    * Phân nhóm nhu cầu khách hàng theo ngân sách (dưới 20tr, 25-40tr, trên 50tr).
+    * Thẻ sản phẩm hiển thị giá bán rõ ràng, quà tặng khuyến mãi, nút [Xem chi tiết] và [Nhận báo giá Zalo].
+    * Công cụ tương tác tự tính ngân sách dàn karaoke trong 10 giây (dựa trên diện tích phòng và gu nhạc).
+    * Feedback khách hàng thực tế tại TP Quảng Ngãi, Bình Sơn, Mộ Đức.
+    * Sticky Mobile Bar (Nút Gọi Hotline + Nút Chat Zalo cố định dưới màn hình điện thoại).
+- Verification: File HTML tự chứa (42.7 kB), mở trực tiếp trên trình duyệt qua lệnh `open docs/DEMO_FRIENDLY_ECOMMERCE_UI.html`.
+
+## 2026-10-06 00:35 +0700 — Triển khai toàn diện giao diện bán hàng thực chiến cho Trang Chủ và Header
+
+- Scope/authorization: Người dùng đồng thuận với bản demo và yêu cầu nâng cấp toàn diện giao diện thực chiến cho website; người dùng chỉ định rõ không cần sticky bottom bar trên mobile.
+- Changes:
+  + `src/components/sonic/SonicHeader.tsx`:
+    * Chuẩn hóa thương hiệu: Thay thế cụm chữ trừu tượng "AUDIO ARCHIVE" bằng thương hiệu thực tế: `TIẾN ĐẠT AUDIO` và định danh phụ `Dàn Karaoke Quảng Ngãi`.
+    * Bổ sung nút Hotline nhấp nháy trực tiếp trên Header: `0934 995 657` (gọi 24/7).
+    * Tinh chỉnh kích thước và độ tương phản của menu điều hướng.
+  + `src/app/page.tsx`:
+    * Tối ưu SEO Metadata: Tiêu đề thương mại & địa phương `Tiến Đạt Audio — Dàn Karaoke Gia Đình & Âm Thanh Quảng Ngãi`, mô tả chi tiết cam kết cắt hú 100%, showroom 264 Phan Đình Phùng.
+    * Hero Banner thực chiến: Tiêu đề lớn đánh trúng nhu cầu `DÀN KARAOKE GIA ĐÌNH QUẢNG NGÃI — Hát Nhẹ Hơi, Cắt Hú 100%, Giá Tận Kho`.
+    * Cụm CTAs trực quan: `[GỌI TƯ VẤN: 0934 995 657]`, `[CHAT ZALO BÁO GIÁ]`, `[Xem Báo Giá Trọn Bộ]`.
+    * 4 Thẻ Cam Kết Vàng (Trust Badges): 100% Chính Hãng (đền 200% nếu hàng giả), Cắt Hú 100% (căn chỉnh RTA tận nhà bằng máy tính), Lắp Trong 2 Giờ (Bình Sơn, Tư Nghĩa, Mộ Đức...), Đổi Mới 30 Ngày.
+    * Thẻ Hero Combo bán chạy: Hiển thị bộ dàn tiêu chuẩn phòng khách 20-35m², giá ưu đãi 28.900.000đ, tiết kiệm 5.6tr, kèm khuyến mại dây loa đồng OFC + chống lăn micro.
+    * Thanh lọc nhu cầu nhanh (Quick Filter Pills): Dẫn link vào Loa Bass 30, Vang số cắt hú, Cục đẩy công suất, Loa Quảng Ngãi giá kho.
+    * Tích hợp Interactive Calculator: `<HomeKaraokeCalculator />` cho phép khách hàng tự dự toán phòng khách và ngân sách trong 10 giây kèm nút gửi cấu hình sang Zalo.
+    * Khối chứng thực khách hàng thực tế tại Quảng Ngãi: Phản hồi của Chú Minh Hùng (TP Quảng Ngãi), Anh Văn Tuấn (Bình Sơn), Chị Thanh Mai (Mộ Đức).
+  + `src/components/home/HomeKaraokeCalculator.tsx`: Tạo mới component tính toán ngân sách karaoke tương tác, responsive, không phụ thuộc thư viện ngoài.
+  + `src/components/sonic/SonicProductCard.tsx`: Thay thế nhãn "Audio archive" bằng badge `Chính Hãng 100%`, thay dòng chữ "Liên hệ tư vấn" thành "Báo giá tốt qua Zalo" kèm số hotline.
+- Preflight Verification:
+  + `npm test`: 81/81 tests pass clean.
+  + `npm run lint`: pass clean (0 errors, 0 warnings).
+  + `npx tsc --noEmit`: pass clean (0 errors).
+  + `npm run build`: pass clean (76 routes render thành công).
+- Rollback reference: Git restore `src/app/page.tsx`, `src/components/sonic/SonicHeader.tsx`, `src/components/sonic/SonicProductCard.tsx` và xóa `src/components/home/HomeKaraokeCalculator.tsx`.
+
+
 

@@ -37,30 +37,37 @@ export default function SonicHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
       <div className="sonic-panel mx-auto flex max-w-[1440px] items-center justify-between px-4 py-3 md:px-6">
-        <Link href="/" className="group flex min-w-[164px] items-center gap-3" aria-label="Tiến Đạt Audio - Trang chủ">
-          <span className="flex h-8 w-8 items-center justify-center border border-[#d4af37] text-[10px] font-black text-[#d4af37]">TD</span>
+        <Link href="/" className="group flex min-w-[180px] items-center gap-3" aria-label="Tiến Đạt Audio - Trang chủ">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-[var(--sonic-gold)] bg-[var(--sonic-gold)]/10 text-xs font-black text-[var(--sonic-gold)] shadow-sm">TĐ</span>
           <span className="leading-none">
-            <span className="block text-[0.76rem] font-extrabold tracking-[0.17em] text-[#e5e2e1] transition-colors group-hover:text-[#d4af37]">AUDIO ARCHIVE</span>
-            <span className="mt-1 block text-[0.55rem] font-bold tracking-[0.28em] text-[#858989]">TIẾN ĐẠT AUDIO</span>
+            <span className="block text-[0.95rem] font-black tracking-tight text-[var(--sonic-text-strong)] transition-colors group-hover:text-[var(--sonic-gold)]">TIẾN ĐẠT AUDIO</span>
+            <span className="mt-1 block text-[0.62rem] font-semibold text-[var(--sonic-muted)]">Dàn Karaoke Quảng Ngãi</span>
           </span>
         </Link>
 
         <nav className="hidden items-center gap-5 lg:flex" aria-label="Điều hướng chính">
           {navigation.map((item) => {
             const active = pathname === item.href || (item.href === '/brands' && pathname?.startsWith('/thuong-hieu'))
-            return <Link key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`relative pb-1 text-[0.64rem] font-bold uppercase tracking-[0.14em] transition-colors hover:text-[#d4af37] ${active ? 'text-[#d4af37] after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-[#d4af37]' : 'text-[#a7aaaa]'}`}>
+            return <Link key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`relative pb-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] transition-colors hover:text-[var(--sonic-gold)] ${active ? 'text-[var(--sonic-gold)] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-[var(--sonic-gold)]' : 'text-[var(--sonic-muted)]'}`}>
               {item.label}
             </Link>
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <button type="button" className="flex h-9 w-9 items-center justify-center text-[#a7aaaa] transition-colors hover:text-[#d4af37]" aria-label="Tìm kiếm" onClick={() => setSearchOpen((value) => !value)}>
+        <div className="flex items-center gap-2.5">
+          <a href="tel:0934995657" className="hidden sm:inline-flex items-center gap-2 rounded-full border border-[var(--sonic-line-strong)] bg-[var(--sonic-surface)] px-3 py-1.5 text-xs font-bold text-[var(--sonic-gold)] hover:border-[var(--sonic-gold)] transition-colors" title="Hotline tư vấn kỹ thuật 24/7">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--sonic-gold)] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--sonic-gold)]"></span>
+            </span>
+            <span>0934 995 657</span>
+          </a>
+          <button type="button" className="flex h-9 w-9 items-center justify-center text-[var(--sonic-muted)] transition-colors hover:text-[var(--sonic-gold)]" aria-label="Tìm kiếm" onClick={() => setSearchOpen((value) => !value)}>
             {searchOpen ? <X size={17} /> : <Search size={17} />}
           </button>
           <ThemeToggle />
-          <Link href="/contact" className="sonic-header-consultation sonic-button sonic-button-gold min-h-9 px-4 text-[0.62rem]">Nhận tư vấn</Link>
-          <button type="button" className="flex h-9 w-9 items-center justify-center text-[#e5e2e1] lg:hidden" aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'} onClick={() => setMenuOpen((value) => !value)}>
+          <Link href="/contact" className="sonic-header-consultation sonic-button sonic-button-gold min-h-9 px-4 text-[0.65rem] font-bold">Đặt lịch</Link>
+          <button type="button" className="flex h-9 w-9 items-center justify-center text-[var(--sonic-text-strong)] lg:hidden" aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'} onClick={() => setMenuOpen((value) => !value)}>
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>

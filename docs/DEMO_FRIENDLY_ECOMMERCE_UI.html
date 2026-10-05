@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Demo Giao Diện Thân Thiện & Thực Chiến — Tiến Đạt Audio Quảng Ngãi</title>
+  <style>
+    :root {
+      --primary: #d32f2f;
+      --primary-hover: #b71c1c;
+      --primary-light: #ffebee;
+      --secondary: #0d47a1;
+      --accent: #ff9800;
+      --zalo: #0068ff;
+      --success: #2e7d32;
+      --text-main: #1a1a1a;
+      --text-muted: #555555;
+      --bg-body: #f4f6f8;
+      --bg-white: #ffffff;
+      --border-color: #e0e0e0;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.5; padding-bottom: 70px; }
+
+    /* Top Control Bar for Demo inspection */
+    .demo-controller {
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 13px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #334155;
+    }
+    .demo-controller .badge {
+      background: #ef4444;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .demo-controller .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-btn {
+      background: #334155;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+      padding: 5px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .demo-btn:hover, .demo-btn.active {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      color: #fff;
+    }
+
+    /* Container */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    /* Top Announcement */
+    .top-bar {
+      background: #0f172a;
+      color: #cbd5e1;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+    .top-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .top-bar a { color: #f8fafc; text-decoration: none; font-weight: 600; }
+    .top-bar a:hover { text-decoration: underline; color: #f59e0b; }
+
+    /* Main Header */
+    header {
+      background: var(--bg-white);
+      border-bottom: 2px solid var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .header-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 20px;
+    }
+    .logo-area { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      background: var(--primary);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(211,47,47,0.3);
+    }
+    .logo-text h1 { font-size: 20px; font-weight: 800; color: #111; letter-spacing: -0.5px; text-transform: uppercase; }
+    .logo-text p { font-size: 11px; color: #666; font-weight: 500; }
+
+    /* Search Box */
+    .search-box {
+      flex: 1;
+      max-width: 500px;
+      position: relative;
+    }
+    .search-input-wrap {
+      display: flex;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .search-input-wrap input {
+      flex: 1;
+      border: none;
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-input-wrap button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0 20px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .search-input-wrap button:hover { background: var(--primary-hover); }
+
+    /* Header Contact Pill */
+    .header-contacts {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hotline-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      background: var(--primary-light);
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid #ffcdd2;
+      transition: transform 0.2s;
+    }
+    .hotline-pill:hover { transform: scale(1.03); }
+    .hotline-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.5); }
+      70% { box-shadow: 0 0 0 8px rgba(211,47,47,0); }
+      100% { box-shadow: 0 0 0 0 rgba(211,47,47,0); }
+    }
+    .hotline-info { font-size: 11px; color: #444; }
+    .hotline-info strong { display: block; font-size: 16px; color: var(--primary); font-weight: 800; line-height: 1.1; }
+
+    /* Main Navigation Bar */
+    .nav-bar {
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .nav-inner {
+      display: flex;
+      gap: 24px;
+      padding: 10px 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .nav-inner a {
+      color: #334155;
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-inner a:hover, .nav-inner a.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Hero Banner Section */
+    .hero-banner {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      padding: 28px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fee2e2;
+      color: #b91c1c;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: #0f172a;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+    .hero-title span { color: var(--primary); }
+    .hero-desc {
+      font-size: 15px;
+      color: #475569;
+      margin-bottom: 22px;
+      line-height: 1.6;
+    }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .btn-cta-primary {
+      background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 13px 24px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(211,47,47,0.4);
+      transition: all 0.2s;
+    }
+    .btn-cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(211,47,47,0.5);
+    }
+    .btn-cta-zalo {
+      background: var(--zalo);
+      color: #fff;
+      text-decoration: none;
+      padding: 13px 22px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,104,255,0.3);
+      transition: all 0.2s;
+    }
+    .btn-cta-zalo:hover { background: #0056d6; transform: translateY(-2px); }
+
+    /* Trust Badges Strip */
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .trust-badge {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+    .trust-badge-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .trust-badge h4 { font-size: 13px; font-weight: 800; color: #1e293b; line-height: 1.2; }
+    .trust-badge p { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+    /* Hero Right Visual Showcase */
+    .hero-card-showcase {
+      background: #fff;
+      border-radius: 12px;
+      border: 2px solid #fed7aa;
+      padding: 18px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .hot-badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 4px 8px rgba(234,88,12,0.3);
+    }
+    .hero-showcase-img {
+      width: 100%;
+      height: 220px;
+      background: #f8fafc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 1px solid #e2e8f0;
+      position: relative;
+    }
+    .hero-showcase-img img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    .hero-combo-info h3 { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .hero-combo-price {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .price-sale { font-size: 24px; font-weight: 900; color: var(--primary); }
+    .price-original { font-size: 14px; color: #94a3b8; text-decoration: line-through; }
+    .price-tag { background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+    .hero-combo-gifts {
+      background: #fffbeb;
+      border: 1px dashed #f59e0b;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #92400e;
+      margin-bottom: 12px;
+    }
+
+    /* Category Filter Pills */
+    .filter-section {
+      padding: 20px 0 10px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .pill {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill:hover, .pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(211,47,47,0.3);
+    }
+
+    /* Product Grid Section */
+    .section-title-wrap {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin: 24px 0 16px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      position: relative;
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 70px;
+      height: 3px;
+      background: var(--primary);
+    }
+    .view-all-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .view-all-link:hover { text-decoration: underline; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    .card-img {
+      height: 180px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+    }
+    .card-img img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+    .product-card:hover .card-img img {
+      transform: scale(1.05);
+    }
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .card-meta {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      height: 40px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .card-specs {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .card-specs li { list-style: none; display: flex; align-items: center; gap: 4px; }
+    .card-specs li::before { content: "•"; color: var(--primary); font-weight: bold; }
+    .card-pricing {
+      margin-top: auto;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 10px;
+      margin-bottom: 12px;
+    }
+    .card-price-sale { font-size: 18px; font-weight: 800; color: var(--primary); }
+    .card-price-orig { font-size: 12px; color: #94a3b8; text-decoration: line-through; margin-left: 6px; }
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .btn-detail {
+      background: #f1f5f9;
+      color: #334155;
+      text-align: center;
+      text-decoration: none;
+      padding: 8px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .btn-detail:hover { background: #e2e8f0; }
+    .btn-order-zalo {
+      background: var(--zalo);
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      padding: 8px 6px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .btn-order-zalo:hover { background: #0052cc; }
+
+    /* Interactive Calculator Section */
+    .calculator-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      margin: 40px 0;
+      box-shadow: var(--shadow-lg);
+    }
+    .calc-header { text-align: center; margin-bottom: 24px; }
+    .calc-header h2 { font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 6px; }
+    .calc-header p { font-size: 14px; color: #94a3b8; }
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .calc-col label { display: block; font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 8px; }
+    .calc-select {
+      width: 100%;
+      background: #334155;
+      border: 1px solid #475569;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+    }
+    .calc-result-area {
+      background: #0b1329;
+      border: 1px solid #1e3a8a;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .calc-result-info h4 { font-size: 16px; color: #fbbf24; font-weight: 800; margin-bottom: 4px; }
+    .calc-result-info p { font-size: 13px; color: #cbd5e1; }
+    .calc-cta-btn {
+      background: var(--accent);
+      color: #000;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .calc-cta-btn:hover { background: #f59e0b; }
+
+    /* Local Real Proof / Testimonials */
+    .proof-section {
+      padding: 20px 0 40px;
+    }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .proof-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .proof-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .proof-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #475569;
+    }
+    .proof-name h4 { font-size: 14px; font-weight: 700; color: #1e293b; }
+    .proof-name p { font-size: 12px; color: #64748b; }
+    .proof-stars { color: #f59e0b; font-size: 14px; margin-bottom: 8px; }
+    .proof-body { font-size: 13px; color: #334155; line-height: 1.5; font-style: italic; }
+
+    /* Sticky Mobile Bar */
+    .mobile-sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 999;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    }
+    .mobile-btn-call {
+      flex: 1;
+      background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(211,47,47,0.3);
+    }
+    .mobile-btn-zalo {
+      flex: 1;
+      background: var(--zalo);
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,104,255,0.3);
+    }
+    .mobile-btn-map {
+      background: #f1f5f9;
+      color: #334155;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Comparison View Styles (For Old vs New mode) */
+    .old-mode {
+      background: #0b0b0b !important;
+      color: #fff !important;
+    }
+    .old-mode header {
+      background: #111 !important;
+      border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    }
+    .old-mode .logo-text h1, .old-mode .logo-text p { color: #fff !important; }
+    .old-mode .hero-banner {
+      background: #0b0b0b !important;
+      border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    }
+    .old-mode .hero-title { color: #fff !important; }
+    .old-mode .product-card {
+      background: #161616 !important;
+      border-color: rgba(255,255,255,0.1) !important;
+      color: #fff !important;
+    }
+    .old-mode .card-title { color: #fff !important; }
+    .old-mode .card-img { background: #1f1f1f !important; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-strip { grid-template-columns: repeat(2, 1fr); }
+      .calc-grid { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .search-box { display: none; }
+    }
+    @media (max-width: 600px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .trust-strip { grid-template-columns: 1fr; }
+      .top-bar-inner { justify-content: center; }
+      .hero-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body id="pageBody">
+
+  <!-- Interactive Demo Switcher Bar -->
+  <div class="demo-controller">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="badge">PROTOTYPE DEMO</span>
+      <strong>Tiến Đạt Audio — So Sánh Đề Xuất Giao Diện Mới</strong>
+    </div>
+    <div class="actions">
+      <span style="color:#94a3b8; font-size:12px;">Chế độ xem:</span>
+      <button class="demo-btn active" id="btnModeNew" onclick="switchTheme('new')">⭐ Giao Diện Mới (Thân Thiện & Bán Hàng)</button>
+      <button class="demo-btn" id="btnModeOld" onclick="switchTheme('old')">🌑 Giao Diện Cũ (AI Dark Concept)</button>
+    </div>
+  </div>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div>
+        <span>📍 Showroom: <strong>264 Phan Đình Phùng, TP Quảng Ngãi</strong></span>
+        <span style="margin: 0 8px; opacity:0.4;">|</span>
+        <span>🚚 <strong>Miễn phí lắp đặt tận nhà</strong> bán kính 30km (Bình Sơn, Tư Nghĩa, Mộ Đức...)</span>
+      </div>
+      <div>
+        <span>📞 Hotline Kỹ Thuật: <a href="tel:0934995657">0934 995 657</a> (24/7)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-main">
+        <a href="#" class="logo-area">
+          <div class="logo-icon">TĐ</div>
+          <div class="logo-text">
+            <h1>Tiến Đạt Audio</h1>
+            <p>Âm Thanh & Dàn Karaoke Quảng Ngãi</p>
+          </div>
+        </a>
+
+        <!-- Search Box -->
+        <div class="search-box">
+          <div class="search-input-wrap">
+            <input type="text" placeholder="Tìm dàn karaoke gia đình, vang số, loa sub, micro..." value="dàn karaoke gia đình">
+            <button type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Tìm Kiếm
+            </button>
+          </div>
+        </div>
+
+        <!-- Hotline Call -->
+        <div class="header-contacts">
+          <a href="tel:0934995657" class="hotline-pill">
+            <div class="hotline-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <div class="hotline-info">
+              Tư vấn báo giá
+              <strong>0934.995.657</strong>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+      <div class="container">
+        <nav class="nav-inner">
+          <a href="#" class="active">🔥 Dàn Karaoke Bán Chạy</a>
+          <a href="#">Loa Karaoke & Nghe Nhạc</a>
+          <a href="#">Vang Số Chống Hú</a>
+          <a href="#">Cục Đẩy Công Suất</a>
+          <a href="#">Loa Sub Siêu Trầm</a>
+          <a href="#">Micro Không Dây</a>
+          <a href="#">Kiến Thức & Căn Chỉnh</a>
+          <a href="#">Công Trình Thực Tế</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Left: Copy & Value Proposition -->
+        <div>
+          <div class="hero-tag">🔥 ĐẠI LÝ CHÍNH HÃNG TẠI QUẢNG NGÃI</div>
+          <h2 class="hero-title">
+            DÀN KARAOKE GIA ĐÌNH<br>
+            <span>HÁT NHẸ HƠI — CẮT HÚ 100% — GIÁ TẬN KHO</span>
+          </h2>
+          <p class="hero-desc">
+            Phối ghép chuẩn âm học cho phòng khách nhà ống miền Trung. 
+            <strong>Trải nghiệm nghe thử thực tế tại 264 Phan Đình Phùng, TP Quảng Ngãi</strong> trước khi quyết định. 
+            Đội ngũ kỹ sư đo đạc âm học RTA và bàn giao tận nhà toàn tỉnh.
+          </p>
+          <div class="hero-ctas">
+            <a href="tel:0934995657" class="btn-cta-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              GỌI TƯ VẤN: 0934 995 657
+            </a>
+            <a href="https://zalo.me/0934995657" target="_blank" class="btn-cta-zalo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.34 5L2 22l5.18-1.32c1.42.8 3.07 1.32 4.82 1.32 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+              CHAT ZALO BÁO GIÁ NHANH
+            </a>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="trust-strip">
+            <div class="trust-badge">
+              <div class="trust-badge-icon">🛡️</div>
+              <div>
+                <h4>Chính Hãng 100%</h4>
+                <p>Đền 200% nếu hàng giả</p>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-icon">🎛️</div>
+              <div>
+                <h4>Cắt Hú 100%</h4>
+                <p>Căn chỉnh RTA tận nhà</p>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-icon">🚚</div>
+              <div>
+                <h4>Lắp Trong 2 Giờ</h4>
+                <p>Toàn tỉnh Quảng Ngãi</p>
+              </div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-icon">🔄</div>
+              <div>
+                <h4>Đổi Mới 30 Ngày</h4>
+                <p>Bảo hành 2 năm 24/7</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Featured Combo Card -->
+        <div class="hero-card-showcase">
+          <div class="hot-badge">⭐ COMBO BÁN CHẠY NHẤT 2026</div>
+          <div class="hero-showcase-img">
+            <img src="/uploads/1757873177981_wez3lmbcclj.jpg" alt="Dàn karaoke gia đình bán chạy ARF">
+          </div>
+          <div class="hero-combo-info">
+            <h3>Dàn Karaoke Gia Đình Tiêu Chuẩn TĐ-01 (Phòng 20 - 35m²)</h3>
+            <div class="hero-combo-price">
+              <span class="price-sale">28.900.000đ</span>
+              <span class="price-original">34.500.000đ</span>
+              <span class="price-tag">Tiết kiệm 5.6tr</span>
+            </div>
+            <div class="hero-combo-gifts">
+              🎁 <strong>Khuyến mãi hôm nay:</strong> Tặng bộ dây loa đồng OFC 20m + 2 chống lăn micro + Miễn phí vận chuyển & cân chỉnh tại nhà.
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <a href="tel:0934995657" class="btn-detail" style="background:#fee2e2; color:#b91c1c; border:1px solid #fecaca;">📞 Đặt Lịch Nghe Thử</a>
+              <a href="https://zalo.me/0934995657" class="btn-order-zalo">💬 Báo Giá Trọn Gói</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="container">
+
+    <!-- Filter Pills by Customer Need -->
+    <div class="filter-section">
+      <div class="filter-pills">
+        <button class="pill active" onclick="filterProducts('all')">Tất Cả Cấu Hình</button>
+        <button class="pill" onclick="filterProducts('under20')">Dàn Dưới 20 Triệu (Tiết kiệm)</button>
+        <button class="pill" onclick="filterProducts('mid')">Dàn 25 - 40 Triệu (Bán chạy)</button>
+        <button class="pill" onclick="filterProducts('pro')">Dàn Trên 50 Triệu (Cao cấp)</button>
+        <button class="pill" onclick="filterProducts('vang')">Vang Số Cắt Hú Rời</button>
+        <button class="pill" onclick="filterProducts('sub')">Loa Sub Siêu Trầm</button>
+      </div>
+    </div>
+
+    <!-- Product Showcase -->
+    <div class="section-title-wrap">
+      <h3 class="section-title">Combo Dàn Karaoke Gia Đình Tuyển Chọn</h3>
+      <a href="#" class="view-all-link">Xem tất cả 24 combo &rarr;</a>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+
+      <!-- Product 1 -->
+      <article class="product-card" data-cat="mid">
+        <span class="card-badge">BÁN CHẠY #1</span>
+        <div class="card-img">
+          <img src="/uploads/1757873177981_wez3lmbcclj.jpg" alt="Loa ARF FS12">
+        </div>
+        <div class="card-body">
+          <p class="card-meta">Dàn Karaoke Gia Đình</p>
+          <h4 class="card-title">Bộ Dàn Karaoke Tiêu Chuẩn ARF Gold 02</h4>
+          <ul class="card-specs">
+            <li>Cặp loa Full ARF Bass 30 (350W RMS)</li>
+            <li>Cục đẩy công suất 2 kênh 800W</li>
+            <li>Vang số DSP chống hú rít độc lập</li>
+            <li>Tặng kèm micro không dây UHF cao cấp</li>
+          </ul>
+          <div class="card-pricing">
+            <span class="card-price-sale">28.900.000đ</span>
+            <span class="card-price-orig">34.000.000đ</span>
+          </div>
+          <div class="card-actions">
+            <a href="tel:0934995657" class="btn-detail">Xem chi tiết</a>
+            <a href="https://zalo.me/0934995657" target="_blank" class="btn-order-zalo">Nhận báo giá</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 2 -->
+      <article class="product-card" data-cat="under20">
+        <span class="card-badge" style="background:#0284c7;">GIÁ TỐT</span>
+        <div class="card-img">
+          <img src="/uploads/1757873195265_4t2alxsue4.webp" alt="ARF SA15">
+        </div>
+        <div class="card-body">
+          <p class="card-meta">Dàn Karaoke Tiết Kiệm</p>
+          <h4 class="card-title">Combo Karaoke Gia Đình Nhỏ Eco-01</h4>
+          <ul class="card-specs">
+            <li>Cặp loa nằm bass 25 chất âm ấm áp</li>
+            <li>Amply liền vang số 3 trong 1</li>
+            <li>Tích hợp 2 tay micro không dây</li>
+            <li>Thích hợp phòng khách 15 - 20m²</li>
+          </ul>
+          <div class="card-pricing">
+            <span class="card-price-sale">14.800.000đ</span>
+            <span class="card-price-orig">17.500.000đ</span>
+          </div>
+          <div class="card-actions">
+            <a href="tel:0934995657" class="btn-detail">Xem chi tiết</a>
+            <a href="https://zalo.me/0934995657" target="_blank" class="btn-order-zalo">Nhận báo giá</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 3 -->
+      <article class="product-card" data-cat="pro">
+        <span class="card-badge" style="background:#7c3aed;">VIP CAO CẤP</span>
+        <div class="card-img">
+          <img src="/uploads/1757873138850_b867cbg39b.webp" alt="ARF X12Pro">
+        </div>
+        <div class="card-body">
+          <p class="card-meta">Dàn Karaoke Chuyên Nghiệp</p>
+          <h4 class="card-title">Dàn Karaoke Biệt Thự ARF Pro Luxury 08</h4>
+          <ul class="card-specs">
+            <li>02 Cặp loa Full ARF X12Pro củ Neodymium</li>
+            <li>Cục đẩy công suất 4 kênh ARF NX4-800</li>
+            <li>Loa Subwoofer điện Bass 40 uy lực</li>
+            <li>Bộ quản lý nguồn điện tự động</li>
+          </ul>
+          <div class="card-pricing">
+            <span class="card-price-sale">56.500.000đ</span>
+            <span class="card-price-orig">65.000.000đ</span>
+          </div>
+          <div class="card-actions">
+            <a href="tel:0934995657" class="btn-detail">Xem chi tiết</a>
+            <a href="https://zalo.me/0934995657" target="_blank" class="btn-order-zalo">Nhận báo giá</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 4 -->
+      <article class="product-card" data-cat="vang">
+        <span class="card-badge" style="background:#ea580c;">CHỐNG HÚ 100%</span>
+        <div class="card-img">
+          <img src="/uploads/1757873159981_72g385a818l.png" alt="ARF VX330PRO">
+        </div>
+        <div class="card-body">
+          <p class="card-meta">Thiết Bị Nâng Cấp</p>
+          <h4 class="card-title">Vang Số Cao Cấp ARF VX330PRO Chống Hú</h4>
+          <ul class="card-specs">
+            <li>Chip DSP vi xử lý 32-bit tốc độ cao</li>
+            <li>PEQ 15 cần cắt điểm hú Notch Filter</li>
+            <li>Echo & Reverb bay bổng trợ giọng</li>
+            <li>Căn chỉnh máy tính chuyên nghiệp</li>
+          </ul>
+          <div class="card-pricing">
+            <span class="card-price-sale">4.800.000đ</span>
+            <span class="card-price-orig">5.800.000đ</span>
+          </div>
+          <div class="card-actions">
+            <a href="tel:0934995657" class="btn-detail">Xem chi tiết</a>
+            <a href="https://zalo.me/0934995657" target="_blank" class="btn-order-zalo">Nhận báo giá</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Interactive Calculator: Tự Tính Ngân Sách -->
+    <div class="calculator-box">
+      <div class="calc-header">
+        <h2>🛠️ Công Cụ Dự Toán Dàn Karaoke Gia Đình (Trong 10 Giây)</h2>
+        <p>Chọn thông tin phòng khách của bạn để nhận cấu hình chuẩn và mức giá tối ưu nhất</p>
+      </div>
+
+      <div class="calc-grid">
+        <div class="calc-col">
+          <label>1. Diện tích phòng khách của bạn:</label>
+          <select class="calc-select" id="calcRoom" onchange="calculateBudget()">
+            <option value="small">Dưới 20m² (Phòng khách nhỏ / Chung cư)</option>
+            <option value="medium" selected>20m² - 35m² (Nhà ống phổ biến ở Quảng Ngãi)</option>
+            <option value="large">Trên 35m² (Phòng khách lớn / Biệt thự)</option>
+          </select>
+        </div>
+
+        <div class="calc-col">
+          <label>2. Mức ngân sách dự kiến:</label>
+          <select class="calc-select" id="calcBudget" onchange="calculateBudget()">
+            <option value="eco">Dưới 20 triệu (Tiết kiệm, đủ dùng)</option>
+            <option value="mid" selected>25 - 40 triệu (Chuẩn phòng khách, hát hay)</option>
+            <option value="vip">Trên 45 triệu (Cao cấp, âm thanh chuyên nghiệp)</option>
+          </select>
+        </div>
+
+        <div class="calc-col">
+          <label>3. Gu âm nhạc chính:</label>
+          <select class="calc-select" id="calcGenre" onchange="calculateBudget()">
+            <option value="karaoke" selected>Hát karaoke gia đình, nhạc trữ tình, Bolero</option>
+            <option value="remix">Nhạc Remix, nhạc trẻ, Dance sôi động (Cần Sub lớn)</option>
+            <option value="all">Đa năng (Nghe nhạc vàng + Hát karaoke cuối tuần)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-result-area" id="calcResult">
+        <div class="calc-result-info">
+          <h4>💡 Gợi ý cấu hình phù hợp nhất:</h4>
+          <p id="calcResultText">
+            <strong>Cấu hình Tiêu Chuẩn TĐ-01 (Khoảng 28.9 triệu):</strong> Cặp loa Bass 30cm + Cục đẩy 2 kênh 800W + Vang số DSP cắt hú + Micro UHF. Cấu hình này phủ đều phòng 25-35m², không bị dội âm và bảo hành 2 năm tận nơi.
+          </p>
+        </div>
+        <a href="https://zalo.me/0934995657" target="_blank" class="calc-cta-btn">
+          💬 Gửi Cấu Hình Này Qua Zalo Để Nhận Khuyến Mãi
+        </a>
+      </div>
+    </div>
+
+    <!-- Real Customer Proof in Quang Ngai -->
+    <div class="proof-section">
+      <div class="section-title-wrap">
+        <h3 class="section-title">Khách Hàng Thực Tế Tại Quảng Ngãi Đã Lắp Đặt</h3>
+      </div>
+      <div class="proof-grid">
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-avatar">MH</div>
+            <div class="proof-name">
+              <h4>Chú Minh Hùng</h4>
+              <p>📍 P. Nghĩa Lộ, TP Quảng Ngãi</p>
+            </div>
+          </div>
+          <div class="proof-stars">★★★★★</div>
+          <p class="proof-body">"Nhà tôi kiểu nhà ống 4x16m, trước đây mua bộ loa bãi hát bị rít nhức đầu. Đổi qua bộ ARF bên Tiến Đạt, anh em kỹ thuật đo đạc phần mềm máy tính cắt hết tiếng hú. Giờ bà xã với mấy đứa nhỏ hát nhẹ re, rất ưng ý!"</p>
+        </div>
+
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-avatar">VT</div>
+            <div class="proof-name">
+              <h4>Anh Văn Tuấn</h4>
+              <p>📍 TT Châu Ổ, Huyện Bình Sơn</p>
+            </div>
+          </div>
+          <div class="proof-stars">★★★★★</div>
+          <p class="proof-body">"Được ông bạn giới thiệu ra 264 Phan Đình Phùng nghe thử. 2 tiếng đồng hồ thử đủ dòng loa mới chốt bộ 32 triệu. Chiều thợ chở ra tận Bình Sơn lắp đặt, đi dây âm tường gọn gàng, test nhạc căng đét."</p>
+        </div>
+
+        <div class="proof-card">
+          <div class="proof-header">
+            <div class="proof-avatar">TM</div>
+            <div class="proof-name">
+              <h4>Chị Thanh Mai</h4>
+              <p>📍 Xã Đức Thạnh, Huyện Mộ Đức</p>
+            </div>
+          </div>
+          <div class="proof-stars">★★★★★</div>
+          <p class="proof-body">"Mua bộ karaoke về biếu ba mẹ ở quê hát mừng thọ. Nhân viên tư vấn đúng nhu cầu chứ không vẽ vời thêm đồ thừa. Có thắc mắc gọi Zalo là kỹ thuật hướng dẫn tận tình ngay."</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sticky Mobile Bottom Bar -->
+  <div class="mobile-sticky-bar">
+    <a href="tel:0934995657" class="mobile-btn-call">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      GỌI: 0934.995.657
+    </a>
+    <a href="https://zalo.me/0934995657" target="_blank" class="mobile-btn-zalo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.34 5L2 22l5.18-1.32c1.42.8 3.07 1.32 4.82 1.32 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+      CHAT ZALO TƯ VẤN
+    </a>
+    <a href="https://maps.google.com/?q=264+Phan+Đình+Phùng+Quảng+Ngãi" target="_blank" class="mobile-btn-map">
+      📍 Showroom
+    </a>
+  </div>
+
+  <script>
+    // Theme Switcher for Interactive Demo
+    function switchTheme(mode) {
+      const body = document.getElementById('pageBody');
+      const btnNew = document.getElementById('btnModeNew');
+      const btnOld = document.getElementById('btnModeOld');
+
+      if (mode === 'old') {
+        body.classList.add('old-mode');
+        btnOld.classList.add('active');
+        btnNew.classList.remove('active');
+      } else {
+        body.classList.remove('old-mode');
+        btnNew.classList.add('active');
+        btnOld.classList.remove('active');
+      }
+    }
+
+    // Filter Product Categories
+    function filterProducts(category) {
+      // Update pills UI
+      const pills = document.querySelectorAll('.pill');
+      pills.forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Filter cards
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Calculator Tool Logic
+    function calculateBudget() {
+      const room = document.getElementById('calcRoom').value;
+      const budget = document.getElementById('calcBudget').value;
+      const genre = document.getElementById('calcGenre').value;
+      const resultText = document.getElementById('calcResultText');
+
+      if (room === 'small' || budget === 'eco') {
+        resultText.innerHTML = '<strong>Combo Karaoke Tiết Kiệm Eco-01 (Khoảng 14.8 triệu):</strong> Cặp loa nằm Bass 25cm + Amply liền vang số 3 trong 1 + 2 Micro UHF không dây. Phù hợp phòng khách nhỏ dưới 20m², âm thanh ấm áp, tiết kiệm diện tích.';
+      } else if (budget === 'vip' || room === 'large') {
+        resultText.innerHTML = '<strong>Combo VIP Luxury Pro-08 (Khoảng 56.5 triệu):</strong> 2 Cặp loa Full Bass 30cm củ Neodymium + Cục đẩy 4 kênh + Vang số DSP cao cấp + Loa Sub điện 40cm. Âm thanh bao phủ toàn bộ phòng trên 35m², hát lực như sân khấu lớn.';
+      } else {
+        resultText.innerHTML = '<strong>Combo Tiêu Chuẩn Bán Chạy TĐ-01 (Khoảng 28.9 triệu):</strong> Cặp loa Full Bass 30cm (350W RMS) + Cục đẩy 2 kênh 800W + Vang số DSP cắt hú + Micro UHF cao cấp. Cấu hình vàng cho phòng khách nhà ống miền Trung 20 - 35m², chống dội âm 100%.';
+      }
+    }
+  </script>
+</body>
+</html>
