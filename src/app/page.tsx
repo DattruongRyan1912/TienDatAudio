@@ -15,6 +15,13 @@ export const metadata: Metadata = generateSEOMetadata({
   pagePath: '/',
   title: 'Tiến Đạt Audio — Âm thanh được tuyển chọn',
   description: 'Tư vấn, phối ghép và triển khai hệ thống âm thanh cao cấp tại Quảng Ngãi.',
+  keywords: [
+    'thiết bị âm thanh Quảng Ngãi',
+    'loa Quảng Ngãi',
+    'loa karaoke Quảng Ngãi',
+    'loa nghe nhạc Quảng Ngãi',
+    'Tiến Đạt Audio',
+  ],
 })
 
 export default async function HomePage() {
@@ -39,6 +46,7 @@ export default async function HomePage() {
             <div className="mt-9 flex flex-wrap gap-3">
               <Link href="/products" className="sonic-button sonic-button-gold">Khám phá sản phẩm <ArrowUpRight size={16} /></Link>
               <Link href="/contact" className="sonic-button sonic-button-ghost">Đặt lịch trải nghiệm</Link>
+              <Link href="/loa-quang-ngai" className="inline-flex items-center gap-2 px-1 py-3 text-xs font-bold uppercase tracking-[0.14em] text-[#d4af37] transition-colors hover:text-[#e5c45a]">Loa Quảng Ngãi <ArrowUpRight size={15} /></Link>
             </div>
           </SonicReveal>
           <div className="sonic-media-copy-muted mt-14 flex items-center gap-4 text-[0.62rem] font-bold uppercase tracking-[0.18em] md:absolute md:bottom-10 md:right-0 md:mt-0">

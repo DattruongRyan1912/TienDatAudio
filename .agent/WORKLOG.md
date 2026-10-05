@@ -653,3 +653,436 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
 - Verification: `npm test` pass 35/35; `npx tsc --noEmit`, full ESLint, `git diff --check` và production build 76 routes pass. Local Googlebot sweep toàn bộ 23 sitemap URL trả 200, đúng canonical, OG URL/image, Twitter card và đúng 1 H1; 4 branding asset trả 200; `llms.txt` có 1 H1/24 Markdown links; robots không block `/_next/`. Browser DOM xác nhận Product/Brand/FAQ/LocalBusiness schema, Social detail H1/OG URL/site name và console 0 warning/error.
 - Boundary: Cloudflare managed `Content-Signal`/AI crawler policy là cấu hình edge ngoài repo nên không tự thay đổi; Google/Bing index thực tế vẫn cần xác nhận qua Search Console/Bing Webmaster sau deploy. Local dev server được giữ tại `127.0.0.1:3000`; production vẫn ở release `520c966` cho tới khi owner yêu cầu deploy.
 - Rollback reference: revert các route metadata/schema, `src/lib/seo*.ts`, manifest/robots/redirect changes và năm asset mới trong `public/images`; không cần database restore.
+
+## 2026-08-11 02:07 +0700 — Deploy Social/Editorial và crawler discovery production
+
+- Actor/authorization: repository owner yêu cầu deploy production; release gồm Social source capture, Editorial metadata tách biệt và toàn bộ SEO/crawler/assets đã audit. Không chứa file môi trường, secret hoặc database migration.
+- Release: commit `ea70059f8b83006ed546b551405a9d5f32cdb6db` (`feat: improve social content and crawler discovery`) được push lên `main`; previous production release là `520c96676a4d9a823f081e3cc52421e78066565a`.
+- Clean release gates: exact commit trong worktree sạch pass secret scan, production dependency audit `0 vulnerabilities`, unit tests `35/35`, full ESLint, TypeScript `--noEmit`, `git diff --check` và Next.js production build `83` pages/routes.
+- CI/CD evidence: CI run `31421871502` success; Deploy production run `31421978597` success. Immutable release upload, server build, atomic activate, credential cleanup và healthcheck hoàn tất; deploy log kết thúc bằng `Release ea70059... is healthy`. Origin health có một lần retry lúc service đang restart rồi chuyển healthy theo cơ chế deploy script.
+- Production smoke: `/api/health` trả `status=ok` và exact release SHA; HTTP/crawler suite pass `33/33` cho route chính, Social detail, product Googlebot schema, canonical/OG/Twitter, PWA/OG assets, `llms.txt`, robots và permanent redirects. Browser runtime không có console warning/error; Social giữ avatar/`Công khai`, một source link và verified seal 16x16 hai path; Editorial không có Public indicator, có reading time và verified seal riêng 16x16.
+- Data/boundary: không mutation MongoDB/Cloudinary, không đổi Cloudflare policy và không thay credential. Google/Bing index thực tế vẫn cần URL Inspection/Search Console sau khi crawler recrawl.
+- Rollback reference: atomic rollback về immutable release `520c96676a4d9a823f081e3cc52421e78066565a` theo `docs/DEPLOYMENT_RUNBOOK.md`; không cần data restore.
+
+## 2026-08-11 11:56 +0700 — Audit Google Search Console chỉ báo một URL
+
+- Actor/scope: Codex theo phản ánh của repository owner; chỉ read-only audit production và phân tích ảnh Search Console, không sửa code, không deploy, không gọi Search Console mutation và không thay đổi MongoDB.
+- Interpretation: ảnh đang ở chi tiết một nhóm `Các trang bị ảnh hưởng`, không đủ bằng chứng để kết luận toàn property chỉ có một URL được lập chỉ mục. URL mẫu `/contact` có lần crawl cuối `19/05/2026`, trước release SEO `ea70059`, nên báo cáo có thể đang hiển thị dữ liệu lịch sử/chưa recrawl.
+- Live evidence: `sitemap.xml` trả `200` với 23 URL; toàn bộ 23 URL trả `200` cho Googlebot; không URL nào có `noindex`; mọi URL có canonical absolute trỏ chính nó và đúng một H1; `robots.txt` trả `200`, khai báo sitemap và không `Disallow: /_next/`.
+- Remaining external gate: owner cần mở đúng property/domain trong Search Console, submit `https://tiendataudioquangngai.id.vn/sitemap.xml`, dùng URL Inspection kiểm tra live cho homepage/products/knowledge/social và request indexing một số URL chính; sau đó chờ Google recrawl và bấm Validate fix nếu report có nút này. Không nên sửa robots/canonical thêm khi live audit đang pass.
+- Separate finding: production `/indexnow-key.txt` trả `404`, nghĩa là `INDEXNOW_KEY` chưa được cấu hình; việc này ảnh hưởng thông báo cập nhật tới IndexNow/Bing, không giải thích trực tiếp báo cáo Google hiện tại.
+- Rollback reference: không có external mutation; nếu cần đối chiếu lại, dùng release `ea70059f8b83006ed546b551405a9d5f32cdb6db` và production smoke trong entry deploy gần nhất.
+
+## 2026-08-11 15:38 +0700 — Implement search discovery và hoàn thiện Facebook Social Post flow
+
+- Actor/scope: Codex theo yêu cầu repository owner; sửa local source và test, không deploy production, không ghi MongoDB/Cloudinary và không đưa cookie/token/session vào server. Giữ nguyên các WIP khác trong worktree.
+- Audit/baseline: sitemap/canonical/SSR public routes đã có; mutation sản phẩm chỉ purge root nên sitemap/LLM/detail có thể stale; SEO product API còn ghi vào JSON tĩnh và `compactProduct` làm mất field `seo`; bài Editorial mới mặc định `noIndex`; Facebook worker chỉ tìm anchor `/photo/`, còn gallery upload cần thao tác Lưu riêng để ghi post vào MongoDB.
+- Changes: thêm `catalog-publishing` để revalidate catalog/detail/sitemap/llms và gửi IndexNow optional sau create/update/delete product/brand/category; chuyển SEO product GET/PUT và admin list về MongoDB, giữ `seo` khi compact product; thêm product links vào `llms.txt`; mặc định Editorial noindex false và chặn publish/schedule nếu còn noindex; thêm timeout IndexNow và biến mẫu không chứa secret.
+- Social flow: Chrome Extension và Playwright worker nhận diện thêm `+N`/`Xem tất cả` ở button/role/div, click fallback rồi hợp nhất ảnh; gallery import upload tối đa 3 ảnh song song nhưng giữ thứ tự; UI khóa thumbnail action khi đã có gallery, đổi copy rõ bước `Upload` và nút `Lưu` MongoDB; bổ sung regression assertion cho expansion control và noindex gate.
+- Verification: `npm test` pass 36/36; full ESLint pass; TypeScript `--noEmit` pass; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass; `npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; Next production build pass 76 routes; local smoke `/llms.txt`, `/sitemap.xml`, `/api/products`, `/bai-viet` đều 200 và `llms.txt` có Product Catalog links. Dev server đã dừng sau smoke.
+- Remaining risks/gates: production chưa có `INDEXNOW_KEY` nên IndexNow notification vẫn disabled; Google indexing thực tế vẫn cần sitemap submit/URL Inspection và thời gian recrawl; Facebook có thể thay DOM/aria label, cần human smoke với extension/session thật. Publish Social Post vẫn cố ý cần admin bấm `Lưu` rồi `Xuất bản`, không auto-publish.
+- Rollback reference: revert các file catalog/SEO, worker/extension và editor trong task; không cần migration hoặc restore database/external assets vì lượt này không có external mutation.
+
+## 2026-08-11 15:41 +0700 — Khởi tạo CodeGraph và Meetless cho Tiến Đạt Audio
+
+- Actor/scope: Codex theo yêu cầu repository owner; cấu hình local/repository tooling, không deploy, không sửa production và không thay đổi MongoDB/Cloudinary. Cấu hình KHV chỉ được dùng làm tham chiếu và giữ nguyên.
+- CodeGraph: xác minh CLI `1.0.1` và MCP Codex đã có ở cấp máy; chạy `codegraph init .`, tạo index local được bảo vệ bởi `.codegraph/.gitignore`. Status up-to-date với 226 file, 2.145 node và 5.392 edge; truy vấn thử luồng Social Post publish trả source/call flow thành công.
+- Meetless: xác minh MLA `0.2.35`, auth hiện hành và connector global; chạy `mla wire` + `mla codex install` idempotent, sau đó tạo workspace riêng `TienDatAudio` bằng `mla activate`. Marker `.meetless.json` không chứa credential và không dùng chung workspace KHV.
+- Verification: `mla workspace show` trả active; `mla doctor --json` trả `green`, Codex hooks/MCP/connector đều pass; `mla activate --repair` xác nhận binding reachable và không cần sửa.
+- Remaining gate: Codex cần restart rồi owner mở `/hooks` để review/trust MLA hooks; agent không thể tự cấp trust. `mla scan` đã tạo rule cache fresh nhưng hai lần báo instruction snapshot upload thất bại; doctor vẫn green và workspace hoạt động, song reconciliation từ instruction snapshot nên được kiểm tra lại khi Meetless endpoint ổn định hoặc sau `/mla onboard`.
+- Rollback reference: nếu cần gỡ riêng repo, dùng `codegraph uninit .` và `mla deactivate --yes` từ đúng root; không dùng `mla uninstall` vì lệnh đó ảnh hưởng wiring toàn máy và các workspace khác.
+
+## 2026-08-11 17:44 +0700 — Deploy production release f8ca35e
+
+- Actor/authorization: repository owner yêu cầu deploy production; chỉ release các file SEO/catalog và Facebook Social Gallery đã stage, giữ nguyên `.agent/WORKLOG.md`, `.codegraph/` và `.meetless.json` ngoài commit. Không chứa secret, cookie/session, database migration hoặc external data mutation.
+- Release: commit `f8ca35eaf7b0f73b506aa265648e30fee8b1c54a` (`feat: harden discovery and facebook gallery import`) push thành công lên `main`; rollback reference là `ea70059f8b83006ed546b551405a9d5f32cdb6db`.
+- CI/CD evidence: CI run `31483181722` success trong 54s; Deploy production run `31483256496` success trong 2m43s. Immutable upload, server build, atomic activate, health verification và runner credential cleanup đều pass. Deploy log xác nhận `Release f8ca35e... is healthy`.
+- Production smoke: `https://tiendataudioquangngai.id.vn/api/health` trả HTTP 200 và exact release SHA; `/sitemap.xml` HTTP 200 với 23 `<loc>`; `/llms.txt` HTTP 200 có `Product Catalog` và canonical `/san-pham/...` links; `/products` trả HTTP 200 với user-agent Googlebot.
+- Remaining gates: `INDEXNOW_KEY` vẫn optional/chưa cấu hình theo audit trước; Google Search Console vẫn cần submit/URL Inspection và chờ recrawl. Facebook gallery cần human smoke bằng extension/session thật; Social Post vẫn yêu cầu admin bấm `Lưu` rồi `Xuất bản`.
+- Rollback: dùng atomic rollback về immutable release `ea70059f8b83006ed546b551405a9d5f32cdb6db` theo `docs/DEPLOYMENT_RUNBOOK.md`; không cần data restore.
+
+## 2026-08-11 18:26 +0700 — Seed editorial drafts và keyword cluster local
+
+- Actor/scope: Codex tiếp tục yêu cầu seed bài viết/keyword; chỉ ghi dữ liệu vào MongoDB local `127.0.0.1/tiendataudio`, không publish, không deploy production và không đưa secret vào repo.
+- Research: dùng Google Autocomplete/PAA/SERP để lấy tín hiệu intent, không gắn nhãn volume hoặc “hot” khi chưa có Search Console/Keyword Planner. Chọn 3 cụm không cannibalize với bài hiện có: `dàn karaoke gia đình giá bao nhiêu`, `loa karaoke bị hú`, `dàn karaoke gia đình Quảng Ngãi`.
+- Content: thêm 3 keyword active vào `data/seo-strategy.json`; tạo manifest và 3 Markdown editorial seed, mỗi bài hơn 1.000 từ, có H2, FAQ, primary keyword, internal links tới sản phẩm/liên hệ và nguồn Shure ở bài chống hú. Tất cả giữ `status=draft`, `seo.noIndex=true`, `reviewer` trống để bắt buộc human review.
+- Tooling: thêm `scripts/seed-editorial-drafts.mjs` và `npm run db:seed-editorial`. Script chỉ chèn khi chưa tồn tại theo `id`/`slug`, merge keyword thiếu vào `site_settings.seo_strategy`, mặc định dry-run và chỉ cho `--apply` khi `EDITORIAL_SEED_TARGET=local` cùng MongoDB loopback; không dùng `db:seed` chung vì có thể overwrite dữ liệu.
+- Verification: JSON và script syntax pass; dry-run trước khi apply xác nhận đúng 3 insert; apply local thành công; dry-run lần hai skip cả 3 slug; Mongo query xác nhận 3 bài draft/noindex, reading time 5 phút và 3 keyword đã có; `npm test` 36/36, full ESLint và Next production build pass.
+- Next gate: admin cần review/chỉnh ảnh đại diện, reviewer, meta và nội dung thực tế trước khi chuyển `review`/`published`; chỉ sau human approval mới xem xét bật index và deploy production.
+
+## 2026-08-11 18:42 +0700 — Research queue 100 bài editorial local
+
+- Actor/scope: Codex theo yêu cầu mở rộng content; dùng web search read-only để nghiên cứu intent, chỉ seed MongoDB local `127.0.0.1/tiendataudio`, không copy nguyên văn, không publish, không deploy production.
+- Research evidence: SERP hiện lặp lại các nhu cầu về giá/cấu hình karaoke gia đình, vang số–amply, micro, chống hú, sub, tiêu âm/cách âm, bố trí loa, âm thanh quán cafe/sự kiện và dịch vụ địa phương. Google Trends chỉ được dùng làm tín hiệu xu hướng; volume/CTR thật sẽ lấy từ Search Console sau khi có dữ liệu. Google Search Central cũng cảnh báo việc sản xuất hàng loạt nội dung ít giá trị hoặc chỉ rewrite nguồn khác có thể rơi vào scaled content abuse.
+- Content plan: thêm `data/editorial-seeds/research-queue-100.json` gồm đúng 100 topic/keyword/intent/cluster/focus/questions/audience, chia 10 cluster; mỗi item có một URL canonical riêng để tránh cannibalization.
+- Seed behavior: thêm `scripts/seed-editorial-research-queue.mjs` và `npm run db:seed-editorial-queue`. Script tạo draft editorial có body scaffold khoảng 1.000 từ, FAQ, internal links, meta, `seo.noIndex=true`, `reviewer` trống; merge 100 keyword map vào `site_settings.seo_strategy`; chỉ `--apply` với `EDITORIAL_SEED_TARGET=local` và MongoDB loopback.
+- Result: dry-run nhận diện 3 bài đã seed trước đó và bỏ qua; apply thêm 97 bài; Mongo xác nhận queue có 100 bài, 100 draft/noindex/reviewer-empty, 100 keyword trong queue và 105 keyword tổng strategy. Lần chạy thứ hai skip đủ 100, không tạo duplicate.
+- Verification: queue JSON 100 item, script syntax pass; `npm test` 36/36, full ESLint và Next production build 76 routes pass. Không có production data mutation.
+- Human gate/risk: 100 bài hiện là research-backed editorial drafts/scaffolds, chưa phải 100 bài publish-ready; trước khi bật index phải thay ảnh hero dùng chung, kiểm tra fact/model/giá/tồn kho, thêm ảnh/case có thật, reviewer và biên tập khác biệt từng bài. Đo impressions/clicks/query bằng Search Console sau khi publish theo đợt, không gọi các keyword là “hot” nếu chưa có volume thực.
+- Rollback reference: nếu cần loại riêng queue mới, review trước query `posts.seedSource = research-queue-100-v1`; không xóa các seed bài cũ và không chạy `db:seed` chung.
+
+## 2026-08-11 19:01 +0700 — Gắn ảnh minh họa tạm cho 100 bài editorial local
+
+- Actor/scope: Codex theo yêu cầu repository owner; tạo 10 ảnh minh họa tạm theo 10 cluster của research queue, lưu trong repo và chỉ cập nhật MongoDB local. Không publish, không deploy production, không thay cookie/token/secret.
+- Assets: thêm `public/images/editorial-temp/` với 10 ảnh PNG wide 1672x941, phong cách editorial audio, không logo/chữ/watermark; thêm `data/editorial-seeds/temp-image-map.json` để mapping cluster dùng chung.
+- Data flow: research seed mới đọc mapping để bài tạo sau nhận đúng ảnh; manifest 3 bài seed cũ được cập nhật; thêm `scripts/assign-editorial-temp-images.mjs` và `npm run db:assign-editorial-images`. Script kiểm tra file tồn tại, mặc định dry-run, chỉ apply khi Mongo loopback + `EDITORIAL_SEED_TARGET=local`, và chỉ sửa bài `draft` có `seo.noIndex=true`.
+- Result: dry-run dự kiến 100 update; apply local cập nhật đủ 100/100 bài. Mongo query xác nhận `expected=100`, `found=100`, `draftNoIndex=100`, `completeImages=100`; mỗi bài có `featuredImage` và `seo.ogImage` trùng ảnh theo cluster.
+- Human gate: đây là ảnh placeholder để làm đầy listing/detail/OG image. Trước khi bật index hoặc publish cần thay bằng ảnh thực tế có quyền sử dụng, kiểm tra alt/caption theo từng bài và review nội dung; không dùng ảnh AI tạm như bằng chứng sản phẩm/thực tế.
+- Rollback reference: chạy script mapping lại ảnh cũ sau khi xác nhận query; không xóa dữ liệu Mongo và không chạy `db:seed` chung.
+
+## 2026-08-11 19:27 +0700 — Seed 100 bài editorial và ảnh tạm lên production
+
+- Actor/authorization: repository owner yêu cầu đưa seed lên production; release được tách riêng, không stage các WIP `.codegraph/`, `.meetless.json` và script seed cũ. Data mutation được giới hạn ở bài editorial draft/noindex.
+- Release: commit `a4992d56aac7c70e9741b4b51da6cc7079783586` (`feat: seed editorial content for production`) push lên `main`; CI `31490743047` pass; Deploy production `31490823848` pass và `/api/health` trả đúng release SHA.
+- Safety/tooling: thêm workflow thủ công `Seed editorial production`, yêu cầu SHA release đang active và xác nhận `SEED-100-DRAFT-NOINDEX`; seed script production chỉ chấp nhận Mongo loopback + confirmation, idempotent theo `id/slug`; script ảnh chỉ sửa `draft` + `seo.noIndex=true`.
+- Production mutation: workflow `31491109846` pass. `db:seed-editorial-queue --apply` ghi `inserted=100`, `skipped=0`, merge `100` keyword; `db:assign-editorial-images --apply` kiểm tra đủ `100` assignment và `unchanged=100`. Log xác nhận không có publish operation; toàn bộ bản ghi giữ draft/noindex/reviewer-empty.
+- Production smoke: `/api/health` trả `status=ok`, release exact SHA; 10 URL ảnh `/images/editorial-temp/*.png` đều HTTP 200; `/kien-thuc` phục vụ được cho Googlebot.
+- Rollback/data boundary: rollback code dùng release trước `f8ca35eaf7b0f73b506aa265648e30fee8b1c54a`; seed data không tự rollback theo code release. Nếu cần hủy queue, phải có action riêng với query chính xác theo `seedSource=research-queue-100-v1`, không dùng `--drop` hoặc xóa rộng.
+
+## 2026-08-11 19:49 +0700 — Publish 100 bài editorial và bật index production
+
+- Actor/authorization: Codex theo yêu cầu repository owner; chỉ chuyển đúng 100 slug trong `data/editorial-seeds/research-queue-100.json` từ `draft/noindex` sang `published/indexable`. Không chạm các bài ngoài queue.
+- Safety/tooling: thêm `scripts/publish-editorial-queue.mjs` và workflow thủ công `.github/workflows/publish-editorial-production.yml`. Workflow yêu cầu release SHA đang active và confirmation `PUBLISH-100-EDITORIAL`; preflight phải tìm đủ 100 bài, đúng editorial, đúng trạng thái draft/noindex, đủ nội dung/ảnh, rồi mới ghi với optimistic lock. Mỗi bài có một revision snapshot trước publish.
+- Production mutation: workflow `31492401354` pass; dry-run `expected=100`, `found=100`, `eligible=100`, `wouldPublish=100`; apply `updated=100`, `revisions=100`; verification `published=100`, `noIndex=0`, `publishedAt=100`.
+- Release/discovery: commit `cb71cb62cd2f01b18327c3253a8b52d26662adf5` deployed thành công qua CI `31492047711` và Deploy `31492134183`. Sau smoke phát hiện sitemap static cũ, thêm `revalidate=300` cho `src/app/sitemap.ts`; commit `af66bac96d8111322e655fe1a54a480268cd2173` pass CI `31492565439` và Deploy `31492644367`.
+- Production smoke: `/api/health` trả exact release `af66bac...`; sitemap trả 121 URL tổng và chứa đủ 100/100 URL queue; 3 bài mẫu trả HTTP 200, H1, canonical chính nó và `robots=index, follow`. Googlebot được `Allow: /` và robots khai báo sitemap. Google Search Console vẫn cần submit/URL Inspection và chờ recrawl; trạng thái index thực tế không xảy ra tức thời.
+- Rollback/data boundary: code rollback về commit trước theo runbook; data publish có revision snapshot và không có thao tác xóa. Không stage/commit `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` hoặc `scripts/seed-editorial-drafts.mjs` WIP.
+
+## 2026-08-11 21:00 +0700 — Fix layout Editorial Article Detail và deploy production
+
+- Actor/authorization: repository owner yêu cầu sửa lỗi layout theo brief thiết kế đã đính kèm và deploy production. Giữ nguyên nội dung, visual language, navbar/footer, CTA semantics, metadata/schema SEO và data MongoDB; không stage các WIP `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` hoặc `scripts/seed-editorial-drafts.mjs`.
+- Audit/baseline: `PublicArticle` trước đó dùng nhiều width độc lập (`sonic-container` 1152px, header 1024px, cover 1152px, body grid 220/720 + 48px, FAQ 768px, related section 1440px), tạo lệch trục giữa header, cover, TOC, body và FAQ.
+- Change: thêm shared `.article-container` tối đa 1200px; flow lane 1004px; desktop CSS grid `220px 64px 720px`; header/cover/grid cùng anchor; CTA, gallery, FAQ cùng body width; related sections dùng cùng container; tablet 768–1099px collapse TOC thành inline 2 cột; mobile <=767px one-column 1 cột; article page cho phép sticky hoạt động; TOC wrapper stretch theo grid row và bỏ motion transform riêng để `position: sticky` không bị phá.
+- Verification local: `npm test` pass 36/36; full ESLint pass; `npm run build` pass 76 routes; `bash deploy/scripts/audit-secrets.sh` pass; `npm audit --omit=dev --audit-level=high` báo 0 vulnerabilities; `git diff --check` pass.
+- Browser QA production: đo các viewport 1920, 1600, 1440, 1280, 1024, 768, 430, 390; không có horizontal overflow. Desktop xác nhận container 1200px, flow/header/cover/grid 1004px, grid 220px + 64px + 720px, body/FAQ 720px; tablet/mobile collapse đúng; sticky TOC giữ `top=112px` khi grid cuộn qua navbar, wrapper stretch `3334px` bằng grid row. Chụp QA desktop/mobile sau release.
+- Release: commits `678cc92d2514f5337b2a82cfd43648448314af3b`, `74f49fb9074feca46dbfb78e6cf090ea8f73b4a5`, `9bc638fe14561fdacc2bbfec18cccf0988ffbd52` và final `0a9ff583176dd3ba9f3554a6deb4381e3c1d3250` được push `main`; CI cuối `31498646842` success; Deploy production cuối `31498746957` success. Health trả `status=ok`, exact release `0a9ff583176dd3ba9f3554a6deb4381e3c1d3250`; article Googlebot HTTP 200.
+- Rollback reference: dùng immutable release trước `af66bac96d8111322e655fe1a54a480268cd2173` theo `docs/DEPLOYMENT_RUNBOOK.md`; không cần database restore.
+
+## 2026-08-11 — Implement master content SEO plan và khóa human gate
+
+- Actor/scope: Codex theo yêu cầu implement master prompt content SEO; audit và ghi dữ liệu chỉ trên MongoDB local `127.0.0.1/tiendataudio`, không deploy, không publish và không bật index production.
+- Audit/tooling: thêm `scripts/audit-editorial-corpus.mjs` tạo inventory, topic clusters, cannibalization watch và report tái lập trong `docs/content-audit/`; audit heuristic chỉ là cảnh báo cần SERP review, không tự merge/canonical/redirect.
+- SEO model/admin: thêm `seoResearch` cho keyword, intent, semantic terms, câu hỏi, long-tail, entities, source notes, cluster role và image plan; Admin Post Editor có khu vực nhập SEO research/GEO-AIO; checklist và publish preflight yêu cầu evidence nguồn, internal link/relation, reviewer, image license và không còn seed note.
+- Batch 1: thêm 5 bài rewrite có nguồn chính thức (Shure, Yamaha, Crown, HARMAN, Bowers & Wilkins), internal links và image plan; apply local thành công với trạng thái `review`, `seo.noIndex=true`, reviewer trống và `IMAGE_REQUIRED` để giữ human/media gate. Không tự publish.
+- Verification: `npm test` pass 36/36; ESLint pass; TypeScript pass; `npm run build` pass 76 routes; syntax scripts pass; audit local xác nhận 100 editorial (`95 draft`, `5 review`, `published=0`, `noIndex=100`); publish preflight fail an toàn vì thiếu reviewer/ảnh publish-ready và trạng thái review.
+- Remaining gates: thay ảnh minh họa tạm bằng ảnh có quyền sử dụng, điền reviewer, kiểm tra fact/links/schema/browser/mobile từng batch rồi mới chuyển trạng thái; 95 bài còn lại tiếp tục theo batch 5–10. Production không bị chạm trong lượt này.
+
+## 2026-08-11 — Verify local editorial batch and open local review flow
+
+- Scope: repository owner yêu cầu seed batch nội dung mới vào database local và mở web để kiểm tra; không deploy, không publish và không thay đổi production.
+- Preflight: `.env.local` trỏ tới MongoDB loopback `127.0.0.1/tiendataudio`; apply script chạy idempotent, cả 5 bài nhận diện là `batch already applied`.
+- Verification: MongoDB local có đúng 5 bài `editorial-batch-1-2026-08-11`, tất cả `status=review`, `seo.noIndex=true`, `reviewer` trống, version 2, sourceCount 2–3 và imagePlanCount 2.
+- Runtime: `npm run dev` đã khởi động thành công tại `http://localhost:3000`; public `/kien-thuc` chỉ hiển thị bài published hiện có đúng theo noindex gate. Browser được mở tới `/admin/login`; preview/editor cần admin session nên không tự bypass authentication.
+- Remaining gate: đăng nhập admin local rồi mở `/admin/posts` hoặc editor của batch để review; không chuyển sang public/index cho tới khi ảnh, reviewer và các QA gate hoàn tất.
+
+## 2026-08-11 22:32 +0700 — Complete and QA 100 editorial posts locally
+
+- Actor/scope: Codex tiếp tục triển khai master content SEO theo yêu cầu repository owner; chỉ đọc/ghi MongoDB local `127.0.0.1/tiendataudio`, không publish, không bật index, không deploy production và không đưa secret vào repo.
+- Audit/baseline: queue `data/editorial-seeds/research-queue-100.json` có đúng 100 URL; 5 bài Batch 1 đã ở `review`, 95 bài còn lại là scaffold cần hoàn thiện. Catalog local hiện không có đủ product records để gắn relation giả.
+- Changes: thêm `ContentArticleType` và `ContentSEOResearch` normalization/admin fields; publish validation/preflight yêu cầu reviewer, source/SERP evidence, image license status, internal link/relation và không còn seed note; thêm `scripts/complete-editorial-corpus.mjs` (idempotent, loopback-only apply) và `scripts/qa-editorial-corpus.mjs` (read-only QA), đăng ký npm scripts; cập nhật roadmap.
+- Data result: completion v4 giữ nguyên 5 Batch 1 và cập nhật 95 bài; local corpus đạt `100/100`, `review=100`, `published=0`, `seo.noIndex=100`, source evidence `100/100`, internal links `100/100`, duplicate title/meta/paragraph `0`, invalid internal links `0`, QA failures `0`. Audit ghi nhận `cannibalizationWatchPairs=46` và `noRelatedProducts=96` để human xử lý, không tự bịa relation.
+- Verification: `npm run lint` pass; `npm test` pass 36/36; `npx tsc --noEmit` pass; `npm run build` pass 76 routes; `npm audit --omit=dev --audit-level=high` 0 vulnerabilities; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass. Local browser/HTTP smoke: `/kien-thuc`, `/admin/login`, `/api/health`, `/robots.txt`, `/sitemap.xml`, `/llms.txt` trả 200; một bài queue đang review trả 404 đúng noindex gate; dev server đã dừng.
+- Human gates remaining: gán reviewer; thay/duyệt 100 ảnh `IMAGE_REQUIRED`; fact/source review; SERP/cannibalization review; product relations khi có catalog thật; browser/mobile/structured-data QA trước khi chuyển batch sang public/index. Không coi corpus này là publish-ready.
+- Rollback reference: dữ liệu local được cập nhật theo `completionVersion=editorial-completion-v4-2026-08-11`; không có thao tác xóa hoặc external mutation. Production giữ nguyên.
+
+## 2026-08-11 22:45 +0700 — Fix local admin database selection
+
+- Symptom: Chrome tab `/admin/posts` chỉ hiển thị 3 bài fallback cũ dù MongoDB corpus chính đã có 100 bài.
+- Root cause: `.env.development.local` được Next ưu tiên hơn `.env.local` và đang trỏ `MONGODB_DB=tiendataudio_local`; database này chỉ có 5 record cũ. Queue 100 bài nằm ở database `tiendataudio`.
+- Change: đổi local development database về `tiendataudio` trong file đã được `.gitignore` bỏ qua; không đưa URI/secret vào repo. Restart dev server port 3001 để nạp lại environment.
+- Verification: Chrome authenticated tab sau restart hiển thị `100 Chờ duyệt`, DOM có `100` article rows và thấy bài `Dàn karaoke gia đình giá bao nhiêu`. Database counts: `tiendataudio.posts=101` gồm queue 100; `tiendataudio_local.posts=5`. Production không bị chạm.
+- Rollback reference: đổi lại `MONGODB_DB=tiendataudio_local` trong `.env.development.local` nếu cần quay về DB cũ; không có migration hoặc xóa dữ liệu.
+
+## 2026-08-11 23:04 +0700 — Deploy code và đồng bộ corpus editorial production
+
+- Actor/authorization: repository owner yêu cầu đưa data đã hoàn thiện lên production; đã chọn phương án `Đồng bộ, giữ public`, tức cập nhật nội dung/SEO research của đúng 100 slug nhưng giữ nguyên `status=published` và `seo.noIndex=false`.
+- Release: commit `72dbfea8740dcf470548f41e40f938caf57b4bd5` push `main`; CI `31509992118` pass; Deploy production `31510127162` pass; `/api/health` trả đúng release SHA.
+- Safety: thêm workflow thủ công `.github/workflows/sync-editorial-production.yml`, yêu cầu full release SHA + confirmation `SYNC-100-PUBLISHED`; preflight read-only chạy trước, sau đó tạo Mongo archive gzip và SHA-256 checksum trên VPS trước mọi mutation; optimistic version filter và workflow concurrency được giữ nguyên.
+- Production mutation: workflow `31510462358` pass; QA production xác nhận `expected=100`, `found=100`, `published=100`, `review=0`, `noIndex=0`, `sourceReady=100`, `internalLinkReady=100`, duplicate title/meta/paragraph `0`, invalid internal links `0`, failures `[]`.
+- Public smoke: sitemap có `121` URL; các slug queue mẫu trả HTTP 200; bài `dan-karaoke-gia-dinh-gia-bao-nhieu` có canonical chính nó, `robots=index, follow` và JSON-LD.
+- Human gates còn lại: `imageRequired=100` vẫn là cờ cần thay/duyệt ảnh thật hoặc ảnh minh họa có quyền; tiếp tục fact/source, SERP/cannibalization và browser/mobile/schema review. Việc giữ public lần này không tự tuyên bố các ảnh là publish-ready.
+- Rollback reference: code quay về immutable release trước theo `docs/DEPLOYMENT_RUNBOOK.md`; dữ liệu có archive backup tạo trong workflow trước mutation, không có thao tác xóa.
+
+## 2026-08-11 23:23 +0700 — Sửa layout Article Detail theo DOM thực tế
+
+- Actor/scope: repository owner yêu cầu sửa riêng layout trang Editorial Article Detail theo brief; không thay copy, theme, badge, metadata/schema SEO, animation, data hoặc các trang khác. Không deploy vì task này chỉ yêu cầu implement và verify.
+- Audit/baseline production: tại `/kien-thuc/feedback-suppressor-la-gi`, `.article-container` rộng `1200px` nhưng các direct child `.article-flow-anchor` và `.article-content-grid` bị thu vào `1004px` với `margin-inline: 98px`; grid dùng `220px + 64px + 720px`. Đây là nguyên nhân header/cover/grid không cùng trục với outer container. `MarkdownContent` chỉ render `.sonic-prose`, không có prose max-width ẩn gây lỗi.
+- Change: `.article-container` trở thành canonical outer container `max-width:1180px`, `width:min(1180px, calc(100% - 64px))`; flow anchor dùng cùng outer left; header `860px`; cover `960px`; reading grid `220px + 56px + 720px`; body/prose/CTA callout/gallery/FAQ giữ cùng `720px`. Từ `<=1099px` grid chuyển một cột với max `760px`; mobile `<=767px` dùng outer `calc(100% - 32px)`. Không thêm negative margin, translate hoặc breakpoint offset.
+- Browser QA: kiểm tra DOM/computed CSS trên production page với temporary CDP style injection chỉ trong phiên kiểm thử (không ghi production), tại `1920/1600/1440/1280/1024/768/430/390`. Desktop đạt outer `1180px`, header `860px`, cover `960px`, grid `996px`, body/CTA/FAQ `720px`; tablet/mobile đạt một cột, các section cùng `x=32px` hoặc `x=16px`, `scrollWidth=clientWidth` và không horizontal overflow. Đã chụp viewport desktop/mobile để đối chiếu.
+- Verification: `npm run lint` pass; `npm test` pass `36/36`; `npx tsc --noEmit` pass; `npm run build` pass `76` routes; `npm audit --omit=dev --audit-level=high` báo `0 vulnerabilities`; `bash deploy/scripts/audit-secrets.sh` pass; `git diff --check` pass.
+- Files: chỉ source change ở `src/app/globals.css`; giữ nguyên WIP `.agent/IMPLEMENTATION_PLAN.md`, `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` và `scripts/seed-editorial-drafts.mjs` ngoài phạm vi commit.
+- Rollback reference: bỏ phần diff Article Detail trong `src/app/globals.css`; không cần database restore hoặc production rollback.
+
+## 2026-08-11 23:50 +0700 — Deploy layout Article Detail lên production
+
+- Actor/authorization: repository owner yêu cầu deploy; chỉ commit đúng source CSS đã QA, không stage `.agent/IMPLEMENTATION_PLAN.md`, `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` hoặc `scripts/seed-editorial-drafts.mjs`.
+- Release: commit `979e22ec70446b2a4e6052ffea3960c0ff3b35b8` (`fix: align editorial article layout`) push `main`; CI `31514042465` pass; Deploy production `31514144913` pass trong `2m48s`.
+- Deployment evidence: workflow upload immutable release, activation, service restart và origin healthcheck đều pass; receipt server được ghi bởi `deploy-release.sh`. GitHub log xác nhận `Release 979e22ec70446b2a4e6052ffea3960c0ff3b35b8 is healthy.`
+- Production smoke: `https://tiendataudioquangngai.id.vn/api/health` trả `status=ok`, service `tiendataudio`, release đúng SHA; home và article `/kien-thuc/feedback-suppressor-la-gi` đều HTTP `200`.
+- Browser QA sau deploy: production DOM thật tại `1920px` xác nhận outer `1180`, header `860`, cover `960`, grid `220 + 56 + 720`, body/CTA/FAQ `720`; tại `430px` chuyển một cột, tất cả section cùng `x=16`, `scrollWidth=clientWidth`.
+- Rollback reference: release trước `72dbfea8740dcf470548f41e40f938caf57b4bd5`; dùng rollback symlink theo `docs/DEPLOYMENT_RUNBOOK.md` nếu cần.
+
+## 2026-08-12 — Fix Article Detail TOC hash navigation
+
+- Symptom: bấm mục “Trong bài viết” cập nhật hash nhưng không đưa viewport tới heading tương ứng.
+- Root cause: `rehype-sanitize` prefix ID của heading thành `user-content-*`, trong khi TOC dùng slug đẹp không có prefix; target thực tế không được tìm thấy. Header fixed cao `94px`, còn `scroll-margin-top: 112px` đã đủ để tránh che heading.
+- Change: thêm `ArticleHashNavigation` để map hash đẹp tới ID đã sanitize, hỗ trợ cả click lặp cùng hash và mở URL hash trực tiếp; giữ nguyên URL dễ đọc và không tắt cơ chế chống DOM clobbering của Markdown.
+- Verification: `npm test` pass `36/36`; `npm run lint` pass; `npm run build` pass `76` routes; `git diff --check` pass. Local route test không thể click bài production vì MongoDB local hiện không có slug này và trả `404`; production chưa deploy trong lượt này.
+- Files: `src/components/content/ArticleHashNavigation.tsx`, `src/components/content/PublicArticle.tsx`. Không stage WIP ngoài phạm vi.
+
+## 2026-08-12 — Deploy và xác minh Article Detail TOC hash navigation
+
+- Actor/authorization: repository owner yêu cầu deploy bản sửa TOC; chỉ source đã commit được đưa lên production, giữ nguyên `.agent/IMPLEMENTATION_PLAN.md`, `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` và `scripts/seed-editorial-drafts.mjs` WIP ngoài phạm vi.
+- Release: commit `2ae48596aca497fda4e1b32be332992f6d58e712` (`fix: align article hash scrolling with header`) đã push `main`; CI `31520589890` pass; Deploy production `31520685537` pass.
+- Production smoke: `https://tiendataudioquangngai.id.vn/api/health` trả `status=ok`, service `tiendataudio`, release đúng SHA; article route trả HTTP `200`.
+- Browser QA bằng Chrome thật: TOC dùng sanitized href `#user-content-*`; click mục “Khi nào nên gọi kỹ thuật viên?” cập nhật hash và đưa heading tới `top=112px`, phía dưới header sticky `94px`; không có lỗi `warn/error` trong console. Kết quả này xác nhận bản sửa hoạt động trong trình duyệt người dùng; lần smoke bằng in-app browser trước đó không đại diện chính xác cho native fragment behavior.
+- Cache note: HTML production là dynamic/no-store và đang tham chiếu chunk mới `c72b2f303fc57a0e.js`; các chunk `_next/static` vẫn immutable/Cloudflare HIT theo thiết kế Next.js. Không purge cache trong lượt này vì release hiện tại đã được Chrome xác minh; cần tách riêng việc chuẩn hóa CDN invalidation nếu muốn tránh cache cũ trong các release tương lai.
+- Rollback reference: release trước `ca370d0a4c94f21f06ca2287393274086c89c092`; rollback symlink theo `docs/DEPLOYMENT_RUNBOOK.md` nếu cần.
+
+## 2026-08-12 12:27 +0700 — Highlight mục TOC theo vị trí đọc
+
+- Actor/scope: repository owner yêu cầu khi cuộn bài Editorial, mục tương ứng trong “Trong bài viết” bật màu vàng; giữ nguyên hash navigation, sticky header và visual contract hiện có. Không deploy production trong lượt này.
+- Audit/baseline: `ArticleHashNavigation` trước đó chỉ xử lý hash/scroll; TOC server-rendered chưa có active state. Heading thực tế dùng ID `user-content-*` do Markdown sanitizer.
+- Change: mở rộng `src/components/content/ArticleHashNavigation.tsx` để theo dõi scroll/resize theo `requestAnimationFrame`, xác định heading gần vùng đọc sau header sticky, toggle `article-toc-link-active` và `aria-current="location"`; cập nhật `PublicArticle` dùng semantic TOC class; thêm màu active/focus theo `--sonic-gold` trong `src/app/globals.css`.
+- Verification: `npm test` pass `36/36`; `npm run lint` pass; `npm run build` pass `76` routes; `git diff --check` pass. Local fallback article QA desktop xác nhận active chuyển từ mục 1 sang mục 2 khi cuộn, màu computed là theme gold và chỉ một mục active; mobile QA xác nhận TOC static, active chuyển đúng và `scrollWidth === clientWidth`. Chrome localhost bị client block nên local QA dùng in-app browser với Mongo env rỗng để dùng JSON fallback; production chưa thay đổi.
+- Files: `src/components/content/ArticleHashNavigation.tsx`, `src/components/content/PublicArticle.tsx`, `src/app/globals.css`. Giữ nguyên WIP `.agent/IMPLEMENTATION_PLAN.md`, `.agent/WORKLOG.md`, `.codegraph/`, `.meetless.json` và `scripts/seed-editorial-drafts.mjs` ngoài phạm vi commit.
+- Rollback reference: revert 3 file source nêu trên; không cần database restore hoặc production rollback.
+
+## 2026-08-12 13:12 +0700 — Đồng bộ favicon với logo Tiến Đạt Audio
+
+- Actor/scope: repository owner yêu cầu loại bỏ biểu tượng Vercel đang xuất hiện trên kết quả tìm kiếm và đồng bộ logo với web; chỉ sửa asset local, không deploy hoặc thay đổi production.
+- Audit/baseline: `src/app/favicon.ico` là favicon mặc định hình tam giác Vercel; favicon production có cùng checksum. Metadata sản phẩm đã có `og:site_name` và application name là `Tiến Đạt Audio`, còn `public/images/app-icon.svg` là logo TD hiện hành của Sonic Header.
+- Change: tạo lại `src/app/favicon.ico` dạng ICO nhiều kích thước từ `public/images/app-icon.svg`, giữ nguyên các icon PNG/PWA và metadata hiện có.
+- Verification: `npm run lint` pass; `npm test` pass `36/36`; `npm run build` pass `76` routes; `git diff --check` pass. Local production server trả favicon dạng ICO 6 frame với checksum khớp source; HTML `/products` tham chiếu favicon hash mới và `og:site_name` là `Tiến Đạt Audio`.
+- Result: bản code local không còn dùng favicon tam giác Vercel; production chưa thay đổi vì chưa có yêu cầu deploy.
+- Rollback reference: khôi phục riêng `src/app/favicon.ico` từ revision trước nếu cần; không cần database restore.
+- Remaining risks/blockers: Google Search có thể tiếp tục hiển thị icon/site label cũ cho tới khi production được deploy và Google recrawl hoặc được yêu cầu re-index.
+
+## 2026-08-12 13:16 +0700 — Cập nhật liên kết Google Maps showroom
+
+- Actor/scope: repository owner cung cấp URL địa điểm Google Maps chính thức và yêu cầu dùng URL này cho nút mở bản đồ; sửa source/fallback local, không mutate MongoDB production hoặc deploy.
+- Audit/baseline: `SonicFooter` đọc `profile.mapUrl`; `data/business-profile.json` và HTML production còn dùng URL tìm kiếm chung `maps/search/?api=1`. Production business profile được đọc từ MongoDB khi có cấu hình.
+- Change: thay `mapUrl` trong `data/business-profile.json` bằng URL địa điểm `Tiến Đạt Audio` được cung cấp; giữ nguyên `mapEmbedUrl`, tọa độ, NAP và hành vi mở tab mới.
+- Verification: URL parse hợp lệ và Google Maps trả HTTP 200; `npm run lint` pass; `npm test` pass `36/36`; `npm run build` pass `76` routes; `git diff --check` pass. Local production smoke của `/contact` render đúng URL mới.
+- Result: fallback/local đã dùng đúng địa điểm Google Maps. Production live vẫn đang render URL cũ vì MongoDB profile chưa được đồng bộ.
+- Rollback reference: khôi phục riêng trường `mapUrl` trong `data/business-profile.json`; không cần database restore.
+- Remaining risks/blockers: cần admin save hoặc production data sync có xác nhận riêng để thay giá trị MongoDB live; không tự deploy/mutate production trong lượt này.
+
+## 2026-08-12 13:28 +0700 — Deploy branding và fallback Google Maps lên production
+
+- Actor/authorization: repository owner yêu cầu deploy; chỉ release đúng commit task-owned, không stage các WIP `.agent/`, `.codegraph/`, `.meetless.json`, `scripts/seed-editorial-drafts.mjs` hoặc các thay đổi Article TOC.
+- Release: commit `2074ff0a1a2185b8245b3a391882dd7ea93c17d4` (`fix: update branding and showroom map link`) đã push `main`; CI `31569775232` pass; Deploy production `31569841679` pass.
+- Production evidence: `/api/health` trả `status=ok`, service `tiendataudio`, release đúng SHA `2074ff0a1a2185b8245b3a391882dd7ea93c17d4`; favicon live là ICO 6 frame và checksum khớp source.
+- Data boundary: production `/contact` vẫn đọc `mapUrl` cũ từ MongoDB `site_settings.business_profile`; deploy code không ghi đè dữ liệu Mongo. Đã mở trang admin production nhưng dừng tại màn hình đăng nhập, không thử bypass auth.
+- Rollback reference: release trước `2ae48596aca497fda4e1b32be332992f6d58e712`; rollback symlink theo `docs/DEPLOYMENT_RUNBOOK.md` nếu cần.
+- Remaining blocker: cần người có quyền đăng nhập admin xác thực, sau đó mới lưu riêng trường `mapUrl` và smoke test link live.
+
+## 2026-08-12 16:55 +0700 — Triển khai RAG-lite chatbot dùng DeepSeek
+
+- Actor/authorization: repository owner cung cấp DeepSeek API key và yêu cầu cấu hình biến môi trường, implement và deploy production. Key chỉ được lưu trong GitHub Environment `Production`, truyền qua SSH vào `/srv/tiendataudio/shared/runtime-ai.env` quyền `0600`; không ghi key vào repo, artifact hoặc worklog.
+- Architecture: thêm module `src/modules/assistant/` theo domain/application/infrastructure/presentation; retrieval chỉ lấy sản phẩm và bài editorial công khai, xếp hạng lexical tiếng Việt, tối đa 5 nguồn; DeepSeek chỉ được gọi khi có nguồn phù hợp và bắt buộc citation `[n]`, nếu thiếu nguồn/citation thì fail closed bằng câu trả lời xác định.
+- Safety: model hiện dùng `deepseek-v4-flash`, non-thinking, timeout 30 giây; system prompt cấm bịa giá, tồn kho, công suất, diện tích và thông số; API giới hạn payload/history, hash IP, rate limit `12/5 phút`, không gửi cookie/token và không render model output thành HTML. Widget chỉ xuất hiện ở public routes khi server có key.
+- Delivery: commit `b2e3a59e09e78b8733ec4b809ca75d4cc79f3e19` (`feat: add grounded audio assistant`) push `main`; CI `31584421234` pass; Deploy production `31584515809` pass trong `2m52s`. Workflow ghi runtime AI riêng và `deploy-release.sh` bảo toàn env khi activate/rollback.
+- Verification: local `npm test` pass `40/40`; `npx tsc --noEmit`, ESLint, build `76` routes, production dependency audit `0 vulnerabilities`, secret scan, shell syntax, workflow YAML và `git diff --check` đều pass. Browser QA local desktop/mobile không overflow và không va chạm floating contact.
+- Production smoke: `/api/health` trả đúng release SHA; home render `Hỏi trợ lý`; invalid chat payload trả `400 VALIDATION_ERROR`; câu hỏi “Vì sao loa karaoke bị hú...” trả thành công qua DeepSeek với citation và 5 internal article sources, không bịa URL. Local test server đã dừng.
+- Rollback reference: release trước `2074ff0a1a2185b8245b3a391882dd7ea93c17d4`; rollback symlink theo `docs/DEPLOYMENT_RUNBOOK.md`. Shared AI env được giữ để release chatbot hoạt động sau rollback/forward; xoá GitHub environment secret và runtime env file nếu cần vô hiệu hóa hoàn toàn.
+- Security follow-up: nên rotate API key sau bàn giao vì credential đã từng được gửi trong nội dung hội thoại, dù không xuất hiện trong code hoặc log triển khai.
+
+## 2026-08-12 — Hoàn thiện roadmap Assistant Knowledge Base và Knowledge Graph
+
+- Actor/scope: repository owner gửi proposal MongoDB + Neo4j và yêu cầu hoàn thiện thành implementation plan riêng cho dự án; lượt này chỉ audit và cập nhật tài liệu, không sửa runtime code, không mutate database, không provision Neo4j và không deploy production.
+- Baseline: assistant production hiện là RAG-lite trên Products + Editorial Articles; Business Profile chưa nằm trong retrieval nên critical facts như số điện thoại có thể bị trả sai. MongoDB Community tự host là source of truth; Neo4j phải là projection optional/fail-soft.
+- Decisions: thêm Phase 0 deterministic exact-fact resolver trước mọi graph work; critical facts bypass DeepSeek; cấm dual-write và arbitrary Cypher; tách review status khỏi confidence; AI chỉ tạo suggestion; semantic search đi qua port và không giả định Atlas Vector Search; Change Streams chỉ được cân nhắc sau replica-set audit.
+- Deliverable: tạo `.agent/ASSISTANT_KNOWLEDGE_GRAPH_PLAN.md` gồm architecture/ownership, Mongo models, Neo4j ontology, retrieval/grounding, admin Knowledge Center, API/security/privacy/observability, golden set 120 cases, test gates, 8 implementation phases, rollout/rollback, risk register và human decisions; liên kết roadmap này từ `.agent/IMPLEMENTATION_PLAN.md`.
+- Verification: đối chiếu proposal nguồn 1.811 dòng với source/architecture/runbook hiện tại; CodeGraph index ở trạng thái up to date; Markdown có 58 code fences cân bằng và `git diff --check` pass. Không có credential được ghi vào plan/worklog.
+- First implementation gate: chỉ bắt đầu Phase 0 correctness hotfix khi owner yêu cầu; chưa provision Neo4j trước khi Phase 0–2 đạt acceptance gates. Tổng estimate hiện tại là 19–33 developer-days và sẽ được re-estimate sau Phase 2 benchmark/resource audit.
+- Rollback reference: xóa file plan mới, bỏ reference ở đầu `.agent/IMPLEMENTATION_PLAN.md` và entry worklog này; không cần database restore hay production rollback.
+
+## 2026-08-12 — Implement Assistant Phase 0 exact-fact correctness
+
+- Actor/scope: repository owner yêu cầu triển khai roadmap chatbot; thực hiện đúng bước đầu tiên Phase 0, không provision Neo4j, không tạo collection/migration, không mutate production data và không deploy production trong lượt này.
+- Audit/root cause: `/api/assistant/chat` trước đây luôn retrieval Products + Articles rồi gọi DeepSeek; Business Profile không nằm trong corpus, substring match không có threshold và client có thể gửi role `assistant`. Business/contact facts vì vậy có thể bị nguồn bài viết cũ hoặc model làm sai.
+- Architecture/change: application use case chuyển sang ports; thêm deterministic intent/exact resolvers cho contact/location/hours/identity và product price/availability/specification; strict Mongo adapters chỉ đọc `site_settings.business_profile` và `products`, không dùng JSON fallback cho fact có thể thay đổi; DeepSeek/retrieval bị bypass hoàn toàn trên exact path. Product ambiguity trả clarification và tồn kho không bịa số lượng.
+- Retrieval/security: lexical match dùng whole token + minimum relevance; client assistant turns bị bỏ trước orchestration; response bổ sung `requestId`, `answerKind`, `intent`, `confidence`, authority/freshness sources, allowlisted actions và `needsHuman`. Google Maps chỉ chấp nhận HTTPS Google hosts, product slug phải đúng canonical pattern và UI không render model HTML.
+- Rollback: `ASSISTANT_EXACT_FACTS_ENABLED=false` đưa request trở lại RAG-lite path mà không rollback database; thay đổi không có migration. `.env.example` ghi rõ flag nhưng không chứa secret.
+- Tests/quality: focused assistant tests pass `14/14`; full suite pass `50/50`; ESLint pass; `npx tsc --noEmit` pass; production build pass `76` routes; production dependency audit `0 vulnerabilities`; secret scan và `git diff --check` pass.
+- Browser/runtime QA: local API trả structured fallback khi Business Profile live không có và không lộ số trong JSON fallback; widget desktop render action CTA; viewport `390x844` có dialog `358px`, `scrollWidth === clientWidth`, action visible và browser console không có warn/error. Local database `tiendataudio` hiện chỉ có `site_settings.seo_strategy`, chưa có `business_profile`, nên exact contact local cố ý fail closed.
+- Production gate còn lại: trước deploy phải read-only xác nhận `site_settings.business_profile` và catalog production có dữ liệu hợp lệ, sau đó CI/deploy exact SHA và smoke các aliases; production hiện chưa thay đổi.
+- Rollback reference: revert các path Phase 0 trong `src/modules/assistant`, route/widget, `.env.example` và tests; không cần database restore hoặc Neo4j rollback.
+
+## 2026-08-12 22:09 +0700 — Hoàn thiện local Assistant Knowledge Base, Graph và Audio Advisor
+
+- Actor/scope: repository owner yêu cầu triển khai full roadmap chatbot thành tính năng hoàn chỉnh. Hoàn thiện code/runtime/admin/CLI và QA local; không provision Neo4j, không migrate hoặc deploy production khi chưa có lệnh deploy riêng.
+- Knowledge domain: thêm Mongo repositories, validation, indexes, workflow/revision/version conflict cho Knowledge, Sources, Claims và Compatibility; AI extraction chỉ tạo suggestion; direct create/update không thể giả mạo trạng thái review/verified/published. Article migration phân trang toàn bộ bài published, chunking deterministic và outbox additive.
+- Assistant runtime: exact facts tiếp tục bypass model; thêm intent/constraint extraction, signed server-owned session, multi-turn advisor, clarification, grounded answer validator, authority/confidence contract, source/action UI, feedback, PII redaction và TTL retention. Recommendation chỉ dùng candidate/compatibility đã verified; khi graph/advisor chưa sẵn sàng trả human handoff an toàn.
+- Graph: thêm Mongo projection snapshot, typed Cypher HTTP client, reader/writer boundary, sync/rebuild/verify/drift/hash report và shadow/public adapter. Neo4j vẫn optional/fail-soft; `NEO4J_NOT_CONFIGURED` không làm hỏng exact/knowledge paths.
+- Admin/operations: thêm `/admin/assistant` với overview và 8 workspace tab cho Knowledge, Sources, Claims, Compatibility, Test Console, Evaluations, Conversations và Graph; API admin đều yêu cầu session, có typed error. Thêm migration/evaluation/graph CLI, rollout/kill-switch env, CI wiring và runbook production.
+- Local data/QA: lưu Business Profile hiện hành qua chính admin form local để kiểm tra exact fact; chạy migration additive local trước đó, lifecycle integration source/knowledge create→review→verified/published rồi dọn toàn bộ record tạm; evaluation deterministic được persist local. Không ghi credential vào repo/log.
+- Verification cuối: `npm test` pass `59/59`; `npx tsc --noEmit` pass; ESLint pass; production build pass `82` routes; golden eval `120/120` và persisted; migration dry-run pass; dependency audit `0 vulnerabilities`; secret scan, shell syntax, workflow YAML và `git diff --check` pass. Graph verify trả fail-soft đúng thiết kế với `NEO4J_NOT_CONFIGURED`.
+- Browser QA: production build local tại viewport `390x844` có `scrollWidth=clientWidth=390`, dialog `358x680` nằm trọn viewport; câu hỏi liên hệ trả đúng `0934995657` cùng `tel:` và Zalo action. Dev browser trước đó đã xác minh toàn bộ admin tabs, multi-turn clarification/context, feedback và reset session; không có console error/warning của ứng dụng.
+- Human gates còn lại: backup + migration production; read-only verify Business Profile/catalog; chọn/provision Neo4j và semantic provider; human verify sources/claims/compatibility; full-model/load/security/chaos gate; sau đó mới nâng rollout mode và deploy exact SHA khi owner yêu cầu.
+- Rollback: các collection/index mới là additive; dùng `ASSISTANT_ROLLOUT_MODE`, `ASSISTANT_EXACT_FACTS_ENABLED`, `ASSISTANT_GRAPH_ENABLED` và `ASSISTANT_ADVISOR_ENABLED` để giảm cấp mà không mất dữ liệu. Graph có thể xóa/rebuild từ MongoDB source of truth.
+
+## 2026-08-12 22:48 +0700 — Deploy Assistant Knowledge Platform lên production
+
+- Actor/authorization: repository owner yêu cầu tiếp tục triển khai tính năng Assistant hoàn chỉnh. Chỉ release các path task-owned; giữ nguyên WIP Article TOC, `.agent/IMPLEMENTATION_PLAN.md`, `.codegraph/`, `.meetless.json` và `scripts/seed-editorial-drafts.mjs` ngoài commit.
+- Release: feature commit `8d910791877898dbae7c56310ceff4a03fcf3527` và follow-up packaging commit `077f65b1e761cca83d4dff55474cfcd200573055` đã push `main`. CI run `31612925423` pass; deploy run `31613035759` pass. `/api/health` trên domain và bind nội bộ `172.18.0.1:3000` đều trả đúng release `077f65b1e761cca83d4dff55474cfcd200573055`; `tiendataudio.service` và `mongod` active, journal không có warning/error sau smoke.
+- Backup/migration: tạo backup MongoDB `/var/backups/tiendataudio/tiendataudio-20260812T152606Z.archive.gz`, checksum verify pass, kích thước `189754` bytes. Migration additive hoàn tất với `102` bài public và `1300` knowledge chunks; không backfill feedback retention vì dữ liệu hiện hành đã hợp lệ.
+- Packaging fix: lần chạy migration đầu dừng trước mọi mutation vì production prune đã loại `tsx` khỏi devDependencies. Đã chuyển `tsx@4.23.11` sang production dependencies, thêm CI gate `npm ls --omit=dev tsx` và cập nhật runbook; migration sau redeploy chạy thành công.
+- Evaluation/graph: golden eval production `120/120`, run ID `ee35b435-70d0-4019-a386-be1e73d111aa`. Neo4j chưa được provision nên graph verify trả `NEO4J_NOT_CONFIGURED` theo fail-soft; Mongo projection hiện có Product `6`, Brand `5`, Category `6`, Article `102`, Chunk/HAS_CHUNK `1300`, MADE_BY `6`, IN_CATEGORY `6`.
+- Rollout: production dùng `ASSISTANT_ROLLOUT_MODE=knowledge_public`; exact facts, knowledge retrieval và anonymous conversations bật; advisor và graph public vẫn tắt cho tới khi Neo4j được provision và compatibility/claim được human-review.
+- Production API smoke: exact contact trả đúng `0934995657`, source authority `business` và actions `call/zalo/contact_form`; multi-turn advisor trả clarification rồi human handoff an toàn khi advisor public đang tắt; knowledge question trả generated answer có inline citation và `5` internal article sources; feedback và session delete đều HTTP `200`. Admin API anonymous trả `401`, `/admin/assistant` redirect `307` về login.
+- Browser QA: widget production desktop `420x610` và mobile viewport `390x844` đều nằm trọn viewport, không horizontal overflow; CTA live là `tel:0934995657` và `https://zalo.me/0934995657`; console không có warning/error.
+- Rollback: immediate release trước là `8d910791877898dbae7c56310ceff4a03fcf3527`; pre-feature release là `b2e3a59e09e78b8733ec4b809ca75d4cc79f3e19`. Rollback symlink theo `docs/DEPLOYMENT_RUNBOOK.md`; collections/index mới additive và có thể giữ lại, hoặc hạ `ASSISTANT_ROLLOUT_MODE`/kill switches mà không mất dữ liệu.
+
+## 2026-08-12 22:57 +0700 — Sửa chatbot đếm sản phẩm theo thương hiệu
+
+- Symptom: câu hỏi “có bao nhiêu sản phẩm ARF” bị phân loại thành knowledge question, retrieval lấy các bài editorial không liên quan rồi grounded validator trả fallback; UI vì vậy hiển thị nguồn bài viết thay vì dữ liệu catalog.
+- Root cause: exact-fact router chỉ hỗ trợ giá, tồn kho và thông số sản phẩm; chưa có intent thống kê catalog. General intent cũng yêu cầu từ khóa loại thiết bị nên câu hỏi chỉ có tên thương hiệu rơi vào nhánh LLM.
+- Change: thêm deterministic intent `product_count`; nhận diện các biến thể “bao nhiêu/mấy/tổng số/số lượng sản phẩm”; đối chiếu thương hiệu từ chính product catalog, trả tổng số cùng tối đa 5 product source và link catalog đã lọc. Thương hiệu không xác định trả clarification; câu hỏi tổng số không có scope trả toàn bộ catalog. Nhánh này bypass hoàn toàn knowledge retrieval và DeepSeek.
+- Production read-only evidence: public products API hiện trả `6` sản phẩm ARF (`ARF X12Pro`, `ARF VX330PRO`, `ARF NX4-800`, `ARF FS12`, `ARF SA15`, `ARF VX660`), nên sau deploy câu hỏi trong ảnh sẽ trả số `6`.
+- Files: `src/modules/assistant/domain/types.ts`, `src/modules/assistant/domain/exact-facts.ts`, `tests/assistant-retrieval.test.ts`. Không chạm WIP Article TOC hoặc dữ liệu MongoDB.
+- Verification: focused assistant test `16/16`; full suite `61/61`; `npx tsc --noEmit`, ESLint, production build `82` routes và `git diff --check` đều pass.
+- Delivery boundary: chưa commit/push/deploy vì lượt này không có yêu cầu deploy rõ ràng; production vẫn chạy release trước cho tới khi owner yêu cầu phát hành.
+- Rollback: revert riêng ba file source/test nêu trên; không cần migration hoặc database restore.
+
+## 2026-08-12 23:17 +0700 — Thêm DeepSeek read-only function calling cho Assistant
+
+- Scope: repository owner yêu cầu LLM tự chọn function để truy vấn dữ liệu công khai, không nhạy cảm. Giữ nguyên exact resolver cho contact/giá/tồn kho/thống kê rõ nghĩa; không deploy production trong lượt này.
+- Audit: adapter DeepSeek trước thay đổi chỉ đọc `message.content` từ một completion và không hỗ trợ `tools/tool_calls`; `AssistantPorts` đã có `listProducts` và `listKnowledge`, nên có thể tái sử dụng repository hiện hành mà không tạo DB/API source of truth mới.
+- Change: thêm bốn allowlisted tools `search_products`, `get_product_details`, `count_products`, `search_published_content`; DeepSeek chọn tối đa ba calls, server validate JSON/field/type/size, thực thi read-only ports, giới hạn tối đa mười nguồn rồi đưa evidence qua grounding validator và model tổng hợp. Unknown function, malformed JSON và field ngoài schema đều bị từ chối; không có arbitrary Mongo/Cypher/HTTP hoặc mutation tool.
+- Operations: thêm kill switch `ASSISTANT_TOOLS_ENABLED`, flag tại `/admin/assistant`, trace chỉ ghi tool name/outcome/result count và không ghi arguments. Deterministic evaluation tắt tool selector để giữ golden suite độc lập với model/network.
+- Files task-owned: `.env.example`, admin Assistant overview API/UI, `src/modules/assistant/{domain/tool-calling.ts,domain/assistant.ports.ts,application/run-assistant-tools.ts,application/answer-assistant.ts,application/run-assistant-evaluations.ts,infrastructure/assistant-config.ts,infrastructure/assistant-runtime.ts,infrastructure/deepseek-client.ts}`, `tests/assistant-tools.test.ts`; giữ nguyên WIP Article TOC và các file ngoài scope.
+- Verification: focused tool tests `9/9`; full suite `70/70`; `npx tsc --noEmit`, ESLint, `git diff --check`, secret scan và production build `82` routes đều pass; golden evaluation deterministic `120/120`. Mock transport xác minh request chứa bốn schemas, `tool_choice=auto`, parse đúng `tool_calls` và không đưa credential vào body. Live DeepSeek call local chưa chạy vì `.env.local` không có key; không thêm/copy secret vào repo.
+- Rollback: đặt `ASSISTANT_TOOLS_ENABLED=false` để quay về lexical retrieval ngay lập tức; code rollback có thể revert riêng các path task-owned nêu trên, không cần migration hoặc database restore.
+
+## 2026-08-12 23:37 +0700 — Deploy DeepSeek read-only function calling lên production
+
+- Actor/authorization: repository owner yêu cầu deploy. Chỉ commit các path Assistant task-owned; giữ nguyên WIP Article TOC/CSS, roadmap/worklog có sẵn, `.codegraph/`, `.meetless.json` và `scripts/seed-editorial-drafts.mjs` ngoài release candidate.
+- Release: feature commit `efed1b1395b910b5d8e6a37b930afd2864364c0d` pass CI `31617409087` và deploy `31617509397`. Smoke phát hiện model nhắc lại ngưỡng `10 triệu` từ câu hỏi nên grounding validator chặn dù product tools đã lọc đúng 2 nguồn; thêm deterministic product-tool summary không nới validator tại follow-up `e2f3f5bdd922d11c11bbfcaa17846527835b71b9`.
+- Final gates: local `71/71` tests, ESLint, TypeScript, dependency audit `0 vulnerabilities`, secret scan, build `82` routes và `git diff --check` pass. Final CI `31618122938` pass; Deploy production `31618209373` pass và deploy script báo release healthy sau startup retry.
+- Production smoke: `/api/health` trả exact release `e2f3f5bdd922d11c11bbfcaa17846527835b71b9`; câu đếm ARF trả exact `6`; câu lọc ARF dưới 10 triệu dùng product-tool và trả `ARF VX330PRO`, `ARF VX660` thay vì fallback; câu chi tiết `ARF VX330PRO` trả generated answer từ DeepSeek với một source catalog; admin overview anonymous trả `401`.
+- Data/operations: không migration và không mutate MongoDB. Four-tool allowlist chỉ đọc; unknown/malformed calls bị reject; kill switch `ASSISTANT_TOOLS_ENABLED=false`. Immediate rollback release là `efed1b1395b910b5d8e6a37b930afd2864364c0d`; pre-feature release là `077f65b1e761cca83d4dff55474cfcd200573055`.
+
+## 2026-08-13 00:12 +0700 — Sửa trạng thái lead và admin header theo light mode
+
+- Scope: sửa hai lỗi UI tại `/admin/contacts`; chưa commit, push hoặc deploy production trong lượt này.
+- Root cause: `select` bị ép `h-10` trong khi `.sonic-input` giữ padding dọc `0.9rem`, làm text native select bị clip; admin header dùng `bg-[#080808]/90` nên compatibility adapter light mode không đổi được nền.
+- Change: bỏ chiều cao xung đột, thêm nhãn trạng thái tiếng Việt và accessible label; chuyển admin shell/header/sidebar/navigation sang semantic theme tokens để light/dark mode dùng cùng source of truth.
+- Verification: ESLint hai component pass; full test suite `71/71`; production build pass `82` routes. Browser audit production xác nhận bỏ `h-10` làm select tăng từ `40px` lên `54.8px` và hiện giá trị; browser QA local xác nhận header light `rgb(255, 253, 249)`, dark `rgb(17, 17, 17)`, mobile `390x844` không overflow và menu/header hiển thị đúng.
+- Rollback: revert riêng `src/components/admin/AdminContactsManager.tsx` và `src/components/admin/SonicAdminShell.tsx`; không cần migration hoặc database restore.
+
+## 2026-08-13 01:28 +0700 — Provision Neo4j Community và bật production graph shadow
+
+- Actor/authorization: repository owner yêu cầu cấu hình Neo4j và chọn phương án `Community tạm thời` sau resource/security audit. Không thay MongoDB source of truth, không nâng graph/advisor public và không đưa credential vào repo, log hoặc GitHub Actions.
+- Resource/preflight: VPS có `7 CPU`, khoảng `11 GiB RAM`, khoảng `42 GiB` disk trống nhưng đang chia sẻ game stack; Neo4j vì vậy bị giới hạn `1.5 CPU / 2 GiB RAM`, heap `384–768 MiB`, page cache `512 MiB`. Image pin `neo4j:5.26.28` cùng digest `sha256:ff32db30...357`; HTTP/Bolt chỉ bind `127.0.0.1:7474/7687`, kiểm tra từ Internet đều closed.
+- Security boundary: tạo riêng credential `graph_reader` và `graph_sync_writer`, lưu tại `/srv/tiendataudio/shared/runtime-graph.env` mode `0600`; `runtime-ai.env` tiếp tục do CI quản lý. Neo4j Community không có RBAC nên hai user vẫn có implied admin privilege; đây là exception đã được owner chọn và là blocker cứng trước `graph_public`—cần AuraDB Business Critical/Virtual Dedicated Cloud hoặc Neo4j Enterprise để enforce reader/writer thật.
+- Projection: chạy rebuild từ MongoDB, sau đó sync `102` outbox event. Verify cuối: Product `6`, Brand `5`, Category `6`, Article `102`, Chunk `1300`; quan hệ MADE_BY `6`, IN_CATEGORY `6`, HAS_CHUNK `1300`; missing/unexpected/hash mismatch và toàn bộ drift đều `0`.
+- Backup/restore: cài `tiendataudio-neo4j-backup.timer` chạy hằng ngày, giữ `14` ngày. Snapshot đầu tại `/srv/tiendataudio/neo4j/backups/20260812T174140Z/` có `neo4j.dump`, `system.dump`, `SHA256SUMS`; checksum pass, load vào data directory tạm pass và `neo4j-admin database check` pass. Job từng fail do bind-mount UID và đổi tên archive; đã sửa theo UID `7474` và giữ tên chuẩn trong thư mục timestamp, đồng thời ghi bài học vào shared Obsidian mistake memory.
+- Durable deployment: commit `ef763768f01408963f68299a9789f334904e872b` (`ops: persist Neo4j graph shadow runtime`) tách graph env khỏi AI env và làm `deploy-release.sh` ghép graph override sau runtime CI. Clean release pass dependency audit `0 vulnerabilities`, tests `71/71`, TypeScript, ESLint, build `89` static pages/`82` routes, secret scan và diff check. CI `31627295738` pass; deploy `31627383579` pass, receipt `succeeded/healthy` và exact release health đúng SHA.
+- Production smoke: `tiendataudio`, MongoDB, Neo4j và backup timer active; Neo4j healthy, restart count `0`, sau warm-up dùng khoảng `713 MiB / 2 GiB`; app process nhận `ASSISTANT_ROLLOUT_MODE=graph_shadow`. Admin Graph hiển thị `Sẵn sàng / OK`, latency khoảng `23 ms`, không còn `NEO4J_NOT_CONFIGURED`; UI Verify Drift cũng báo `0` cho node, relation và hash. Journal app không có warning/error sau deploy.
+- Rollback: public answer chưa dùng graph score vì đang shadow. Hạ cấp tức thời bằng `ASSISTANT_GRAPH_ENABLED=false` và `ASSISTANT_ROLLOUT_MODE=knowledge_public`, regenerate `release.env`, restart app; có thể stop/remove projection container mà không chạm MongoDB. Rollback code release về `e2f3f5bdd922d11c11bbfcaa17846527835b71b9`; graph data là derived và có thể rebuild.
+
+## 2026-08-13 11:45 +0700 — Tối ưu Core Web Vitals trang sản phẩm
+
+- Scope/authorization: repository owner yêu cầu sửa hiệu suất và deploy production. Chỉ thay đổi LCP/hero, map footer, runtime gate chatbot, cache public settings, truy vấn related products, light-mode hydration và cache ảnh deploy; giữ nguyên WIP admin contacts, article TOC/CSS, roadmap, seed scripts và local tooling ngoài release.
+- Root causes: hero sản phẩm bị `SonicReveal` SSR với opacity 0; ảnh LCP thiếu fetch priority explicit; Google Maps tải khoảng 451 KB trong lượt đầu; root layout đọc cookie/Mongo mỗi request làm response private/no-store; related products tải tới 500 records; Next image cache nằm trong immutable release nên runtime không ghi được.
+- Changes: hero render visible ngay và ảnh priority/preload; product detail SSG/ISR 5 phút với static params; query related theo category/limit tại Mongo; facade Maps chỉ mount iframe khi gần viewport/click; cache Business Profile + SEO 5 phút có tag invalidation; theme bootstrap không flash; chatbot chỉ tải full bundle sau click nhưng kill switch vẫn runtime; cache image variants chuyển sang shared writable path của systemd.
+- Verification local: lint pass; tests `77/77`; clean production build pass `95` static pages; TypeScript qua build; dependency audit `0 vulnerabilities`; secret scan, shell syntax và `git diff --check` pass. HTML có `fetchPriority=high`, image preload, `index,follow`, canonical, không iframe Maps ban đầu và public `s-maxage=300`.
+- Performance evidence: Lighthouse mobile production build đạt Performance `93`, Accessibility `96`, Best Practices `96`, SEO `100`; FCP `0.9s`, LCP `3.2s`, TBT `20ms`, CLS `0`, Speed Index `0.9s`; không có Google Maps request ban đầu. Baseline ảnh người dùng là Performance `71`, FCP `2.9s`, LCP `6.4s`, TBT `40ms`, CLS `0`.
+- Browser QA: desktop và viewport `390x844` không horizontal overflow, hero visible, `fetchpriority=high`, light mode giữ đúng sau hydrate; Maps absent trước khi gần footer và iframe xuất hiện lazy khi observer kích hoạt; assistant chỉ hiển thị launcher nhẹ.
+- Deployment gate: previous production release `ef763768f01408963f68299a9789f334904e872b`; chờ commit exact paths, CI/CD và production smoke. Rollback dùng immutable release trước, không cần database/Neo4j restore vì không có data mutation.
+
+## 2026-08-13 11:52 +0700 — Deploy production tối ưu Core Web Vitals
+
+- Release: commit `657a898b2c160181bdab7a319a2fbd4050cb2008` (`perf: optimize public product loading`) push lên `main`; CI run `31668112539` success và Deploy production run `31668168131` success. Immutable activation, healthcheck và runner credential cleanup đều pass.
+- Production health: `/api/health` trả HTTP 200 và exact release SHA. Product ARF X12Pro trả public cache `s-maxage=300`, title/description đầy đủ, `index, follow`, canonical `/san-pham/arf-x12pro`, hero preload + `fetchPriority=high`, không iframe Maps hoặc full chatbot UI trong HTML ban đầu.
+- Runtime cache: request ảnh Next đầu tiên `x-nextjs-cache: MISS`, request thứ hai `HIT`; xác nhận shared writable image cache hoạt động sau deploy.
+- Lighthouse production mobile: Performance `91`, Accessibility `96`, Best Practices `96`, SEO `100`; FCP `1.9s`, LCP `3.1s`, TBT `0ms`, CLS `0`, Speed Index `3.0s`; không có Google Maps request ban đầu.
+- Browser production QA: desktop/mobile hero visible, light mode ổn định, mobile không overflow, console `0` warning/error; launcher chatbot xuất hiện sau runtime gate và full widget vẫn deferred tới interaction.
+- Rollback reference: immutable release trước `ef763768f01408963f68299a9789f334904e872b`; không cần restore MongoDB hoặc Neo4j.
+## 2026-08-13 — Tối ưu hiệu suất Social Hub `/bai-viet` (local, chưa deploy)
+
+- Audit/baseline: production Lighthouse mobile đạt Performance 84, FCP 1,90 giây, LCP 4,08 giây, tổng tải 2,04 MB; LCP là đoạn mô tả hero bị `SonicReveal` giữ tới hydration (render delay 2.765 ms). Gallery tải ảnh Cloudinary nguyên bản, gồm GIF 927 KB; route SSR có TTFB khoảng 357 ms và không phải nút thắt chính.
+- Thay đổi: bỏ reveal khỏi hero và card đầu; chỉ ưu tiên media đầu của card đầu; thêm Cloudinary responsive `srcset` WebP/lossy/quality/width; các media còn lại lazy; theme bootstrap được đánh dấu render-blocking để tránh first paint sai theme rồi repaint.
+- Files task-owned: `src/app/layout.tsx`, `src/app/bai-viet/page.tsx`, `src/components/social/SocialPostCard.tsx`, `src/components/social/SocialMediaGallery.tsx`, `tests/performance.test.ts`.
+- Verify: clean build qua; 78/78 test qua; lint qua; dependency audit không có vulnerability; secret scan qua; browser QA mobile 390 px và desktop 1440 px không tràn ngang, light/dark mode đúng, gallery mở 14 ảnh, console sạch. Lighthouse local mobile sau sửa đạt Performance 96, FCP 1,06 giây, LCP 2,79 giây, TBT 15 ms, CLS 0, tổng tải 399 KB, image waste 0; hero render delay giảm còn 131 ms.
+- Rủi ro còn lại: `/bai-viet` vẫn SSR theo search/category/page để giữ SEO và tính đúng dữ liệu; chưa deploy production vì yêu cầu hiện tại chưa nêu rõ deployment. Rollback: revert 5 file task-owned nêu trên.
+
+## 2026-08-13 13:38 +0700 — Deploy tối ưu Social Hub `/bai-viet`
+
+- Actor/authorization: repository owner yêu cầu deploy. Release chỉ chứa 5 file task-owned của đợt tối ưu Social Hub; giữ nguyên WIP admin contacts, article/CSS, roadmap, seed script và local tooling ngoài commit.
+- Release: commit `a3acd9c12c6cccd401a8fdebe2da24e3afd7389c` (`perf: optimize social hub loading`) đã push `main`. Clean-worktree gates: `78/78` tests, ESLint, production build, dependency audit `0 vulnerabilities`, secret scan và `git diff --check` đều pass. CI run `31674044631` success; Deploy production run `31674125085` success, gồm immutable upload, atomic activate, healthcheck và credential cleanup.
+- Production smoke: `/api/health` trả HTTP 200 và exact release SHA; `/bai-viet` trả HTTP 200 qua Cloudflare. HTML production có hero server-visible, `fetchPriority=high`, Cloudinary responsive `srcSet` với WebP/quality/width transforms và theme bootstrap render-blocking.
+- Performance production mobile: Lighthouse sau deploy đạt Performance `100`, Accessibility `96`, Best Practices `96`, SEO `100`; FCP `1,14s`, LCP `1,33s`, Speed Index `1,18s`, TBT `13ms`, CLS `0`, tổng tải khoảng `580 KB`. Baseline trước sửa: Performance `84`, FCP `1,90s`, LCP `4,08s`, Speed Index `3,83s`, tổng tải khoảng `2,09 MB`.
+- Receipt/rollback: deploy script ghi receipt `succeeded/healthy` cho release mới; release trước là `657a898b2c160181bdab7a319a2fbd4050cb2008` và được giữ làm rollback target. Không có migration hoặc mutation MongoDB/Neo4j.
+- Remaining risk: PageSpeed là lab measurement nên có dao động theo mạng/Cloudflare; theo dõi field Core Web Vitals khi đủ dữ liệu người dùng thật.
+
+## 2026-08-18 18:35 +0700 — Khôi phục Cloudflare 525 trên shared Caddy edge
+
+- Actor/authorization: repository owner yêu cầu “fix luôn” sau khi production domain báo Cloudflare `525`; được phép sửa shared reverse proxy có backup và rollback. Không thay code app, MongoDB, DNS hoặc Cloudflare settings.
+- Root cause: DNS/Cloudflare và origin IP vẫn reachable; app release `a3acd9c12c6cccd401a8fdebe2da24e3afd7389c` trả health `ok` tại `172.18.0.1:3000`; chứng chỉ Let’s Encrypt của `tiendataudioquangngai.id.vn` còn hạn tới `2026-11-07`. Caddy edge container được recreate `2026-08-14T17:14:57Z`, trong Caddyfile đang mount không còn site block Tiendataudio nên origin trả TLS alert `internal error` và Cloudflare trả `525`.
+- Change: backup `/home/lucas/deploy/dynasty-legend-2/app/deploy/docker/caddy/Caddyfile.tiendataudio-backup-20260818T113424Z`; thêm route `tiendataudioquangngai.id.vn -> 172.18.0.1:3000`, validate Caddy pass và restart riêng `dynasty-legend-2-prod-edge-1`. Không chạm các container khác.
+- Verification: origin HTTPS trả `200`; Cloudflare `/api/health` trả `200` với `status=ok` và đúng release; TLS 1.3, certificate hostname/CA verify pass; home trả `200`; các domain `dl2-auth`, `dl2-cdn`, `dl2-gm` dùng chung edge vẫn bắt tay TLS và trả lần lượt `404`, `404`, `307` như route hiện tại; không có Caddy error sau restart.
+- Rollback: restore backup Caddyfile nêu trên rồi restart riêng `dynasty-legend-2-prod-edge-1`; application release và MongoDB không cần rollback.
+- Remaining risk: Caddyfile active nằm ngoài repo Tiendataudio và compose của stack khác bind-mount trực tiếp file này. Một lần deploy/recreate stack edge có thể ghi đè route lần nữa; cần harden ownership bằng source-of-truth/import persistent config ở stack edge trong task hạ tầng riêng.
+
+## 2026-08-27 — Triển khai gói Local SEO Quảng Ngãi trong source
+
+- Scope/authorization: repository owner yêu cầu triển khai các hạng mục SEO địa phương đã bàn; chỉ thay đổi source/data trong working tree, chưa commit, push, deploy hoặc mutate production.
+- Audit trước thay đổi: production đã có sitemap khoảng `121` URL, robots cho phép crawl, các route kiểm tra trả canonical HTTPS/index-follow; tuy nhiên metadata fallback còn thiên rộng, keyword strategy chỉ có `8` keyword với `2` keyword địa phương và chưa có landing thương mại riêng cho cụm “loa/thiết bị âm thanh Quảng Ngãi”. HTTP redirect không được coi là nguyên nhân chính của trạng thái index hiện tại.
+- Changes: thêm landing indexable `/loa-quang-ngai` với NAP showroom, CTA catalog/liên hệ, sản phẩm public, bài viết địa phương, FAQ hiển thị và JSON-LD `CollectionPage`/`BreadcrumbList`/`ItemList`/`FAQPage`; thêm URL vào sitemap priority `0.95`; nối internal link từ homepage, products, knowledge, contact và footer.
+- SEO source of truth: chuẩn hóa global/page metadata về Quảng Ngãi; cập nhật `data/seo.json` và `src/lib/seo-static.ts`, xóa keyword rác `ab`; đổi keyword trụ cột về landing; bổ sung map cho `loa Quảng Ngãi`, `bán loa Quảng Ngãi`, `cửa hàng âm thanh Quảng Ngãi`, `nghe thử loa Quảng Ngãi`, `loa nghe nhạc Quảng Ngãi`, `loa karaoke Quảng Ngãi` và giữ các cụm dịch vụ chuyên sâu trỏ về bài hướng dẫn tương ứng.
+- Verification: `npm test` pass `81/81`; ESLint pass; `npx tsc --noEmit` pass; `npm run build` pass với `83` routes, landing được prerender static; runtime smoke local `/loa-quang-ngai` và `/sitemap.xml` trả `200`; HTML có title/description/canonical HTTPS, NAP, FAQPage; sitemap chứa landing; `git diff --check` pass.
+- Production follow-up: deploy release mới, submit lại sitemap và request URL inspection cho `/loa-quang-ngai` cùng các URL trọng tâm sau khi owner yêu cầu; Google index/ranking không thể được coi là hoàn tất chỉ từ build hoặc sitemap.
+- Rollback: revert riêng các file landing/sitemap/metadata/keyword map và link integration của task; không cần migration hoặc database restore. Nếu Mongo đã có `site_settings.seo_strategy`, cần merge keyword map qua admin/migration được duyệt khi chuẩn bị deploy vì runtime Mongo có thể ưu tiên cấu hình DB hơn JSON fallback.
+
+## 2026-10-05 21:32 +0700 — Phân tích đối thủ tanphataudio.vn và chiến lược SEO đề xuất
+
+- Scope/authorization: Phân tích kỹ thuật đối thủ `tanphataudio.vn` theo yêu cầu của repository owner; giải quyết bài toán Tiến Đạt Audio không ăn được đề xuất (Google Discover, Google AI Overviews, Google Suggest); lập báo cáo HTML tự chứa tại `docs/SEO_COMPETITOR_ANALYSIS_TANPHAT.html`. Không can thiệp sửa đổi production runtime hoặc mutation cơ sở dữ liệu.
+- Audit baseline đối thủ (Tân Phát Audio - `tanphataudio.vn`):
+  + Hạ tầng: WordPress 7.1.2 + WooCommerce + Flatsome theme; Yoast SEO cơ bản.
+  + Địa bàn: 276 Nguyễn Công Phương, P. Nghĩa Lộ, TP. Quảng Ngãi; Hotline: 0352.271949.
+  + Phát hiện chí mạng: File `robots.txt` đối thủ chứa `Disallow: /`, khiến bot Google bị chặn crawl toàn bộ website (`site:tanphataudio.vn` = 0 kết quả).
+  + Nghịch lý giải mã: Đối thủ vẫn được Google AI Overviews và gợi ý nhắc tên nhờ thực thể mạnh từ mạng xã hội (Facebook/YouTube test dàn âm thanh thực tế, hàng tháo phòng karaoke) và tín hiệu tìm kiếm thương hiệu (Brand Search Volume) cao tại Quảng Ngãi.
+- Audit baseline dự án Tiến Đạt Audio (`tiendataudioquangngai.id.vn`):
+  + Hạ tầng: Next.js 15 App Router, React 19, Schema JSON-LD đa tầng (`Store`, `LocalBusiness`, `OpeningHoursSpecification`), SEO strategy engine, `llms.txt`.
+  + 4 điểm nghẽn khiến "không ăn được đề xuất": (1) Trạng thái Index `site:tiendataudioquangngai.id.vn` chưa có kết quả trên Google (thiếu index = 0% đề xuất); (2) Rào cản tên miền `.id.vn` chịu kiểm duyệt khắt khe hơn tên miền `.vn`; (3) Xung đột thực thể với Tiến Đạt Audio Hà Nội (`tiendataudio.com`); (4) Nội dung đang viết dạng SEO từ khóa danh mục tĩnh, thiếu yếu tố kích hoạt Google Discover (tiêu đề giải quyết nỗi đau cấp bách, ảnh chụp thật 1200px 16:9, video nhúng giữ chân người đọc) và thiếu phễu Social-to-Search.
+- Deliverables:
+  + Xuất bản báo cáo kỹ thuật HTML chuẩn HTML-First tại `docs/SEO_COMPETITOR_ANALYSIS_TANPHAT.html` gồm ma trận so sánh, biểu đồ SVG luồng đề xuất, template Schema JSON-LD, template tiêu đề Discover và lộ trình 4 tuần lật ngược thế cờ.
+- Verification: Báo cáo HTML tự chứa, hỗ trợ Dark/Light mode, responsive, sẵn sàng in/export PDF hoặc xem qua browser.
+- Rollback reference: Xóa file `docs/SEO_COMPETITOR_ANALYSIS_TANPHAT.html` nếu không cần thiết; không ảnh hưởng mã nguồn ứng dụng.
+
+## 2026-10-05 21:54 +0700 — Audit trực tiếp live trang /products và lập phương án tối ưu
+
+- Scope/authorization: Quét URL live `https://tiendataudioquangngai.id.vn/products` theo yêu cầu của repository owner; phân tích On-Page, Schema, Content, UX và lập phương án tối ưu kỹ thuật chuẩn HTML-First tại `docs/PRODUCTS_SEO_AUDIT_OPTIMIZATION.html` trước khi đổi tên miền.
+- Audit kết quả quét live:
+  + HTTP Status: 200 OK qua Cloudflare edge; TLS 1.3; nén Brotli; TTFB tốt.
+  + Title live: `<title>Sản phẩm — Tiến Đạt Audio</title>` (quá chung chung, thiếu địa danh "Quảng Ngãi" và từ khóa thương mại).
+  + H1 live: Bị fix cứng là `Loa Nghe Nhạc Hi-End` cho toàn bộ catalog (kể cả khi filter sang Vang số hay Main công suất).
+  + Schema: Thiếu `CollectionPage` và `ItemList` để Googlebot crawl sâu vào danh sách sản phẩm.
+  + Thin Content: Sidebar thương hiệu hiển thị `Bose (0), JBL (0), Pioneer (0), Sony (0)` tạo tín hiệu web chưa hoàn thiện.
+  + Meta keywords live: Dính từ khóa rác `thiết bị DJ, tai nghe không dây`.
+- Deliverables:
+  + Xuất bản tài liệu HTML tự chứa tại `docs/PRODUCTS_SEO_AUDIT_OPTIMIZATION.html` kèm phương án code mẫu cho Dynamic H1/Title theo Category, Schema `ItemList` JSON-LD và bộ lọc Brand hợp lệ.
+- Verification: File HTML tự chứa, hỗ trợ Dark/Light mode, responsive, sẵn sàng in/export PDF.
+- Rollback reference: Xóa file `docs/PRODUCTS_SEO_AUDIT_OPTIMIZATION.html` nếu không cần thiết; chưa can thiệp sửa code logic app.
+
+## 2026-10-05 22:04 +0700 — Triển khai tối ưu On-Page toàn diện trang /products
+
+- Scope/authorization: Triển khai các hạng mục tối ưu On-Page SEO và Schema đã đề xuất cho trang `/products` theo yêu cầu của repository owner; sửa đổi source code trong working tree, chưa deploy production.
+- Changes:
+  + `src/app/products/page.tsx`:
+    * Chuyển metadata tĩnh sang dynamic `generateMetadata`: Title & Description tự động thay đổi theo danh mục (Category), thương hiệu (Brand) và từ khóa tìm kiếm (Search), gắn cứng định vị địa phương "Quảng Ngãi".
+    * Dynamic H1 & Subtitle: Đang lọc Vang số thì H1 là Vang số chống hú rít; lọc Main công suất thì H1 là Cục đẩy công suất; ở trang gốc là "Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi".
+    * Schema JSON-LD: Bổ sung cấu trúc dữ liệu `CollectionPage` và `ItemList` liệt kê toàn bộ URL sản phẩm con cho Googlebot crawl sâu.
+    * Lọc sidebar thương hiệu: Chỉ hiển thị các brand có `productCount > 0` (hoặc brand đang active), loại bỏ hoàn toàn các mục rác `Bose (0), JBL (0), Pioneer (0), Sony (0)`.
+    * Thêm khối cam kết dịch vụ địa phương: Showroom 264 Phan Đình Phùng, lắp đặt toàn tỉnh Quảng Ngãi, cắt hú rít micro 100%, bảo hành kỹ thuật 24/7 (tối ưu trích xuất cho Google AI Overviews).
+  + `src/app/products/layout.tsx`: Đồng bộ metadata fallback khớp tiêu đề thương mại địa phương.
+  + `data/seo.json` & `src/lib/seo-static.ts`: Làm sạch từ khóa rác `thiết bị DJ, tai nghe không dây`; chuẩn hóa bộ từ khóa trụ cột cho `/products` về thiết bị âm thanh, dàn karaoke, vang số, cục đẩy Quảng Ngãi.
+- Verification:
+  + `npx tsc --noEmit` pass (0 errors).
+  + `npm test` pass `81/81` tests.
+  + `npm run lint` pass (clean).
+  + `npm run build` pass (route `/products` render server-side dynamic 180 kB).
+- Rollback reference: Revert các file `src/app/products/page.tsx`, `src/app/products/layout.tsx`, `data/seo.json`, `src/lib/seo-static.ts`.

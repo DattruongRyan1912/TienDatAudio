@@ -8,9 +8,16 @@ import { generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = {
   ...generateSEOMetadata({
-    pagePath: '/kien-thuc',
-  title: 'Kiến thức âm thanh — Tiến Đạt Audio',
-  description: 'Góc nhìn thực tế về thiết bị, phối ghép và không gian âm thanh.',
+  pagePath: '/kien-thuc',
+    title: 'Kiến thức âm thanh — Tiến Đạt Audio',
+    description: 'Góc nhìn thực tế về thiết bị, phối ghép và không gian âm thanh tại Quảng Ngãi.',
+    keywords: [
+      'kiến thức âm thanh Quảng Ngãi',
+      'tư vấn âm thanh Quảng Ngãi',
+      'lắp đặt âm thanh Quảng Ngãi',
+      'cách chọn loa cho phòng khách',
+      'loa karaoke bị hú',
+    ],
   }),
   alternates: { canonical: '/kien-thuc', types: { 'application/rss+xml': '/feed.xml' } },
 }
@@ -23,7 +30,7 @@ export default async function KnowledgePage({ searchParams }: { searchParams: Pr
   const [featured, ...rest] = filtered
 
   return <div className="sonic-page pt-28 md:pt-36">
-    <SonicReveal><section className="sonic-container pb-14 md:pb-20"><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="sonic-label">Journal / Audio culture</p><h1 className="sonic-title mt-5 max-w-4xl">Kiến thức để nghe sâu hơn.</h1><p className="sonic-copy mt-6 max-w-xl">Các bài viết có tác giả, người duyệt, nguồn nội bộ và ngày cập nhật rõ ràng — tập trung vào cách âm thanh hoạt động trong không gian thật.</p></div><div className="w-full md:max-w-sm"><form action="/kien-thuc" className="relative"><Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#858989]" /><input name="q" defaultValue={params.q || ''} className="sonic-input sonic-input-with-leading-icon" placeholder="Tìm bài viết..." aria-label="Tìm bài viết" /></form><Link href="/feed.xml" className="mt-3 inline-flex items-center gap-2 text-xs text-[#858989] hover:text-[#d4af37]"><Rss size={13} /> Theo dõi RSS</Link></div></div></section></SonicReveal>
+    <SonicReveal><section className="sonic-container pb-14 md:pb-20"><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="sonic-label">Journal / Audio culture</p><h1 className="sonic-title mt-5 max-w-4xl">Kiến thức để nghe sâu hơn.</h1><p className="sonic-copy mt-6 max-w-xl">Các bài viết có tác giả, người duyệt, nguồn nội bộ và ngày cập nhật rõ ràng — tập trung vào cách âm thanh hoạt động trong không gian thật.</p><Link href="/loa-quang-ngai" className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-gold)]">Xem nội dung âm thanh tại Quảng Ngãi <span aria-hidden="true">↗</span></Link></div><div className="w-full md:max-w-sm"><form action="/kien-thuc" className="relative"><Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#858989]" /><input name="q" defaultValue={params.q || ''} className="sonic-input sonic-input-with-leading-icon" placeholder="Tìm bài viết..." aria-label="Tìm bài viết" /></form><Link href="/feed.xml" className="mt-3 inline-flex items-center gap-2 text-xs text-[#858989] hover:text-[#d4af37]"><Rss size={13} /> Theo dõi RSS</Link></div></div></section></SonicReveal>
 
     {!featured ? <section className="border-y border-white/10 bg-[#0d0d0d] py-20"><div className="sonic-container"><p className="text-sm text-[#858989]">Không tìm thấy bài viết phù hợp với “{params.q}”.</p><Link href="/kien-thuc" className="sonic-button sonic-button-ghost mt-6">Xóa bộ lọc</Link></div></section> : <>
       <SonicReveal direction="scale"><section className="border-y border-white/10 bg-[#0d0d0d] py-12 md:py-16"><div className="sonic-container grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:gap-16"><Link href={`/kien-thuc/${featured.slug}`} className="sonic-media-surface group relative aspect-[1.45] overflow-hidden border border-white/10"><Image src={featured.featuredImage || '/images/sonic-hero.png'} alt={featured.title} fill priority sizes="(min-width: 1024px) 60vw, 100vw" className="sonic-image-hover object-cover" /><span className="sonic-media-badge sonic-media-badge-gold sonic-label absolute left-5 top-5 px-2 py-1">Featured story</span><div className="sonic-media-content absolute inset-x-5 bottom-5 flex items-end justify-between gap-5"><h2 className="max-w-xl text-2xl font-bold tracking-[-0.04em] md:text-4xl">{featured.title}</h2><ArrowUpRight size={22} className="sonic-media-accent shrink-0" /></div></Link><div><p className="sonic-label">{featured.category} / {featured.readingTime} phút đọc</p><p className="mt-6 text-xl leading-relaxed text-[#c4c7c7]">{featured.excerpt}</p><p className="mt-4 text-xs text-[#707474]">{featured.author} · cập nhật {new Date(featured.updatedAt).toLocaleDateString('vi-VN')}</p><Link href={`/kien-thuc/${featured.slug}`} className="sonic-button sonic-button-ghost mt-8">Đọc bài viết <ArrowUpRight size={16} /></Link></div></div></section></SonicReveal>

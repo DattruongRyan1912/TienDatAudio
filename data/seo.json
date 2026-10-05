@@ -3,21 +3,20 @@
     {
       "id": "seo_home_1757702000000",
       "page": "/",
-      "title": "Tiến Đạt Audio - Thiết bị âm thanh chuyên nghiệp",
-      "description": "Chuyên cung cấp thiết bị âm thanh chất lượng cao: loa, tai nghe, micro, amply karaoke chính hãng. Giá tốt, chất lượng đảm bảo, giao hàng toàn quốc.",
+      "title": "Tiến Đạt Audio — Thiết bị âm thanh Quảng Ngãi",
+      "description": "Tư vấn, phối ghép và lắp đặt loa, vang số, amply và thiết bị âm thanh theo không gian tại Quảng Ngãi.",
       "keywords": [
-        "thiết bị âm thanh",
-        "loa bluetooth",
-        "tai nghe chính hãng",
-        "micro karaoke",
-        "amply karaoke",
-        "âm thanh chuyên nghiệp",
+        "thiết bị âm thanh Quảng Ngãi",
+        "loa Quảng Ngãi",
+        "loa karaoke Quảng Ngãi",
+        "loa nghe nhạc Quảng Ngãi",
+        "tư vấn phối ghép âm thanh",
+        "lắp đặt âm thanh Quảng Ngãi",
         "Tiến Đạt Audio",
-        "âm thanh quảng ngãi",
-        "ab"
+        "thiết bị âm thanh chính hãng"
       ],
-      "ogTitle": "Tiến Đạt Audio - Thiết bị âm thanh chuyên nghiệp",
-      "ogDescription": "Chuyên cung cấp thiết bị âm thanh chất lượng cao: loa, tai nghe, micro, amply karaoke chính hãng. Giá tốt, chất lượng đảm bảo.",
+      "ogTitle": "Tiến Đạt Audio — Thiết bị âm thanh Quảng Ngãi",
+      "ogDescription": "Tư vấn, phối ghép và lắp đặt thiết bị âm thanh theo không gian tại Quảng Ngãi.",
       "ogImage": "/images/og-default.jpg",
       "structuredData": {
         "@context": "https://schema.org",
@@ -28,7 +27,7 @@
       },
       "metaRobots": "index,follow",
       "canonicalUrl": "https://tiendataudioquangngai.id.vn/",
-      "h1": "Thiết bị âm thanh chuyên nghiệp - Tiến Đạt Audio",
+      "h1": "Thiết bị âm thanh tại Quảng Ngãi — Tiến Đạt Audio",
       "h2": [
         "Sản phẩm nổi bật",
         "Danh mục sản phẩm",
@@ -42,33 +41,36 @@
     {
       "id": "seo_products_1757702100000",
       "page": "/products",
-      "title": "Sản phẩm - Thiết bị âm thanh chính hãng | Tiến Đạt Audio",
-      "description": "Khám phá bộ sưu tập thiết bị âm thanh đa dạng: loa bluetooth, tai nghe không dây, micro karaoke, amply chuyên nghiệp với giá tốt nhất.",
+      "title": "Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi — Tiến Đạt Audio",
+      "description": "Cung cấp loa thùng, vang số chống hú, main công suất, amply karaoke chính hãng tại Quảng Ngãi. Trải nghiệm nghe thử âm thanh tại 264 Phan Đình Phùng. Hotline: 0934 995 657.",
       "keywords": [
-        "sản phẩm âm thanh",
-        "loa bluetooth chính hãng",
-        "tai nghe không dây",
-        "micro wireless",
-        "thiết bị DJ",
-        "âm thanh chuyên nghiệp"
+        "thiết bị âm thanh Quảng Ngãi",
+        "loa Quảng Ngãi",
+        "loa karaoke Quảng Ngãi",
+        "vang số Quảng Ngãi",
+        "cục đẩy công suất Quảng Ngãi",
+        "loa thùng Quảng Ngãi",
+        "loa trầm Quảng Ngãi",
+        "dàn karaoke gia đình Quảng Ngãi",
+        "Tiến Đạt Audio"
       ],
-      "ogTitle": "Sản phẩm thiết bị âm thanh chính hãng",
-      "ogDescription": "Khám phá bộ sưu tập thiết bị âm thanh đa dạng với giá tốt nhất tại Tiến Đạt Audio.",
+      "ogTitle": "Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi — Tiến Đạt Audio",
+      "ogDescription": "Khám phá bộ sưu tập loa, vang số, main công suất chính hãng tại Tiến Đạt Audio Quảng Ngãi.",
       "ogImage": "/images/og-default.jpg",
       "structuredData": {},
       "metaRobots": "index,follow",
       "canonicalUrl": "https://tiendataudioquangngai.id.vn/products",
-      "h1": "Sản phẩm thiết bị âm thanh chính hãng",
+      "h1": "Thiết Bị Âm Thanh & Dàn Karaoke Tại Quảng Ngãi",
       "h2": [
-        "Loa Bluetooth",
-        "Tai nghe",
-        "Micro Karaoke",
-        "Amply",
-        "Thiết bị DJ"
+        "Loa Thùng Karaoke",
+        "Loa Trầm Subwoofer",
+        "Vang Số Chống Hú",
+        "Cục Đẩy Công Suất",
+        "Amply Karaoke"
       ],
       "isActive": true,
       "createdAt": "2025-01-15T10:05:00Z",
-      "updatedAt": "2025-01-15T10:05:00Z"
+      "updatedAt": "2026-10-05T22:00:00Z"
     },
     {
       "id": "seo_brands_1757702200000",
@@ -106,12 +108,11 @@
       "title": "Liên hệ - Tư vấn thiết bị âm thanh | Tiến Đạt Audio",
       "description": "Đặt lịch nghe thử và nhận tư vấn phối ghép tại Tiến Đạt Audio, 264 Phan Đình Phùng, Quảng Ngãi. Hotline 0934995657.",
       "keywords": [
-        "liên hệ",
-        "tư vấn âm thanh",
-        "showroom âm thanh",
-        "hotline",
-        "địa chỉ cửa hàng",
-        "hỗ trợ khách hàng"
+        "tư vấn âm thanh Quảng Ngãi",
+        "showroom âm thanh Quảng Ngãi",
+        "nghe thử loa Quảng Ngãi",
+        "lắp đặt âm thanh Quảng Ngãi",
+        "Tiến Đạt Audio"
       ],
       "ogTitle": "Liên hệ tư vấn thiết bị âm thanh",
       "ogDescription": "Liên hệ với Tiến Đạt Audio để được tư vấn thiết bị âm thanh chuyên nghiệp.",
@@ -129,6 +130,37 @@
       "isActive": true,
       "createdAt": "2025-01-15T10:15:00Z",
       "updatedAt": "2025-01-15T10:15:00Z"
+    },
+    {
+      "id": "seo_local_quangngai_20260827",
+      "page": "/loa-quang-ngai",
+      "title": "Loa Quảng Ngãi | Tư vấn, nghe thử — Tiến Đạt Audio",
+      "description": "Tư vấn chọn loa, nghe thử, phối ghép và lắp đặt thiết bị âm thanh tại 264 Phan Đình Phùng, Chánh Lộ, Quảng Ngãi. Gọi 0934995657.",
+      "keywords": [
+        "loa Quảng Ngãi",
+        "bán loa Quảng Ngãi",
+        "thiết bị âm thanh Quảng Ngãi",
+        "cửa hàng âm thanh Quảng Ngãi",
+        "loa nghe nhạc Quảng Ngãi",
+        "loa karaoke Quảng Ngãi",
+        "nghe thử loa Quảng Ngãi"
+      ],
+      "ogTitle": "Loa Quảng Ngãi — Tư vấn và nghe thử tại Tiến Đạt Audio",
+      "ogDescription": "Tìm loa và thiết bị âm thanh phù hợp với không gian tại Quảng Ngãi.",
+      "ogImage": "/images/og-default.jpg",
+      "structuredData": {},
+      "metaRobots": "index,follow",
+      "canonicalUrl": "https://tiendataudioquangngai.id.vn/loa-quang-ngai",
+      "h1": "Loa Quảng Ngãi cho không gian nghe đúng chất của bạn",
+      "h2": [
+        "Tư vấn theo nhu cầu thật",
+        "Thiết bị để bắt đầu nghe",
+        "Kiến thức địa phương",
+        "Câu hỏi thường gặp"
+      ],
+      "isActive": true,
+      "createdAt": "2026-08-27T00:00:00.000Z",
+      "updatedAt": "2026-08-27T00:00:00.000Z"
     },
     {
       "id": "seo_about_1757702400000",

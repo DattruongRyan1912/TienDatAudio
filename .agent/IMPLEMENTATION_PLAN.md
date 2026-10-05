@@ -1,5 +1,7 @@
 # Implementation plan — Content, SEO/GEO/AIO và traffic modules
 
+> Roadmap chatbot/Knowledge Base/Neo4j chi tiết được quản lý tại [`ASSISTANT_KNOWLEDGE_GRAPH_PLAN.md`](./ASSISTANT_KNOWLEDGE_GRAPH_PLAN.md). Production migration và Neo4j `graph_shadow` đã hoạt động; `graph_public`/advisor vẫn phải đi qua security, evidence và evaluation human gate trong roadmap.
+
 ## Mục tiêu
 
 Xây hệ thống nội dung có thể tạo, review, xuất bản, phân phối và đo chuyển đổi trên Next.js + MongoDB; đồng thời giữ dữ liệu doanh nghiệp, Local SEO và GEO/AIO nhất quán. Thứ tự triển khai bắt buộc: `M0 → M1 → M2 → M3 → M4 → M5 → M6`.
@@ -491,3 +493,18 @@ Chỉ đánh dấu S0–S6 hoàn thành khi đạt `docs/ARCHITECTURE_STANDARD.m
 - Result: T0, S0, S1 domain/persistence, S2, S3 native MVP và phần lớn S4/S5 đã có code chạy được; code chưa được coi là production release.
 - Rollback reference: toàn bộ thay đổi vẫn ở working tree, chưa staged/committed; tắt Social Hub bằng feature flag hoặc revert riêng các path `src/modules/social`, `src/app/bai-viet`, `src/app/admin/social-posts`, `src/components/social` và các integration points.
 - Remaining risks/blockers: chưa chạy authenticated admin create/edit/publish/restore với session production; chưa có migration/backfill record Social thật hoặc backup Mongo; chưa có Facebook metadata import preview, swipe/focus-restore đầy đủ cho lightbox, Project relation UI, post-view analytics/performance evidence và mobile viewport override trong browser tool; cần review UI bằng dữ liệu media thật trước release/deploy.
+
+## 2026-08-11 — Complete master content SEO corpus locally
+
+- Scope: hoàn thiện queue 100 bài editorial theo master prompt content SEO; chỉ dùng MongoDB local `127.0.0.1/tiendataudio`, không publish, không bật index và không deploy production.
+- Completed: thêm `ContentSEOResearch`/`ContentArticleType`, trường nghiên cứu trong admin editor, publish preflight có human/media/source/internal-link gate, pipeline idempotent `db:complete-editorial` và read-only QA `db:qa-editorial`; giữ nguyên 5 bài Batch 1 và hoàn thiện 95 bài còn lại.
+- Local acceptance: đủ `100/100`, `review=100`, `published=0`, `seo.noIndex=100`, source evidence `100/100`, internal links `100/100`, duplicate title/meta/paragraph `0`, invalid internal links `0`, failures `0`.
+- Remaining human gates: gán reviewer, thay/duyệt ảnh sở hữu–được cấp phép–minh họa gốc, fact/source review, SERP/cannibalization review, bổ sung relation sản phẩm khi catalog có dữ liệu và browser/mobile/structured-data QA từng batch. `cannibalizationWatchPairs=46` là cảnh báo cần review, không phải tự động merge/canonical.
+- Rollback reference: thay đổi dữ liệu chỉ ở local và script ghi theo `completionVersion=editorial-completion-v4-2026-08-11`; không có production mutation hoặc thao tác xóa.
+
+## Production sync checkpoint — 2026-08-11
+
+- Code release `72dbfea8740dcf470548f41e40f938caf57b4bd5` đã qua CI/deploy và health check.
+- Đã chạy workflow `Sync editorial production` với confirmation `SYNC-100-PUBLISHED`; workflow backup MongoDB trước mutation và giữ nguyên lifecycle public/indexable.
+- Acceptance: 100/100 bài queue đã được cập nhật content + SEO research; `published=100`, `noIndex=0`, không duplicate title/meta/paragraph, không invalid internal link.
+- Chưa đóng human gates cho ảnh, fact/source, SERP/cannibalization và browser/mobile/schema; các gate này là bước chất lượng tiếp theo, không tự động chuyển trạng thái.

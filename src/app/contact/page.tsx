@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Clock3, Mail, MapPin, Phone } from 'lucide-react'
 import SonicContactForm from '@/components/sonic/SonicContactForm'
 import { getBusinessProfile } from '@/lib/business-profile'
@@ -10,13 +11,20 @@ export const metadata: Metadata = generateSEOMetadata({
   pagePath: '/contact',
   title: 'Đặt lịch trải nghiệm — Tiến Đạt Audio',
   description: 'Đặt lịch nghe thử và nhận tư vấn phối ghép tại Tiến Đạt Audio, 264 Phan Đình Phùng, Quảng Ngãi. Hotline 0934995657.',
+  keywords: [
+    'tư vấn âm thanh Quảng Ngãi',
+    'showroom âm thanh Quảng Ngãi',
+    'nghe thử loa Quảng Ngãi',
+    'lắp đặt âm thanh Quảng Ngãi',
+    'Tiến Đạt Audio',
+  ],
 })
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string; productId?: string; article?: string }> }) {
   const [profile, params] = await Promise.all([getBusinessProfile(), searchParams])
   return (
     <div className="sonic-page pt-28 md:pt-36">
-      <SonicReveal><section className="sonic-container pb-12 md:pb-20"><p className="sonic-label">Contact / Listening appointment</p><h1 className="sonic-title mt-5 max-w-4xl">Hãy bắt đầu bằng một cuộc trò chuyện.</h1><p className="sonic-copy mt-6 max-w-xl">Cho chúng tôi biết bạn đang nghe gì, ở đâu và mong muốn điều gì. Một cấu hình phù hợp luôn bắt đầu từ những thông tin rất cụ thể.</p></section></SonicReveal>
+      <SonicReveal><section className="sonic-container pb-12 md:pb-20"><p className="sonic-label">Contact / Listening appointment</p><h1 className="sonic-title mt-5 max-w-4xl">Hãy bắt đầu bằng một cuộc trò chuyện.</h1><p className="sonic-copy mt-6 max-w-xl">Cho chúng tôi biết bạn đang nghe gì, ở đâu và mong muốn điều gì. Một cấu hình phù hợp luôn bắt đầu từ những thông tin rất cụ thể.</p><Link href="/loa-quang-ngai" className="mt-5 inline-flex items-center text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-gold)]">Xem hướng dẫn chọn loa tại Quảng Ngãi <span aria-hidden="true" className="ml-2">↗</span></Link></section></SonicReveal>
       <section className="border-y border-white/10 bg-[#0d0d0d] py-12 md:py-16"><div className="sonic-container grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-16"><SonicReveal direction="left"><SonicContactForm product={params.product} productId={params.productId} articleId={params.article} /></SonicReveal><SonicReveal direction="right" delay={0.1}><div className="sonic-media-surface relative min-h-[500px] overflow-hidden border border-white/10"><Image src="/images/sonic-hero.png" alt="Không gian nghe thử tại Tiến Đạt Audio" fill sizes="(min-width: 1024px) 40vw, 100vw" className="sonic-image-hover object-cover" /><div className="sonic-media-content absolute inset-x-6 bottom-6"><p className="sonic-label">Showroom / Quảng Ngãi</p><h2 className="sonic-media-copy mt-3 text-3xl font-bold tracking-[-0.05em]">Đến để nghe.<br />Ở lại vì sự phù hợp.</h2></div></div></SonicReveal></div></section>
       <section className="sonic-container grid gap-6 py-12 sm:grid-cols-2 lg:grid-cols-4 md:py-20">{[[MapPin, 'Địa chỉ', profile.address.formatted], [Phone, 'Điện thoại', profile.phone], [Mail, 'Email', profile.email], [Clock3, 'Giờ mở cửa', profile.businessHours.join(' / ')]].map(([Icon, label, value], index) => { const Component = Icon as typeof MapPin; return <SonicReveal key={label as string} delay={Math.min(index * 0.06, 0.18)}><div className="border-t border-white/15 pt-5"><Component size={18} className="text-[#d4af37]" /><p className="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-[#858989]">{label as string}</p><p className="mt-2 text-sm leading-6 text-[#c4c7c7]">{value as string}</p></div></SonicReveal> })}</section>
     </div>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Phân Tích Đối Thủ (Tân Phát Audio) & Chiến Lược Đột Phá SEO Đề Xuất — Tiến Đạt Audio</title>
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-secondary: #12161f;
+      --bg-card: #181d28;
+      --bg-card-hover: #1f2634;
+      --text-main: #f0f3f6;
+      --text-muted: #94a3b8;
+      --border-color: #273142;
+      --accent-gold: #d4af37;
+      --accent-gold-glow: rgba(212, 175, 55, 0.2);
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --accent-orange: #f97316;
+      --accent-purple: #a855f7;
+      --code-bg: #0d1117;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --accent-gold: #b45309;
+      --accent-gold-glow: rgba(180, 83, 9, 0.15);
+      --accent-blue: #0284c7;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-orange: #ea580c;
+      --accent-purple: #9333ea;
+      --code-bg: #f8fafc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* Header Nav */
+    header.top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18, 22, 31, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--accent-gold);
+      color: #000;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .theme-toggle, .btn-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover, .btn-action:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-gold);
+    }
+
+    /* Layout Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(212, 175, 55, 0.08) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, var(--accent-gold-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 920px;
+    }
+
+    /* Metric Badges */
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .stat-value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Critical Alert Box */
+    .alert-box {
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      border: 1px solid;
+    }
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+    .alert-warning {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: rgba(249, 115, 22, 0.4);
+      color: #fdba74;
+    }
+    .alert-success {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+    .alert-icon { font-size: 1.5rem; line-height: 1; }
+    .alert-content h4 { font-weight: 700; margin-bottom: 4px; color: #fff; }
+    .alert-content p { font-size: 0.92rem; line-height: 1.5; color: inherit; }
+
+    /* Section Styles */
+    section.report-section {
+      margin-bottom: 44px;
+    }
+    .section-head {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title span.num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      color: #000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    /* Comparison Table */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-secondary);
+      margin: 18px 0;
+    }
+    table.comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    table.comparison-table th, table.comparison-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    table.comparison-table th {
+      background: var(--bg-card);
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+    table.comparison-table tr:last-child td { border-bottom: none; }
+    table.comparison-table tr:hover td { background: var(--bg-card-hover); }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .tag-success { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+    .tag-danger { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+    .tag-warning { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+    .tag-info { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .feature-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 22px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-gold);
+    }
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* Code Snippet Box */
+    .code-container {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin: 16px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .copy-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .copy-btn:hover { background: var(--bg-card-hover); color: var(--accent-gold); }
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    /* Flow Chart / Visualizer */
+    .flow-wrapper {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+      margin-top: 24px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--border-color);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .timeline-point {
+      position: absolute;
+      left: -32px;
+      top: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 2px solid var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: var(--accent-gold);
+    }
+    .timeline-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .timeline-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 16px 12px; }
+      .hero-title { font-size: 1.4rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .table-container { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Bar -->
+  <header class="top-bar">
+    <div class="brand-title">
+      <span>Tiến Đạt Audio</span>
+      <span class="brand-badge">Báo Cáo Kỹ Thuật SEO</span>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌓 Giao diện</button>
+      <button class="btn-action" onclick="window.print()">🖨️ In / PDF</button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-title">Phân Tích Đối Thủ tanphataudio.vn & Chiến Lược Đột Phá SEO Đề Xuất</div>
+      <p class="hero-subtitle">
+        Giải mã tại sao dự án của bạn (Tiến Đạt Audio) đang gặp rào cản không "ăn" được đề xuất (Google Discover, Google AI Overviews, Google Suggest), phân tích trực tiếp điểm mạnh & lỗ hổng chết người của Tân Phát Audio, và lộ trình hành động kỹ thuật chuẩn xác.
+      </p>
+
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-label">Đối thủ trực diện</div>
+          <div class="stat-value" style="color: var(--accent-orange);">tanphataudio.vn</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">276 Nguyễn Công Phương, Quảng Ngãi</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Trạng thái Index đối thủ</div>
+          <div class="stat-value" style="color: var(--accent-red);">0 URLs (Chặn bot)</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Lỗi nghiêm trọng: Disallow: /</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Lý do đối thủ vẫn có đề xuất</div>
+          <div class="stat-value" style="color: var(--accent-blue);">Local Social Entity</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Brand Search + Facebook Video + Maps</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Cơ hội bứt phá của bạn</div>
+          <div class="stat-value" style="color: var(--accent-green);">Rất lớn (Cửa sổ 30 ngày)</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Hạ tầng Next.js 15 vượt trội đối thủ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHÁT HIỆN ĐỘT PHÁ CỦA ĐỐI THỦ -->
+    <div class="alert-box alert-danger">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-content">
+        <h4>PHÁT HIỆN CHÍ MẠNG: Website Tân Phát Audio (tanphataudio.vn) đang chặn sạch Googlebot!</h4>
+        <p>
+          Khi audit file <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">https://tanphataudio.vn/robots.txt</code>, đối thủ có cấu hình:
+          <strong style="color: #fff;">Disallow: /</strong>. Điều này làm cho lệnh tìm kiếm <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">site:tanphataudio.vn</code> trên Google trả về <strong>0 KẾT QUẢ</strong>! Đối thủ đang hoàn toàn mất trắng lưu lượng organic traffic từ Google Web Search thông thường.
+        </p>
+      </div>
+    </div>
+
+    <!-- MỤC 1: BẢNG SO SÁNH TOÀN DIỆN -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">1</span>
+          Đối Chiếu Năng Lực Cạnh Tranh: Tiến Đạt Audio vs Tân Phát Audio
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Tiêu Chí Kỹ Thuật</th>
+              <th style="width: 40%;">Tiến Đạt Audio (Dự Án Của Bạn)</th>
+              <th style="width: 40%;">Tân Phát Audio (Đối Thủ)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Domain & TLD Trust</strong></td>
+              <td>
+                <span class="tag tag-warning">.id.vn</span> (tiendataudioquangngai.id.vn)<br>
+                <small style="color: var(--text-muted);">Tên miền cá nhân mới, bị thuật toán Google áp sandbox khắt khe hơn, cần thời gian tích lũy trust.</small>
+              </td>
+              <td>
+                <span class="tag tag-success">.vn</span> (tanphataudio.vn)<br>
+                <small style="color: var(--text-muted);">Tên miền quốc gia cấp 1, được thuật toán Google ưu tiên mặc định cho tín hiệu địa phương.</small>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Hạ Tầng & Công Nghệ</strong></td>
+              <td>
+                <span class="tag tag-success">Next.js 15 App Router + React 19</span><br>
+                <small style="color: var(--text-muted);">Server-side rendering, Core Web Vitals tối ưu tuyệt đối, TTFB siêu tốc, architecture chuẩn.</small>
+              </td>
+              <td>
+                <span class="tag tag-danger">WordPress 7.1 + Flatsome Theme</span><br>
+                <small style="color: var(--text-muted);">Nặng nề, nhiều script thừa, bloatware plugin (MonsterInsights, WooCommerce, Button VR).</small>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Cấu Hình Robots.txt</strong></td>
+              <td>
+                <span class="tag tag-success">Hợp lệ</span>: Cho phép <code style="color: var(--accent-green);">Allow: /</code>, sitemap trỏ đúng.<br>
+                <small style="color: var(--text-muted);">Sẵn sàng cho Googlebot index toàn bộ URL.</small>
+              </td>
+              <td>
+                <span class="tag tag-danger">Lỗi Chí Mạng</span>: <code style="color: var(--accent-red);">Disallow: /</code><br>
+                <small style="color: var(--text-muted);">Chặn sạch Googlebot index toàn bộ website.</small>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Cấu Trúc Dữ Liệu (Schema)</strong></td>
+              <td>
+                <span class="tag tag-success">Cực kỳ chi tiết & bài bản</span><br>
+                <small style="color: var(--text-muted);">Có sẵn Store, LocalBusiness, OpeningHoursSpecification, llms.txt, Topics knowledge.</small>
+              </td>
+              <td>
+                <span class="tag tag-info">Cơ bản (Yoast SEO)</span><br>
+                <small style="color: var(--text-muted);">Chỉ có WebPage, ImageObject, WebSite mặc định.</small>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Tín Hiệu Entity & Social</strong></td>
+              <td>
+                <span class="tag tag-warning">Đang xây dựng</span><br>
+                <small style="color: var(--text-muted);">Có Fanpage, Youtube nhưng tín hiệu tương tác địa phương và Brand Search Volume còn khiêm tốn.</small>
+              </td>
+              <td>
+                <span class="tag tag-success">Rất mạnh tại Quảng Ngãi</span><br>
+                <small style="color: var(--text-muted);">Kênh Fanpage hoạt động liên tục, đăng clip test loa, tháo phòng, gắn tên thương hiệu vào tâm trí người dân.</small>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Google AI Overview (AIO)</strong></td>
+              <td>
+                <span class="tag tag-danger">Chưa xuất hiện</span><br>
+                <small style="color: var(--text-muted);">Website chưa index + Thực thể chưa tách bạch với Tiến Đạt Audio Hà Nội.</small>
+              </td>
+              <td>
+                <span class="tag tag-success">Được Google AIO trích xuất</span><br>
+                <small style="color: var(--text-muted);">Được trích dẫn chính xác địa chỉ: 276 Nguyễn Công Phương, P. Nghĩa Lộ, TP. Quảng Ngãi.</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MỤC 2: GIẢI MÃ NGHỊCH LÝ: TẠI SAO ĐỐI THỦ BỊ CHẶN INDEX MÀ VẪN "ĂN" ĐỀ XUẤT? -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">2</span>
+          Giải Mã Nghịch Lý: Tại Sao Tân Phát Audio Vẫn Được Google Đề Xuất?
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="feature-card">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">Cơ Chế Trích Xuất Của Google AI Overview (GEO)</div>
+          <div class="card-desc">
+            Google AI Overview (Gemini) không chỉ đọc dữ liệu từ HTML web hiện tại. Nó tổng hợp từ <strong>Google Knowledge Graph</strong>, <strong>Google Business Profile (Maps)</strong>, và các nguồn dữ liệu mạng xã hội (Facebook, YouTube). Khi địa chỉ <em>"276 Nguyễn Công Phương, Nghĩa Lộ, Quảng Ngãi"</em> xuất hiện lặp đi lặp lại cùng từ khóa "thiết bị âm thanh", LLM đã lưu Tân Phát Audio vào vector bộ nhớ ngữ nghĩa của nó từ trước.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">🔥</div>
+          <div class="card-title">Tín Hiệu Brand Search Thực Tế (User Signals)</div>
+          <div class="card-desc">
+            Tân Phát Audio không làm SEO kỹ thuật giỏi (bằng chứng là web bị chặn index ngớ ngẩn). Nhưng họ làm rất tốt <strong>SEO mạng xã hội (Social-to-Search)</strong>: Video test dàn âm thanh trên Facebook kéo hàng ngàn lượt xem tại địa phương. Khách hàng xem xong, mở Google gõ <em>"Tân Phát Audio"</em> hoặc <em>"Tân Phát Audio Quảng Ngãi"</em>. Tín hiệu Brand Search cao ngất ngưởng là chìa khóa vàng giúp họ được Google ăn sâu vào đề xuất Suggest.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Tập Trung Dải Sản Phẩm Thực Chiến Địa Phương</div>
+          <div class="card-desc">
+            Sản phẩm của Tân Phát Audio đánh thẳng vào phân khúc khách hàng tỉnh: Hàng bãi tuyển, loa kẹo kéo công suất khủng, đẩy bãi, vang số chống hú, dàn nhạc sống đám cưới, hàng thanh lý quán karaoke. Đây là những từ khóa có nhu cầu mua sắm thực tiễn cao tại Quảng Ngãi.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC 3: NGUYÊN NHÂN CỐT TỬ KHIẾN DỰ ÁN CỦA BẠN "KHÔNG ĂN ĐƯỢC ĐỀ XUẤT" -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">3</span>
+          Bắt Bệnh Dự Án: 4 Điểm Nghẽn Cốt Tử Khiến Bạn Không Được Đề Xuất
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="feature-card" style="border-left: 4px solid var(--accent-red);">
+          <div class="card-icon">1️⃣</div>
+          <div class="card-title">Rào Cản Lập Chỉ Mục (Index Barrier)</div>
+          <div class="card-desc">
+            Kiểm tra thực tế: <code style="color: var(--accent-red);">site:tiendataudioquangngai.id.vn</code> hiện chưa có kết quả index trên Google. 
+            <br><strong>Nguyên lý bất biến:</strong> Muốn ăn đề xuất Google Discover hoặc Google AI Overview, URL bắt buộc phải được Googlebot crawl, render và lưu vào Search Index trước. Không có index = 0% cơ hội đề xuất.
+          </div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--accent-orange);">
+          <div class="card-icon">2️⃣</div>
+          <div class="card-title">Xung Đột Thực Thể Thương Hiệu (Entity Collision)</div>
+          <div class="card-desc">
+            Từ khóa "Tiến Đạt Audio" trên internet bị tranh chấp gay gắt bởi <em>Tiến Đạt Audio Hà Nội (tiendataudio.com)</em> - một thương hiệu lớn có tuổi đời trên 10 năm. Khi Google phân tích từ khóa "Tiến Đạt Audio", nếu bạn không gắn định vị địa phương cứng <strong>"Tiến Đạt Audio Quảng Ngãi"</strong> với NAP (Name, Address, Phone) rõ ràng, Google sẽ coi bạn là trang web mới thành lập hoặc không có thẩm quyền (Authority).
+          </div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--accent-gold);">
+          <div class="card-icon">3️⃣</div>
+          <div class="card-title">Nội Dung Đang Viết Theo Kiểu "Search Cũ", Chưa Chuẩn "Discover Mới"</div>
+          <div class="card-desc">
+            <strong>Google Discover</strong> KHÔNG đề xuất trang bán hàng hay danh mục sản phẩm. Nó chỉ đề xuất:
+            <ul style="margin-top: 8px; margin-left: 18px; line-height: 1.5;">
+              <li>Bài viết giải quyết nỗi đau cấp bách (Ví dụ: <em>Cách xử lý micro hú rít trong 3 phút</em>).</li>
+              <li>Ảnh đại diện tối thiểu <strong>1200px chiều rộng</strong> (tỉ lệ 16:9), không dùng ảnh render đồ họa mà phải là ảnh thật tại cửa hàng.</li>
+              <li>Tiêu đề khơi gợi sự tò mò và trải nghiệm cá nhân (E-E-A-T: Experience).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--accent-blue);">
+          <div class="card-icon">4️⃣</div>
+          <div class="card-title">Thiếu Phễu Dẫn Tín Hiệu (Zero Brand Search)</div>
+          <div class="card-desc">
+            Thuật toán Google Suggest dựa vào lượng tìm kiếm tích lũy của người dùng thật. Hiện tại, người dùng tại Quảng Ngãi chưa có thói quen gõ <em>"Tiến Đạt Audio Quảng Ngãi"</em> vào ô tìm kiếm của Google vì chúng ta chưa tạo ra các chiến dịch "Call to Search" trên mạng xã hội.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC 4: SƠ ĐỒ CHIẾN THUẬT ĂN ĐỀ XUẤT -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">4</span>
+          Kiến Trúc Đột Phá: Phễu Đề Xuất Đa Kênh (Social → Search → Discover & AIO)
+        </div>
+      </div>
+
+      <div class="flow-wrapper">
+        <svg viewBox="0 0 950 280" style="width: 100%; max-width: 900px; height: auto;" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stage 1 -->
+          <rect x="20" y="40" width="240" height="200" rx="12" fill="#181d28" stroke="#38bdf8" stroke-width="2"/>
+          <text x="140" y="75" fill="#38bdf8" font-size="16" font-weight="bold" text-anchor="middle">1. TÍN HIỆU XÃ HỘI (OFF-PAGE)</text>
+          <text x="140" y="110" fill="#cbd5e1" font-size="13" text-anchor="middle">Facebook Reels & TikTok Demo</text>
+          <text x="140" y="135" fill="#94a3b8" font-size="12" text-anchor="middle">Showroom 264 Phan Đình Phùng</text>
+          <rect x="40" y="160" width="200" height="60" rx="8" fill="#0d1117" stroke="#273142"/>
+          <text x="140" y="185" fill="#d4af37" font-size="12" font-weight="bold" text-anchor="middle">Call-To-Search CTA</text>
+          <text x="140" y="205" fill="#94a3b8" font-size="11" text-anchor="middle">"Search Tiến Đạt Audio Quảng Ngãi"</text>
+
+          <!-- Arrow 1 -->
+          <path d="M265 140 H320" stroke="#d4af37" stroke-width="3" stroke-dasharray="4 4"/>
+          <polygon points="325,140 315,135 315,145" fill="#d4af37"/>
+
+          <!-- Stage 2 -->
+          <rect x="330" y="40" width="260" height="200" rx="12" fill="#181d28" stroke="#d4af37" stroke-width="2"/>
+          <text x="460" y="75" fill="#d4af37" font-size="16" font-weight="bold" text-anchor="middle">2. THỰC THỂ TIẾN ĐẠT AUDIO</text>
+          <text x="460" y="105" fill="#cbd5e1" font-size="13" text-anchor="middle">Google Business Profile (Maps)</text>
+          <text x="460" y="130" fill="#cbd5e1" font-size="13" text-anchor="middle">Next.js 15 Web & llms.txt</text>
+          <rect x="350" y="155" width="220" height="65" rx="8" fill="#0d1117" stroke="#273142"/>
+          <text x="460" y="180" fill="#22c55e" font-size="12" font-weight="bold" text-anchor="middle">Đồng Nhất NAP 100%</text>
+          <text x="460" y="202" fill="#94a3b8" font-size="11" text-anchor="middle">264 Phan Đình Phùng - 0934995657</text>
+
+          <!-- Arrow 2 -->
+          <path d="M595 140 H650" stroke="#22c55e" stroke-width="3" stroke-dasharray="4 4"/>
+          <polygon points="655,140 645,135 645,145" fill="#22c55e"/>
+
+          <!-- Stage 3 -->
+          <rect x="660" y="40" width="260" height="200" rx="12" fill="#181d28" stroke="#22c55e" stroke-width="2"/>
+          <text x="790" y="75" fill="#22c55e" font-size="16" font-weight="bold" text-anchor="middle">3. BÙNG NỔ ĐỀ XUẤT</text>
+          <text x="790" y="110" fill="#38bdf8" font-size="13" font-weight="bold" text-anchor="middle">⭐ Google AI Overviews Top 1</text>
+          <text x="790" y="135" fill="#d4af37" font-size="13" font-weight="bold" text-anchor="middle">⭐ Google Discover Feed Mobile</text>
+          <text x="790" y="160" fill="#a855f7" font-size="13" font-weight="bold" text-anchor="middle">⭐ Google Suggest Autocomplete</text>
+          <text x="790" y="195" fill="#94a3b8" font-size="11" text-anchor="middle">Vượt mặt đối thủ đang bị lỗi index</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- MỤC 5: HÀNH ĐỘNG KỸ THUẬT CỤ THỂ DÀNH CHO BACKEND/FULLSTACK DEV -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">5</span>
+          Kế Hoạch Thực Thi Kỹ Thuật (Actionable Implementation)
+        </div>
+      </div>
+
+      <!-- Action 1: GSC & Indexing API -->
+      <div class="feature-card" style="margin-bottom: 20px;">
+        <div class="card-title" style="color: var(--accent-gold);">Bước 1: Kích Hoạt Indexing Cấp Tốc (Khắc Phục Lỗ Hổng 0 Index)</div>
+        <p class="card-desc">
+          Do tên miền <code style="color: var(--accent-gold);">.id.vn</code> có cơ chế crawl định kỳ chậm hơn, chúng ta cần chủ động bắn thông báo cho Googlebot qua 2 con đường:
+        </p>
+        <ol style="margin-left: 20px; margin-top: 10px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+          <li>Vào <strong>Google Search Console</strong>, thêm cả 2 định dạng: Domain Property và URL-prefix (<code style="color:#fff;">https://tiendataudioquangngai.id.vn</code>).</li>
+          <li>Submit trực tiếp <code style="color:#fff;">https://tiendataudioquangngai.id.vn/sitemap.xml</code> và <code style="color:#fff;">https://tiendataudioquangngai.id.vn/feed.xml</code> (Feed XML giúp Google phát hiện bài viết mới cho Discover chỉ trong vài phút).</li>
+          <li>Dùng công cụ "URL Inspection" (Kiểm tra URL) dán URL trang chủ và trang <code style="color:#fff;">/loa-quang-ngai</code>, sau đó ấn <strong>"Request Indexing" (Yêu cầu lập chỉ mục)</strong> thủ công.</li>
+        </ol>
+      </div>
+
+      <!-- Action 2: Schema Snippet -->
+      <div class="feature-card" style="margin-bottom: 20px;">
+        <div class="card-title" style="color: var(--accent-blue);">Bước 2: Cấu Trúc Schema Chuẩn Kích Hoạt Google AI Overview</div>
+        <p class="card-desc">
+          Cần đảm bảo file <code style="color: var(--accent-blue);">src/lib/seo-strategy.ts</code> xuất đầy đủ thông tin định danh cho AI Gemini đọc được. Dưới đây là Schema mẫu tối ưu đã tích hợp định vị địa phương độc quyền:
+        </p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Schema: Store & LocalBusiness (JSON-LD)</span>
+            <button class="copy-btn" onclick="copyCode('code-schema')">Copy JSON</button>
+          </div>
+          <pre id="code-schema">{
+  "@context": "https://schema.org",
+  "@type": ["Store", "AudioVisualStore", "LocalBusiness"],
+  "@id": "https://tiendataudioquangngai.id.vn/#business",
+  "name": "Tiến Đạt Audio",
+  "alternateName": ["Tiến Đạt Audio Quảng Ngãi", "Âm Thanh Tiến Đạt"],
+  "description": "Cửa hàng chuyên tư vấn, phối ghép, sửa chữa, chống hú và lắp đặt dàn âm thanh karaoke, gia đình tại Quảng Ngãi.",
+  "url": "https://tiendataudioquangngai.id.vn",
+  "telephone": "0934995657",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "264 Phan Đình Phùng, Phường Chánh Lộ",
+    "addressLocality": "Quảng Ngãi",
+    "addressRegion": "Quảng Ngãi",
+    "addressCountry": "VN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 15.115698,
+    "longitude": 108.802628
+  },
+  "sameAs": [
+    "https://www.facebook.com/amthanhtiendat",
+    "https://www.google.com/maps/place/Ti%E1%BA%BFn+%C4%90%E1%BA%A1t+Audio/@15.1156297,108.7975873,17z"
+  ],
+  "knowsAbout": [
+    "Thiết bị âm thanh Quảng Ngãi",
+    "Sửa chữa nâng cấp dàn karaoke Quảng Ngãi",
+    "Xử lý chống hú micro chuyên nghiệp",
+    "Cân chỉnh vang số và đẩy công suất"
+  ]
+}</pre>
+        </div>
+      </div>
+
+      <!-- Action 3: Template Bài Viết Ăn Đề Xuất Discover -->
+      <div class="feature-card">
+        <div class="card-title" style="color: var(--accent-green);">Bước 3: Công Thức Sản Xuất Content "Ăn Đề Xuất" Google Discover</div>
+        <p class="card-desc">
+          Đổi hướng từ viết bài SEO từ khóa khô khan sang <strong>Content Trải Nghiệm & Giải Quyết Vấn Đề</strong>:
+        </p>
+
+        <div class="table-container" style="margin-top: 12px;">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th style="width: 30%;">Tiêu Đề Kiểu Cũ (Không Ăn Đề Xuất)</th>
+                <th style="width: 40%;">Tiêu Đề Kiểu Mới (Ăn Chắc Google Discover)</th>
+                <th style="width: 30%;">Đặc Điểm Kỹ Thuật</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dàn karaoke gia đình giá rẻ tại Quảng Ngãi</td>
+                <td style="color: var(--accent-green); font-weight: 600;">
+                  Bí quyết phối ghép dàn karaoke 25 triệu hát hay như phòng thu tại Quảng Ngãi: Không lo hú rít
+                </td>
+                <td>Hình ảnh thật tại nhà khách, video nhúng ngắn, giải quyết nỗi đau hú rít.</td>
+              </tr>
+              <tr>
+                <td>Bán loa kéo Quảng Ngãi uy tín</td>
+                <td style="color: var(--accent-green); font-weight: 600;">
+                  So sánh 3 dòng loa di động hát tiệc ngoài trời được chuộng nhất miền Trung mùa cưới 2026
+                </td>
+                <td>Bảng so sánh công suất, thời lượng pin, trải nghiệm thực tế.</td>
+              </tr>
+              <tr>
+                <td>Sửa chữa vang số Quảng Ngãi</td>
+                <td style="color: var(--accent-green); font-weight: 600;">
+                  3 sai lầm khiến dàn âm thanh gia đình bị nghẹt tiếng và cách chỉnh EQ cực dễ tại nhà
+                </td>
+                <td>Định dạng Hướng dẫn từng bước (Step-by-step), tỷ lệ giữ chân (Dwell time) cao.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC 6: LỘ TRÌNH 4 TUẦN LẬT NGƯỢC THẾ CỜ -->
+    <section class="report-section">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">6</span>
+          Lộ Trình Triển Khai 4 Tuần (30-Day Execution Roadmap)
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-point">1</div>
+          <div class="timeline-content">
+            <div class="timeline-title">
+              <span>Tuần 1: Khắc Phục Hạ Tầng Indexing & Khai Báo Thực Thể</span>
+              <span class="tag tag-danger">Cấp bách</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">
+              • Đăng ký và verify Google Search Console bằng DNS TXT record.<br>
+              • Submit sitemap.xml và feed.xml lên GSC.<br>
+              • Kiểm tra chắc chắn thẻ <code style="color:#fff;">max-image-preview:large</code> có mặt trong view-source của mọi trang.<br>
+              • Gửi yêu cầu Indexing cho 5 URL trụ cột: Trang chủ, <code style="color:#fff;">/loa-quang-ngai</code>, <code style="color:#fff;">/products</code>, <code style="color:#fff;">/kien-thuc</code>, <code style="color:#fff;">/contact</code>.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-point">2</div>
+          <div class="timeline-content">
+            <div class="timeline-title">
+              <span>Tuần 2: Đồng Bộ Local Entity (Google Maps & Facebook NAP)</span>
+              <span class="tag tag-warning">Trọng tâm</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">
+              • Tối ưu Google Business Profile: Đặt tên chuẩn <strong>"Tiến Đạt Audio - Thiết Bị Âm Thanh & Karaoke Quảng Ngãi"</strong>.<br>
+              • Cập nhật địa chỉ 264 Phan Đình Phùng và số điện thoại 0934 995 657 khớp 100% với website và Fanpage.<br>
+              • Thêm 15-20 ảnh chụp thực tế showroom, bàn test thiết bị, xe lắp đặt lưu động.<br>
+              • Kêu gọi 5-10 đánh giá 5 sao từ khách hàng quen thuộc tại Quảng Ngãi có kèm hình ảnh dàn loa đã lắp.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-point">3</div>
+          <div class="timeline-content">
+            <div class="timeline-title">
+              <span>Tuần 3: Xuất Bản 5 Bài Viết "Discover-Ready" Kèm Ảnh 1200px Chuẩn</span>
+              <span class="tag tag-info">Sản xuất</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">
+              • Triển khai 5 bài viết theo format: Hướng dẫn sửa chữa, kinh nghiệm phối ghép, case study thi công thực tế tại Mộ Đức, Sơn Tịnh, TP Quảng Ngãi.<br>
+              • Ảnh banner tối thiểu 1200x675px (tỉ lệ 16:9), ảnh thật không bản quyền, sắc nét.<br>
+              • Nhúng video ngắn quay thử âm thanh từ YouTube / Facebook Reels vào bài viết để giữ chân người đọc trên 3 phút.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-point">4</div>
+          <div class="timeline-content">
+            <div class="timeline-title">
+              <span>Tuần 4: Kích Hoạt Phễu "Call-To-Search" & Đè Bẹp Đối Thủ Đang Bị Chặn Index</span>
+              <span class="tag tag-success">Tăng tốc</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">
+              • Trên Fanpage và các clip ngắn TikTok/Reels, chèn text: <em>"Xem sơ đồ đấu nối chi tiết tại Google: gõ 'Tiến Đạt Audio Quảng Ngãi'"</em>.<br>
+              • Tận dụng giai đoạn Tân Phát Audio đang vô tình chặn bot Google để chiếm trọn Top 1 các từ khóa: <em>thiết bị âm thanh quảng ngãi</em>, <em>loa karaoke quảng ngãi</em>, <em>lắp đặt âm thanh gia đình quảng ngãi</em>.<br>
+              • Kiểm tra Google AI Overview để thấy Tiến Đạt Audio được trích dẫn chính thức thay cho đối thủ.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('doc_theme', next);
+    }
+
+    function copyCode(id) {
+      const code = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('Đã copy mã nguồn Schema vào bộ nhớ tạm!');
+      });
+    }
+
+    // Load saved theme preference
+    const savedTheme = localStorage.getItem('doc_theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
+</body>
+</html>

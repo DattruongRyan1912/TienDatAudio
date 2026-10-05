@@ -25,6 +25,7 @@ export default function SonicFooter({ profile }: { profile: BusinessProfile }) {
           <p className="sonic-label">Điều hướng</p>
           <div className="mt-5 grid gap-3 text-sm text-[var(--sonic-muted)]">
             <Link href="/products" className="transition-colors hover:text-[#d4af37]">Sản phẩm</Link>
+            <Link href="/loa-quang-ngai" className="transition-colors hover:text-[#d4af37]">Âm thanh Quảng Ngãi</Link>
             <Link href="/about#solutions" className="transition-colors hover:text-[#d4af37]">Giải pháp</Link>
             <Link href="/kien-thuc" className="transition-colors hover:text-[#d4af37]">Kiến thức</Link>
             {isSocialHubEnabled() && <Link href="/bai-viet" className="transition-colors hover:text-[#d4af37]">Góc Audio</Link>}

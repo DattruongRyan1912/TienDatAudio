@@ -7,17 +7,49 @@ import SonicReveal from '@/components/sonic/SonicReveal'
 import { getBrands, getCategories, getProducts } from '@/lib/catalog'
 import { generateSEOMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = generateSEOMetadata({
-  pagePath: '/products',
-  title: 'Sản phẩm — Tiến Đạt Audio',
-  description: 'Khám phá bộ sưu tập loa, vang số và thiết bị âm thanh được tuyển chọn tại Tiến Đạt Audio.',
-})
-
 type ProductsPageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> }
 type QueryOverrides = Partial<{ search: string; category: string; brand: string; sort: string; page: number }>
 
 function first(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value
+}
+
+export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
+  const params = await searchParams
+  const categoryParam = first(params.category)
+  const brandParam = first(params.brand)
+  const searchParam = first(params.search)
+  const [categories, brands] = await Promise.all([getCategories(), getBrands()])
+  const activeCategory = categories.find((item) => item.id === categoryParam || item.slug === categoryParam)
+  const activeBrand = brands.find((item) => item.id === brandParam || item.slug === brandParam)
+
+  let title = 'Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi — Tiến Đạt Audio'
+  let description = 'Cung cấp loa thùng, vang số chống hú, main công suất, amply karaoke chính hãng tại Quảng Ngãi. Trải nghiệm nghe thử âm thanh tại 264 Phan Đình Phùng. Hotline: 0934 995 657.'
+
+  if (activeCategory) {
+    title = `${activeCategory.name} Chính Hãng Tại Quảng Ngãi — Tiến Đạt Audio`
+    description = `Tuyển chọn các dòng ${activeCategory.name.toLowerCase()} cao cấp tại Tiến Đạt Audio Quảng Ngãi. Tư vấn phối ghép chuẩn âm học, lắp đặt tận nơi.`
+  } else if (activeBrand) {
+    title = `Thiết Bị Âm Thanh ${activeBrand.name} Chính Hãng — Tiến Đạt Audio Quảng Ngãi`
+    description = `Phân phối thiết bị âm thanh thương hiệu ${activeBrand.name} chính hãng tại Quảng Ngãi. Bảo hành uy tín, hỗ trợ kỹ thuật tận nhà.`
+  } else if (searchParam) {
+    title = `Tìm kiếm: ${searchParam} — Thiết Bị Âm Thanh Tiến Đạt Audio`
+    description = `Kết quả tìm kiếm thiết bị âm thanh ${searchParam} tại Tiến Đạt Audio Quảng Ngãi.`
+  }
+
+  return generateSEOMetadata({
+    pagePath: '/products',
+    title,
+    description,
+    keywords: [
+      activeCategory ? `${activeCategory.name} Quảng Ngãi` : 'thiết bị âm thanh Quảng Ngãi',
+      'dàn karaoke Quảng Ngãi',
+      'loa Quảng Ngãi',
+      'vang số Quảng Ngãi',
+      'cục đẩy công suất Quảng Ngãi',
+      'Tiến Đạt Audio',
+    ],
+  })
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
@@ -43,6 +75,61 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   const activeCategory = categories.find((item) => item.id === category || item.slug === category)
   const activeBrand = brands.find((item) => item.id === brand || item.slug === brand)
+
+  const categoryHeadingMap: Record<string, { h1: string; subtitle: string }> = {
+    'loa-thung': {
+      h1: 'Loa Thùng & Loa Full Karaoke Chính Hãng',
+      subtitle: 'Các dòng loa full bass 25, bass 30 uy lực, dải âm sáng rõ, cho lời ca bay bổng phục vụ karaoke gia đình và sự kiện tại Quảng Ngãi.',
+    },
+    'loa-tram': {
+      h1: 'Loa Trầm Subwoofer Uy Lực Cho Dàn Karaoke',
+      subtitle: 'Tăng cường dải trầm sâu chắc, mạnh mẽ, mang lại trải nghiệm âm thanh sống động cho phòng hát tại gia và không gian giải trí.',
+    },
+    'vang-so': {
+      h1: 'Vang Số Chống Hú Rít Chuyên Nghiệp',
+      subtitle: 'Xử lý âm thanh kỹ thuật số DSP cao cấp, cắt triệt để tiếng hú rít micro, nâng tầm giọng hát mượt mà và nhẹ hơi.',
+    },
+    'main-cong-suat': {
+      h1: 'Cục Đẩy Công Suất Nhập Khẩu Chính Hãng',
+      subtitle: 'Cung cấp nguồn năng lượng dồi dào, đánh căng các dòng loa công suất lớn với độ bền bỉ và độ ổn định cao.',
+    },
+    'amply-karaoke': {
+      h1: 'Amply Karaoke Gia Đình Cao Cấp',
+      subtitle: 'Amply tích hợp vang số thế hệ mới, dễ dàng căn chỉnh, đáp ứng hoàn hảo nhu cầu nghe nhạc và hát karaoke gia đình.',
+    },
+  }
+
+  const categoryPreset = activeCategory?.slug ? categoryHeadingMap[activeCategory.slug] : null
+  const dynamicH1 = categoryPreset?.h1
+    || (activeCategory ? `${activeCategory.name} Chính Hãng Tại Quảng Ngãi` : null)
+    || (activeBrand ? `Thiết Bị Âm Thanh Thương Hiệu ${activeBrand.name}` : null)
+    || (search ? `Kết quả tìm kiếm cho “${search}”` : 'Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi')
+
+  const dynamicSubtitle = categoryPreset?.subtitle
+    || (activeCategory ? `Bộ sưu tập ${activeCategory.name.toLowerCase()} tuyển chọn tại Tiến Đạt Audio Quảng Ngãi. Trải nghiệm nghe thử âm thanh trực tiếp tại 264 Phan Đình Phùng.` : null)
+    || (activeBrand ? `Các thiết bị âm thanh ${activeBrand.name} chính hãng phân phối tại Quảng Ngãi với chính sách bảo hành uy tín và lắp đặt tận nơi.` : null)
+    || 'Khám phá bộ sưu tập loa, vang số, main công suất và dàn karaoke chính hãng. Phối ghép chuẩn âm học, trải nghiệm nghe thử thực tế tại 264 Phan Đình Phùng, TP Quảng Ngãi.'
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudioquangngai.id.vn').replace(/\/$/, '')
+  const catalogStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: dynamicH1,
+    description: dynamicSubtitle,
+    url: `${siteUrl}/products`,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: sortedProducts.length,
+      itemListElement: sortedProducts.map((product, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `${siteUrl}/san-pham/${product.slug}`,
+        name: product.name,
+        image: product.images?.[0] ? (product.images[0].startsWith('http') ? product.images[0] : `${siteUrl}${product.images[0]}`) : undefined,
+      })),
+    },
+  }
+
   const featuredProduct = sort === 'featured' ? sortedProducts.find((item) => item.featured) || sortedProducts[0] : null
   const catalogProducts = featuredProduct ? sortedProducts.filter((item) => item.id !== featuredProduct.id) : sortedProducts
   const pageSize = 6
@@ -64,14 +151,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="sonic-page pt-28 md:pt-36">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogStructuredData) }}
+      />
       <section className="sonic-container pb-14 md:pb-20">
         <SonicReveal className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
-            <p className="sonic-label">Danh mục sản phẩm</p>
-            <h1 className="sonic-title mt-5 max-w-3xl">Loa Nghe Nhạc Hi-End</h1>
+            <p className="sonic-label">{activeCategory ? `Danh mục / ${activeCategory.name}` : 'Danh mục sản phẩm'}</p>
+            <h1 className="sonic-title mt-5 max-w-3xl">{dynamicH1}</h1>
             <p className="sonic-copy mt-5 max-w-xl">
-              Khám phá bộ sưu tập loa cao cấp từ các thương hiệu huyền thoại thế giới. Nơi kỹ thuật cơ khí chính xác gặp gỡ nghệ thuật tái tạo âm thanh nguyên bản.
+              {dynamicSubtitle}
             </p>
+            <Link href="/loa-quang-ngai" className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-gold)] transition-colors hover:text-[var(--sonic-gold-hover)]">Tìm loa và tư vấn tại Quảng Ngãi <span aria-hidden="true">↗</span></Link>
           </div>
           <div className="text-left md:text-right">
             <p className="text-4xl font-bold tracking-[-0.05em] text-[var(--sonic-gold)]">{sortedProducts.length.toString().padStart(2, '0')}</p>
@@ -132,7 +224,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             <div className="py-5">
               <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-text)]">Thương hiệu</p>
               <div className="grid gap-1">
-                {brands.map((item) => {
+                {brands.filter((item) => (item.productCount || 0) > 0 || brand === item.id || brand === item.slug).map((item) => {
                   const active = brand === item.id || brand === item.slug
                   return (
                     <Link key={item.id} href={hrefFor({ brand: item.id, page: 1 })} className={`flex items-center justify-between py-2 text-sm transition-colors hover:text-[var(--sonic-gold)] ${active ? 'text-[var(--sonic-gold)]' : 'text-[var(--sonic-muted)]'}`}>
@@ -199,6 +291,33 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </Link>
               </nav>
             )}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--sonic-line)] bg-[var(--sonic-surface)] py-12 md:py-16">
+        <div className="sonic-container">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="sonic-panel p-6">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Nghe thử thực tế</p>
+              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Showroom 264 Phan Đình Phùng</h3>
+              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Không gian setup sẵn loa thùng, vang số, cục đẩy để khách hàng trải nghiệm chất âm thực tế trước khi lựa chọn.</p>
+            </div>
+            <div className="sonic-panel p-6">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Lắp đặt tận nơi</p>
+              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Toàn tỉnh Quảng Ngãi</h3>
+              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Đội ngũ kỹ thuật hỗ trợ vận chuyển, lắp ráp và cân chỉnh chất âm tận nhà tại TP Quảng Ngãi và các huyện lân cận.</p>
+            </div>
+            <div className="sonic-panel p-6">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Xử lý dứt điểm</p>
+              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Cắt hú rít micro 100%</h3>
+              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Căn chỉnh vang số chuyên nghiệp qua phần mềm máy tính, giọng hát nhẹ, bay bổng, không lo rú rít hỏng loa tép.</p>
+            </div>
+            <div className="sonic-panel p-6">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Bảo hành uy tín</p>
+              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Hỗ trợ kỹ thuật 24/7</h3>
+              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Cam kết thiết bị chính hãng, hỗ trợ kỹ thuật và bảo hành nhanh chóng, đồng hành lâu dài cùng khách hàng.</p>
+            </div>
           </div>
         </div>
       </section>

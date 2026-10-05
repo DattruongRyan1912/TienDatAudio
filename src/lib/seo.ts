@@ -7,22 +7,18 @@ export const defaultOpenGraphImage = '/images/og-default.jpg'
 
 const siteConfig = {
   name: 'Tiến Đạt Audio',
-  description: 'Chuyên cung cấp thiết bị âm thanh chất lượng cao - Loa, Ampli, Phụ kiện âm thanh chính hãng với giá tốt nhất',
+  description: 'Tư vấn, phối ghép và lắp đặt thiết bị âm thanh theo không gian tại Quảng Ngãi.',
   url: process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl,
   ogImage: defaultOpenGraphImage,
   keywords: [
-    'thiết bị âm thanh',
-    'loa chính hãng', 
-    'ampli cao cấp',
-    'phụ kiện âm thanh',
-    'Sony audio',
-    'Yamaha audio',
-    'Denon audio',
-    'Marantz audio',
-    'hifi audio',
-    'home theater',
-    'âm thanh chất lượng cao',
-    'thiết bị nghe nhạc'
+    'thiết bị âm thanh Quảng Ngãi',
+    'loa Quảng Ngãi',
+    'loa karaoke Quảng Ngãi',
+    'loa nghe nhạc Quảng Ngãi',
+    'tư vấn phối ghép âm thanh',
+    'lắp đặt âm thanh Quảng Ngãi',
+    'Tiến Đạt Audio',
+    'thiết bị âm thanh chính hãng',
   ],
   authors: [
     {

@@ -15,6 +15,12 @@ export const metadata: Metadata = generateSEOMetadata({
   pagePath: '/bai-viet',
   title: 'Góc Audio — Tiến Đạt Audio',
   description: 'Những câu chuyện, setup, sản phẩm và trải nghiệm âm thanh mới nhất từ Tiến Đạt Audio.',
+  keywords: [
+    'góc audio Quảng Ngãi',
+    'thiết bị âm thanh Quảng Ngãi',
+    'loa Quảng Ngãi',
+    'setup âm thanh Quảng Ngãi',
+  ],
 })
 
 export const revalidate = 300

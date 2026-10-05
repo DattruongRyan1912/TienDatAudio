@@ -146,6 +146,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   width: 100%;
   align-self: start;
 }
+.article-toc-link {
+  color: var(--sonic-subtle);
+  transition: color var(--sonic-motion-fast) ease;
+}
+.article-toc-link:hover,
+.article-toc-link:focus-visible,
+.article-toc-link-active {
+  color: var(--sonic-gold);
+}
+.article-toc-link:focus-visible { outline: 2px solid var(--sonic-gold); outline-offset: 3px; }
 .article-body { min-width: 0; width: 100%; max-width: var(--article-body-width); }
 .article-gallery { width: 100%; }
 .article-faq { width: 100%; }

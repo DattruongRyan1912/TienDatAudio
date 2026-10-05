@@ -5,12 +5,111 @@
       "id": "kw-local-audio-quang-ngai",
       "term": "thiết bị âm thanh Quảng Ngãi",
       "intent": "local",
-      "targetPage": "/products",
+      "targetPage": "/loa-quang-ngai",
       "cluster": "core-local",
       "priority": "high",
-      "notes": "Từ khóa trụ cột cho nhu cầu tìm cửa hàng và tư vấn tại địa phương.",
+      "notes": "Từ khóa trụ cột cho nhu cầu tìm cửa hàng, sản phẩm và tư vấn tại địa phương; dẫn về landing thương mại địa phương.",
       "isActive": true,
-      "updatedAt": "2026-08-09T00:00:00.000Z"
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-speakers-quang-ngai",
+      "term": "loa Quảng Ngãi",
+      "intent": "local",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Truy vấn địa phương cốt lõi; landing trả lời nhu cầu tìm loa, địa chỉ và cách liên hệ.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-sell-speakers-quang-ngai",
+      "term": "bán loa Quảng Ngãi",
+      "intent": "commercial",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Ý định tìm nơi mua; không hứa giá cố định, dẫn người dùng tới catalog và tư vấn tồn kho.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-audio-shop-quang-ngai",
+      "term": "cửa hàng âm thanh Quảng Ngãi",
+      "intent": "local",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Truy vấn tìm địa điểm; NAP, giờ mở cửa và đường dẫn liên hệ phải nhất quán.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-listening-quang-ngai",
+      "term": "nghe thử loa Quảng Ngãi",
+      "intent": "commercial",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "listening",
+      "priority": "medium",
+      "notes": "Ý định trải nghiệm; CTA đặt lịch và thông tin showroom cần hiển thị trên landing.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-hifi-quang-ngai",
+      "term": "loa nghe nhạc Quảng Ngãi",
+      "intent": "commercial",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "medium",
+      "notes": "Cụm nhu cầu nghe nhạc; kết nối catalog và các bài viết hướng dẫn chọn loa.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-karaoke-speaker-quang-ngai",
+      "term": "loa karaoke Quảng Ngãi",
+      "intent": "commercial",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "high",
+      "notes": "Cụm sản phẩm thương mại; dẫn về tư vấn cấu hình thay vì chỉ lặp từ khóa.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-showroom-quang-ngai",
+      "term": "showroom âm thanh Quảng Ngãi",
+      "intent": "local",
+      "targetPage": "/loa-quang-ngai",
+      "cluster": "core-local",
+      "priority": "medium",
+      "notes": "Biến thể địa điểm; dùng cùng NAP và đường dẫn bản đồ đã xác minh.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-installation-quang-ngai",
+      "term": "lắp đặt âm thanh Quảng Ngãi",
+      "intent": "transactional",
+      "targetPage": "/kien-thuc/lap-dat-am-thanh-gia-dinh-quang-ngai",
+      "cluster": "solutions",
+      "priority": "high",
+      "notes": "Cụm dịch vụ nên được trả lời bằng bài hướng dẫn địa phương và CTA liên hệ.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
+    },
+    {
+      "id": "kw-local-consulting-quang-ngai",
+      "term": "tư vấn phối ghép âm thanh Quảng Ngãi",
+      "intent": "commercial",
+      "targetPage": "/kien-thuc/tu-van-phoi-ghep-am-thanh-tai-quang-ngai",
+      "cluster": "consulting",
+      "priority": "high",
+      "notes": "Cụm dịch vụ chuyên sâu; bài viết giải thích quy trình và liên kết về landing/contact.",
+      "isActive": true,
+      "updatedAt": "2026-08-27T00:00:00.000Z"
     },
     {
       "id": "kw-audio-consulting",
@@ -175,9 +274,10 @@
     "preferredSources": [
       "/",
       "/products",
+      "/loa-quang-ngai",
       "/kien-thuc",
       "/contact"
     ]
   },
-  "updatedAt": "2026-08-09T00:00:00.000Z"
+  "updatedAt": "2026-08-27T00:00:00.000Z"
 }

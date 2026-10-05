@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Live & Phương Án Tối Ưu Trang /products — Tiến Đạt Audio</title>
+  <style>
+    :root {
+      --bg-primary: #0a0c10;
+      --bg-secondary: #12161f;
+      --bg-card: #181d28;
+      --bg-card-hover: #1f2634;
+      --text-main: #f0f3f6;
+      --text-muted: #94a3b8;
+      --border-color: #273142;
+      --accent-gold: #d4af37;
+      --accent-gold-glow: rgba(212, 175, 55, 0.2);
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --accent-orange: #f97316;
+      --code-bg: #0d1117;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --accent-gold: #b45309;
+      --accent-gold-glow: rgba(180, 83, 9, 0.15);
+      --accent-blue: #0284c7;
+      --accent-green: #16a34a;
+      --accent-red: #dc2626;
+      --accent-orange: #ea580c;
+      --code-bg: #f8fafc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    header.top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(18, 22, 31, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--accent-gold);
+      color: #000;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .theme-toggle, .btn-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover, .btn-action:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-gold);
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(212, 175, 55, 0.08) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .alert-box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border: 1px solid;
+    }
+    .alert-warning {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: rgba(249, 115, 22, 0.4);
+      color: #fdba74;
+    }
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      color: #000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-secondary);
+      margin: 16px 0;
+    }
+    table.audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    table.audit-table th, table.audit-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    table.audit-table th {
+      background: var(--bg-card);
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    table.audit-table tr:hover td { background: var(--bg-card-hover); }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .tag-danger { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+    .tag-warning { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+    .tag-success { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+    .tag-info { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin: 20px 0;
+    }
+    .feature-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .code-container {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin: 14px 0;
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .copy-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+    pre {
+      padding: 14px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="brand-title">
+      <span>Tiến Đạt Audio</span>
+      <span class="brand-badge">Audit Live /products</span>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" onclick="toggleTheme()">🌓 Giao diện</button>
+      <button class="btn-action" onclick="window.print()">🖨️ In / PDF</button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="hero-banner">
+      <div class="hero-title">Kết Quả Quét Live & Phương Án Tối Ưu Trang /products</div>
+      <p class="hero-subtitle">
+        Phân tích chi tiết hiện trạng On-Page, Schema, Content và UX tại URL: <code style="color: var(--accent-blue);">https://tiendataudioquangngai.id.vn/products</code>. Chuẩn hóa 100% chất lượng trang catalog trước khi kích hoạt tên miền mới.
+      </p>
+    </div>
+
+    <!-- MỤC 1: KẾT QUẢ QUÉT LIVE -->
+    <section style="margin-bottom: 36px;">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">1</span>
+          Dữ Liệu Quét Thực Tế Từ Máy Chủ (Live HTTP Response)
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Thành Phần</th>
+              <th style="width: 45%;">Dữ Liệu Quét Thực Tế (Live)</th>
+              <th style="width: 30%;">Đánh Giá & Tác Động SEO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>HTTP Status & Server</strong></td>
+              <td><span class="tag tag-success">HTTP/2 200 OK</span> | Cloudflare Edge</td>
+              <td>Tốt. Server phản hồi nhanh, TLS 1.3 bảo mật, nén Brotli hoạt động.</td>
+            </tr>
+            <tr>
+              <td><strong>Title Tag</strong></td>
+              <td><code style="color: var(--accent-orange);">&lt;title&gt;Sản phẩm — Tiến Đạt Audio&lt;/title&gt;</code></td>
+              <td><span class="tag tag-danger">Cực yếu</span>: Quá chung chung, không có địa danh "Quảng Ngãi", không có từ khóa thiết bị.</td>
+            </tr>
+            <tr>
+              <td><strong>Heading H1</strong></td>
+              <td><code style="color: var(--accent-red);">&lt;h1&gt;Loa Nghe Nhạc Hi-End&lt;/h1&gt;</code></td>
+              <td><span class="tag tag-danger">Lệch Intent</span>: Fix cứng là "Loa Hi-End" dù catalog có cả Vang số, Main công suất, Loa trầm. Khi lọc Vang số H1 vẫn là Loa Hi-End!</td>
+            </tr>
+            <tr>
+              <td><strong>Meta Keywords Live</strong></td>
+              <td><code style="color: var(--text-muted);">sản phẩm âm thanh, loa bluetooth, tai nghe không dây, micro wireless, thiết bị DJ...</code></td>
+              <td><span class="tag tag-warning">Dính dữ liệu rác</span>: Có "thiết bị DJ, tai nghe không dây" mà shop không kinh doanh.</td>
+            </tr>
+            <tr>
+              <td><strong>Schema Markup</strong></td>
+              <td>Chỉ có Schema Store chung của layout. <strong>KHÔNG CÓ</strong> Schema <code style="color: var(--accent-gold);">ItemList</code> hay <code style="color: var(--accent-gold);">CollectionPage</code>.</td>
+              <td><span class="tag tag-danger">Thiếu sót lớn</span>: Googlebot không hiểu cấu trúc danh sách sản phẩm để trích xuất Rich Snippets.</td>
+            </tr>
+            <tr>
+              <td><strong>Thương Hiệu Trống (Empty Brands)</strong></td>
+              <td>Sidebar hiển thị: <code style="color: var(--accent-red);">Bose (0), JBL (0), Pioneer (0), Sony (0)</code>.</td>
+              <td><span class="tag tag-warning">Thin Content Signal</span>: Tạo cảm giác website demo / bỏ dở, ảnh hưởng điểm Quality Score.</td>
+            </tr>
+            <tr>
+              <td><strong>Giá Sản Phẩm</strong></td>
+              <td>Toàn bộ 6 sản phẩm đều ghi: <code style="color: var(--accent-gold);">Liên hệ giá</code></td>
+              <td>Nên có khoảng giá tham khảo hoặc tối ưu thẻ Product Offer để không bị cảnh báo thiếu dữ liệu giá.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MỤC 2: 5 ĐIỂM NGHẼN CẦN TỐI ƯU NGAY -->
+    <section style="margin-bottom: 36px;">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">2</span>
+          5 Lỗ Hổng Cốt Tử Cần Khắc Phục Trên Trang /products
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="feature-card">
+          <div class="card-title" style="color: var(--accent-red);">1. Title & Description Không Khớp Địa Phương</div>
+          <div class="card-desc">
+            Khách hàng Quảng Ngãi tìm: <em>"thiết bị âm thanh quảng ngãi"</em>, <em>"mua vang số quảng ngãi"</em>, <em>"cục đẩy công suất quảng ngãi"</em>. 
+            Title hiện tại <code>Sản phẩm — Tiến Đạt Audio</code> sẽ không bao giờ cạnh tranh được với đối thủ có định vị rõ ràng.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: var(--accent-orange);">2. H1 Bị Cố Định (Static Heading Conflict)</div>
+          <div class="card-desc">
+            Hiện tại H1 luôn là <em>"Loa Nghe Nhạc Hi-End"</em>. Khi khách bấm vào lọc <code>?category=vang-so</code>, H1 vẫn là Loa Hi-End! Googlebot coi đây là trang có nội dung mâu thuẫn giữa tiêu đề và nội dung sản phẩm bên dưới.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: var(--accent-gold);">3. Thiếu Schema ItemList Cho Googlebot Thu Thập</div>
+          <div class="card-desc">
+            Trang catalog chuẩn SEO của thương mại điện tử bắt buộc phải có Schema <code>CollectionPage</code> và <code>ItemList</code> (chứa danh sách các URL <code>/san-pham/...</code>). Điều này giúp Googlebot đào sâu và index nhanh toàn bộ các sản phẩm con.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: var(--accent-blue);">4. Danh Mục Thương Hiệu Chứa Nhiều Mục Số 0</div>
+          <div class="card-desc">
+            Bose (0), JBL (0), Pioneer (0), Sony (0) hiển thị công khai trên giao diện người dùng. Cần lọc chỉ hiển thị các thương hiệu có <code>productCount &gt; 0</code> để catalog luôn đầy đặn và chuyên nghiệp.
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="card-title" style="color: var(--accent-green);">5. Thiếu Khối Nội Dung "Ăn" AI Overview (Buying Guide & FAQ)</div>
+          <div class="card-desc">
+            Trang chỉ liệt kê sản phẩm mà thiếu đoạn củng cố niềm tin: Cam kết nghe thử trực tiếp tại 264 Phan Đình Phùng, chính sách cân chỉnh âm thanh tận nhà tại Quảng Ngãi, giải đáp câu hỏi thường gặp khi phối ghép dàn karaoke.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC 3: MÃ NGUỒN TỐI ƯU CỤ THỂ SẴN SÀNG ÁP DỤNG -->
+    <section style="margin-bottom: 36px;">
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">3</span>
+          Phương Án Tối Ưu Code Cụ Thể (Sẵn Sàng Triển Khai)
+        </div>
+      </div>
+
+      <!-- Code 1: Dynamic Metadata & H1 -->
+      <div class="feature-card" style="margin-bottom: 20px;">
+        <div class="card-title" style="color: var(--accent-gold);">Tối ưu 1: Dynamic Title, H1 & Description theo bộ lọc Category</div>
+        <p class="card-desc">Cập nhật <code>src/app/products/page.tsx</code> để H1 và Title tự động thay đổi theo danh mục người dùng đang xem:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Logic Dynamic Heading & Title</span>
+            <button class="copy-btn" onclick="copyCode('code-dynamic-h1')">Copy Code</button>
+          </div>
+          <pre id="code-dynamic-h1">// Thay thế H1 tĩnh bằng logic dynamic:
+const categoryHeadingMap: Record&lt;string, string&gt; = {
+  'loa-thung': 'Loa Thùng & Loa Full Karaoke Chính Hãng',
+  'loa-tram': 'Loa Trầm Subwoofer Uy Lực Cho Dàn Karaoke',
+  'vang-so': 'Vang Số Chống Hú Rít Chuyên Nghiệp',
+  'main-cong-suat': 'Cục Đẩy Công Suất Nhập Khẩu Chính Hãng',
+  'amply-karaoke': 'Amply Karaoke Gia Đình Cao Cấp',
+}
+
+const dynamicH1 = activeCategory 
+  ? (categoryHeadingMap[activeCategory.slug] || `${activeCategory.name} — Thiết Bị Âm Thanh`)
+  : activeBrand 
+  ? `Thiết Bị Âm Thanh Thương Hiệu ${activeBrand.name}`
+  : 'Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi'
+
+const dynamicSubtitle = activeCategory
+  ? `Tuyển chọn các dòng ${activeCategory.name.toLowerCase()} chất lượng cao, hỗ trợ test chất âm trực tiếp tại showroom 264 Phan Đình Phùng, TP Quảng Ngãi.`
+  : 'Khám phá bộ sưu tập loa, vang số, main công suất chính hãng được phối ghép chuẩn âm học tại Quảng Ngãi.'</pre>
+        </div>
+      </div>
+
+      <!-- Code 2: ItemList Schema -->
+      <div class="feature-card" style="margin-bottom: 20px;">
+        <div class="card-title" style="color: var(--accent-blue);">Tối ưu 2: Bổ sung Schema ItemList + CollectionPage cho /products</div>
+        <p class="card-desc">Giúp Googlebot crawl sâu và hiển thị Rich Snippets danh mục sản phẩm:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Schema CollectionPage & ItemList (JSON-LD)</span>
+            <button class="copy-btn" onclick="copyCode('code-schema-products')">Copy Code</button>
+          </div>
+          <pre id="code-schema-products">const catalogStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": dynamicH1,
+  "description": dynamicSubtitle,
+  "url": "https://tiendataudioquangngai.id.vn/products",
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": sortedProducts.length,
+    "itemListElement": sortedProducts.map((product, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://tiendataudioquangngai.id.vn/san-pham/${product.slug}`,
+      "name": product.name,
+      "image": product.images?.[0] ? `https://tiendataudioquangngai.id.vn${product.images[0]}` : undefined
+    }))
+  }
+}</pre>
+        </div>
+      </div>
+
+      <!-- Code 3: Lọc Brand rác -->
+      <div class="feature-card">
+        <div class="card-title" style="color: var(--accent-green);">Tối ưu 3: Ẩn thương hiệu có 0 sản phẩm trong Sidebar</div>
+        <p class="card-desc">Sửa dòng 143 trong <code>src/app/products/page.tsx</code>:</p>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>Filter Active Brands Only</span>
+            <button class="copy-btn" onclick="copyCode('code-filter-brands')">Copy Code</button>
+          </div>
+          <pre id="code-filter-brands">// Chỉ hiển thị thương hiệu có ít nhất 1 sản phẩm:
+const activeBrandsWithProducts = brands.filter((item) => (item.productCount || 0) &gt; 0)
+
+// Render:
+{activeBrandsWithProducts.map((item) =&gt; {
+  const active = brand === item.id || brand === item.slug
+  return (
+    &lt;Link key={item.id} href={hrefFor({ brand: item.id, page: 1 })} ...&gt;
+      &lt;span&gt;{item.name}&lt;/span&gt;
+      &lt;span className="text-[0.64rem] text-[var(--sonic-subtle)]"&gt;{item.productCount}&lt;/span&gt;
+    &lt;/Link&gt;
+  )
+})}</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- MỤC 4: LỢI ÍCH CHIẾN LƯỢC: TỐI ƯU TRƯỚC RỒI ĐỔI DOMAIN SAU -->
+    <section>
+      <div class="section-head">
+        <div class="section-title">
+          <span class="num">4</span>
+          Chiến Lược: Tại Sao Nên Tối Ưu Code Trước Rồi Đổi Tên Miền Sau?
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="feature-card" style="border-left: 4px solid var(--accent-green);">
+          <div class="card-title">1. Tích Lũy Điểm Chất Lượng On-Page (Quality Score)</div>
+          <div class="card-desc">
+            Khi code On-Page chuẩn (H1 động, Schema ItemList, Content thực tế, không có danh mục rác 0 sản phẩm), toàn bộ website trở thành một <strong>cỗ máy hoàn chỉnh</strong>.
+          </div>
+        </div>
+
+        <div class="feature-card" style="border-left: 4px solid var(--accent-gold);">
+          <div class="card-title">2. Kích Hoạt Tên Miền Mới Ăn Ranking Ngay Lập Tức</div>
+          <div class="card-desc">
+            Khi chuyển sang tên miền <code>.vn</code>, Googlebot vừa ghé thăm sẽ thấy một website có cấu trúc dữ liệu tuyệt đối chuẩn chỉnh $\rightarrow$ thời gian index và đẩy thứ hạng chỉ mất vài ngày thay vì phải vừa đổi tên miền vừa sửa lỗi vặt.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('doc_theme', next);
+    }
+
+    function copyCode(id) {
+      const code = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('Đã copy đoạn mã vào bộ nhớ tạm!');
+      });
+    }
+
+    const savedTheme = localStorage.getItem('doc_theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  </script>
+</body>
+</html>
