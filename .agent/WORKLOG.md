@@ -1086,3 +1086,28 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `npm run lint` pass (clean).
   + `npm run build` pass (route `/products` render server-side dynamic 180 kB).
 - Rollback reference: Revert các file `src/app/products/page.tsx`, `src/app/products/layout.tsx`, `data/seo.json`, `src/lib/seo-static.ts`.
+
+## 2026-10-05 22:50 +0700 — Triển khai Production release commit ee335a1 và smoke test live
+
+- Scope/authorization: Người dùng phê duyệt deploy production trực tiếp; xử lý audit bảo mật, commit git, sửa secret transport VPS_KNOWN_HOSTS, kích hoạt CI/CD GitHub Actions và smoke test toàn diện trên live site.
+- Changes & Fixes:
+  + Cập nhật bảo mật: Nâng cấp `next@15.5.27` và `eslint-config-next@15.5.27`, cập nhật sharp để xử lý triệt để CVE GHSA-2xp9-vwfh-vxw4 (0 vulnerabilities).
+  + Commit `350d2fa`: `feat(seo): optimize /products On-Page catalog and deploy local Quang Ngai SEO package`.
+  + Commit `ee335a1`: `fix(security): bump next to 15.5.27 and sharp to resolve audit vulnerabilities`.
+  + Sửa đổi hạ tầng deploy: Đồng bộ lại secret `VPS_KNOWN_HOSTS` trên GitHub Repo với host key SSH ED25519 thực tế của VPS (`103.121.89.154:26266`), sửa lỗi SSH handshake failure trong workflow deploy.
+- CI/CD & Deploy status:
+  + GitHub Actions CI Run `#37334662923`: SUCCESS (build, lint, test 81/81, audit high pass).
+  + GitHub Actions Deploy Run `#37335154579`: SUCCESS (build container, rsync artifact, pm2 reload pass).
+- Live Verification (Smoke Test):
+  + `/api/health`: 200 OK, release `ee335a1ed6e8f040ff07984bd8f2ca797ef32d24`.
+  + `/products`: 200 OK.
+    * `<title>`: `Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi — Tiến Đạt Audio`.
+    * `<meta name="description">`: Cung cấp loa thùng, vang số chống hú, main công suất, amply karaoke chính hãng tại Quảng Ngãi...
+    * `<h1>`: `Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi`.
+    * Schema JSON-LD: Xuất hiện `CollectionPage` và `ItemList` với 6 sản phẩm con link đầy đủ URL.
+    * Brand sidebar: Loại bỏ toàn bộ brand 0 sản phẩm rác (Bose, JBL, Pioneer, Sony).
+    * Local Trust Card: Cam kết showroom 264 Phan Đình Phùng, bảo hành 24/7, cắt hú 100%.
+  + `/products?category=vang-so`: 200 OK, dynamic title `Vang Số Chính Hãng Tại Quảng Ngãi — Tiến Đạt Audio`, dynamic H1 `Vang Số Chính Hãng Tại Quảng Ngãi`.
+  + `/sitemap.xml`, `/robots.txt`, `/feed.xml`: 200 OK.
+- Rollback reference: Git tag/commit trước đó `2a84a62`.
+
