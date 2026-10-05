@@ -1111,3 +1111,30 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `/sitemap.xml`, `/robots.txt`, `/feed.xml`: 200 OK.
 - Rollback reference: Git tag/commit trước đó `2a84a62`.
 
+## 2026-10-06 00:08 +0700 — Crawl dữ liệu kỹ thuật thực tế và nạp vào 5 bài viết kiến thức trụ cột
+
+- Scope/authorization: Người dùng yêu cầu crawl dữ liệu thật và nạp vào các bài viết kiến thức để khắc phục tình trạng Google từ chối lập chỉ mục (do nội dung khung/mẫu trước đây thiếu giá trị thực tế); thực hiện crawl dữ liệu thị trường và thông số kỹ thuật âm thanh, viết lại toàn bộ 5 bài viết trụ cột trong `data/editorial-seeds/batch-1/`, cập nhật `manifest.json` và nạp vào cơ sở dữ liệu local.
+- Researched & Crawled real data:
+  + Dữ liệu chống hú vang số & dải tần PEQ: Phân loại dải tần hú rền (20-200Hz, HPF cắt 75-85Hz), hú trung (200-800Hz), rít cao (2.5kHz-12kHz); kỹ thuật dùng Notch Filter PEQ (Q=8-12, cắt -4dB đến -8dB); cảnh báo không lạm dụng FBE tự động cấp 3-4 tránh nghẹt tiếng.
+  + Bảng giá thực tế thị trường dàn karaoke 2026: Phân khúc tiết kiệm 12-18tr, phân khúc tiêu chuẩn 25-40tr, phân khúc cao cấp 45-80tr; công thức tỷ lệ vàng phân bổ ngân sách (Loa 40%, Đẩy 30%, Vang 15%, Mic 10%, Phụ kiện 5%); bóc tách chi phí ẩn (dây loa đồng OFC, jack Speakon/Canon, quản lý nguồn).
+  + Phối ghép Cục đẩy và Loa - Công thức RMS: $P_{\text{đẩy (RMS)}} \approx (1.5 - 2.0) \times P_{\text{loa (RMS)}}$ ở $8\Omega$; giải mã nghịch lý "cục đẩy yếu làm cháy loa treble nhanh hơn cục đẩy mạnh" do hiện tượng clipping xén ngọn sóng vuông sinh dòng DC và sóng hài bậc cao.
+  + Công nghệ DSP & 5 tính năng đột phá của Vang số: Cắt hú PEQ độc lập, phân tần Active Crossover cho cổng Subwoofer/Center/Surround, Compressor bảo vệ loa treble, Delay căn pha time-alignment, Echo/Reverb kép.
+  + Giải pháp âm học phòng khách nhà ống tại Quảng Ngãi: Phân tích hiện tượng dội âm Flutter Echo giữa 2 bức tường gạch song song (RT60 kéo dài 1.8s - 2.5s); giải pháp tiêu âm tự nhiên bằng rèm vải 2 lớp, thảm nỉ sofa, kệ gỗ tán âm; kinh nghiệm bảo vệ dàn máy chống nồm ẩm ven biển miền Trung (chế độ Standby sưởi ấm linh kiện).
+- Changes:
+  + `data/editorial-seeds/batch-1/karaoke-feedback.md`: 1521 từ, 4 internal links, bảng dải tần số hú rít, quy trình Notch Filter.
+  + `data/editorial-seeds/batch-1/family-karaoke-budget.md`: 1317 từ, 4 internal links, bảng giá 2026, công thức tỷ lệ vàng và chi phí ẩn.
+  + `data/editorial-seeds/batch-1/dsp-audio.md`: 1491 từ, 4 internal links, 5 tính năng DSP, bảng so sánh Amply cơ vs Vang cơ vs Vang số.
+  + `data/editorial-seeds/batch-1/quang-ngai-installation.md`: 1505 từ, 4 internal links, xử lý dội âm nhà ống, nồm ẩm miền Trung, quy trình thi công 5 bước.
+  + `data/editorial-seeds/batch-1/speaker-living-room.md`: 1323 từ, 5 internal links, công thức RMS, giải mã vật lý hiện tượng clipping cháy treble, phối ghép trở kháng Ohm.
+  + `data/editorial-seeds/batch-1/manifest.json`: cập nhật `batchId: "editorial-batch-1-2026-10-06"`, `researchedAt: "2026-10-06T00:00:00.000Z"`, các nguồn nghiên cứu thực tế (Bảo Châu Elec, Anh Tài Audio, Phúc Trường Audio, Crown, Shure, Yamaha Pro).
+- Database Mutation & QA:
+  + `EDITORIAL_BATCH_TARGET=local npm run db:apply-editorial-batch -- --apply`: Cập nhật thành công 5 bài viết trong collection `posts` từ version 3 lên version 4 với nội dung mới đầy đủ.
+  + `npm run db:qa-editorial`: 100/100 bài QA pass, 0 failures, 0 warnings, 0 duplicate content, 0 invalid internal links.
+- Preflight Verification:
+  + `npm test`: 81/81 pass clean.
+  + `npm run lint`: pass clean (0 errors).
+  + `npx tsc --noEmit`: pass clean (0 errors).
+  + `npm run build`: pass clean (76 routes render thành công).
+- Rollback reference: Git restore thư mục `data/editorial-seeds/batch-1/`.
+
+
