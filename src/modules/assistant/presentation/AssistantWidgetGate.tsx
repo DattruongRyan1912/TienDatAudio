@@ -8,7 +8,7 @@ const AssistantWidget = dynamic(() => import('./AssistantWidget'), {
   ssr: false,
   loading: () => (
     <div className="fixed bottom-5 left-4 z-40 md:bottom-8 md:left-7">
-      <button type="button" disabled className="flex h-12 items-center gap-2 border border-[var(--sonic-gold)] bg-[var(--sonic-surface)] px-4 text-xs font-bold uppercase tracking-[0.1em] text-[var(--sonic-text)] opacity-70">
+      <button type="button" disabled aria-label="Đang mở trợ lý tư vấn" className="flex h-12 items-center gap-2 border border-[var(--sonic-gold)] bg-[var(--sonic-surface)] px-4 text-xs font-bold uppercase tracking-[0.1em] text-[var(--sonic-text)] opacity-70">
         <LoaderCircle size={17} className="animate-spin text-[var(--sonic-gold)]" />
         <span className="hidden sm:inline">Đang mở</span>
       </button>

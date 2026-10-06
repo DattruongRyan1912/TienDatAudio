@@ -76,32 +76,32 @@ export default async function HomePage() {
                 <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-3 shadow-xs">
                   <span className="text-xl">🛡️</span>
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900">Chính Hãng 100%</h4>
-                    <p className="text-[11px] text-slate-500">Đền 200% nếu hàng giả</p>
+                    <p className="text-xs font-extrabold text-slate-900">Chính Hãng 100%</p>
+                    <p className="text-[11px] text-slate-600">Đền 200% nếu hàng giả</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-3 shadow-xs">
                   <span className="text-xl">🎛️</span>
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900">Cắt Hú 100%</h4>
-                    <p className="text-[11px] text-slate-500">Căn chỉnh RTA tận nhà</p>
+                    <p className="text-xs font-extrabold text-slate-900">Cắt Hú 100%</p>
+                    <p className="text-[11px] text-slate-600">Căn chỉnh RTA tận nhà</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-3 shadow-xs">
                   <span className="text-xl">🚚</span>
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900">Lắp Trong 2 Giờ</h4>
-                    <p className="text-[11px] text-slate-500">Toàn tỉnh Quảng Ngãi</p>
+                    <p className="text-xs font-extrabold text-slate-900">Lắp Trong 2 Giờ</p>
+                    <p className="text-[11px] text-slate-600">Toàn tỉnh Quảng Ngãi</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-3 shadow-xs">
                   <span className="text-xl">🔄</span>
                   <div>
-                    <h4 className="text-xs font-extrabold text-slate-900">Đổi Mới 30 Ngày</h4>
-                    <p className="text-[11px] text-slate-500">Bảo hành 2 năm 24/7</p>
+                    <p className="text-xs font-extrabold text-slate-900">Đổi Mới 30 Ngày</p>
+                    <p className="text-[11px] text-slate-600">Bảo hành 2 năm 24/7</p>
                   </div>
                 </div>
               </div>
@@ -126,13 +126,13 @@ export default async function HomePage() {
                 </div>
 
                 <div className="mt-4">
-                  <h3 className="text-base font-extrabold text-slate-900 sm:text-lg">
+                  <h2 className="text-base font-extrabold text-slate-900 sm:text-lg">
                     Dàn Karaoke Gia Đình Tiêu Chuẩn TĐ-01 (Phòng 20 - 35m²)
-                  </h3>
+                  </h2>
                   
                   <div className="mt-2.5 flex items-baseline gap-3">
                     <span className="text-2xl font-black text-[#d32f2f]">28.900.000đ</span>
-                    <span className="text-sm text-slate-400 line-through">34.500.000đ</span>
+                    <span className="text-sm text-slate-500 line-through">34.500.000đ</span>
                     <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">Tiết kiệm 5.6tr</span>
                   </div>
 
@@ -236,11 +236,11 @@ export default async function HomePage() {
                   MH
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Chú Minh Hùng</h4>
+                  <h3 className="text-sm font-bold text-slate-900">Chú Minh Hùng</h3>
                   <p className="text-xs text-slate-500">📍 P. Nghĩa Lộ, TP Quảng Ngãi</p>
                 </div>
               </div>
-              <div className="mt-2 text-sm text-amber-500">★★★★★</div>
+              <div className="mt-2 text-sm text-amber-600">★★★★★</div>
               <p className="mt-2.5 text-xs leading-relaxed text-slate-600 italic">
                 &ldquo;Nhà tôi kiểu nhà ống 4x16m, trước đây mua bộ loa bãi hát bị rít nhức đầu. Đổi qua bộ ARF bên Tiến Đạt, anh em kỹ thuật đo đạc phần mềm máy tính cắt hết tiếng hú. Giờ bà xã với mấy đứa nhỏ hát nhẹ re, rất ưng ý!&rdquo;
               </p>
@@ -252,11 +252,11 @@ export default async function HomePage() {
                   VT
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Anh Văn Tuấn</h4>
+                  <h3 className="text-sm font-bold text-slate-900">Anh Văn Tuấn</h3>
                   <p className="text-xs text-slate-500">📍 TT Châu Ổ, Huyện Bình Sơn</p>
                 </div>
               </div>
-              <div className="mt-2 text-sm text-amber-500">★★★★★</div>
+              <div className="mt-2 text-sm text-amber-600">★★★★★</div>
               <p className="mt-2.5 text-xs leading-relaxed text-slate-600 italic">
                 &ldquo;Được ông bạn giới thiệu ra 264 Phan Đình Phùng nghe thử. 2 tiếng đồng hồ thử đủ dòng loa mới chốt bộ 32 triệu. Chiều thợ chở ra tận Bình Sơn lắp đặt, đi dây âm tường gọn gàng, test nhạc căng đét.&rdquo;
               </p>
@@ -268,11 +268,11 @@ export default async function HomePage() {
                   TM
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Chị Thanh Mai</h4>
+                  <h3 className="text-sm font-bold text-slate-900">Chị Thanh Mai</h3>
                   <p className="text-xs text-slate-500">📍 Xã Đức Thạnh, Huyện Mộ Đức</p>
                 </div>
               </div>
-              <div className="mt-2 text-sm text-amber-500">★★★★★</div>
+              <div className="mt-2 text-sm text-amber-600">★★★★★</div>
               <p className="mt-2.5 text-xs leading-relaxed text-slate-600 italic">
                 &ldquo;Mua bộ karaoke về biếu ba mẹ ở quê hát mừng thọ. Nhân viên tư vấn đúng nhu cầu chứ không vẽ vời thêm đồ thừa. Có thắc mắc gọi Zalo là kỹ thuật hướng dẫn tận tình ngay.&rdquo;
               </p>

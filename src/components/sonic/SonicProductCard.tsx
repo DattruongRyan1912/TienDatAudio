@@ -86,7 +86,7 @@ export default function SonicProductCard({ product, featured = false }: SonicPro
                   {formatPrice(product.salePrice || product.price)}
                 </span>
                 {isSale && (
-                  <span className="text-xs text-slate-400 line-through">
+                  <span className="text-xs text-slate-500 line-through">
                     {formatPrice(product.price)}
                   </span>
                 )}

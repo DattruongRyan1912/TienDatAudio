@@ -67,9 +67,11 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+        <label htmlFor="contact-name" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
           <span>Họ và tên <span className="text-[#d32f2f]">*</span></span>
           <input
+            id="contact-name"
+            name="name"
             required
             value={form.name}
             onChange={(event) => update('name', event.target.value)}
@@ -78,9 +80,11 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
           />
         </label>
 
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+        <label htmlFor="contact-phone" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
           <span>Số điện thoại <span className="text-[#d32f2f]">*</span></span>
           <input
+            id="contact-phone"
+            name="phone"
             required
             type="tel"
             value={form.phone}
@@ -90,9 +94,11 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
           />
         </label>
 
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+        <label htmlFor="contact-email" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
           <span>Email</span>
           <input
+            id="contact-email"
+            name="email"
             type="email"
             value={form.email}
             onChange={(event) => update('email', event.target.value)}
@@ -101,9 +107,11 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
           />
         </label>
 
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+        <label htmlFor="contact-interest" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
           <span>Sản phẩm / Nhu cầu quan tâm</span>
           <input
+            id="contact-interest"
+            name="interest"
             value={form.interest}
             onChange={(event) => update('interest', event.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
@@ -111,9 +119,12 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
           />
         </label>
 
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
+        <label htmlFor="contact-budget" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
           <span>Ngân sách dự kiến</span>
           <select
+            id="contact-budget"
+            name="budget"
+            aria-label="Ngân sách dự kiến"
             value={form.budget}
             onChange={(event) => update('budget', event.target.value)}
             className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
@@ -126,9 +137,11 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
           </select>
         </label>
 
-        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
+        <label htmlFor="contact-message" className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
           <span>Ghi chú / Yêu cầu thêm</span>
           <textarea
+            id="contact-message"
+            name="message"
             value={form.message}
             onChange={(event) => update('message', event.target.value)}
             rows={4}

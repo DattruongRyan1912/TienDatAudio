@@ -73,10 +73,12 @@ export default function SonicHeader() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm dàn karaoke gia đình, vang số, loa sub, micro..."
+                aria-label="Tìm kiếm sản phẩm"
                 className="w-full px-3.5 py-2 text-sm text-slate-800 placeholder-slate-400 outline-none"
               />
               <button
                 type="submit"
+                aria-label="Tìm kiếm"
                 className="flex items-center gap-1.5 bg-[#d32f2f] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#b71c1c]"
               >
                 <Search size={15} />
@@ -123,13 +125,16 @@ export default function SonicHeader() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm loa, vang số, dàn karaoke..."
+              aria-label="Tìm kiếm sản phẩm trên di động"
               className="w-full px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 outline-none"
             />
             <button
               type="submit"
-              className="flex items-center gap-1 bg-[#d32f2f] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#b71c1c]"
+              aria-label="Tìm kiếm"
+              className="flex items-center justify-center bg-[#d32f2f] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#b71c1c]"
             >
               <Search size={14} />
+              <span className="sr-only">Tìm kiếm</span>
             </button>
           </div>
         </form>
