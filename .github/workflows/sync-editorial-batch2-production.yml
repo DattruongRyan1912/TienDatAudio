@@ -63,7 +63,7 @@ jobs:
           echo "Đã backup xong: $backup_archive"
 
           echo "=== 2. GỠ BỎ / CHUYỂN 95 BÀI AI VỀ DRAFT & NOINDEX ==="
-          EDITORIAL_PURGE_CONFIRM=PURGE-AI-DRAFTS node scripts/unpublish-ai-editorial-drafts.mjs --apply
+          EDITORIAL_PURGE_TARGET=production EDITORIAL_PURGE_CONFIRM=PURGE-AI-DRAFTS node scripts/unpublish-ai-editorial-drafts.mjs --apply
 
           echo "=== 3. NẠP VÀ XUẤT BẢN BATCH-2 BÀI VIẾT KỸ THUẬT CRAWL ==="
           EDITORIAL_BATCH_DIR=data/editorial-seeds/batch-2 \
