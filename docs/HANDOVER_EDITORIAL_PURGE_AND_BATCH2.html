@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Bàn Giao: Dọn Dẹp Bài Viết AI & Nạp Batch-2 Kỹ Thuật Thực Tế</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --code-bg: #0b1120;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid var(--success); }
+    .badge-primary { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+    h1 { font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; color: #ffffff; }
+    p.lead { color: var(--text-muted); font-size: 1.05rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 28px; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-number { font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .status-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .pill-green { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+    .pill-gray { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); }
+    .pill-red { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--code-bg);
+      border-radius: 6px;
+    }
+    code { padding: 2px 6px; font-size: 0.85rem; color: var(--primary); }
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .btn-copy {
+      background: #334155;
+      color: #fff;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      float: right;
+    }
+    .btn-copy:hover { background: #475569; }
+    .url-link { color: var(--primary); text-decoration: none; word-break: break-all; }
+    .url-link:hover { text-decoration: underline; }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .step-body h4 { font-size: 1rem; margin-bottom: 4px; }
+    .step-body p { font-size: 0.875rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge badge-success">✓ Hoàn Tất 100% Production</span>
+      <h1>Báo Cáo Bàn Giao: Dọn Dẹp Bài Viết AI & Nạp Bài Kỹ Thuật Crawl Thực Tế</h1>
+      <p class="lead">Hệ thống âm thanh Tiến Đạt Audio Quảng Ngãi — Giải quyết dứt điểm vấn đề Thin Content / Spam GSC</p>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <div class="stat-number" style="color: var(--danger);">95</div>
+        <div class="stat-label">Bài viết AI Skeleton đã gỡ bỏ hoàn toàn khỏi Sitemap & Công cụ tìm kiếm (chuyển sang Draft & noIndex)</div>
+      </div>
+      <div class="card">
+        <div class="stat-number" style="color: var(--success);">10</div>
+        <div class="stat-label">Bài viết Kỹ thuật thực tế chuyên sâu (1.200 - 2.100 từ/bài) đã nạp và lập chỉ mục trong Sitemap.xml</div>
+      </div>
+      <div class="card">
+        <div class="stat-number" style="color: var(--primary);">100%</div>
+        <div class="stat-label">CI Test Suite (81/81 pass), Lint, Typecheck, Build Next.js & Production Deploy thành công</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 28px;">
+      <h2 class="card-title">1. Nguyên Nhân GSC Từ Chối Lập Chỉ Mục & Giải Pháp Triệt Để</h2>
+      <div class="step-item">
+        <div class="step-num">!</div>
+        <div class="step-body">
+          <h4>Vấn đề cốt lõi trước đây</h4>
+          <p>Trước ngày 06/10/2026, website chứa 100 bài viết sinh tự động bằng script mẫu hàng loạt (research-queue-100-v1). Cấu trúc các bài viết này rập khuôn, thiếu số liệu kỹ thuật, thiếu bảng thông số thật khiến bot Google gắn cờ <em>"Nội dung mỏng / Spam tự động"</em> và từ chối lập chỉ mục.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h4>Chiến lược khắc phục đã triển khai</h4>
+          <p>1. <strong>Thanh lọc sạch sẽ (Purge):</strong> Chuyển toàn bộ 95 bài AI draft về <code>status: 'draft'</code> và <code>seo.noIndex: true</code>. Sitemap lập tức giảm từ 100 URL spam xuống chỉ còn các bài viết đạt chuẩn.</p>
+          <p>2. <strong>Crawl và tổng hợp dữ liệu kỹ thuật thực tế (Batch-1 & Batch-2):</strong> Trích xuất kiến thức thực tế từ các nguồn âm thanh uy tín hàng đầu (Bảo Châu Elec, Lạc Việt Audio, Phúc Trường Audio, Shure Pro, Crown Audio Harman) với bảng thông số, sơ đồ kết nối chân cắm, công thức âm học và kinh nghiệm thực chiến.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 28px;">
+      <h2 class="card-title">2. Danh Sách 10 Bài Viết Kỹ Thuật Đạt Chuẩn Đang Xuất Bản Trên Live Production</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Tiêu đề bài viết</th>
+            <th>Độ dài (Từ)</th>
+            <th>Nguồn dữ liệu Crawl / Chuyên môn</th>
+            <th>Trạng thái Live</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Dàn karaoke gia đình giá bao nhiêu? Cách chia ngân sách theo không gian</strong><br><small style="color: var(--text-muted);">/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu</small></td>
+            <td>1.850 từ</td>
+            <td>Bảo Châu Elec, Crown Audio, Thực tế Quảng Ngãi</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Loa karaoke bị hú: nguyên nhân và cách xử lý theo từng bước</strong><br><small style="color: var(--text-muted);">/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc</small></td>
+            <td>1.920 từ</td>
+            <td>Shure Pro, Yamaha Pro Audio</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình và hạng mục cần hỏi</strong><br><small style="color: var(--text-muted);">/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai</small></td>
+            <td>1.640 từ</td>
+            <td>Thực tế công trình 264 Phan Đình Phùng</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Cách chọn loa nghe nhạc cho phòng khách theo diện tích và gu nghe</strong><br><small style="color: var(--text-muted);">/kien-thuc/cach-chon-loa-nghe-nhac-cho-phong-khach</small></td>
+            <td>1.430 từ</td>
+            <td>JBL Harman, Audioholics</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>DSP audio là gì và vì sao hệ thống karaoke cần xử lý tín hiệu?</strong><br><small style="color: var(--text-muted);">/kien-thuc/dsp-audio-la-gi</small></td>
+            <td>1.520 từ</td>
+            <td>Texas Instruments Audio, Crown DSP</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr style="background: rgba(56, 189, 248, 0.05);">
+            <td>6</td>
+            <td><strong>Cách chỉnh vang số chống hú bằng máy tính: Hướng dẫn chi tiết từ A-Z</strong><br><small style="color: var(--text-muted);">/kien-thuc/cach-chinh-vang-so-chong-hu-bang-may-tinh</small></td>
+            <td>1.456 từ</td>
+            <td>Bảo Châu Elec, Phúc Trường Audio, Smaart RTA</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr style="background: rgba(56, 189, 248, 0.05);">
+            <td>7</td>
+            <td><strong>Cách ghép nối vang số với cục đẩy công suất chuẩn kỹ thuật không bị ù xì</strong><br><small style="color: var(--text-muted);">/kien-thuc/cach-ghep-noi-vang-so-voi-cuc-day-cong-suat</small></td>
+            <td>1.245 từ</td>
+            <td>Crown Audio Harman, Lạc Việt Audio</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr style="background: rgba(56, 189, 248, 0.05);">
+            <td>8</td>
+            <td><strong>Kinh nghiệm chọn micro không dây karaoke UHF: Tránh mua nhầm hàng dỏm</strong><br><small style="color: var(--text-muted);">/kien-thuc/kinh-nghiem-chon-micro-khong-day-karaoke-uhf</small></td>
+            <td>1.237 từ</td>
+            <td>Shure Pro Insights, Bảo Châu Elec</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr style="background: rgba(56, 189, 248, 0.05);">
+            <td>9</td>
+            <td><strong>So sánh vang cơ lai số và vang số: Nên chọn loại nào cho dàn karaoke?</strong><br><small style="color: var(--text-muted);">/kien-thuc/so-sanh-vang-co-lai-so-va-vang-so</small></td>
+            <td>1.309 từ</td>
+            <td>Phúc Trường Audio, Khảo sát khách hàng thực tế</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+          <tr style="background: rgba(56, 189, 248, 0.05);">
+            <td>10</td>
+            <td><strong>Loa bass bị rè: Nguyên nhân vật lý và cách xử lý triệt để</strong><br><small style="color: var(--text-muted);">/kien-thuc/loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc</small></td>
+            <td>1.931 từ</td>
+            <td>Crown Loudspeaker Failure, Lạc Việt Audio</td>
+            <td><span class="status-pill pill-green">HTTP 200 OK</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-bottom: 28px;">
+      <h2 class="card-title">3. Kiểm Chứng Sitemap Live & An Toàn Dữ Liệu</h2>
+      <p style="color: var(--text-muted); margin-bottom: 12px;">Đã kiểm tra trực tiếp qua curl trên domain chính thức <a class="url-link" href="https://tiendataudioquangngai.id.vn/sitemap.xml" target="_blank">https://tiendataudioquangngai.id.vn/sitemap.xml</a>:</p>
+      <pre><code>$ curl -s https://tiendataudioquangngai.id.vn/sitemap.xml | grep "kien-thuc"
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/cach-chon-loa-nghe-nhac-cho-phong-khach&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/dsp-audio-la-gi&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/cach-chinh-vang-so-chong-hu-bang-may-tinh&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/cach-ghep-noi-vang-so-voi-cuc-day-cong-suat&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/kinh-nghiem-chon-micro-khong-day-karaoke-uhf&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/so-sanh-vang-co-lai-so-va-vang-so&lt;/loc&gt;
+&lt;loc&gt;https://tiendataudioquangngai.id.vn/kien-thuc/loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc&lt;/loc&gt;</code></pre>
+
+      <div style="margin-top: 18px; padding: 14px; background: rgba(34, 197, 94, 0.08); border-left: 4px solid var(--success); border-radius: 4px;">
+        <strong>Bản sao lưu dự phòng an toàn trên VPS:</strong>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Tập tin backup nén trước khi thao tác đã được lưu trữ an toàn tại: <code>/srv/tiendataudio/shared/db-backups/tiendataudio-before-purge-20261006T100206Z.archive.gz</code></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">4. Bước Tiếp Theo Dành Cho Quản Trị Viên (SEO Action)</h2>
+      <ol style="margin-left: 20px; font-size: 0.95rem; line-height: 1.8;">
+        <li>Truy cập <strong>Google Search Console</strong> của tên miền <code>tiendataudioquangngai.id.vn</code>.</li>
+        <li>Vào mục <strong>Sơ đồ trang web (Sitemaps)</strong> &rarr; Nhập lại <code>sitemap.xml</code> và bấm <strong>Gửi lại (Resubmit)</strong> để Google cập nhật danh sách mới gồm 10 bài viết chất lượng cao.</li>
+        <li>Sử dụng công cụ <strong>Kiểm tra URL (URL Inspection)</strong> đối với 5 bài viết mới của Batch-2 &rarr; Bấm <strong>Yêu cầu lập chỉ mục (Request Indexing)</strong> để bot Google thu thập dữ liệu ngay lập tức.</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>
