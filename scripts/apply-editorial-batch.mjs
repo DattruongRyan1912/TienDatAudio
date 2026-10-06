@@ -10,7 +10,7 @@ const target = process.env.EDITORIAL_BATCH_TARGET || ''
 const confirmation = process.env.EDITORIAL_BATCH_CONFIRM || ''
 const preserveLifecycle = process.env.EDITORIAL_BATCH_PRESERVE_LIFECYCLE === '1'
 const localHosts = new Set(['localhost', '127.0.0.1', '::1'])
-const batchDir = 'data/editorial-seeds/batch-1'
+const batchDir = process.env.EDITORIAL_BATCH_DIR || 'data/editorial-seeds/batch-1'
 const productionConfirmation = 'SYNC-100-PUBLISHED'
 
 function fail(message) {
@@ -63,24 +63,21 @@ try {
     if (/bản nháp|reviewer cần|nội dung seed|placeholder|trước khi xuất bản/i.test(body)) errors.push('body contains internal seed notes')
     if (errors.length) fail(`${item.slug}: ${errors.join('; ')}`)
 
+    const shouldPublish = process.env.EDITORIAL_BATCH_PUBLISH === '1' || process.env.EDITORIAL_BATCH_PUBLISH === 'true'
     const existing = await posts.findOne({ $or: [{ id: item.id }, { slug: item.slug }] })
-    if (!existing) {
-      actions.push({ action: 'missing', slug: item.slug })
-      continue
-    }
-    if (existing.contentType && existing.contentType !== 'editorial') {
+    if (existing && existing.contentType && existing.contentType !== 'editorial') {
       actions.push({ action: 'blocked', slug: item.slug, reason: `contentType=${existing.contentType}` })
       continue
     }
-    if (isProductionSync && (existing.status !== 'published' || existing.seo?.noIndex === true)) {
+    if (isProductionSync && existing && (existing.status !== 'published' || existing.seo?.noIndex === true)) {
       actions.push({ action: 'blocked', slug: item.slug, reason: `production lifecycle is not published/indexable: status=${existing.status || 'missing'}, noIndex=${existing.seo?.noIndex === true}` })
       continue
     }
-    if (!isProductionSync && !['draft', 'review'].includes(existing.status || 'draft')) {
+    if (!isProductionSync && existing && !['draft', 'review', 'published'].includes(existing.status || 'draft')) {
       actions.push({ action: 'blocked', slug: item.slug, reason: `status=${existing.status || 'missing'}` })
       continue
     }
-    if (!isProductionSync && existing.status === 'review' && existing.batchId === manifest.batchId) {
+    if (!isProductionSync && existing && existing.status === 'review' && existing.batchId === manifest.batchId && !shouldPublish) {
       if (!existing.seoResearch?.articleType && item.seoResearch?.articleType) {
         if (!apply) {
           actions.push({ action: 'would-update-metadata', slug: item.slug, field: 'seoResearch.articleType', value: item.seoResearch.articleType })
@@ -101,26 +98,48 @@ try {
       actions.push({ action: 'skip', slug: item.slug, reason: 'batch already applied' })
       continue
     }
+
+    const targetStatus = isProductionSync
+      ? existing.status
+      : (shouldPublish ? 'published' : 'review')
+    const targetNoIndex = isProductionSync
+      ? existing.seo?.noIndex === true
+      : (shouldPublish ? (item.seo?.noIndex === true) : true)
+    const targetPublishedAt = isProductionSync
+      ? existing.publishedAt || null
+      : (shouldPublish ? (existing?.publishedAt || now) : null)
+
     const next = {
-      ...existing,
+      ...(existing || {}),
       ...item,
       bodyMarkdown: body,
       contentType: 'editorial',
-      status: isProductionSync ? existing.status : 'review',
-      reviewer: isProductionSync ? existing.reviewer || '' : '',
-      scheduledAt: isProductionSync ? existing.scheduledAt || null : null,
-      publishedAt: isProductionSync ? existing.publishedAt || null : null,
-      archivedAt: isProductionSync ? existing.archivedAt || null : null,
-      seo: { ...existing.seo, ...item.seo, noIndex: isProductionSync ? existing.seo?.noIndex === true : true },
+      status: targetStatus,
+      reviewer: isProductionSync ? (existing.reviewer || '') : (shouldPublish ? 'editorial-admin' : ''),
+      scheduledAt: isProductionSync ? (existing.scheduledAt || null) : null,
+      publishedAt: targetPublishedAt,
+      archivedAt: isProductionSync ? (existing.archivedAt || null) : null,
+      seo: { ...(existing?.seo || {}), ...item.seo, noIndex: targetNoIndex },
       seoResearch: item.seoResearch,
-      createdAt: existing.createdAt || now,
+      createdAt: existing?.createdAt || now,
       updatedAt: now,
-      version: Math.max(1, Number(existing.version) || 1) + 1,
+      version: Math.max(1, Number(existing?.version) || 1) + (existing ? 1 : 0),
       readingTime: Math.max(1, Math.ceil(countWords(body) / 220)),
       batchId: manifest.batchId,
     }
     delete next.bodyFile
-    delete next._id
+    if (existing) delete next._id
+
+    if (!existing) {
+      if (!apply) {
+        actions.push({ action: 'would-create', slug: item.slug, status: next.status, noIndex: next.seo.noIndex, wordCount: countWords(body) })
+        continue
+      }
+      await posts.insertOne(next)
+      actions.push({ action: 'created', slug: item.slug, status: next.status, noIndex: next.seo.noIndex, wordCount: countWords(body) })
+      continue
+    }
+
     if (!apply) {
       actions.push({ action: 'would-update', slug: item.slug, fromVersion: existing.version || 1, toVersion: next.version, status: next.status, noIndex: next.seo.noIndex, wordCount: countWords(body) })
       continue

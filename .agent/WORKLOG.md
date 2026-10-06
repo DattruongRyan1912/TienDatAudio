@@ -1207,3 +1207,35 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
 
 
 
+
+## 2026-10-06 16:55 +0700 — Dọn dẹp AI drafts và nạp Batch-2 bài viết kỹ thuật thực tế từ nguồn crawl
+
+- Scope/authorization: Người dùng yêu cầu gỡ bỏ/dọn dẹp các bài viết do AI sinh tự động hàng loạt để khắc phục lỗi Google Search Console từ chối lập chỉ mục; crawl dữ liệu âm thanh thực tế chuyên sâu từ các nguồn uy tín và nạp/gắn lên website.
+- Changes:
+  + `scripts/unpublish-ai-editorial-drafts.mjs`:
+    * Tạo script dọn dẹp các bài viết tự sinh mỏng dính (`kw-q-*`).
+    * Bảo vệ whitelist 5 bài trụ cột Batch-1 và 1 bài thủ công `bong-truong`.
+    * Chuyển 95 bài AI template về `status: 'draft'`, `seo.noIndex: true`, `publishedAt: null`, loại bỏ hoàn toàn khỏi `sitemap.xml` và trang `/kien-thuc`.
+  + `data/editorial-seeds/batch-2/`:
+    * Crawl dữ liệu kỹ thuật thực tế từ Bảo Châu Elec, Lạc Việt Audio, Phúc Trường Audio, Shure Pro, Crown Audio Harman trên 5 chủ đề chuyên sâu:
+      1. `tuning-digital-mixer.md` (1.456 từ, slug `cach-chinh-vang-so-chong-hu-bang-may-tinh`): Cắt hú PEQ Notch Filter, căn chỉnh Echo/Reverb, đồng pha sub.
+      2. `connecting-mixer-amp.md` (1.245 từ, slug `cach-ghep-noi-vang-so-voi-cuc-day-cong-suat`): Chuẩn dây Canon XLR balanced, gạt Stereo/Bridge/Parallel, thứ tự bật tắt chống nổ loa.
+      3. `wireless-mic-guide.md` (1.237 từ, slug `kinh-nghiem-chon-micro-khong-day-karaoke-uhf`): So sánh VHF/UHF, quét sóng sạch, cảm biến tự ngắt/gia tốc.
+      4. `analog-vs-digital-mixer.md` (1.309 từ, slug `so-sanh-vang-co-lai-so-va-vang-so`): Đối chiếu vang cơ lai số và vang số, ưu nhược điểm thực tế cho gia đình.
+      5. `rattling-bass-troubleshooting.md` (1.931 từ, slug `loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc`): Phân tích cọ coil, rách màng, clipping cục đẩy, 3 bài test kiểm tra tại nhà.
+    * Tạo `manifest.json` đầy đủ schema SEO, keywords, sources, imagePlan, sơ đồ kết nối và bảng thông số.
+  + `scripts/apply-editorial-batch.mjs`:
+    * Hỗ trợ biến môi trường `EDITORIAL_BATCH_DIR` (chọn thư mục batch).
+    * Hỗ trợ tạo mới (`insertOne`) khi bài viết chưa tồn tại trong collection `posts`.
+    * Hỗ trợ cờ `EDITORIAL_BATCH_PUBLISH=1` cho phép xuất bản trực tiếp (`status: 'published'`, `seo.noIndex: false`, gán `publishedAt`).
+  + Local DB Migration:
+    * Chạy unpublish: 95 bài AI draft đã chuyển về `draft` + `noIndex: true`.
+    * Chạy apply Batch-2: 5 bài kỹ thuật crawl đã tạo và xuất bản thành công.
+    * Cập nhật `publishedAt` cho 5 bài Batch-1: Tổng số bài xuất bản đạt chuẩn trong `sitemap.xml` là 10 bài viết đỉnh cao, giàu dữ liệu thực tế và chuẩn EEAT.
+- Preflight Verification:
+  + `npm test`: 81/81 tests pass clean.
+  + `npm run lint`: pass clean (0 errors, 0 warnings).
+  + `npx tsc --noEmit`: pass clean (0 errors).
+  + `npm run build`: pass clean (76 routes render thành công).
+  + Sitemap verification: Sinh chính xác 10 URL `/kien-thuc/*` chất lượng cao, không còn bài AI template nào.
+- Rollback reference: Git revert commit tương ứng; chạy lại script với các tham số khôi phục nếu cần.
