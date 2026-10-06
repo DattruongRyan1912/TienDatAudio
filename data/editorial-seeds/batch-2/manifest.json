@@ -10,45 +10,141 @@
       "title": "Cách chỉnh vang số chống hú bằng máy tính: Hướng dẫn chi tiết từ A-Z",
       "excerpt": "Hướng dẫn từng bước cách chỉnh vang số bằng phần mềm máy tính: kỹ thuật cắt hú rít bằng PEQ Notch Filter, căn chỉnh Echo/Reverb và đồng pha dải trầm loa Sub.",
       "category": "Kiến thức âm thanh",
-      "tags": ["vang số", "chỉnh vang số", "chống hú", "phần mềm", "karaoke", "PEQ"],
+      "tags": [
+        "vang số",
+        "chỉnh vang số",
+        "chống hú",
+        "phần mềm",
+        "karaoke",
+        "PEQ"
+      ],
       "primaryKeywordId": "kw-tuning-digital-mixer",
-      "keywordIds": ["kw-tuning-digital-mixer"],
-      "relatedPostIds": ["seed-2026-08-karaoke-feedback", "seed-2026-10-connecting-mixer-amp"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660", "arf-fs12"],
-      "featuredImage": "/images/editorial-temp/audio-technology.png",
+      "keywordIds": [
+        "kw-tuning-digital-mixer"
+      ],
+      "relatedPostIds": [
+        "seed-2026-08-karaoke-feedback",
+        "seed-2026-10-connecting-mixer-amp"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660",
+        "arf-fs12"
+      ],
+      "featuredImage": "/uploads/1757869887047_orzq37kz72c.jpg",
       "seo": {
         "metaTitle": "Cách chỉnh vang số chống hú bằng máy tính: Hướng dẫn từ A-Z",
         "metaDescription": "Hướng dẫn chi tiết cách chỉnh vang số bằng phần mềm máy tính: cắt hú rít bằng PEQ Notch Filter, căn chỉnh Echo Reverb hát nhẹ hơi và đồng pha Sub chuẩn RTA.",
         "canonicalPath": "/kien-thuc/cach-chinh-vang-so-chong-hu-bang-may-tinh",
         "ogTitle": "Cách chỉnh vang số chống hú bằng máy tính: Hướng dẫn từ A-Z",
         "ogDescription": "Quy trình căn chỉnh vang số chống hú chuyên nghiệp trên phần mềm máy tính kết hợp RTA phân tích âm học.",
-        "ogImage": "/images/editorial-temp/audio-technology.png",
+        "ogImage": "/uploads/1757869887047_orzq37kz72c.jpg",
         "noIndex": false
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "How-To Guide",
         "primaryKeyword": "cách chỉnh vang số bằng máy tính",
-        "secondaryKeywords": ["chỉnh vang số chống hú", "phần mềm vang số", "cắt hú peq", "chỉnh vang số không bị méo tiếng"],
-        "semanticTerms": ["PEQ", "Notch Filter", "Feedback Suppressor", "Echo Delay", "Reverb Decay", "HPF", "Phase Alignment", "RTA Smaart"],
-        "questionKeywords": ["Chỉnh vang số bằng máy tính cần những gì?", "Cắt hú vang số ở tần số nào?", "Cách chỉnh Reverb và Echo hát nhẹ hơi?"],
-        "longTailKeywords": ["hướng dẫn chỉnh vang số bằng máy tính chi tiết", "cắt hú rít micro bằng phần mềm vang số", "chỉnh vang số karaoke gia đình nghe hay"],
-        "commercialModifiers": ["hướng dẫn", "cân chỉnh", "phần mềm", "Quảng Ngãi"],
-        "entities": ["Tiến Đạt Audio", "Quảng Ngãi", "ARF Audio", "Smaart v8", "Bảo Châu Elec"],
+        "secondaryKeywords": [
+          "chỉnh vang số chống hú",
+          "phần mềm vang số",
+          "cắt hú peq",
+          "chỉnh vang số không bị méo tiếng"
+        ],
+        "semanticTerms": [
+          "PEQ",
+          "Notch Filter",
+          "Feedback Suppressor",
+          "Echo Delay",
+          "Reverb Decay",
+          "HPF",
+          "Phase Alignment",
+          "RTA Smaart"
+        ],
+        "questionKeywords": [
+          "Chỉnh vang số bằng máy tính cần những gì?",
+          "Cắt hú vang số ở tần số nào?",
+          "Cách chỉnh Reverb và Echo hát nhẹ hơi?"
+        ],
+        "longTailKeywords": [
+          "hướng dẫn chỉnh vang số bằng máy tính chi tiết",
+          "cắt hú rít micro bằng phần mềm vang số",
+          "chỉnh vang số karaoke gia đình nghe hay"
+        ],
+        "commercialModifiers": [
+          "hướng dẫn",
+          "cân chỉnh",
+          "phần mềm",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "Quảng Ngãi",
+          "ARF Audio",
+          "Smaart v8",
+          "Bảo Châu Elec"
+        ],
         "primaryIntent": "informational",
         "secondaryIntent": "commercial investigation",
-        "serpObservations": ["Người dùng tìm kiếm thông số cụ thể: HPF bao nhiêu Hz, Q bao nhiêu, Delay bao nhiêu ms thay vì lý thuyết chung chung."],
-        "cannibalizationNotes": ["Đi sâu vào thao tác phần mềm DSP, bổ trợ cho bài trụ cột loa-karaoke-bi-hu."],
+        "serpObservations": [
+          "Người dùng tìm kiếm thông số cụ thể: HPF bao nhiêu Hz, Q bao nhiêu, Delay bao nhiêu ms thay vì lý thuyết chung chung."
+        ],
+        "cannibalizationNotes": [
+          "Đi sâu vào thao tác phần mềm DSP, bổ trợ cho bài trụ cột loa-karaoke-bi-hu."
+        ],
         "clusterRole": "spoke",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://baochauelec.com/huong-dan-chinh-vang-so-bang-may-tinh", "title": "Hướng dẫn cách chỉnh vang số bằng máy tính chuẩn nhất", "publisher": "Bảo Châu Elec", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Quy trình căn chỉnh 4 phần Mic, Echo, Reverb, Music và ngõ ra Main."]},
-          {"url": "https://phuctruongaudio.vn/kinh-nghiem-chinh-vang-so-chong-hu/", "title": "Kỹ thuật căn chỉnh PEQ chống hú trên vang số", "publisher": "Phúc Trường Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Phương pháp cắt hú hẹp với Notch Filter Q từ 6 đến 12 không làm méo vocal."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Dịch vụ cân chỉnh vang số tận nơi Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Hỗ trợ kỹ thuật cân chỉnh RTA Smaart tận nơi tại Quảng Ngãi."]}
+          {
+            "url": "https://baochauelec.com/huong-dan-chinh-vang-so-bang-may-tinh",
+            "title": "Hướng dẫn cách chỉnh vang số bằng máy tính chuẩn nhất",
+            "publisher": "Bảo Châu Elec",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Quy trình căn chỉnh 4 phần Mic, Echo, Reverb, Music và ngõ ra Main."
+            ]
+          },
+          {
+            "url": "https://phuctruongaudio.vn/kinh-nghiem-chinh-vang-so-chong-hu/",
+            "title": "Kỹ thuật căn chỉnh PEQ chống hú trên vang số",
+            "publisher": "Phúc Trường Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Phương pháp cắt hú hẹp với Notch Filter Q từ 6 đến 12 không làm méo vocal."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Dịch vụ cân chỉnh vang số tận nơi Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Hỗ trợ kỹ thuật cân chỉnh RTA Smaart tận nơi tại Quảng Ngãi."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Giao diện phần mềm vang số căn chỉnh tham số Equalizer PEQ", "caption": "Minh họa đường cong đáp tần PEQ cắt điểm hú với hệ số Q hẹp.", "section": "Kỹ thuật dò và cắt hú rít", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Bảng thiết lập tham số hiệu ứng Echo và Reverb trên phần mềm vang số", "caption": "Bảng thông số mẫu cho Echo Delay 220ms và Reverb Time 2.6s.", "section": "Căn chỉnh hiệu ứng Echo và Reverb", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Giao diện phần mềm vang số căn chỉnh tham số Equalizer PEQ",
+            "caption": "Minh họa đường cong đáp tần PEQ cắt điểm hú với hệ số Q hẹp.",
+            "section": "Kỹ thuật dò và cắt hú rít",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Bảng thiết lập tham số hiệu ứng Echo và Reverb trên phần mềm vang số",
+            "caption": "Bảng thông số mẫu cho Echo Delay 220ms và Reverb Time 2.6s.",
+            "section": "Căn chỉnh hiệu ứng Echo và Reverb",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "tuning-digital-mixer.md"
@@ -59,45 +155,141 @@
       "title": "Cách ghép nối vang số với cục đẩy công suất chuẩn kỹ thuật không bị ù xì",
       "excerpt": "Sơ đồ đấu nối dây Canon XLR balanced giữa vang số và cục đẩy công suất. Hướng dẫn chọn chế độ Stereo, Bridge, Parallel và quy tắc bật tắt chống nổ loa.",
       "category": "Kiến thức âm thanh",
-      "tags": ["ghép nối âm thanh", "vang số", "cục đẩy công suất", "canon xlr", "chống nổ loa", "sơ đồ đấu nối"],
+      "tags": [
+        "ghép nối âm thanh",
+        "vang số",
+        "cục đẩy công suất",
+        "canon xlr",
+        "chống nổ loa",
+        "sơ đồ đấu nối"
+      ],
       "primaryKeywordId": "kw-connecting-mixer-amp",
-      "keywordIds": ["kw-connecting-mixer-amp"],
-      "relatedPostIds": ["seed-2026-10-tuning-digital-mixer", "seed-2026-10-rattling-bass-troubleshooting"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660", "arf-x12pro"],
-      "featuredImage": "/images/editorial-temp/setup-maintenance.png",
+      "keywordIds": [
+        "kw-connecting-mixer-amp"
+      ],
+      "relatedPostIds": [
+        "seed-2026-10-tuning-digital-mixer",
+        "seed-2026-10-rattling-bass-troubleshooting"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660",
+        "arf-x12pro"
+      ],
+      "featuredImage": "/uploads/1757873414645_hxra7006d3t.jpg",
       "seo": {
         "metaTitle": "Cách ghép nối vang số với cục đẩy công suất chuẩn kỹ thuật",
         "metaDescription": "Hướng dẫn cách kết nối vang số với cục đẩy công suất qua cổng Canon XLR balanced. Sơ đồ gạt Stereo, Bridge, Parallel và quy tắc bật tắt chống nổ loa.",
         "canonicalPath": "/kien-thuc/cach-ghep-noi-vang-so-voi-cuc-day-cong-suat",
         "ogTitle": "Cách ghép nối vang số với cục đẩy công suất chuẩn kỹ thuật",
         "ogDescription": "Sơ đồ kết nối balanced chống nhiễu và nguyên tắc vận hành an toàn bảo vệ hệ thống loa karaoke.",
-        "ogImage": "/images/editorial-temp/setup-maintenance.png",
+        "ogImage": "/uploads/1757873414645_hxra7006d3t.jpg",
         "noIndex": false
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "How-To Guide",
         "primaryKeyword": "cách ghép nối vang số với cục đẩy",
-        "secondaryKeywords": ["đấu vang số với cục đẩy", "sơ đồ cắm dây vang số", "kết nối canon xlr", "chế độ bridge cục đẩy"],
-        "semanticTerms": ["XLR Balanced", "Pin 1 Ground", "Stereo Mode", "Bridge Mono", "Parallel", "Gain Staging", "Ground Loop", "Bộ quản lý nguồn"],
-        "questionKeywords": ["Cắm vang số vào cục đẩy dùng dây gì?", "Chế độ Bridge trên cục đẩy là gì?", "Thứ tự bật tắt dàn âm thanh để không bị nổ loa?"],
-        "longTailKeywords": ["hướng dẫn cắm dây vang số xuống cục đẩy không bị ù xì", "cách gạt công tắc stereo bridge trên cục đẩy", "quy tắc bật tắt thiết bị âm thanh an toàn"],
-        "commercialModifiers": ["hướng dẫn", "lắp đặt", "đấu nối", "Quảng Ngãi"],
-        "entities": ["Tiến Đạt Audio", "Crown Audio", "ARF Audio", "Neutrik", "Quảng Ngãi"],
+        "secondaryKeywords": [
+          "đấu vang số với cục đẩy",
+          "sơ đồ cắm dây vang số",
+          "kết nối canon xlr",
+          "chế độ bridge cục đẩy"
+        ],
+        "semanticTerms": [
+          "XLR Balanced",
+          "Pin 1 Ground",
+          "Stereo Mode",
+          "Bridge Mono",
+          "Parallel",
+          "Gain Staging",
+          "Ground Loop",
+          "Bộ quản lý nguồn"
+        ],
+        "questionKeywords": [
+          "Cắm vang số vào cục đẩy dùng dây gì?",
+          "Chế độ Bridge trên cục đẩy là gì?",
+          "Thứ tự bật tắt dàn âm thanh để không bị nổ loa?"
+        ],
+        "longTailKeywords": [
+          "hướng dẫn cắm dây vang số xuống cục đẩy không bị ù xì",
+          "cách gạt công tắc stereo bridge trên cục đẩy",
+          "quy tắc bật tắt thiết bị âm thanh an toàn"
+        ],
+        "commercialModifiers": [
+          "hướng dẫn",
+          "lắp đặt",
+          "đấu nối",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "Crown Audio",
+          "ARF Audio",
+          "Neutrik",
+          "Quảng Ngãi"
+        ],
         "primaryIntent": "informational",
         "secondaryIntent": "commercial investigation",
-        "serpObservations": ["Người dùng rất hay nhầm lẫn cách gạt Bridge và thứ tự cắm dây gây cháy củ loa và nổ bụp ra loa."],
-        "cannibalizationNotes": ["Tập trung giải quyết tầng truyền dẫn phần cứng và an toàn thiết bị."],
+        "serpObservations": [
+          "Người dùng rất hay nhầm lẫn cách gạt Bridge và thứ tự cắm dây gây cháy củ loa và nổ bụp ra loa."
+        ],
+        "cannibalizationNotes": [
+          "Tập trung giải quyết tầng truyền dẫn phần cứng và an toàn thiết bị."
+        ],
         "clusterRole": "spoke",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://www.crownaudio.com/en/articles/amp-modes-stereo-bridge-parallel", "title": "Amplifier Operating Modes: Stereo, Parallel, Bridge Mono", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Sơ đồ mạch và nguyên tắc tải trở kháng khi đánh Bridge vs Stereo."]},
-          {"url": "https://lacvietaudio.com/cach-dau-vang-so-voi-cuc-day/", "title": "Hướng dẫn đấu nối vang số với cục đẩy chuẩn kỹ thuật", "publisher": "Lạc Việt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Quy ước hàn dây Canon 1-Mass, 2-Hot (+), 3-Cold (-) và thứ tự bật mở nguồn."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Tư vấn lắp đặt dàn âm thanh Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Cung cấp dây dẫn Neutrik OFC chống nhiễu và thi công trọn gói tại Quảng Ngãi."]}
+          {
+            "url": "https://www.crownaudio.com/en/articles/amp-modes-stereo-bridge-parallel",
+            "title": "Amplifier Operating Modes: Stereo, Parallel, Bridge Mono",
+            "publisher": "Crown Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Sơ đồ mạch và nguyên tắc tải trở kháng khi đánh Bridge vs Stereo."
+            ]
+          },
+          {
+            "url": "https://lacvietaudio.com/cach-dau-vang-so-voi-cuc-day/",
+            "title": "Hướng dẫn đấu nối vang số với cục đẩy chuẩn kỹ thuật",
+            "publisher": "Lạc Việt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Quy ước hàn dây Canon 1-Mass, 2-Hot (+), 3-Cold (-) và thứ tự bật mở nguồn."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Tư vấn lắp đặt dàn âm thanh Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Cung cấp dây dẫn Neutrik OFC chống nhiễu và thi công trọn gói tại Quảng Ngãi."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Sơ đồ đấu nối dây Canon XLR từ vang số xuống cục đẩy công suất", "caption": "Sơ đồ tín hiệu chuẩn Stereo: Main L/R xuống Ch1/Ch2 và Sub Out xuống Ch3.", "section": "Sơ đồ đấu nối dây chuẩn tín hiệu", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Vị trí công tắc gạt Stereo Parallel Bridge mặt sau cục đẩy công suất", "caption": "Minh họa 3 chế độ gạt gạt mạch công suất trên main amplifier.", "section": "Cách gạt công tắc chế độ", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Sơ đồ đấu nối dây Canon XLR từ vang số xuống cục đẩy công suất",
+            "caption": "Sơ đồ tín hiệu chuẩn Stereo: Main L/R xuống Ch1/Ch2 và Sub Out xuống Ch3.",
+            "section": "Sơ đồ đấu nối dây chuẩn tín hiệu",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Vị trí công tắc gạt Stereo Parallel Bridge mặt sau cục đẩy công suất",
+            "caption": "Minh họa 3 chế độ gạt gạt mạch công suất trên main amplifier.",
+            "section": "Cách gạt công tắc chế độ",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "connecting-mixer-amp.md"
@@ -108,45 +300,138 @@
       "title": "Kinh nghiệm chọn micro không dây karaoke UHF: Tránh mua nhầm hàng dỏm",
       "excerpt": "Hướng dẫn chọn mua micro không dây karaoke sóng UHF chuyên nghiệp: so sánh sóng VHF vs UHF, tính năng quét sóng sạch và cảm biến tự ngắt tiết kiệm pin.",
       "category": "Tư vấn mua sắm",
-      "tags": ["micro không dây", "micro karaoke", "sóng uhf", "kinh nghiệm chọn mua", "quét sóng sạch"],
+      "tags": [
+        "micro không dây",
+        "micro karaoke",
+        "sóng uhf",
+        "kinh nghiệm chọn mua",
+        "quét sóng sạch"
+      ],
       "primaryKeywordId": "kw-wireless-mic-guide",
-      "keywordIds": ["kw-wireless-mic-guide"],
-      "relatedPostIds": ["seed-2026-08-family-karaoke-budget", "seed-2026-08-karaoke-feedback"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660"],
-      "featuredImage": "/images/editorial-temp/equipment-selection.png",
+      "keywordIds": [
+        "kw-wireless-mic-guide"
+      ],
+      "relatedPostIds": [
+        "seed-2026-08-family-karaoke-budget",
+        "seed-2026-08-karaoke-feedback"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660"
+      ],
+      "featuredImage": "/uploads/1757699242926_2u7b75d6b2p.png",
       "seo": {
         "metaTitle": "Kinh nghiệm chọn micro không dây karaoke UHF chuẩn nhất",
         "metaDescription": "Bí quyết chọn mua micro không dây karaoke sóng UHF: so sánh VHF vs UHF, tính năng quét sóng sạch chống nhiễu và cảm biến tự ngắt tiết kiệm pin.",
         "canonicalPath": "/kien-thuc/kinh-nghiem-chon-micro-khong-day-karaoke-uhf",
         "ogTitle": "Kinh nghiệm chọn micro không dây karaoke UHF chuẩn nhất",
         "ogDescription": "Hướng dẫn chi tiết từ kỹ thuật viên: cách chọn micro bắt sóng xa, tiếng trong trẻo và bền bỉ.",
-        "ogImage": "/images/editorial-temp/equipment-selection.png",
+        "ogImage": "/uploads/1757699242926_2u7b75d6b2p.png",
         "noIndex": false
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Buying Guide",
         "primaryKeyword": "kinh nghiệm chọn micro không dây karaoke",
-        "secondaryKeywords": ["micro không dây sóng uhf", "micro karaoke chống hú", "chọn micro gia đình", "cảm biến tự ngắt micro"],
-        "semanticTerms": ["UHF", "VHF", "Auto Frequency Scan", "Cardioid Capsule", "True Diversity", "Cảm biến gia tốc", "Độ nhạy SPL"],
-        "questionKeywords": ["Nên mua micro không dây UHF hay VHF?", "Tính năng cảm biến tự ngắt trên micro có tác dụng gì?", "Làm sao để biết micro karaoke hát nhẹ hơi?"],
-        "longTailKeywords": ["cách chọn micro không dây hát hay không mệt", "micro karaoke sóng uhf không bị trùng kênh", "tư vấn mua micro không dây gia đình dưới 5 triệu"],
-        "commercialModifiers": ["kinh nghiệm", "tư vấn", "chọn mua", "Quảng Ngãi"],
-        "entities": ["Shure", "Sennheiser", "Tiến Đạt Audio", "ARF Audio", "Bảo Châu Elec"],
+        "secondaryKeywords": [
+          "micro không dây sóng uhf",
+          "micro karaoke chống hú",
+          "chọn micro gia đình",
+          "cảm biến tự ngắt micro"
+        ],
+        "semanticTerms": [
+          "UHF",
+          "VHF",
+          "Auto Frequency Scan",
+          "Cardioid Capsule",
+          "True Diversity",
+          "Cảm biến gia tốc",
+          "Độ nhạy SPL"
+        ],
+        "questionKeywords": [
+          "Nên mua micro không dây UHF hay VHF?",
+          "Tính năng cảm biến tự ngắt trên micro có tác dụng gì?",
+          "Làm sao để biết micro karaoke hát nhẹ hơi?"
+        ],
+        "longTailKeywords": [
+          "cách chọn micro không dây hát hay không mệt",
+          "micro karaoke sóng uhf không bị trùng kênh",
+          "tư vấn mua micro không dây gia đình dưới 5 triệu"
+        ],
+        "commercialModifiers": [
+          "kinh nghiệm",
+          "tư vấn",
+          "chọn mua",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Shure",
+          "Sennheiser",
+          "Tiến Đạt Audio",
+          "ARF Audio",
+          "Bảo Châu Elec"
+        ],
         "primaryIntent": "commercial investigation",
         "secondaryIntent": "informational",
-        "serpObservations": ["Người mua thường băn khoăn về pin nhanh hết, micro rơi bị nổ tiếng và mất sóng khi di chuyển."],
-        "cannibalizationNotes": ["Tập trung chọn lựa phần cứng đầu thu - tay mic, liên kết về bài feedback và ngân sách."],
+        "serpObservations": [
+          "Người mua thường băn khoăn về pin nhanh hết, micro rơi bị nổ tiếng và mất sóng khi di chuyển."
+        ],
+        "cannibalizationNotes": [
+          "Tập trung chọn lựa phần cứng đầu thu - tay mic, liên kết về bài feedback và ngân sách."
+        ],
         "clusterRole": "spoke",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://www.shure.com/en-US/insights/wireless-mic-frequency-bands", "title": "Wireless Systems: UHF vs VHF", "publisher": "Shure Pro Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["So sánh bước sóng, khả năng xuyên tường và hiện tượng nghẽn dải sóng vô tuyến."]},
-          {"url": "https://baochauelec.com/kinh-nghiem-chon-mua-micro-khong-day", "title": "Kinh nghiệm chọn mua micro không dây hát karaoke hay nhất", "publisher": "Bảo Châu Elec", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Đánh giá củ mic dynamic, màng capsule và tính năng tự ngắt sau 3-5 giây."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Showroom thử micro không dây Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Thử giọng trực tiếp với hệ thống loa và vang số tại 264 Phan Đình Phùng, TP Quảng Ngãi."]}
+          {
+            "url": "https://www.shure.com/en-US/insights/wireless-mic-frequency-bands",
+            "title": "Wireless Systems: UHF vs VHF",
+            "publisher": "Shure Pro Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "So sánh bước sóng, khả năng xuyên tường và hiện tượng nghẽn dải sóng vô tuyến."
+            ]
+          },
+          {
+            "url": "https://baochauelec.com/kinh-nghiem-chon-mua-micro-khong-day",
+            "title": "Kinh nghiệm chọn mua micro không dây hát karaoke hay nhất",
+            "publisher": "Bảo Châu Elec",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Đánh giá củ mic dynamic, màng capsule và tính năng tự ngắt sau 3-5 giây."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Showroom thử micro không dây Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Thử giọng trực tiếp với hệ thống loa và vang số tại 264 Phan Đình Phùng, TP Quảng Ngãi."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Bảng so sánh dải sóng VHF và UHF trên micro không dây", "caption": "So sánh thông số kỹ thuật, khả năng xuyên tường và nguy cơ trùng sóng.", "section": "Sóng UHF và VHF khác nhau thế nào", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Cấu tạo củ micro dynamic và màng nhún búp sóng Cardioid", "caption": "Củ mic chất lượng cao triệt tiêu âm thanh thu từ phía sau lưng micro.", "section": "Đánh giá chất lượng củ Micro", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Bảng so sánh dải sóng VHF và UHF trên micro không dây",
+            "caption": "So sánh thông số kỹ thuật, khả năng xuyên tường và nguy cơ trùng sóng.",
+            "section": "Sóng UHF và VHF khác nhau thế nào",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Cấu tạo củ micro dynamic và màng nhún búp sóng Cardioid",
+            "caption": "Củ mic chất lượng cao triệt tiêu âm thanh thu từ phía sau lưng micro.",
+            "section": "Đánh giá chất lượng củ Micro",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "wireless-mic-guide.md"
@@ -157,45 +442,136 @@
       "title": "So sánh vang cơ lai số và vang số: Nên chọn loại nào cho dàn karaoke?",
       "excerpt": "Phân tích chi tiết sự khác biệt giữa vang cơ lai số và vang số chuyên nghiệp: chất âm, khả năng chống hú, độ bền và mức độ dễ sử dụng cho gia đình.",
       "category": "Tư vấn mua sắm",
-      "tags": ["vang cơ lai số", "vang số", "so sánh âm thanh", "karaoke gia đình", "chống hú"],
+      "tags": [
+        "vang cơ lai số",
+        "vang số",
+        "so sánh âm thanh",
+        "karaoke gia đình",
+        "chống hú"
+      ],
       "primaryKeywordId": "kw-analog-vs-digital-mixer",
-      "keywordIds": ["kw-analog-vs-digital-mixer"],
-      "relatedPostIds": ["seed-2026-10-tuning-digital-mixer", "seed-2026-08-family-karaoke-budget"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660"],
-      "featuredImage": "/images/editorial-temp/buying-decisions.png",
+      "keywordIds": [
+        "kw-analog-vs-digital-mixer"
+      ],
+      "relatedPostIds": [
+        "seed-2026-10-tuning-digital-mixer",
+        "seed-2026-08-family-karaoke-budget"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660"
+      ],
+      "featuredImage": "/uploads/1757873410571_2tstfuq2vcq.jpg",
       "seo": {
         "metaTitle": "So sánh vang cơ lai số và vang số: Nên chọn loại nào?",
         "metaDescription": "So sánh chi tiết vang cơ lai số và vang số karaoke: khả năng chống hú, chất lượng xử lý âm thanh, độ bền và chi phí đầu tư cho gia đình.",
         "canonicalPath": "/kien-thuc/so-sanh-vang-co-lai-so-va-vang-so",
         "ogTitle": "So sánh vang cơ lai số và vang số: Nên chọn loại nào?",
         "ogDescription": "Nên mua vang cơ lai số hay vang số? Phân tích ưu nhược điểm thực tế từ chuyên gia âm thanh Tiến Đạt Audio.",
-        "ogImage": "/images/editorial-temp/buying-decisions.png",
+        "ogImage": "/uploads/1757873410571_2tstfuq2vcq.jpg",
         "noIndex": false
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Comparison Guide",
         "primaryKeyword": "so sánh vang cơ lai số và vang số",
-        "secondaryKeywords": ["nên mua vang cơ hay vang số", "vang cơ lai số có hay không", "ưu nhược điểm vang số", "vang cơ khác vang số thế nào"],
-        "semanticTerms": ["Chiết áp cơ học", "Chip DSP 32-bit", "Notch Filter", "Lưu cấu hình Mode", "Khóa mật khẩu", "Mạch chống hú FBE"],
-        "questionKeywords": ["Nên chọn vang cơ hay vang số cho gia đình?", "Vang cơ lai số có chống hú tốt bằng vang số không?", "Người lớn tuổi có dùng được vang số không?"],
-        "longTailKeywords": ["so sánh chi tiết vang cơ lai số và vang số", "gia đình nên chọn vang cơ hay vang số dễ chỉnh", "vang số có khó chỉnh hơn vang cơ nhiều không"],
-        "commercialModifiers": ["so sánh", "tư vấn", "mua vang số", "Quảng Ngãi"],
-        "entities": ["Tiến Đạt Audio", "ARF Audio", "Bảo Châu Elec", "Quảng Ngãi"],
+        "secondaryKeywords": [
+          "nên mua vang cơ hay vang số",
+          "vang cơ lai số có hay không",
+          "ưu nhược điểm vang số",
+          "vang cơ khác vang số thế nào"
+        ],
+        "semanticTerms": [
+          "Chiết áp cơ học",
+          "Chip DSP 32-bit",
+          "Notch Filter",
+          "Lưu cấu hình Mode",
+          "Khóa mật khẩu",
+          "Mạch chống hú FBE"
+        ],
+        "questionKeywords": [
+          "Nên chọn vang cơ hay vang số cho gia đình?",
+          "Vang cơ lai số có chống hú tốt bằng vang số không?",
+          "Người lớn tuổi có dùng được vang số không?"
+        ],
+        "longTailKeywords": [
+          "so sánh chi tiết vang cơ lai số và vang số",
+          "gia đình nên chọn vang cơ hay vang số dễ chỉnh",
+          "vang số có khó chỉnh hơn vang cơ nhiều không"
+        ],
+        "commercialModifiers": [
+          "so sánh",
+          "tư vấn",
+          "mua vang số",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "ARF Audio",
+          "Bảo Châu Elec",
+          "Quảng Ngãi"
+        ],
         "primaryIntent": "commercial investigation",
         "secondaryIntent": "informational",
-        "serpObservations": ["Người dùng phân vân giữa tính tiện lợi vặn tay của vang cơ và chất âm chuyên nghiệp, chống hú triệt để của vang số."],
-        "cannibalizationNotes": ["So sánh phân định dòng sản phẩm tiền khuếch đại cho hệ thống gia đình."],
+        "serpObservations": [
+          "Người dùng phân vân giữa tính tiện lợi vặn tay của vang cơ và chất âm chuyên nghiệp, chống hú triệt để của vang số."
+        ],
+        "cannibalizationNotes": [
+          "So sánh phân định dòng sản phẩm tiền khuếch đại cho hệ thống gia đình."
+        ],
         "clusterRole": "spoke",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://phuctruongaudio.vn/so-sanh-vang-co-va-vang-so/", "title": "So sánh vang cơ và vang số: Đâu là sự lựa chọn hoàn hảo?", "publisher": "Phúc Trường Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Phân tích chi tiết độ linh hoạt của bộ lọc số DSP so với mạch analog chiết áp."]},
-          {"url": "https://baochauelec.com/nen-mua-vang-co-hay-vang-so", "title": "Nên mua vang cơ hay vang số cho dàn karaoke gia đình?", "publisher": "Bảo Châu Elec", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Khảo sát thói quen sử dụng của khách hàng theo độ tuổi và phân khúc ngân sách."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Tư vấn thiết bị âm thanh Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Cài sẵn 4 chế độ hát trên vang số, hỗ trợ khách hàng không cần tự chỉnh máy."]}
+          {
+            "url": "https://phuctruongaudio.vn/so-sanh-vang-co-va-vang-so/",
+            "title": "So sánh vang cơ và vang số: Đâu là sự lựa chọn hoàn hảo?",
+            "publisher": "Phúc Trường Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Phân tích chi tiết độ linh hoạt của bộ lọc số DSP so với mạch analog chiết áp."
+            ]
+          },
+          {
+            "url": "https://baochauelec.com/nen-mua-vang-co-hay-vang-so",
+            "title": "Nên mua vang cơ hay vang số cho dàn karaoke gia đình?",
+            "publisher": "Bảo Châu Elec",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Khảo sát thói quen sử dụng của khách hàng theo độ tuổi và phân khúc ngân sách."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Tư vấn thiết bị âm thanh Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Cài sẵn 4 chế độ hát trên vang số, hỗ trợ khách hàng không cần tự chỉnh máy."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Bảng đối chiếu thông số giữa vang cơ lai số và vang số chuyên nghiệp", "caption": "So sánh 6 tiêu chí cốt lõi: xử lý tín hiệu, chống hú, độ bền chiết áp, lưu cấu hình.", "section": "Bảng so sánh đối đầu chi tiết", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Mặt trước các nút chiết áp vang cơ và màn hình LCD vang số", "caption": "Vang cơ tinh chỉnh bằng tuốc nơ vít, vang số tinh chỉnh qua phần mềm máy tính chuyên dụng.", "section": "Bản chất công nghệ xử lý âm thanh", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Bảng đối chiếu thông số giữa vang cơ lai số và vang số chuyên nghiệp",
+            "caption": "So sánh 6 tiêu chí cốt lõi: xử lý tín hiệu, chống hú, độ bền chiết áp, lưu cấu hình.",
+            "section": "Bảng so sánh đối đầu chi tiết",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Mặt trước các nút chiết áp vang cơ và màn hình LCD vang số",
+            "caption": "Vang cơ tinh chỉnh bằng tuốc nơ vít, vang số tinh chỉnh qua phần mềm máy tính chuyên dụng.",
+            "section": "Bản chất công nghệ xử lý âm thanh",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "analog-vs-digital-mixer.md"
@@ -206,45 +582,140 @@
       "title": "Loa bass bị rè: Nguyên nhân vật lý và cách xử lý triệt để",
       "excerpt": "Tìm hiểu 5 nguyên nhân vật lý cốt lõi khiến loa bass bị rè (lệch coil, rách màng, clipping cục đẩy) và 3 bài test đơn giản tự chẩn đoán tại nhà.",
       "category": "Kiến thức âm thanh",
-      "tags": ["loa bass bị rè", "sửa loa", "cuộn voice coil", "clipping", "bảo dưỡng loa", "khắc phục sự cố"],
+      "tags": [
+        "loa bass bị rè",
+        "sửa loa",
+        "cuộn voice coil",
+        "clipping",
+        "bảo dưỡng loa",
+        "khắc phục sự cố"
+      ],
       "primaryKeywordId": "kw-rattling-bass-troubleshooting",
-      "keywordIds": ["kw-rattling-bass-troubleshooting"],
-      "relatedPostIds": ["seed-2026-10-connecting-mixer-amp", "seed-2026-08-family-karaoke-budget"],
-      "relatedProductIds": ["arf-fs12", "arf-x12pro"],
-      "featuredImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+      "keywordIds": [
+        "kw-rattling-bass-troubleshooting"
+      ],
+      "relatedPostIds": [
+        "seed-2026-10-connecting-mixer-amp",
+        "seed-2026-08-family-karaoke-budget"
+      ],
+      "relatedProductIds": [
+        "arf-fs12",
+        "arf-x12pro"
+      ],
+      "featuredImage": "/uploads/1757873203337_t0b63dx81ng.webp",
       "seo": {
         "metaTitle": "Loa bass bị rè: Nguyên nhân vật lý và cách xử lý triệt để",
         "metaDescription": "Loa bass bị rè lẹp bẹp do đâu? Tìm hiểu nguyên nhân cọ coil, rách màng, clipping cục đẩy và hướng dẫn 3 bước tự kiểm tra chẩn đoán chính xác tại nhà.",
         "canonicalPath": "/kien-thuc/loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc",
         "ogTitle": "Loa bass bị rè: Nguyên nhân vật lý và cách xử lý triệt để",
         "ogDescription": "Quy trình kiểm tra cơ học và mạch điện chẩn đoán lỗi loa bass bị rè méo tiếng tại nhà.",
-        "ogImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+        "ogImage": "/uploads/1757873203337_t0b63dx81ng.webp",
         "noIndex": false
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Troubleshooting",
         "primaryKeyword": "loa bass bị rè",
-        "secondaryKeywords": ["nguyên nhân loa bass bị rè", "sửa loa bass bị rè", "loa bị méo tiếng", "cọ cuộn coil loa bass"],
-        "semanticTerms": ["Voice Coil", "Khe từ", "Gân mút", "Râu loa", "Clipping", "Sóng vuông DC", "Độ dốc HPF", "Keo dán màng loa"],
-        "questionKeywords": ["Vì sao loa bass mở to bị rè?", "Cách kiểm tra loa bass bị cọ coil tại nhà?", "Loa bass bị rè sửa hết bao nhiêu tiền?"],
-        "longTailKeywords": ["loa sub mở to bị phập phù rè lẹp bẹp", "tự sửa loa bass bị rè tại nhà đơn giản", "cách phân biệt rè do củ loa hay do cục đẩy"],
-        "commercialModifiers": ["nguyên nhân", "cách sửa", "chi phí", "Quảng Ngãi"],
-        "entities": ["Tiến Đạt Audio", "Crown Audio", "ARF Audio", "JBL Professional", "Quảng Ngãi"],
+        "secondaryKeywords": [
+          "nguyên nhân loa bass bị rè",
+          "sửa loa bass bị rè",
+          "loa bị méo tiếng",
+          "cọ cuộn coil loa bass"
+        ],
+        "semanticTerms": [
+          "Voice Coil",
+          "Khe từ",
+          "Gân mút",
+          "Râu loa",
+          "Clipping",
+          "Sóng vuông DC",
+          "Độ dốc HPF",
+          "Keo dán màng loa"
+        ],
+        "questionKeywords": [
+          "Vì sao loa bass mở to bị rè?",
+          "Cách kiểm tra loa bass bị cọ coil tại nhà?",
+          "Loa bass bị rè sửa hết bao nhiêu tiền?"
+        ],
+        "longTailKeywords": [
+          "loa sub mở to bị phập phù rè lẹp bẹp",
+          "tự sửa loa bass bị rè tại nhà đơn giản",
+          "cách phân biệt rè do củ loa hay do cục đẩy"
+        ],
+        "commercialModifiers": [
+          "nguyên nhân",
+          "cách sửa",
+          "chi phí",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "Crown Audio",
+          "ARF Audio",
+          "JBL Professional",
+          "Quảng Ngãi"
+        ],
         "primaryIntent": "troubleshooting",
         "secondaryIntent": "informational",
-        "serpObservations": ["Người dùng cần hướng dẫn kiểm tra thủ công nhanh để biết loa hỏng nhẹ hay nặng trước khi đem đi sửa."],
-        "cannibalizationNotes": ["Chuyên biệt cho sự cố phần cứng củ loa dải trầm và méo tiếng công suất."],
+        "serpObservations": [
+          "Người dùng cần hướng dẫn kiểm tra thủ công nhanh để biết loa hỏng nhẹ hay nặng trước khi đem đi sửa."
+        ],
+        "cannibalizationNotes": [
+          "Chuyên biệt cho sự cố phần cứng củ loa dải trầm và méo tiếng công suất."
+        ],
         "clusterRole": "spoke",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://www.crownaudio.com/en/articles/preventing-loudspeaker-failure", "title": "Preventing Loudspeaker Failure: Causes of Mechanical and Thermal Damage", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Phân tích hiện tượng quá nhiệt cuộn âm và sóng vuông DC do amplifier clipping."]},
-          {"url": "https://lacvietaudio.com/loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc/", "title": "Loa bass bị rè: 5 nguyên nhân và cách khắc phục tại nhà", "publisher": "Lạc Việt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Bài kiểm tra ấn nón loa cơ học và bảng giá sửa chữa quấn côn thay gân."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Dịch vụ bảo dưỡng sửa chữa âm thanh Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Dịch vụ sửa chữa thay thế linh kiện củ loa chính hãng tại Quảng Ngãi."]}
+          {
+            "url": "https://www.crownaudio.com/en/articles/preventing-loudspeaker-failure",
+            "title": "Preventing Loudspeaker Failure: Causes of Mechanical and Thermal Damage",
+            "publisher": "Crown Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Phân tích hiện tượng quá nhiệt cuộn âm và sóng vuông DC do amplifier clipping."
+            ]
+          },
+          {
+            "url": "https://lacvietaudio.com/loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc/",
+            "title": "Loa bass bị rè: 5 nguyên nhân và cách khắc phục tại nhà",
+            "publisher": "Lạc Việt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Bài kiểm tra ấn nón loa cơ học và bảng giá sửa chữa quấn côn thay gân."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Dịch vụ bảo dưỡng sửa chữa âm thanh Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Dịch vụ sửa chữa thay thế linh kiện củ loa chính hãng tại Quảng Ngãi."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Cấu tạo cuộn Voice Coil nằm trong khe từ nam châm của củ loa bass", "caption": "Minh họa khoảng cách khe từ hẹp 1mm dễ bị cọ xát khi cuộn dây phồng rộp.", "section": "Lệch tâm hoặc phồng xước cuộn Voice Coil", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Cách dùng 4 đầu ngón tay ấn đều màng loa bass để kiểm tra tiếng xoẹt", "caption": "Kiểm tra hành trình cơ học cuộn âm bằng tay không tốn chi phí.", "section": "Phương pháp ấn màng loa", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Cấu tạo cuộn Voice Coil nằm trong khe từ nam châm của củ loa bass",
+            "caption": "Minh họa khoảng cách khe từ hẹp 1mm dễ bị cọ xát khi cuộn dây phồng rộp.",
+            "section": "Lệch tâm hoặc phồng xước cuộn Voice Coil",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Cách dùng 4 đầu ngón tay ấn đều màng loa bass để kiểm tra tiếng xoẹt",
+            "caption": "Kiểm tra hành trình cơ học cuộn âm bằng tay không tốn chi phí.",
+            "section": "Phương pháp ấn màng loa",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "rattling-bass-troubleshooting.md"

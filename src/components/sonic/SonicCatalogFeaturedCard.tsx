@@ -9,7 +9,7 @@ function productPrice(product: Product) {
 }
 
 export default function SonicCatalogFeaturedCard({ product }: { product: Product }) {
-  const image = product.images[0] || '/images/sonic-hero.png'
+  const image = product.images[0] || '/uploads/1757873177981_wez3lmbcclj.jpg'
 
   return (
     <article className="sonic-panel group overflow-hidden transition-colors duration-300 hover:border-[var(--sonic-gold)]">

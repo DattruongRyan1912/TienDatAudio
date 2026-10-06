@@ -1239,3 +1239,39 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `npm run build`: pass clean (76 routes render thành công).
   + Sitemap verification: Sinh chính xác 10 URL `/kien-thuc/*` chất lượng cao, không còn bài AI template nào.
 - Rollback reference: Git revert commit tương ứng; chạy lại script với các tham số khôi phục nếu cần.
+
+## 2026-10-06 17:42 +0700 — Thay thế toàn bộ hình ảnh AI gen bằng hình ảnh chụp thiết bị và sản phẩm thực tế
+
+- Scope/authorization: Người dùng yêu cầu gỡ bỏ và thay thế toàn bộ hình ảnh AI gen trên hệ thống bằng hình ảnh chụp thực tế tại Tiến Đạt Audio ("thay hình thành hình thực tế đi đừng sài AI gen").
+- Changes:
+  + Cập nhật hình ảnh bài viết kiến thức (`posts`):
+    * Tạo `scripts/update-editorial-real-images.mjs` hỗ trợ dry-run và apply (local & production).
+    * Ánh xạ 10 bài viết kiến thức chuyên sâu sang hình ảnh thiết bị chụp thực tế tương ứng trong `public/uploads/`:
+      - `dan-karaoke-gia-dinh-gia-bao-nhieu`: `/uploads/1757873177981_wez3lmbcclj.jpg` (Ảnh chụp thật cặp loa ARF FS12 máy ảnh Canon)
+      - `loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc`: `/uploads/1757873217170_zjcdu51ihss.webp` (Ảnh chụp thật vang số chống hú ARF VX330PRO)
+      - `lap-dat-dan-karaoke-gia-dinh-quang-ngai`: `/uploads/1757911498269_vky7s589yrq.jpg` (Ảnh chụp thật thiết bị tại công trình showroom Quảng Ngãi)
+      - `cach-chon-loa-nghe-nhac-cho-phong-khach`: `/uploads/1757872819402_6jhbuhvujsk.jpg` (Ảnh chụp thật loa thùng ARF X12Pro)
+      - `dsp-audio-la-gi`: `/uploads/1757870365500_xwo1nuqv39.jpg` (Ảnh chụp thật thiết bị DSP ARF)
+      - `cach-chinh-vang-so-chong-hu-bang-may-tinh`: `/uploads/1757869887047_orzq37kz72c.jpg` (Ảnh chụp thật vang số căn chỉnh máy tính)
+      - `cach-ghep-noi-vang-so-voi-cuc-day-cong-suat`: `/uploads/1757873414645_hxra7006d3t.jpg` (Ảnh chụp thật mặt sau cục đẩy công suất ARF NX4-800)
+      - `kinh-nghiem-chon-micro-khong-day-karaoke-uhf`: `/uploads/1757699242926_2u7b75d6b2p.png` (Ảnh chụp thật bộ micro không dây UHF)
+      - `so-sanh-vang-co-lai-so-va-vang-so`: `/uploads/1757873410571_2tstfuq2vcq.jpg` (Ảnh chụp thật thiết bị mixer/công suất)
+      - `loa-bass-bi-re-nguyen-nhan-va-cach-khac-phuc`: `/uploads/1757873203337_t0b63dx81ng.webp` (Ảnh chụp thật củ loa bass và màng nhện thùng sub ARF SA15)
+  + Cập nhật manifests:
+    * `data/editorial-seeds/batch-1/manifest.json` & `batch-2/manifest.json`: Chuyển toàn bộ `featuredImage` và `ogImage` sang ảnh thực tế `/uploads/...`.
+  + Thay thế ảnh hero fallback `public/images/sonic-hero.png`:
+    * Chuyển đổi từ ảnh AI 3D cũ sang ảnh chụp dàn âm thanh thực tế độ phân giải cao 1400x1400.
+  + Cập nhật các component UI:
+    * `src/app/about/page.tsx`: Thay ảnh minh họa sang ảnh chụp thực tế `/uploads/1757911498269_vky7s589yrq.jpg`.
+    * `src/app/contact/page.tsx`: Thay ảnh showroom sang ảnh chụp thực tế `/uploads/1757873177981_wez3lmbcclj.jpg`.
+    * `src/app/kien-thuc/page.tsx`: Cập nhật fallback về `/uploads/1757873177981_wez3lmbcclj.jpg`.
+    * `src/app/combos/[slug]/page.tsx` & `src/app/combos/page.tsx`: Cập nhật fallback về `/uploads/...`.
+    * `SonicProductCard.tsx`, `SonicCatalogProductCard.tsx`, `SonicCatalogFeaturedCard.tsx`, `SonicSolutionCard.tsx`: Đồng bộ fallback ảnh chụp thực tế.
+  + Nâng cấp workflow `.github/workflows/sync-editorial-batch2-production.yml`:
+    * Tích hợp bước chạy `scripts/update-editorial-real-images.mjs` trên production VPS.
+- Preflight Verification:
+  + `npm test`: 81/81 tests pass clean.
+  + `npm run lint`: pass clean (0 errors, 0 warnings).
+  + `npx tsc --noEmit`: pass clean (0 errors).
+  + `npm run build`: pass clean (76 routes render thành công).
+- Rollback reference: Git revert commit tương ứng.

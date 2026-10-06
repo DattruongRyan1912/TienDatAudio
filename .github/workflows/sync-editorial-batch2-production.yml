@@ -93,7 +93,10 @@ jobs:
           await client.close();
           "
 
-          echo "=== 5. KIỂM TRA TỔNG SỐ BÀI PUBLISHED TRÊN PRODUCTION ==="
+          echo "=== 5. CẬP NHẬT HÌNH ẢNH SẢN PHẨM/THIẾT BỊ CHỤP THẬT THAY THẾ ẢNH AI GEN ==="
+          IMAGE_TARGET=production CONFIRM_REAL_IMAGES=UPDATE-REAL-IMAGES node scripts/update-editorial-real-images.mjs --apply
+
+          echo "=== 6. KIỂM TRA TỔNG SỐ BÀI PUBLISHED TRÊN PRODUCTION ==="
           node -e "
           import { MongoClient } from 'mongodb';
           const uri = process.env.MONGODB_URI;

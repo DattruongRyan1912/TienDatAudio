@@ -10,45 +10,147 @@
       "title": "Dàn karaoke gia đình giá bao nhiêu? Cách chia ngân sách theo không gian",
       "excerpt": "Bảng giá dàn karaoke gia đình năm 2026 từ 12 triệu đến 80 triệu đồng. Hướng dẫn công thức tỷ lệ vàng phân bổ ngân sách cho loa, đẩy, vang và bóc tách các chi phí ẩn phụ kiện.",
       "category": "Giải pháp",
-      "tags": ["karaoke gia đình", "ngân sách", "phối ghép", "lắp đặt", "Quảng Ngãi"],
+      "tags": [
+        "karaoke gia đình",
+        "ngân sách",
+        "phối ghép",
+        "lắp đặt",
+        "Quảng Ngãi"
+      ],
       "primaryKeywordId": "kw-family-karaoke-budget",
-      "keywordIds": ["kw-family-karaoke-budget"],
-      "relatedPostIds": ["seed-2026-08-karaoke-feedback", "seed-2026-08-quang-ngai-installation"],
-      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx330pro", "arf-vx660"],
-      "featuredImage": "/images/editorial-temp/family-karaoke.png",
+      "keywordIds": [
+        "kw-family-karaoke-budget"
+      ],
+      "relatedPostIds": [
+        "seed-2026-08-karaoke-feedback",
+        "seed-2026-08-quang-ngai-installation"
+      ],
+      "relatedProductIds": [
+        "arf-x12pro",
+        "arf-fs12",
+        "arf-vx330pro",
+        "arf-vx660"
+      ],
+      "featuredImage": "/uploads/1757873177981_wez3lmbcclj.jpg",
       "seo": {
         "metaTitle": "Dàn karaoke gia đình giá bao nhiêu? Bảng giá cấu hình 2026",
         "metaDescription": "Dàn karaoke gia đình giá bao nhiêu? Xem bảng giá 2026 phân khúc 12-80 triệu, công thức tỷ lệ vàng chia tiền cho loa, cục đẩy, vang số và bóc tách chi phí phụ kiện.",
         "canonicalPath": "/kien-thuc/dan-karaoke-gia-dinh-gia-bao-nhieu",
         "ogTitle": "Dàn karaoke gia đình giá bao nhiêu? Bảng giá cấu hình 2026",
         "ogDescription": "Bảng giá thực tế 2026 và công thức chia ngân sách dàn karaoke gia đình theo từng diện tích phòng.",
-        "ogImage": "/images/editorial-temp/family-karaoke.png",
+        "ogImage": "/uploads/1757873177981_wez3lmbcclj.jpg",
         "noIndex": true
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Buying Guide",
         "primaryKeyword": "dàn karaoke gia đình giá bao nhiêu",
-        "secondaryKeywords": ["giá dàn karaoke gia đình", "tư vấn dàn karaoke gia đình", "chi phí lắp đặt karaoke", "bảng giá karaoke 2026"],
-        "semanticTerms": ["diện tích phòng", "trở kháng", "công suất liên tục", "headroom", "micro", "cân chỉnh", "phạm vi thi công", "bộ quản lý nguồn", "dây loa OFC"],
-        "questionKeywords": ["Dàn karaoke gia đình gồm những gì?", "Có nên chọn theo công suất không?", "Có cần loa trầm ngay từ đầu không?", "Chi phí phụ kiện dàn karaoke là bao nhiêu?"],
-        "longTailKeywords": ["dàn karaoke gia đình cho phòng khách", "cách chia ngân sách dàn karaoke gia đình", "báo giá dàn karaoke gia đình cần hỏi gì", "dàn karaoke gia đình 30 triệu"],
-        "commercialModifiers": ["tư vấn", "lắp đặt", "nghe thử", "báo giá", "Quảng Ngãi"],
-        "entities": ["Tiến Đạt Audio", "Quảng Ngãi", "Crown Audio", "HARMAN Professional", "Bảo Châu Elec", "ARF Audio"],
+        "secondaryKeywords": [
+          "giá dàn karaoke gia đình",
+          "tư vấn dàn karaoke gia đình",
+          "chi phí lắp đặt karaoke",
+          "bảng giá karaoke 2026"
+        ],
+        "semanticTerms": [
+          "diện tích phòng",
+          "trở kháng",
+          "công suất liên tục",
+          "headroom",
+          "micro",
+          "cân chỉnh",
+          "phạm vi thi công",
+          "bộ quản lý nguồn",
+          "dây loa OFC"
+        ],
+        "questionKeywords": [
+          "Dàn karaoke gia đình gồm những gì?",
+          "Có nên chọn theo công suất không?",
+          "Có cần loa trầm ngay từ đầu không?",
+          "Chi phí phụ kiện dàn karaoke là bao nhiêu?"
+        ],
+        "longTailKeywords": [
+          "dàn karaoke gia đình cho phòng khách",
+          "cách chia ngân sách dàn karaoke gia đình",
+          "báo giá dàn karaoke gia đình cần hỏi gì",
+          "dàn karaoke gia đình 30 triệu"
+        ],
+        "commercialModifiers": [
+          "tư vấn",
+          "lắp đặt",
+          "nghe thử",
+          "báo giá",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "Quảng Ngãi",
+          "Crown Audio",
+          "HARMAN Professional",
+          "Bảo Châu Elec",
+          "ARF Audio"
+        ],
         "primaryIntent": "commercial investigation",
         "secondaryIntent": "informational",
-        "serpObservations": ["SERP 2026 phân hóa rõ 3 phân khúc: dưới 20 triệu (amply liền vang), 30-40 triệu (loa full + đẩy + vang rời), trên 50 triệu (loa cao cấp + sub lớn).", "Người dùng đặc biệt quan tâm đến chi phí phụ kiện dây dẫn và chính sách hỗ trợ cân chỉnh tại nhà."],
-        "cannibalizationNotes": ["Giữ vai trò bài trụ cột định giá dàn karaoke gia đình; các bài hẹp về công suất và chọn loa phòng khách sẽ liên kết về đây."],
+        "serpObservations": [
+          "SERP 2026 phân hóa rõ 3 phân khúc: dưới 20 triệu (amply liền vang), 30-40 triệu (loa full + đẩy + vang rời), trên 50 triệu (loa cao cấp + sub lớn).",
+          "Người dùng đặc biệt quan tâm đến chi phí phụ kiện dây dẫn và chính sách hỗ trợ cân chỉnh tại nhà."
+        ],
+        "cannibalizationNotes": [
+          "Giữ vai trò bài trụ cột định giá dàn karaoke gia đình; các bài hẹp về công suất và chọn loa phòng khách sẽ liên kết về đây."
+        ],
         "clusterRole": "pillar",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://baochauelec.com/dan-karaoke-gia-dinh", "title": "Bảng giá dàn karaoke gia đình chính hãng 2026", "publisher": "Bảo Châu Elec", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Khảo sát phân khúc giá thị trường thực tế 15 triệu, 30 triệu và trên 50 triệu đồng."]},
-          {"url": "https://www.crownaudio.com/en/how-much-amplifier-power", "title": "How Much Amplifier Power Do I Need?", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Nguyên tắc kiểm soát trở kháng danh định, headroom và hạn chế clipping khi phối ghép."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Tiến Đạt Audio contact and service context", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Showroom 264 Phan Đình Phùng, TP Quảng Ngãi; hỗ trợ khảo sát và nghe thử thực tế."]}
+          {
+            "url": "https://baochauelec.com/dan-karaoke-gia-dinh",
+            "title": "Bảng giá dàn karaoke gia đình chính hãng 2026",
+            "publisher": "Bảo Châu Elec",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Khảo sát phân khúc giá thị trường thực tế 15 triệu, 30 triệu và trên 50 triệu đồng."
+            ]
+          },
+          {
+            "url": "https://www.crownaudio.com/en/how-much-amplifier-power",
+            "title": "How Much Amplifier Power Do I Need?",
+            "publisher": "Crown Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Nguyên tắc kiểm soát trở kháng danh định, headroom và hạn chế clipping khi phối ghép."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Tiến Đạt Audio contact and service context",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Showroom 264 Phan Đình Phùng, TP Quảng Ngãi; hỗ trợ khảo sát và nghe thử thực tế."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Bảng so sánh phân khúc giá dàn karaoke gia đình năm 2026", "caption": "Bảng giá tham khảo 3 phân khúc phổ biến: phổ thông, tầm trung và cao cấp.", "section": "Bảng phân khúc giá và cấu hình", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Sơ đồ tỷ lệ vàng phân bổ ngân sách dàn âm thanh gia đình", "caption": "Công thức chia ngân sách: Loa 40%, Cục đẩy 30%, Vang số 15%, Micro 10%, Phụ kiện 5%.", "section": "Công thức Tỷ lệ vàng", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Bảng so sánh phân khúc giá dàn karaoke gia đình năm 2026",
+            "caption": "Bảng giá tham khảo 3 phân khúc phổ biến: phổ thông, tầm trung và cao cấp.",
+            "section": "Bảng phân khúc giá và cấu hình",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Sơ đồ tỷ lệ vàng phân bổ ngân sách dàn âm thanh gia đình",
+            "caption": "Công thức chia ngân sách: Loa 40%, Cục đẩy 30%, Vang số 15%, Micro 10%, Phụ kiện 5%.",
+            "section": "Công thức Tỷ lệ vàng",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "family-karaoke-budget.md"
@@ -59,45 +161,146 @@
       "title": "Loa karaoke bị hú: nguyên nhân và cách xử lý theo từng bước",
       "excerpt": "Loa karaoke bị hú rít xé tai do đâu? Bảng phân loại 3 dải tần số hú ù, hú trung, rít cao và hướng dẫn kỹ thuật cắt hú PEQ Notch Filter chuẩn âm học tại Quảng Ngãi.",
       "category": "Kiến thức âm thanh",
-      "tags": ["loa karaoke", "feedback", "chống hú", "micro", "xử lý lỗi", "PEQ"],
+      "tags": [
+        "loa karaoke",
+        "feedback",
+        "chống hú",
+        "micro",
+        "xử lý lỗi",
+        "PEQ"
+      ],
       "primaryKeywordId": "kw-karaoke-feedback",
-      "keywordIds": ["kw-karaoke-feedback"],
-      "relatedPostIds": ["seed-2026-08-family-karaoke-budget", "kw-q-022", "kw-q-047"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660", "arf-fs12"],
-      "featuredImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+      "keywordIds": [
+        "kw-karaoke-feedback"
+      ],
+      "relatedPostIds": [
+        "seed-2026-08-family-karaoke-budget",
+        "kw-q-022",
+        "kw-q-047"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660",
+        "arf-fs12"
+      ],
+      "featuredImage": "/uploads/1757873217170_zjcdu51ihss.webp",
       "seo": {
         "metaTitle": "Loa karaoke bị hú: Nguyên nhân và cách xử lý cắt hú PEQ",
         "metaDescription": "Loa karaoke bị hú rít do đâu? Hướng dẫn cách chỉnh vang số cắt hú PEQ Notch Filter, cách cầm micro chuẩn và xử lý âm học dội âm phòng khách nhà ống.",
         "canonicalPath": "/kien-thuc/loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc",
         "ogTitle": "Loa karaoke bị hú: Nguyên nhân và cách xử lý cắt hú PEQ",
         "ogDescription": "Phân loại 3 dải tần số hú rít và hướng dẫn kỹ thuật cắt hú bằng Notch Filter trên vang số.",
-        "ogImage": "/images/editorial-temp/karaoke-troubleshooting.png",
+        "ogImage": "/uploads/1757873217170_zjcdu51ihss.webp",
         "noIndex": true
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Troubleshooting",
         "primaryKeyword": "loa karaoke bị hú",
-        "secondaryKeywords": ["micro karaoke bị hú", "cách chống hú karaoke", "feedback âm thanh", "cách chỉnh vang số chống hú"],
-        "semanticTerms": ["vòng lặp âm thanh", "HPF", "PEQ", "Notch Filter", "độ dốc Q", "hú rít", "clipping", "âm học phòng", "Flutter Echo"],
-        "questionKeywords": ["Vì sao loa karaoke bị hú?", "Cắt hú bằng vang số thế nào?", "Cầm micro thế nào để không bị hú?", "Tiếng hú rít có làm cháy loa treble không?"],
-        "longTailKeywords": ["loa karaoke bị hú rít xé tai", "cách chỉnh vang số cắt hú không bị nghẹt tiếng", "xử lý dội âm phòng khách nhà ống Quảng Ngãi"],
-        "commercialModifiers": ["tư vấn", "cân chỉnh", "kiểm tra", "lắp đặt", "Quảng Ngãi"],
-        "entities": ["Shure", "Yamaha Pro", "Tiến Đạt Audio", "ARF Audio", "JBL Professional"],
+        "secondaryKeywords": [
+          "micro karaoke bị hú",
+          "cách chống hú karaoke",
+          "feedback âm thanh",
+          "cách chỉnh vang số chống hú"
+        ],
+        "semanticTerms": [
+          "vòng lặp âm thanh",
+          "HPF",
+          "PEQ",
+          "Notch Filter",
+          "độ dốc Q",
+          "hú rít",
+          "clipping",
+          "âm học phòng",
+          "Flutter Echo"
+        ],
+        "questionKeywords": [
+          "Vì sao loa karaoke bị hú?",
+          "Cắt hú bằng vang số thế nào?",
+          "Cầm micro thế nào để không bị hú?",
+          "Tiếng hú rít có làm cháy loa treble không?"
+        ],
+        "longTailKeywords": [
+          "loa karaoke bị hú rít xé tai",
+          "cách chỉnh vang số cắt hú không bị nghẹt tiếng",
+          "xử lý dội âm phòng khách nhà ống Quảng Ngãi"
+        ],
+        "commercialModifiers": [
+          "tư vấn",
+          "cân chỉnh",
+          "kiểm tra",
+          "lắp đặt",
+          "Quảng Ngãi"
+        ],
+        "entities": [
+          "Shure",
+          "Yamaha Pro",
+          "Tiến Đạt Audio",
+          "ARF Audio",
+          "JBL Professional"
+        ],
         "primaryIntent": "informational",
         "secondaryIntent": "service investigation",
-        "serpObservations": ["Người dùng tìm kiếm hướng dẫn chi tiết về dải tần số cụ thể (Hz) và cách chỉnh phần mềm vang số thay vì lý thuyết chung chung.", "Bổ sung hướng dẫn chống méo tiếng khi lạm dụng FBE tự động."],
-        "cannibalizationNotes": ["Trụ cột xử lý lỗi feedback âm thanh; giải quyết triệt để vấn đề kỹ thuật micro và âm học."],
+        "serpObservations": [
+          "Người dùng tìm kiếm hướng dẫn chi tiết về dải tần số cụ thể (Hz) và cách chỉnh phần mềm vang số thay vì lý thuyết chung chung.",
+          "Bổ sung hướng dẫn chống méo tiếng khi lạm dụng FBE tự động."
+        ],
+        "cannibalizationNotes": [
+          "Trụ cột xử lý lỗi feedback âm thanh; giải quyết triệt để vấn đề kỹ thuật micro và âm học."
+        ],
         "clusterRole": "pillar",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://service.shure.com/articles/en_US/Knowledge/how-do-i-fix-my-feedback-problem", "title": "How do I fix my feedback problem?", "publisher": "Shure", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Nguyên lý vòng lặp feedback giữa micro và loa; định hướng búp sóng Cardioid vs Omnidirectional."]},
-          {"url": "https://hub.yamaha.com/proaudio/pa-how-to/how-to-fight-feedback-part-1/", "title": "How to Fight Feedback, Part 1", "publisher": "Yamaha Pro Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Kỹ thuật dò tìm tần số cộng hưởng và kiểm soát gain stage."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Dịch vụ cân chỉnh âm thanh Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Cân chỉnh đo đạc âm học RTA tận nhà toàn tỉnh Quảng Ngãi."]}
+          {
+            "url": "https://service.shure.com/articles/en_US/Knowledge/how-do-i-fix-my-feedback-problem",
+            "title": "How do I fix my feedback problem?",
+            "publisher": "Shure",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Nguyên lý vòng lặp feedback giữa micro và loa; định hướng búp sóng Cardioid vs Omnidirectional."
+            ]
+          },
+          {
+            "url": "https://hub.yamaha.com/proaudio/pa-how-to/how-to-fight-feedback-part-1/",
+            "title": "How to Fight Feedback, Part 1",
+            "publisher": "Yamaha Pro Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Kỹ thuật dò tìm tần số cộng hưởng và kiểm soát gain stage."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Dịch vụ cân chỉnh âm thanh Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Cân chỉnh đo đạc âm học RTA tận nhà toàn tỉnh Quảng Ngãi."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Bảng phân loại các dải tần số gây hú rít trong dàn karaoke", "caption": "Hú ù 20-200Hz, hú trung 200-800Hz, rít cao 2.5kHz-12kHz.", "section": "Bảng phân loại 3 dải tần số", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Giao diện phần mềm vang số cắt điểm hú bằng Notch Filter với Q cao", "caption": "Minh họa vết cắt PEQ hẹp với Q = 8 đến 12 không làm suy hao giọng hát.", "section": "Kỹ thuật cắt hú bằng PEQ", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Bảng phân loại các dải tần số gây hú rít trong dàn karaoke",
+            "caption": "Hú ù 20-200Hz, hú trung 200-800Hz, rít cao 2.5kHz-12kHz.",
+            "section": "Bảng phân loại 3 dải tần số",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Giao diện phần mềm vang số cắt điểm hú bằng Notch Filter với Q cao",
+            "caption": "Minh họa vết cắt PEQ hẹp với Q = 8 đến 12 không làm suy hao giọng hát.",
+            "section": "Kỹ thuật cắt hú bằng PEQ",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "karaoke-feedback.md"
@@ -108,45 +311,145 @@
       "title": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: quy trình và hạng mục cần hỏi",
       "excerpt": "Giải pháp lắp đặt dàn karaoke gia đình tại Quảng Ngãi: Xử lý triệt để dội âm phòng khách nhà ống, thời gian dội âm RT60, bảo quản dàn máy chống nồm ẩm ven biển miền Trung.",
       "category": "Giải pháp",
-      "tags": ["Quảng Ngãi", "lắp đặt karaoke", "khảo sát", "cân chỉnh", "âm học phòng khách"],
+      "tags": [
+        "Quảng Ngãi",
+        "lắp đặt karaoke",
+        "khảo sát",
+        "cân chỉnh",
+        "âm học phòng khách"
+      ],
       "primaryKeywordId": "kw-karaoke-quang-ngai",
-      "keywordIds": ["kw-karaoke-quang-ngai"],
-      "relatedPostIds": ["seed-2026-08-family-karaoke-budget", "seed-2026-08-karaoke-feedback"],
-      "relatedProductIds": ["arf-x12pro", "arf-fs12", "arf-vx660", "arf-nx4-800"],
-      "featuredImage": "/images/editorial-temp/local-quang-ngai.png",
+      "keywordIds": [
+        "kw-karaoke-quang-ngai"
+      ],
+      "relatedPostIds": [
+        "seed-2026-08-family-karaoke-budget",
+        "seed-2026-08-karaoke-feedback"
+      ],
+      "relatedProductIds": [
+        "arf-x12pro",
+        "arf-fs12",
+        "arf-vx660",
+        "arf-nx4-800"
+      ],
+      "featuredImage": "/uploads/1757911498269_vky7s589yrq.jpg",
       "seo": {
         "metaTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi: Xử lý âm học phòng",
         "metaDescription": "Dịch vụ lắp đặt dàn karaoke gia đình tại Quảng Ngãi chuyên nghiệp. Xử lý dội âm phòng khách nhà ống, bẫy âm trầm, chống nồm ẩm ven biển và cân chỉnh RTA tận nhà.",
         "canonicalPath": "/kien-thuc/lap-dat-dan-karaoke-gia-dinh-quang-ngai",
         "ogTitle": "Lắp đặt dàn karaoke gia đình tại Quảng Ngãi",
         "ogDescription": "Quy trình thi công âm thanh chuẩn âm học và giải pháp bảo vệ dàn máy mùa nồm ẩm miền Trung.",
-        "ogImage": "/images/editorial-temp/local-quang-ngai.png",
+        "ogImage": "/uploads/1757911498269_vky7s589yrq.jpg",
         "noIndex": true
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Commercial Investigation",
         "primaryKeyword": "lắp đặt dàn karaoke gia đình Quảng Ngãi",
-        "secondaryKeywords": ["lắp đặt karaoke Quảng Ngãi", "tư vấn âm thanh Quảng Ngãi", "xử lý âm học phòng khách nhà ống", "âm thanh Tiến Đạt Quảng Ngãi"],
-        "semanticTerms": ["khảo sát phòng", "RT60", "Flutter Echo", "sóng đứng", "nồm ẩm miền Trung", "đi dây âm tường", "cân chỉnh RTA", "nghiệm thu"],
-        "questionKeywords": ["Phòng khách nhà ống dội âm phải làm sao?", "Mùa nồm ẩm ở Quảng Ngãi bảo quản dàn máy thế nào?", "Quy trình lắp đặt karaoke gồm những bước gì?"],
-        "longTailKeywords": ["lắp đặt dàn karaoke gia đình tại TP Quảng Ngãi", "tư vấn phối ghép karaoke nhà ống Quảng Ngãi", "đơn vị lắp đặt âm thanh uy tín Quảng Ngãi"],
-        "commercialModifiers": ["khảo sát", "tư vấn", "lắp đặt", "cân chỉnh", "báo giá", "bảo hành tận nơi"],
-        "entities": ["Tiến Đạt Audio", "Quảng Ngãi", "264 Phan Đình Phùng", "Bình Sơn", "Tư Nghĩa", "Mộ Đức"],
+        "secondaryKeywords": [
+          "lắp đặt karaoke Quảng Ngãi",
+          "tư vấn âm thanh Quảng Ngãi",
+          "xử lý âm học phòng khách nhà ống",
+          "âm thanh Tiến Đạt Quảng Ngãi"
+        ],
+        "semanticTerms": [
+          "khảo sát phòng",
+          "RT60",
+          "Flutter Echo",
+          "sóng đứng",
+          "nồm ẩm miền Trung",
+          "đi dây âm tường",
+          "cân chỉnh RTA",
+          "nghiệm thu"
+        ],
+        "questionKeywords": [
+          "Phòng khách nhà ống dội âm phải làm sao?",
+          "Mùa nồm ẩm ở Quảng Ngãi bảo quản dàn máy thế nào?",
+          "Quy trình lắp đặt karaoke gồm những bước gì?"
+        ],
+        "longTailKeywords": [
+          "lắp đặt dàn karaoke gia đình tại TP Quảng Ngãi",
+          "tư vấn phối ghép karaoke nhà ống Quảng Ngãi",
+          "đơn vị lắp đặt âm thanh uy tín Quảng Ngãi"
+        ],
+        "commercialModifiers": [
+          "khảo sát",
+          "tư vấn",
+          "lắp đặt",
+          "cân chỉnh",
+          "báo giá",
+          "bảo hành tận nơi"
+        ],
+        "entities": [
+          "Tiến Đạt Audio",
+          "Quảng Ngãi",
+          "264 Phan Đình Phùng",
+          "Bình Sơn",
+          "Tư Nghĩa",
+          "Mộ Đức"
+        ],
         "primaryIntent": "local service investigation",
         "secondaryIntent": "commercial investigation",
-        "serpObservations": ["Khách hàng tại Quảng Ngãi đối mặt với 2 vấn đề lớn: nhà ống dội âm kinh khủng và khí hậu gió biển làm ẩm rỉ sét linh kiện.", "Cung cấp giải pháp nội thất tiêu âm thẩm mỹ và kinh nghiệm sấy ấm thiết bị mùa mưa bão."],
-        "cannibalizationNotes": ["Trang trụ cột về dịch vụ lắp đặt địa phương Quảng Ngãi, kết hợp giữa kỹ thuật âm học và thực tế địa bàn."],
+        "serpObservations": [
+          "Khách hàng tại Quảng Ngãi đối mặt với 2 vấn đề lớn: nhà ống dội âm kinh khủng và khí hậu gió biển làm ẩm rỉ sét linh kiện.",
+          "Cung cấp giải pháp nội thất tiêu âm thẩm mỹ và kinh nghiệm sấy ấm thiết bị mùa mưa bão."
+        ],
+        "cannibalizationNotes": [
+          "Trang trụ cột về dịch vụ lắp đặt địa phương Quảng Ngãi, kết hợp giữa kỹ thuật âm học và thực tế địa bàn."
+        ],
         "clusterRole": "pillar",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Địa chỉ showroom Tiến Đạt Audio Quảng Ngãi", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Showroom 264 Phan Đình Phùng, TP Quảng Ngãi; Hotline 0934 995 657."]},
-          {"url": "https://anhtaiaudio.com.vn/", "title": "Giải pháp tiêu âm và bố trí dàn karaoke phòng khách", "publisher": "Anh Tài Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Nguyên lý xử lý dội âm Flutter Echo và tính toán thời gian RT60 cho phòng khách."]},
-          {"url": "https://pro.harman.com/insights/enterprise/design-requirements-for-amps-and-speakers-part-three-low-vs-high-impedance/", "title": "Low vs. High Impedance Systems", "publisher": "HARMAN Professional Solutions", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Nguyên tắc đi dây và suy hao tín hiệu trên đường truyền dài."]}
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Địa chỉ showroom Tiến Đạt Audio Quảng Ngãi",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Showroom 264 Phan Đình Phùng, TP Quảng Ngãi; Hotline 0934 995 657."
+            ]
+          },
+          {
+            "url": "https://anhtaiaudio.com.vn/",
+            "title": "Giải pháp tiêu âm và bố trí dàn karaoke phòng khách",
+            "publisher": "Anh Tài Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Nguyên lý xử lý dội âm Flutter Echo và tính toán thời gian RT60 cho phòng khách."
+            ]
+          },
+          {
+            "url": "https://pro.harman.com/insights/enterprise/design-requirements-for-amps-and-speakers-part-three-low-vs-high-impedance/",
+            "title": "Low vs. High Impedance Systems",
+            "publisher": "HARMAN Professional Solutions",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Nguyên tắc đi dây và suy hao tín hiệu trên đường truyền dài."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Sơ đồ bố trí loa và giải pháp tiêu âm phòng khách nhà ống", "caption": "Rèm vải bố, thảm nỉ sofa và kệ gỗ tán âm tự nhiên giúp giảm dội âm.", "section": "Giải pháp tiêu âm tự nhiên", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Kỹ thuật viên Tiến Đạt Audio cân chỉnh âm thanh bằng micro RTA", "caption": "Quy trình đo đạc âm học thực tế tại nhà khách hàng ở Quảng Ngãi.", "section": "Quy trình thi công 5 bước", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Sơ đồ bố trí loa và giải pháp tiêu âm phòng khách nhà ống",
+            "caption": "Rèm vải bố, thảm nỉ sofa và kệ gỗ tán âm tự nhiên giúp giảm dội âm.",
+            "section": "Giải pháp tiêu âm tự nhiên",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Kỹ thuật viên Tiến Đạt Audio cân chỉnh âm thanh bằng micro RTA",
+            "caption": "Quy trình đo đạc âm học thực tế tại nhà khách hàng ở Quảng Ngãi.",
+            "section": "Quy trình thi công 5 bước",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "quang-ngai-installation.md"
@@ -157,45 +460,141 @@
       "title": "Cách chọn loa nghe nhạc cho phòng khách theo diện tích và gu nghe",
       "excerpt": "Công thức tính công suất Cục đẩy và Loa chuẩn RMS: P(đẩy) = 1.5 đến 2 lần P(loa). Giải mã nghịch lý vì sao cục đẩy yếu lại làm cháy loa treble nhanh hơn cục đẩy mạnh.",
       "category": "Kiến thức âm thanh",
-      "tags": ["công suất loa", "cục đẩy công suất", "phối ghép âm thanh", "clipping", "trở kháng"],
+      "tags": [
+        "công suất loa",
+        "cục đẩy công suất",
+        "phối ghép âm thanh",
+        "clipping",
+        "trở kháng"
+      ],
       "primaryKeywordId": "kw-q-031",
-      "keywordIds": ["kw-q-031"],
-      "relatedPostIds": ["kw-q-039", "kw-q-046"],
-      "relatedProductIds": ["arf-nx4-800", "arf-x12pro"],
-      "featuredImage": "/images/editorial-temp/speaker-hi-fi.png",
+      "keywordIds": [
+        "kw-q-031"
+      ],
+      "relatedPostIds": [
+        "kw-q-039",
+        "kw-q-046"
+      ],
+      "relatedProductIds": [
+        "arf-nx4-800",
+        "arf-x12pro"
+      ],
+      "featuredImage": "/uploads/1757872819402_6jhbuhvujsk.jpg",
       "seo": {
         "metaTitle": "Công thức chọn công suất Cục đẩy và Loa: Chuẩn RMS tránh cháy treble",
         "metaDescription": "Loa bao nhiêu watt ghép với cục đẩy bao nhiêu watt? Công thức tính công suất RMS chuẩn, nguyên lý phối ghép trở kháng Ohm và giải mã hiện tượng xén xung clipping.",
         "canonicalPath": "/kien-thuc/cach-chon-loa-nghe-nhac-cho-phong-khach",
         "ogTitle": "Công thức chọn công suất Cục đẩy và Loa chuẩn RMS",
         "ogDescription": "Hướng dẫn phối ghép công suất và trở kháng an toàn, giải mã hiện tượng cháy loa treble do cục đẩy yếu.",
-        "ogImage": "/images/editorial-temp/speaker-hi-fi.png",
+        "ogImage": "/uploads/1757872819402_6jhbuhvujsk.jpg",
         "noIndex": true
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Buying Guide",
         "primaryKeyword": "cách chọn công suất cục đẩy và loa",
-        "secondaryKeywords": ["công thức tính công suất loa và amply", "cục đẩy yếu làm cháy loa treble", "phối ghép trở kháng loa", "công suất RMS"],
-        "semanticTerms": ["công suất liên tục", "RMS", "Program", "Peak", "headroom", "clipping", "sóng vuông", "trở kháng danh định", "mắc song song"],
-        "questionKeywords": ["Loa 350W dùng cục đẩy bao nhiêu W?", "Tại sao cục đẩy yếu lại làm cháy loa treble?", "Đấu song song 2 cặp loa có bị tụt trở kháng không?"],
-        "longTailKeywords": ["cách chọn công suất cục đẩy cho loa karaoke bass 30", "công thức phối ghép loa và main công suất", "nguyên nhân cháy treble loa karaoke"],
-        "commercialModifiers": ["nghe thử", "tư vấn", "phối ghép", "chính hãng", "Tiến Đạt Audio"],
-        "entities": ["Crown Audio", "Bowers & Wilkins", "Tiến Đạt Audio", "ARF Audio"],
+        "secondaryKeywords": [
+          "công thức tính công suất loa và amply",
+          "cục đẩy yếu làm cháy loa treble",
+          "phối ghép trở kháng loa",
+          "công suất RMS"
+        ],
+        "semanticTerms": [
+          "công suất liên tục",
+          "RMS",
+          "Program",
+          "Peak",
+          "headroom",
+          "clipping",
+          "sóng vuông",
+          "trở kháng danh định",
+          "mắc song song"
+        ],
+        "questionKeywords": [
+          "Loa 350W dùng cục đẩy bao nhiêu W?",
+          "Tại sao cục đẩy yếu lại làm cháy loa treble?",
+          "Đấu song song 2 cặp loa có bị tụt trở kháng không?"
+        ],
+        "longTailKeywords": [
+          "cách chọn công suất cục đẩy cho loa karaoke bass 30",
+          "công thức phối ghép loa và main công suất",
+          "nguyên nhân cháy treble loa karaoke"
+        ],
+        "commercialModifiers": [
+          "nghe thử",
+          "tư vấn",
+          "phối ghép",
+          "chính hãng",
+          "Tiến Đạt Audio"
+        ],
+        "entities": [
+          "Crown Audio",
+          "Bowers & Wilkins",
+          "Tiến Đạt Audio",
+          "ARF Audio"
+        ],
         "primaryIntent": "informational",
         "secondaryIntent": "commercial investigation",
-        "serpObservations": ["Rất nhiều người dùng nhầm lẫn giữa công suất Peak và RMS, hoặc nghĩ dùng amply yếu cho an toàn.", "Bài viết giải thích sâu về vật lý sóng âm clipping và công thức tính headroom an toàn."],
-        "cannibalizationNotes": ["Trụ cột chuyên môn về phối ghép công suất và trở kháng giữa khuếch đại và loa."],
+        "serpObservations": [
+          "Rất nhiều người dùng nhầm lẫn giữa công suất Peak và RMS, hoặc nghĩ dùng amply yếu cho an toàn.",
+          "Bài viết giải thích sâu về vật lý sóng âm clipping và công thức tính headroom an toàn."
+        ],
+        "cannibalizationNotes": [
+          "Trụ cột chuyên môn về phối ghép công suất và trở kháng giữa khuếch đại và loa."
+        ],
         "clusterRole": "pillar",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://www.crownaudio.com/en/how-much-amplifier-power", "title": "How Much Amplifier Power Do I Need?", "publisher": "Crown Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Công thức tính công suất ampli lớn gấp 1.5 - 2 lần RMS loa để có headroom an toàn."]},
-          {"url": "https://phuctruongaudio.vn/", "title": "Kỹ thuật phối ghép cục đẩy và loa karaoke", "publisher": "Phúc Trường Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Phân tích hiện tượng sóng vuông clipping phá hủy cuộn voice coil loa treble."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Tư vấn phối ghép âm thanh Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Tư vấn phối ghép đúng chuẩn kỹ thuật bảo hành dài hạn."]}
+          {
+            "url": "https://www.crownaudio.com/en/how-much-amplifier-power",
+            "title": "How Much Amplifier Power Do I Need?",
+            "publisher": "Crown Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Công thức tính công suất ampli lớn gấp 1.5 - 2 lần RMS loa để có headroom an toàn."
+            ]
+          },
+          {
+            "url": "https://phuctruongaudio.vn/",
+            "title": "Kỹ thuật phối ghép cục đẩy và loa karaoke",
+            "publisher": "Phúc Trường Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Phân tích hiện tượng sóng vuông clipping phá hủy cuộn voice coil loa treble."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Tư vấn phối ghép âm thanh Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Tư vấn phối ghép đúng chuẩn kỹ thuật bảo hành dài hạn."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Biểu đồ sóng âm sin mượt mà và sóng vuông clipping khi cục đẩy quá tải", "caption": "Sóng vuông clipping sinh dòng DC và sóng hài bậc cao phá hủy cuộn treble.", "section": "Giải mã nghịch lý", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Bảng công thức tính công suất RMS giữa loa và cục đẩy", "caption": "Công thức P(đẩy) = 1.5 - 2.0 x P(loa) ở cùng trở kháng 8 Ohm.", "section": "Công thức vàng phối ghép", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Biểu đồ sóng âm sin mượt mà và sóng vuông clipping khi cục đẩy quá tải",
+            "caption": "Sóng vuông clipping sinh dòng DC và sóng hài bậc cao phá hủy cuộn treble.",
+            "section": "Giải mã nghịch lý",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Bảng công thức tính công suất RMS giữa loa và cục đẩy",
+            "caption": "Công thức P(đẩy) = 1.5 - 2.0 x P(loa) ở cùng trở kháng 8 Ohm.",
+            "section": "Công thức vàng phối ghép",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "speaker-living-room.md"
@@ -206,45 +605,147 @@
       "title": "DSP audio là gì và vì sao hệ thống karaoke cần xử lý tín hiệu?",
       "excerpt": "DSP trong âm thanh là gì? Phân tích 5 tính năng đột phá của vang số DSP: Cắt hú PEQ, phân tần Crossover, Compressor chống cháy loa, Time Delay và Echo/Reverb chuyên sâu.",
       "category": "Kiến thức âm thanh",
-      "tags": ["DSP", "vang số", "xử lý tín hiệu số", "karaoke", "compressor"],
+      "tags": [
+        "DSP",
+        "vang số",
+        "xử lý tín hiệu số",
+        "karaoke",
+        "compressor"
+      ],
       "primaryKeywordId": "kw-q-081",
-      "keywordIds": ["kw-q-081", "kw-q-082"],
-      "relatedPostIds": ["kw-q-082", "kw-q-085", "seed-2026-08-karaoke-feedback"],
-      "relatedProductIds": ["arf-vx330pro", "arf-vx660"],
-      "featuredImage": "/images/editorial-temp/audio-technology.png",
+      "keywordIds": [
+        "kw-q-081",
+        "kw-q-082"
+      ],
+      "relatedPostIds": [
+        "kw-q-082",
+        "kw-q-085",
+        "seed-2026-08-karaoke-feedback"
+      ],
+      "relatedProductIds": [
+        "arf-vx330pro",
+        "arf-vx660"
+      ],
+      "featuredImage": "/uploads/1757870365500_xwo1nuqv39.jpg",
       "seo": {
         "metaTitle": "DSP audio là gì? 5 lý do Vang số thay thế Amply karaoke",
         "metaDescription": "DSP audio là gì? Tìm hiểu công nghệ xử lý âm thanh số trên vang số: Cắt hú PEQ độc lập, phân tần loa Sub, Compressor bảo vệ loa và tạo hiệu ứng Reverb chuyên nghiệp.",
         "canonicalPath": "/kien-thuc/dsp-audio-la-gi",
         "ogTitle": "DSP audio là gì? 5 lý do Vang số thay thế Amply karaoke",
         "ogDescription": "So sánh chi tiết Vang số DSP, Vang cơ và Amply analog truyền thống.",
-        "ogImage": "/images/editorial-temp/audio-technology.png",
+        "ogImage": "/uploads/1757870365500_xwo1nuqv39.jpg",
         "noIndex": true
       },
       "seoResearch": {
         "researchedAt": "2026-10-06T00:00:00.000Z",
         "articleType": "Definition",
         "primaryKeyword": "DSP audio là gì",
-        "secondaryKeywords": ["vang số DSP", "bộ xử lý tín hiệu số", "so sánh vang số và amply", "tính năng vang số karaoke"],
-        "semanticTerms": ["chip DSP", "A/D converter", "D/A converter", "PEQ", "Crossover", "Compressor", "Limiter", "Delay", "Phase Alignment", "Echo Reverb"],
-        "questionKeywords": ["DSP trong âm thanh là gì?", "Vang số DSP khác amply cơ thế nào?", "Vang số có cắt được tiếng hú rít không?", "Có nên dùng vang số cho gia đình không?"],
-        "longTailKeywords": ["tại sao nên dùng vang số thay amply", "công nghệ DSP trong vang số karaoke", "hướng dẫn chọn vang số chất lượng"],
-        "commercialModifiers": ["tư vấn", "phối ghép", "cân chỉnh", "nâng cấp", "chính hãng"],
-        "entities": ["Analog Devices", "Texas Instruments", "Yamaha Pro Audio", "dbx Professional Audio", "Tiến Đạt Audio", "ARF Audio"],
+        "secondaryKeywords": [
+          "vang số DSP",
+          "bộ xử lý tín hiệu số",
+          "so sánh vang số và amply",
+          "tính năng vang số karaoke"
+        ],
+        "semanticTerms": [
+          "chip DSP",
+          "A/D converter",
+          "D/A converter",
+          "PEQ",
+          "Crossover",
+          "Compressor",
+          "Limiter",
+          "Delay",
+          "Phase Alignment",
+          "Echo Reverb"
+        ],
+        "questionKeywords": [
+          "DSP trong âm thanh là gì?",
+          "Vang số DSP khác amply cơ thế nào?",
+          "Vang số có cắt được tiếng hú rít không?",
+          "Có nên dùng vang số cho gia đình không?"
+        ],
+        "longTailKeywords": [
+          "tại sao nên dùng vang số thay amply",
+          "công nghệ DSP trong vang số karaoke",
+          "hướng dẫn chọn vang số chất lượng"
+        ],
+        "commercialModifiers": [
+          "tư vấn",
+          "phối ghép",
+          "cân chỉnh",
+          "nâng cấp",
+          "chính hãng"
+        ],
+        "entities": [
+          "Analog Devices",
+          "Texas Instruments",
+          "Yamaha Pro Audio",
+          "dbx Professional Audio",
+          "Tiến Đạt Audio",
+          "ARF Audio"
+        ],
         "primaryIntent": "informational",
         "secondaryIntent": "commercial investigation",
-        "serpObservations": ["Người dùng muốn hiểu rõ vang số làm được gì hơn amply để quyết định chi tiền nâng cấp dàn karaoke gia đình.", "Cần bảng so sánh trực quan giữa Amply cơ, Vang cơ và Vang số."],
-        "cannibalizationNotes": ["Trụ cột định nghĩa công nghệ DSP và thiết bị vang số trong hệ thống âm thanh karaoke."],
+        "serpObservations": [
+          "Người dùng muốn hiểu rõ vang số làm được gì hơn amply để quyết định chi tiền nâng cấp dàn karaoke gia đình.",
+          "Cần bảng so sánh trực quan giữa Amply cơ, Vang cơ và Vang số."
+        ],
+        "cannibalizationNotes": [
+          "Trụ cột định nghĩa công nghệ DSP và thiết bị vang số trong hệ thống âm thanh karaoke."
+        ],
         "clusterRole": "pillar",
         "sourceCount": 3,
         "sources": [
-          {"url": "https://usa.yamaha.com/products/contents/proaudio/docs/audio_quality/02_audio_quality.html", "title": "Audio quality in networked systems", "publisher": "Yamaha Pro Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Nguyên lý xử lý âm thanh số A/D, DSP và D/A theo thời gian thực."]},
-          {"url": "https://dbxpro.com/en-US/products/641/specifications", "title": "641 6x4 Digital Zone Processor", "publisher": "dbx Professional Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Cấu trúc các khối xử lý tín hiệu: PEQ, Crossover, Limiter, Compressor, Delay."]},
-          {"url": "https://tiendataudioquangngai.id.vn/contact", "title": "Cân chỉnh vang số chuyên nghiệp Tiến Đạt Audio", "publisher": "Tiến Đạt Audio", "tier": 1, "accessedAt": "2026-10-06T00:00:00.000Z", "claimNotes": ["Cân chỉnh vang số bằng phần mềm PC chuyên dụng tận nhà."]}
+          {
+            "url": "https://usa.yamaha.com/products/contents/proaudio/docs/audio_quality/02_audio_quality.html",
+            "title": "Audio quality in networked systems",
+            "publisher": "Yamaha Pro Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Nguyên lý xử lý âm thanh số A/D, DSP và D/A theo thời gian thực."
+            ]
+          },
+          {
+            "url": "https://dbxpro.com/en-US/products/641/specifications",
+            "title": "641 6x4 Digital Zone Processor",
+            "publisher": "dbx Professional Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Cấu trúc các khối xử lý tín hiệu: PEQ, Crossover, Limiter, Compressor, Delay."
+            ]
+          },
+          {
+            "url": "https://tiendataudioquangngai.id.vn/contact",
+            "title": "Cân chỉnh vang số chuyên nghiệp Tiến Đạt Audio",
+            "publisher": "Tiến Đạt Audio",
+            "tier": 1,
+            "accessedAt": "2026-10-06T00:00:00.000Z",
+            "claimNotes": [
+              "Cân chỉnh vang số bằng phần mềm PC chuyên dụng tận nhà."
+            ]
+          }
         ],
         "imagePlan": [
-          {"url": "", "alt": "Sơ đồ khối chuyển đổi tín hiệu Analog sang Digital và qua chip DSP", "caption": "Chu trình A/D -> Chip DSP 32-bit -> D/A -> Cục đẩy công suất.", "section": "Bản chất công nghệ DSP", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true},
-          {"url": "", "alt": "Bảng so sánh Amply karaoke truyền thống, Vang cơ và Vang số DSP", "caption": "So sánh 6 tiêu chí kỹ thuật giữa 3 dòng thiết bị xử lý âm thanh.", "section": "Bảng so sánh", "source": "", "licenseStatus": "IMAGE_REQUIRED", "isIllustration": true}
+          {
+            "url": "",
+            "alt": "Sơ đồ khối chuyển đổi tín hiệu Analog sang Digital và qua chip DSP",
+            "caption": "Chu trình A/D -> Chip DSP 32-bit -> D/A -> Cục đẩy công suất.",
+            "section": "Bản chất công nghệ DSP",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          },
+          {
+            "url": "",
+            "alt": "Bảng so sánh Amply karaoke truyền thống, Vang cơ và Vang số DSP",
+            "caption": "So sánh 6 tiêu chí kỹ thuật giữa 3 dòng thiết bị xử lý âm thanh.",
+            "section": "Bảng so sánh",
+            "source": "",
+            "licenseStatus": "IMAGE_REQUIRED",
+            "isIllustration": true
+          }
         ]
       },
       "bodyFile": "dsp-audio.md"

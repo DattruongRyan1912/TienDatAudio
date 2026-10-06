@@ -11,7 +11,7 @@ type SonicProductCardProps = {
 }
 
 export default function SonicProductCard({ product, featured = false }: SonicProductCardProps) {
-  const image = product.images[0] || '/images/sonic-hero.png'
+  const image = product.images[0] || '/uploads/1757873177981_wez3lmbcclj.jpg'
   const isSale = Boolean(product.salePrice && product.salePrice < product.price)
 
   // Extract up to 3 bullet specs from features or specifications

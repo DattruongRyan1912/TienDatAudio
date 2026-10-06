@@ -17,7 +17,7 @@ export default function SonicSolutionCard({ category, index, featured = false }:
 
   return (
     <Link href={`/products?category=${category.id}`} aria-label={`Xem sản phẩm thuộc ${category.name}`} className={`sonic-solution-card group relative block h-full min-h-[280px] overflow-hidden border ${featured ? 'sonic-solution-card-featured min-h-[360px]' : ''}`}>
-      <Image src={category.image || '/images/sonic-hero.png'} alt={category.name} fill sizes={featured ? '(min-width: 1024px) 42vw, 100vw' : '(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw'} style={{ objectPosition }} className="sonic-solution-image object-cover" />
+      <Image src={category.image || '/uploads/1757873177981_wez3lmbcclj.jpg'} alt={category.name} fill sizes={featured ? '(min-width: 1024px) 42vw, 100vw' : '(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw'} style={{ objectPosition }} className="sonic-solution-image object-cover" />
       <div className="sonic-solution-content relative z-10 flex h-full min-h-[280px] flex-col justify-between p-6 md:p-7">
         <span className="sonic-solution-eyebrow">{String(index + 1).padStart(2, '0')} / {category.name}</span>
         <div className="flex items-end justify-between gap-5">
