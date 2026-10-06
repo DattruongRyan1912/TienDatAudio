@@ -139,7 +139,7 @@ export default function HomeKaraokeCalculator() {
           <div className="flex flex-wrap gap-2.5">
             <a
               href="tel:0934995657"
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--sonic-button-bg)] px-4 py-2.5 text-xs font-bold text-[var(--sonic-button-text)] transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#d32f2f] px-4 py-2.5 text-xs font-bold !text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-[#b71c1c]"
             >
               <Phone size={14} /> Gọi tư vấn ngay
             </a>
@@ -147,7 +147,7 @@ export default function HomeKaraokeCalculator() {
               href={`https://zalo.me/0934995657?text=${zaloMessage}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#0068ff] px-4 py-2.5 text-xs font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#0068ff] px-4 py-2.5 text-xs font-bold !text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:bg-[#0052cc]"
             >
               <MessageCircle size={14} /> Nhận báo giá qua Zalo
             </a>

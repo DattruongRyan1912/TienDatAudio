@@ -26,15 +26,15 @@ export default function SonicProductCard({ product, featured = false }: SonicPro
         {/* Top-left Badge */}
         <div className="absolute top-3 left-3 z-10">
           {product.bestseller ? (
-            <span className="rounded bg-[#d32f2f] px-2 py-0.5 text-[10px] font-black uppercase text-white shadow-sm">
+            <span className="rounded bg-[#d32f2f] px-2 py-0.5 text-[10px] font-black uppercase !text-white shadow-sm">
               BÁN CHẠY #1
             </span>
           ) : featured ? (
-            <span className="rounded bg-[#0284c7] px-2 py-0.5 text-[10px] font-black uppercase text-white shadow-sm">
+            <span className="rounded bg-[#0284c7] px-2 py-0.5 text-[10px] font-black uppercase !text-white shadow-sm">
               TUYỂN CHỌN
             </span>
           ) : (
-            <span className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase text-white shadow-sm">
+            <span className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-bold uppercase !text-white shadow-sm">
               CHÍNH HÃNG 100%
             </span>
           )}
@@ -106,7 +106,7 @@ export default function SonicProductCard({ product, featured = false }: SonicPro
           <div className="grid grid-cols-2 gap-2">
             <Link
               href={`/san-pham/${product.slug}`}
-              className="flex items-center justify-center rounded-md bg-slate-100 px-2 py-2 text-xs font-bold text-slate-700 transition-colors hover:bg-slate-200"
+              className="flex items-center justify-center rounded-md bg-slate-100 px-2 py-2 text-xs font-bold text-slate-800 transition-colors hover:bg-slate-200 hover:text-slate-950"
             >
               Xem chi tiết
             </Link>
@@ -114,7 +114,7 @@ export default function SonicProductCard({ product, featured = false }: SonicPro
               href={`https://zalo.me/0934995657?text=${encodeURIComponent(`Xin chào Tiến Đạt Audio! Tôi quan tâm đến sản phẩm: ${product.name}. Nhờ tư vấn báo giá giúp tôi.`)}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center rounded-md bg-[#0068ff] px-2 py-2 text-xs font-bold text-white transition-colors hover:bg-[#0052cc]"
+              className="flex items-center justify-center rounded-md bg-[#0068ff] px-2 py-2 text-xs font-bold !text-white transition-colors hover:bg-[#0052cc]"
             >
               Nhận báo giá
             </a>
