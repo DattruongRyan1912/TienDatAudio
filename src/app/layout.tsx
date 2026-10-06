@@ -15,7 +15,7 @@ const manrope = Manrope({
   variable: "--font-manrope",
 });
 
-const themeBootstrapScript = `try{const stored=localStorage.getItem('sonic_theme_mode');const preferred=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';const mode=stored==='light'||stored==='dark'?stored:stored==='system'?preferred:'dark';const root=document.documentElement;root.dataset.theme=mode;root.classList.toggle('dark',mode==='dark');root.classList.toggle('light',mode==='light');root.style.colorScheme=mode}catch{}`
+const themeBootstrapScript = `try{const stored=localStorage.getItem('sonic_theme_mode');const preferred=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';const mode=stored==='light'||stored==='dark'?stored:stored==='system'?preferred:'light';const root=document.documentElement;root.dataset.theme=mode;root.classList.toggle('dark',mode==='dark');root.classList.toggle('light',mode==='light');root.style.colorScheme=mode}catch{}`
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tiendataudioquangngai.id.vn'),
@@ -37,7 +37,7 @@ export const viewport: Viewport = {
   userScalable: true,
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#080808' },
-    { media: '(prefers-color-scheme: light)', color: '#f4f2ee' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
   ],
 }
 
@@ -50,7 +50,7 @@ export default async function RootLayout({
   const discoveryStructuredData = buildAIReadableStructuredData(seoConfig, profile)
 
   return (
-    <html lang="vi" data-scroll-behavior="smooth" data-theme="dark" className={`${manrope.variable} dark`} suppressHydrationWarning>
+    <html lang="vi" data-scroll-behavior="smooth" data-theme="light" className={`${manrope.variable} light`} suppressHydrationWarning>
       <head>
         <script blocking="render" dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable site information" />

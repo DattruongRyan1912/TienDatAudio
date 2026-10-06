@@ -1,6 +1,47 @@
 @import "tailwindcss";
 
 :root {
+  --sonic-obsidian: #f4f6f8;
+  --sonic-canvas: #f4f6f8;
+  --sonic-surface: #ffffff;
+  --sonic-surface-strong: #ffffff;
+  --sonic-surface-raised: #f1f5f9;
+  --sonic-surface-high: #e2e8f0;
+  --sonic-text: #334155;
+  --sonic-text-strong: #0f172a;
+  --sonic-muted: #64748b;
+  --sonic-subtle: #94a3b8;
+  --sonic-line: #e2e8f0;
+  --sonic-line-strong: #cbd5e1;
+  --sonic-gold: #d32f2f;
+  --sonic-gold-soft: rgba(211, 47, 47, 0.1);
+  --sonic-gold-hover: #b71c1c;
+  --sonic-button-text: #ffffff;
+  --sonic-motion-fast: 180ms;
+  --sonic-motion-interaction: 240ms;
+  --sonic-motion-reveal: 700ms;
+  --sonic-motion-image: 450ms;
+  --sonic-motion-cinematic: 900ms;
+  --sonic-motion-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Media surfaces */
+  --sonic-media-text: #f7f7f7;
+  --sonic-media-text-muted: rgba(247, 247, 247, 0.76);
+  --sonic-media-accent: #d32f2f;
+  --sonic-media-line: rgba(255, 255, 255, 0.34);
+  --sonic-product-card: #ffffff;
+  --sonic-product-media: #f8fafc;
+  --sonic-product-media-line: #e2e8f0;
+  --sonic-solution-text: #0f172a;
+  --sonic-solution-text-muted: #64748b;
+  --sonic-solution-line: #e2e8f0;
+  color-scheme: light;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
   --sonic-obsidian: #080808;
   --sonic-canvas: #080808;
   --sonic-surface: #111111;
@@ -17,59 +58,16 @@
   --sonic-gold-soft: rgba(212, 175, 55, 0.16);
   --sonic-gold-hover: #e5c45a;
   --sonic-button-text: #080808;
-  --sonic-motion-fast: 180ms;
-  --sonic-motion-interaction: 240ms;
-  --sonic-motion-reveal: 700ms;
-  --sonic-motion-image: 450ms;
-  --sonic-motion-cinematic: 900ms;
-  --sonic-motion-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  /* Media surfaces keep their own contrast contract in every page theme. */
-  --sonic-media-text: #f7f7f7;
-  --sonic-media-text-muted: rgba(247, 247, 247, 0.76);
-  --sonic-media-accent: #e5c45a;
-  --sonic-media-line: rgba(255, 255, 255, 0.34);
   --sonic-product-card: #0d0d0d;
   --sonic-product-media: #eeede8;
   --sonic-product-media-line: rgba(26, 26, 25, 0.14);
   --sonic-solution-text: #f5f3ee;
   --sonic-solution-text-muted: rgba(255, 255, 255, 0.72);
   --sonic-solution-line: rgba(255, 255, 255, 0.10);
+  color-scheme: dark;
 }
 
-[data-theme='light'] {
-  --sonic-obsidian: #f4f2ee;
-  --sonic-canvas: #f4f2ee;
-  --sonic-surface: #fffdf9;
-  --sonic-surface-strong: #ece9e2;
-  --sonic-surface-raised: #e3dfd6;
-  --sonic-surface-high: #d9d4ca;
-  --sonic-text: #1a1a19;
-  --sonic-text-strong: #090909;
-  --sonic-muted: #5f6360;
-  --sonic-subtle: #727670;
-  --sonic-line: rgba(26, 26, 25, 0.14);
-  --sonic-line-strong: rgba(26, 26, 25, 0.30);
-  --sonic-gold: #9a7100;
-  --sonic-gold-soft: rgba(154, 113, 0, 0.14);
-  --sonic-gold-hover: #765500;
-  --sonic-button-text: #fffdf9;
-  /* Intentionally unchanged: image text is independent from page theme. */
-  --sonic-media-text: #f7f7f7;
-  --sonic-media-text-muted: rgba(247, 247, 247, 0.76);
-  --sonic-media-accent: #e5c45a;
-  --sonic-media-line: rgba(255, 255, 255, 0.34);
-  --sonic-product-card: #f7f5f0;
-  --sonic-product-media: #e9e7e1;
-  --sonic-product-media-line: rgba(26, 26, 25, 0.14);
-  --sonic-solution-text: #f5f3ee;
-  --sonic-solution-text-muted: rgba(255, 255, 255, 0.72);
-  --sonic-solution-line: rgba(0, 0, 0, 0.10);
-  color-scheme: light;
-}
-
-[data-theme='dark'] { color-scheme: dark; }
-
-html { color-scheme: dark; }
+html { color-scheme: light; }
 
 body,
 .sonic-page {

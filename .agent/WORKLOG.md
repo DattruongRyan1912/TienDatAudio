@@ -1177,7 +1177,33 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `npm run lint`: pass clean (0 errors, 0 warnings).
   + `npx tsc --noEmit`: pass clean (0 errors).
   + `npm run build`: pass clean (76 routes render thành công).
-- Rollback reference: Git restore `src/app/page.tsx`, `src/components/sonic/SonicHeader.tsx`, `src/components/sonic/SonicProductCard.tsx` và xóa `src/components/home/HomeKaraokeCalculator.tsx`.
+## 2026-10-06 16:05 +0700 — Chuyển đổi toàn diện giao diện web sang chuẩn Clean E-Commerce y hệt bản Demo
+
+- Scope/authorization: Người dùng yêu cầu triển khai giao diện thực tế của website giống 100% bản demo HTML `docs/DEMO_FRIENDLY_ECOMMERCE_UI.html` (thay vì phong cách Dark Concept cũ), không dùng sticky mobile bar.
+- Changes:
+  + `src/app/layout.tsx`:
+    * Chuyển default theme sang `light` (`data-theme="light"`, `class="... light"`).
+    * Cập nhật `themeBootstrapScript` ưu tiên chế độ sáng thương mại.
+  + `src/app/globals.css`:
+    * Cấu hình `:root` sang bộ màu sáng sạch e-commerce (`--sonic-canvas: #f4f6f8`, `--sonic-surface: #ffffff`, `--sonic-gold: #d32f2f`).
+    * Chuyển `html { color-scheme: light; }`.
+  + `src/components/sonic/SonicHeader.tsx`:
+    * Thay toàn bộ header bằng bố cục thương mại chuẩn bản demo:
+      - Top announcement bar navy `#0f172a`: Địa chỉ showroom 264 Phan Đình Phùng, Miễn phí lắp đặt, Hotline 0934 995 657 (24/7).
+      - Main Header trắng tinh khôi, viền đáy đỏ `#d32f2f` dày 2px: Logo TĐ đỏ 44px, thanh ô tìm kiếm sản phẩm to ở giữa dẫn tới `/tim-kiem`, Hotline pill đỏ nhấp nháy 0934.995.657.
+      - Navigation bar trắng có phân chia danh mục rõ ràng (Dàn bán chạy, Loa, Vang số, Cục đẩy, Sub, Micro, Kiến thức, Công trình).
+  + `src/components/sonic/SonicProductCard.tsx`:
+    * Render thẻ sản phẩm trắng chuẩn siêu thị âm thanh: Nền ảnh xám nhạt `#f8fafc`, nhãn badge góc trái (Bán Chạy #1, Tuyển Chọn, Chính Hãng), 3 gạch đầu dòng thông số kỹ thuật bullet point, giá bán đỏ to `#d32f2f`, nút [Xem chi tiết] và nút [Nhận báo giá Zalo].
+  + `src/app/page.tsx`:
+    * Tái cấu trúc trang chủ đồng bộ 100% với bản demo: Nền `#f4f6f8`, Hero banner sáng sủa, thẻ combo ARF bán chạy nhất kèm quà tặng vàng, thanh Filter Pills, lưới sản phẩm thương mại, công cụ tính ngân sách karaoke, khối 3 review khách hàng thật Quảng Ngãi, 3 bài viết kỹ thuật thực tế và banner showroom 264 Phan Đình Phùng.
+    * Tuyệt đối không thêm thanh sticky bottom bar trên mobile theo chỉ thị người dùng.
+- Preflight Verification:
+  + `npm test`: 81/81 tests pass clean.
+  + `npm run lint`: pass clean (0 errors, 0 warnings).
+  + `npx tsc --noEmit`: pass clean (0 errors).
+  + `npm run build`: pass clean (76 routes render thành công).
+- Rollback reference: Git revert commit tương ứng.
+
 
 
 
