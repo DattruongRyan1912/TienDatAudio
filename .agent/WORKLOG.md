@@ -1292,3 +1292,29 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + Quá trình deploy production (`#37454751661`) hoàn tất thành công.
   + Health check production `https://tiendataudioquangngai.id.vn/api/health` trả về HTTP 200 OK, release `81f0556`.
 - Rollback reference: Git revert commit `81f0556`.
+
+## 2026-10-06 22:36 +0700 — Khắc phục triệt để lỗi màu chữ button và badge bị đen trên nền màu
+
+- Scope/authorization: Người dùng yêu cầu kiểm tra màu chữ các button ("check màu chữ các button") kèm ảnh chụp card sản phẩm "Thiết bị liên quan" có button "Nhận báo giá" bị màu chữ đen trên nền xanh Zalo.
+- Root Cause Analysis:
+  + Trong file `src/app/globals.css`, bộ selector chuyển đổi tương thích theme cũ có khai báo:
+    `[data-theme='light'] [class~="text-white"] { color: var(--sonic-text-strong) !important; }`
+  + Khai báo này vô tình ghi đè toàn bộ các phần tử có class `text-white` (gồm nút bấm có nền màu như xanh Zalo `bg-[#0068ff]`, nút đỏ `bg-[#d32f2f]`, badge xanh lá `bg-emerald-600`) thành màu chữ tối `#0f172a` (đen/xanh đậm) trong giao diện sáng, dẫn tới độ tương phản kém, chữ bị chìm vào nền nút.
+- Changes:
+  + `src/app/globals.css`:
+    * Loại bỏ `[data-theme='light'] [class~="text-white"]` khỏi danh sách selector đảo màu theme.
+    * Thêm quy tắc bảo vệ cưỡng bức: `.text-white, [class~="text-white"], button.text-white, a.text-white { color: #ffffff !important; }` để đảm bảo chữ trắng trên nút và nhãn luôn giữ màu trắng tinh `#ffffff` trên mọi theme.
+  + `src/components/sonic/SonicProductCard.tsx`:
+    * Nút "Xem chi tiết": Đổi text từ `text-slate-700` sang `text-slate-800` kèm `hover:text-slate-950` để tăng độ sắc nét trên nền `bg-slate-100`.
+    * Nút "Nhận báo giá": Thêm cờ `!text-white` trực tiếp.
+    * Badges "BÁN CHẠY #1", "TUYỂN CHỌN", "CHÍNH HÃNG 100%": Thêm cờ `!text-white`.
+  + `src/components/home/HomeKaraokeCalculator.tsx`:
+    * Sửa nút "Gọi tư vấn ngay": Thay biến chưa khai báo `bg-[var(--sonic-button-bg)]` bằng `bg-[#d32f2f] !text-white hover:bg-[#b71c1c]`.
+    * Nút "Nhận báo giá qua Zalo": Đảm bảo `bg-[#0068ff] !text-white`.
+- Verification:
+  + `npm test`: 81/81 unit tests passed.
+  + `npm run lint` & `npx tsc --noEmit`: 0 error, 0 warning.
+  + `npm run build`: Build thành công sạch sẽ.
+  + Commit `ba7d927`: CI `#37488850871` passed, Deploy Production `#37489036222` passed.
+  + Production live health check: `https://tiendataudioquangngai.id.vn/api/health` trả về HTTP 200 OK, release `ba7d927`.
+- Rollback reference: Git revert commit `ba7d927`.
