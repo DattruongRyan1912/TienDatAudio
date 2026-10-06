@@ -1275,3 +1275,20 @@ File này là append-only. Không sửa hoặc xóa entry cũ; nếu thông tin 
   + `npx tsc --noEmit`: pass clean (0 errors).
   + `npm run build`: pass clean (76 routes render thành công).
 - Rollback reference: Git revert commit tương ứng.
+
+## 2026-10-06 18:12 +0700 — Cập nhật toàn diện tài liệu README.md dự án
+
+- Scope/authorization: Người dùng yêu cầu cập nhật file README dự án ("update readme dự án").
+- Changes:
+  + Cập nhật `README.md`:
+    * Hệ thống hóa tổng quan dự án Tiến Đạt Audio theo giao diện Clean E-Commerce hiện đại, kiến trúc Next.js 15 App Router và MongoDB native.
+    * Bổ sung chi tiết Tech Stack, bảo mật (Scrypt hash, HMAC-signed session, route guards), và hạ tầng Zero-downtime Atomic Release trên VPS.
+    * Bổ sung cấu trúc thư mục chi tiết, giải thích vai trò của `data/editorial-seeds/`, `scripts/`, `deploy/`, `docs/`.
+    * Cung cấp bảng hướng dẫn biến môi trường rõ ràng và các lệnh kiểm định Preflight/QA (`npm test`, `npm run lint`, `npx tsc --noEmit`, `npm run build`, `audit-secrets.sh`).
+    * Bổ sung tài liệu về Hệ thống Dữ liệu Biên tập (Editorial System) gồm 10 bài viết kiến thức kỹ thuật thực tế và 100% ảnh chụp sản phẩm từ showroom.
+    * Tài liệu hóa luồng CI/CD, kịch bản đồng bộ dữ liệu VPS, và liên kết trực tiếp đến báo cáo bàn giao HTML `docs/HANDOVER_EDITORIAL_PURGE_AND_BATCH2.html`.
+- Verification:
+  + Commit `81f0556` vượt qua CI (`#37454613479`).
+  + Quá trình deploy production (`#37454751661`) hoàn tất thành công.
+  + Health check production `https://tiendataudioquangngai.id.vn/api/health` trả về HTTP 200 OK, release `81f0556`.
+- Rollback reference: Git revert commit `81f0556`.
