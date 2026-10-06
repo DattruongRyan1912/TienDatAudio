@@ -1,33 +1,84 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import type { Brand } from '@/lib/data'
-import SonicBrandLogo from './SonicBrandLogo'
 
-export default function SonicBrandCard({ brand, index, productCount, featured = false }: { brand: Brand; index: number; productCount: number; featured?: boolean }) {
+type BrandLogoVariants = Brand & { logoDark?: string; logoLight?: string }
+
+export default function SonicBrandCard({
+  brand,
+  index,
+  productCount,
+  featured = false,
+}: {
+  brand: Brand
+  index: number
+  productCount: number
+  featured?: boolean
+}) {
+  const source = brand as BrandLogoVariants
+  const logoUrl = source.logoLight || source.logo || source.logoDark
+
   return (
-    <article className={`sonic-brand-card group ${featured ? 'sonic-brand-card-featured md:col-span-2' : ''}`}>
-      <Link href={`/thuong-hieu/${brand.slug}`} className="flex h-full flex-col" aria-label={`Xem thương hiệu ${brand.name}`}>
-        <div className="relative z-[1] flex items-start justify-between">
-          <span className="sonic-label text-[var(--sonic-subtle)]">{String(index + 1).padStart(2, '0')}</span>
-          <span className="sonic-brand-arrow flex h-9 w-9 items-center justify-center border border-[var(--sonic-line)] text-[var(--sonic-muted)] transition-colors group-hover:border-[var(--sonic-gold)] group-hover:text-[var(--sonic-gold)]" aria-hidden="true">
-            <ArrowUpRight size={16} />
+    <article
+      className={`group flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-red-200 hover:shadow-md ${
+        featured ? 'md:col-span-2 lg:col-span-2 bg-gradient-to-br from-white to-red-50/20' : ''
+      }`}
+    >
+      <div>
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold text-slate-500">
+            #{String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-bold text-[#d32f2f] border border-red-100">
+            {productCount} sản phẩm
           </span>
         </div>
 
-        <div className={`relative z-[1] mt-auto flex flex-col gap-6 ${featured ? 'md:grid md:grid-cols-[auto_1fr] md:items-end md:gap-10' : ''}`}>
-          <SonicBrandLogo brand={brand} featured={featured} />
-          <div>
-            <div className="flex items-end justify-between gap-5">
-              <div>
-                <h3 className={`font-bold leading-none tracking-[-0.05em] text-[var(--sonic-text-strong)] ${featured ? 'text-3xl md:text-4xl' : 'text-2xl md:text-[1.65rem]'}`}>{brand.name}</h3>
-                <p className="mt-3 text-sm text-[var(--sonic-muted)]">{brand.country || 'International partner'}</p>
-              </div>
-              <p className="shrink-0 text-right text-xs leading-5 text-[var(--sonic-subtle)]"><span className="block text-lg font-semibold text-[var(--sonic-text)]">{productCount}</span> sản phẩm</p>
-            </div>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--sonic-muted)]">{brand.description || 'Thương hiệu được tuyển chọn cho những hệ thống âm thanh có chủ đích.'}</p>
-          </div>
+        {/* Brand Logo Box */}
+        <div className="mt-4 relative flex h-28 w-full items-center justify-center rounded-xl border border-slate-100 bg-[#f8fafc] p-4 transition-colors group-hover:bg-white group-hover:border-slate-200">
+          {logoUrl ? (
+            <Image
+              src={logoUrl}
+              alt={`Logo thương hiệu ${brand.name}`}
+              fill
+              sizes="(min-width: 1024px) 240px, 50vw"
+              className="object-contain p-3 transition-transform duration-200 group-hover:scale-105"
+            />
+          ) : (
+            <span className="text-xl font-black uppercase tracking-wider text-slate-800">
+              {brand.name}
+            </span>
+          )}
         </div>
-      </Link>
+
+        {/* Brand Info */}
+        <div className="mt-4">
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="text-lg font-bold text-slate-900 transition-colors group-hover:text-[#d32f2f]">
+              {brand.name}
+            </h3>
+            {brand.country && (
+              <span className="text-xs font-medium text-slate-500">{brand.country}</span>
+            )}
+          </div>
+          <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-600">
+            {brand.description ||
+              `Thương hiệu ${brand.name} chính hãng được Tiến Đạt Audio phân phối và bảo hành tại Quảng Ngãi.`}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-5 border-t border-slate-100 pt-4">
+        <Link
+          href={`/thuong-hieu/${brand.slug}`}
+          className="inline-flex w-full items-center justify-between text-xs font-bold text-[#d32f2f] transition-all group-hover:translate-x-0.5"
+          aria-label={`Xem sản phẩm thương hiệu ${brand.name}`}
+        >
+          <span>Xem tất cả sản phẩm {brand.name}</span>
+          <ArrowRight size={14} />
+        </Link>
+      </div>
     </article>
   )
 }

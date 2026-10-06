@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Check, ChevronLeft, ChevronRight, Filter, Search, SlidersHorizontal } from 'lucide-react'
-import SonicCatalogFeaturedCard from '@/components/sonic/SonicCatalogFeaturedCard'
-import SonicCatalogProductCard from '@/components/sonic/SonicCatalogProductCard'
-import SonicReveal from '@/components/sonic/SonicReveal'
+import { Check, ChevronLeft, ChevronRight, MessageCircle, Phone, Search, SlidersHorizontal, Sparkles } from 'lucide-react'
+import SonicProductCard from '@/components/sonic/SonicProductCard'
 import { getBrands, getCategories, getProducts } from '@/lib/catalog'
 import { generateSEOMetadata } from '@/lib/seo'
 
@@ -58,35 +56,39 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const category = first(params.category) || ''
   const brand = first(params.brand) || ''
   const sort = first(params.sort) || 'featured'
-  const requestedPage = Number.parseInt(first(params.page) || '1', 10)
-  const page = Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1
-  const [products, categories, brands] = await Promise.all([
-    getProducts({ search: search || undefined, category: category || undefined, brand: brand || undefined }),
+  const page = Math.max(1, Number(first(params.page)) || 1)
+
+  const [categories, brands, products] = await Promise.all([
     getCategories(),
     getBrands(),
+    getProducts({ search, category, brand }),
   ])
+
+  const activeCategory = categories.find((item) => item.id === category || item.slug === category)
+  const activeBrand = brands.find((item) => item.id === brand || item.slug === brand)
 
   const sortedProducts = [...products].sort((a, b) => {
     if (sort === 'price-asc') return (a.salePrice || a.price) - (b.salePrice || b.price)
     if (sort === 'price-desc') return (b.salePrice || b.price) - (a.salePrice || a.price)
     if (sort === 'name') return a.name.localeCompare(b.name)
-    return Number(b.featured) - Number(a.featured) || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    return (
+      Number(Boolean(b.bestseller)) - Number(Boolean(a.bestseller)) ||
+      Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
+      b.createdAt.localeCompare(a.createdAt)
+    )
   })
-
-  const activeCategory = categories.find((item) => item.id === category || item.slug === category)
-  const activeBrand = brands.find((item) => item.id === brand || item.slug === brand)
 
   const categoryHeadingMap: Record<string, { h1: string; subtitle: string }> = {
     'loa-thung': {
-      h1: 'Loa Thùng & Loa Full Karaoke Chính Hãng',
-      subtitle: 'Các dòng loa full bass 25, bass 30 uy lực, dải âm sáng rõ, cho lời ca bay bổng phục vụ karaoke gia đình và sự kiện tại Quảng Ngãi.',
+      h1: 'Loa Thùng Karaoke & Loa Sân Khấu Chính Hãng',
+      subtitle: 'Tuyển chọn các dòng loa full bass 25, 30, 40 chuyên trị karaoke gia đình và hội trường cao cấp, âm thanh trung thực, tiếng sáng rõ.',
     },
     'loa-tram': {
-      h1: 'Loa Trầm Subwoofer Uy Lực Cho Dàn Karaoke',
-      subtitle: 'Tăng cường dải trầm sâu chắc, mạnh mẽ, mang lại trải nghiệm âm thanh sống động cho phòng hát tại gia và không gian giải trí.',
+      h1: 'Loa Sub Siêu Trầm Karaoke & Nghe Nhạc',
+      subtitle: 'Loa trầm điện và hơi công suất mạnh mẽ, tăng cường dải bass sâu uy lực, tạo độ dày dặn cho dàn karaoke phòng khách.',
     },
     'vang-so': {
-      h1: 'Vang Số Chống Hú Rít Chuyên Nghiệp',
+      h1: 'Vang Số Chống Hú Kỹ Thuật Số Chuyên Nghiệp',
       subtitle: 'Xử lý âm thanh kỹ thuật số DSP cao cấp, cắt triệt để tiếng hú rít micro, nâng tầm giọng hát mượt mà và nhẹ hơi.',
     },
     'main-cong-suat': {
@@ -103,7 +105,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const dynamicH1 = categoryPreset?.h1
     || (activeCategory ? `${activeCategory.name} Chính Hãng Tại Quảng Ngãi` : null)
     || (activeBrand ? `Thiết Bị Âm Thanh Thương Hiệu ${activeBrand.name}` : null)
-    || (search ? `Kết quả tìm kiếm cho “${search}”` : 'Thiết Bị Âm Thanh & Dàn Karaoke Quảng Ngãi')
+    || (search ? `Kết quả tìm kiếm cho “${search}”` : 'Danh Mục Thiết Bị Âm Thanh Chính Hãng')
 
   const dynamicSubtitle = categoryPreset?.subtitle
     || (activeCategory ? `Bộ sưu tập ${activeCategory.name.toLowerCase()} tuyển chọn tại Tiến Đạt Audio Quảng Ngãi. Trải nghiệm nghe thử âm thanh trực tiếp tại 264 Phan Đình Phùng.` : null)
@@ -130,12 +132,10 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     },
   }
 
-  const featuredProduct = sort === 'featured' ? sortedProducts.find((item) => item.featured) || sortedProducts[0] : null
-  const catalogProducts = featuredProduct ? sortedProducts.filter((item) => item.id !== featuredProduct.id) : sortedProducts
-  const pageSize = 6
-  const pageCount = Math.max(1, Math.ceil(catalogProducts.length / pageSize))
+  const pageSize = 12
+  const pageCount = Math.max(1, Math.ceil(sortedProducts.length / pageSize))
   const currentPage = Math.min(page, pageCount)
-  const visibleProducts = catalogProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const visibleProducts = sortedProducts.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   const hrefFor = (overrides: QueryOverrides = {}) => {
     const next = new URLSearchParams()
@@ -150,143 +150,292 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   }
 
   return (
-    <div className="sonic-page pt-28 md:pt-36">
+    <div className="bg-[#f8fafc] pt-24 md:pt-32">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(catalogStructuredData) }}
       />
-      <section className="sonic-container pb-14 md:pb-20">
-        <SonicReveal className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <p className="sonic-label">{activeCategory ? `Danh mục / ${activeCategory.name}` : 'Danh mục sản phẩm'}</p>
-            <h1 className="sonic-title mt-5 max-w-3xl">{dynamicH1}</h1>
-            <p className="sonic-copy mt-5 max-w-xl">
-              {dynamicSubtitle}
-            </p>
-            <Link href="/loa-quang-ngai" className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-gold)] transition-colors hover:text-[var(--sonic-gold-hover)]">Tìm loa và tư vấn tại Quảng Ngãi <span aria-hidden="true">↗</span></Link>
-          </div>
-          <div className="text-left md:text-right">
-            <p className="text-4xl font-bold tracking-[-0.05em] text-[var(--sonic-gold)]">{sortedProducts.length.toString().padStart(2, '0')}</p>
-            <p className="sonic-label mt-2 text-[var(--sonic-subtle)]">Sản phẩm trong catalog</p>
-          </div>
-        </SonicReveal>
-      </section>
 
-      <section className="border-y border-[var(--sonic-line)] bg-[var(--sonic-surface)]">
-        <div className="sonic-container py-7">
-          <form action="/products" className="flex flex-col gap-3 md:flex-row">
-            <div className="relative flex-1">
-              <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--sonic-subtle)]" />
-              <input name="search" defaultValue={search} className="sonic-input sonic-input-with-leading-icon" placeholder="Tìm kiếm thiết bị, thương hiệu..." />
+      {/* 1. Header Banner & Quick Category Filter */}
+      <section className="border-b border-slate-200 bg-white py-6 md:py-10">
+        <div className="mx-auto max-w-[1240px] px-4">
+          <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-2 text-xs text-slate-500">
+            <Link href="/" className="hover:text-[#d32f2f]">Trang chủ</Link>
+            <span>/</span>
+            <Link href="/products" className="hover:text-[#d32f2f]">Sản phẩm</Link>
+            {activeCategory && (
+              <>
+                <span>/</span>
+                <span className="font-semibold text-slate-800">{activeCategory.name}</span>
+              </>
+            )}
+          </nav>
+
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-[#d32f2f]">
+                <Sparkles size={13} />
+                <span>Showroom Tiến Đạt Audio Quảng Ngãi</span>
+              </div>
+              <h1 className="mt-2.5 text-2xl font-black text-slate-900 md:text-3xl lg:text-4xl">
+                {dynamicH1}
+              </h1>
+              <p className="mt-2 max-w-2xl text-xs leading-relaxed text-slate-600 sm:text-sm">
+                {dynamicSubtitle}
+              </p>
             </div>
-            {category && <input type="hidden" name="category" value={category} />}
-            {brand && <input type="hidden" name="brand" value={brand} />}
-            <button type="submit" className="sonic-button sonic-button-gold">Tìm kiếm</button>
-          </form>
+
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-right">
+                <span className="block text-2xl font-black text-[#d32f2f]">{sortedProducts.length}</span>
+                <span className="block text-[11px] font-semibold text-slate-500">Thiết bị sẵn có</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Category Chips */}
+          <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
+            <span className="text-xs font-bold text-slate-500">Phân loại nhanh:</span>
+            <Link
+              href="/products"
+              className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition-colors ${
+                !category
+                  ? 'bg-[#d32f2f] text-white shadow-xs'
+                  : 'border border-slate-200 bg-white text-slate-700 hover:border-[#d32f2f] hover:text-[#d32f2f]'
+              }`}
+            >
+              Tất cả
+            </Link>
+            {categories.map((cat) => {
+              const isActive = category === cat.id || category === cat.slug
+              return (
+                <Link
+                  key={cat.id}
+                  href={hrefFor({ category: cat.id, page: 1 })}
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition-colors ${
+                    isActive
+                      ? 'bg-[#d32f2f] text-white shadow-xs'
+                      : 'border border-slate-200 bg-white text-slate-700 hover:border-[#d32f2f] hover:text-[#d32f2f]'
+                  }`}
+                >
+                  {cat.name}
+                </Link>
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      <section className="sonic-container py-12 md:py-20">
-        <div className="grid gap-8 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-12">
-          <aside className="sonic-panel h-fit p-5 lg:sticky lg:top-32 md:p-6">
-            <div className="flex items-center justify-between border-b border-[var(--sonic-line)] pb-4">
-              <p className="sonic-label">Bộ lọc</p>
-              <SlidersHorizontal size={16} className="text-[var(--sonic-gold)]" />
+      {/* 2. Main Catalog Grid & Filter Layout */}
+      <section className="mx-auto max-w-[1240px] px-4 py-8 md:py-12">
+        <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
+          {/* Sidebar Filters */}
+          <aside className="space-y-6">
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal size={16} className="text-[#d32f2f]" />
+                  <span className="font-bold text-slate-900">Bộ Lọc Thiết Bị</span>
+                </div>
+                {(activeCategory || activeBrand || search) && (
+                  <Link href="/products" className="text-xs font-semibold text-[#d32f2f] hover:underline">
+                    Xóa lọc
+                  </Link>
+                )}
+              </div>
+
+              {/* Search Inside Catalog */}
+              <form action="/products" className="mt-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="search"
+                    defaultValue={search}
+                    placeholder="Tìm mã thiết bị..."
+                    className="w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-8 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-[#d32f2f] focus:bg-white"
+                  />
+                  <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                </div>
+                {category && <input type="hidden" name="category" value={category} />}
+                {brand && <input type="hidden" name="brand" value={brand} />}
+              </form>
+
+              {/* Category Filter Group */}
+              <div className="mt-6 border-t border-slate-100 pt-4">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-700">Danh Mục Sản Phẩm</h3>
+                <div className="mt-3 space-y-1">
+                  {categories.map((cat) => {
+                    const isActive = category === cat.id || category === cat.slug
+                    return (
+                      <Link
+                        key={cat.id}
+                        href={hrefFor({ category: cat.id, page: 1 })}
+                        className={`flex items-center justify-between rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors ${
+                          isActive
+                            ? 'bg-red-50 text-[#d32f2f]'
+                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        <span>{cat.name}</span>
+                        {isActive && <Check size={14} className="text-[#d32f2f]" />}
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Brand Filter Group */}
+              <div className="mt-6 border-t border-slate-100 pt-4">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-700">Thương Hiệu</h3>
+                <div className="mt-3 space-y-1">
+                  {brands
+                    .filter((item) => (item.productCount || 0) > 0 || brand === item.id || brand === item.slug)
+                    .map((b) => {
+                      const isActive = brand === b.id || brand === b.slug
+                      return (
+                        <Link
+                          key={b.id}
+                          href={hrefFor({ brand: b.id, page: 1 })}
+                          className={`flex items-center justify-between rounded-lg px-2.5 py-2 text-xs font-semibold transition-colors ${
+                            isActive
+                              ? 'bg-red-50 text-[#d32f2f]'
+                              : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                          }`}
+                        >
+                          <span>{b.name}</span>
+                          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
+                            {b.productCount || 0}
+                          </span>
+                        </Link>
+                      )
+                    })}
+                </div>
+              </div>
             </div>
 
-            {(activeCategory || activeBrand || search) && (
-              <div className="flex flex-wrap gap-2 border-b border-[var(--sonic-line)] py-4">
-                <span className="w-full text-xs text-[var(--sonic-subtle)]">Đang chọn:</span>
-                {[activeCategory?.name, activeBrand?.name, search && `“${search}”`].filter(Boolean).map((item) => (
-                  <span key={item as string} className="border border-[var(--sonic-gold)]/50 px-2 py-1 text-[0.62rem] text-[var(--sonic-gold)]">
-                    {item}
-                  </span>
-                ))}
-                <Link href="/products" className="ml-auto text-[0.62rem] uppercase tracking-wider text-[var(--sonic-subtle)] hover:text-[var(--sonic-gold)]">Xóa</Link>
-              </div>
-            )}
-
-            <div className="border-b border-[var(--sonic-line)] py-5">
-              <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-text)]">Danh mục</p>
-              <div className="grid gap-1">
-                {categories.map((item) => {
-                  const active = category === item.id || category === item.slug
-                  return (
-                    <Link key={item.id} href={hrefFor({ category: item.id, page: 1 })} className={`flex items-center justify-between py-2 text-sm transition-colors hover:text-[var(--sonic-gold)] ${active ? 'text-[var(--sonic-gold)]' : 'text-[var(--sonic-muted)]'}`}>
-                      <span>{item.name}</span>
-                      {active && <Check size={14} />}
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className="py-5">
-              <p className="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-text)]">Thương hiệu</p>
-              <div className="grid gap-1">
-                {brands.filter((item) => (item.productCount || 0) > 0 || brand === item.id || brand === item.slug).map((item) => {
-                  const active = brand === item.id || brand === item.slug
-                  return (
-                    <Link key={item.id} href={hrefFor({ brand: item.id, page: 1 })} className={`flex items-center justify-between py-2 text-sm transition-colors hover:text-[var(--sonic-gold)] ${active ? 'text-[var(--sonic-gold)]' : 'text-[var(--sonic-muted)]'}`}>
-                      <span>{item.name}</span>
-                      <span className="text-[0.64rem] text-[var(--sonic-subtle)]">{item.productCount || 0}</span>
-                    </Link>
-                  )
-                })}
+            {/* Quick Hotline Support Card */}
+            <div className="rounded-xl border border-red-100 bg-gradient-to-br from-red-50 to-rose-50/50 p-5 shadow-xs">
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#d32f2f]">
+                Tư Vấn Trực Tiếp
+              </span>
+              <h4 className="mt-1 text-sm font-bold text-slate-900">
+                Chưa biết chọn cấu hình nào phù hợp phòng?
+              </h4>
+              <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                Kỹ thuật viên Tiến Đạt Audio hỗ trợ đo đạc, tư vấn ghép nối chuẩn âm học miễn phí.
+              </p>
+              <div className="mt-4 space-y-2">
+                <a
+                  href="tel:0934995657"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-[#d32f2f] py-2 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#b71c1c]"
+                >
+                  <Phone size={13} />
+                  <span>Gọi 0934.995.657</span>
+                </a>
+                <a
+                  href="https://zalo.me/0934995657"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-[#0068ff] py-2 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#0052cc]"
+                >
+                  <MessageCircle size={13} />
+                  <span>Chat Zalo Báo Giá</span>
+                </a>
               </div>
             </div>
           </aside>
 
+          {/* Product Grid & Sorting Toolbar */}
           <div className="min-w-0">
-            <div className="mb-7 flex flex-col gap-4 border-b border-[var(--sonic-line)] pb-5 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[var(--sonic-muted)]">
-                {activeCategory?.name || activeBrand?.name || 'Tất cả thiết bị'}{search && ` / “${search}”`}
+            {/* Toolbar */}
+            <div className="mb-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-slate-600">
+                Đang xem <strong className="text-slate-900">{visibleProducts.length}</strong> / {sortedProducts.length} sản phẩm
+                {activeCategory && <span> thuộc <strong className="text-[#d32f2f]">{activeCategory.name}</strong></span>}
+                {brand && <span> hãng <strong className="text-[#d32f2f]">{activeBrand?.name}</strong></span>}
               </p>
-              <div className="flex flex-wrap items-center gap-3">
-                <Filter size={14} className="text-[var(--sonic-subtle)]" />
-                <span className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[var(--sonic-subtle)]">Sắp xếp</span>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="font-bold text-slate-500">Sắp xếp:</span>
                 {([
-                  ['featured', 'Tuyển chọn'],
-                  ['price-asc', 'Giá thấp'],
-                  ['price-desc', 'Giá cao'],
-                  ['name', 'Tên A — Z'],
+                  ['featured', 'Nổi bật'],
+                  ['price-asc', 'Giá tăng dần'],
+                  ['price-desc', 'Giá giảm dần'],
+                  ['name', 'Tên A-Z'],
                 ] as const).map(([value, label]) => (
-                  <Link key={value} href={hrefFor({ sort: value, page: 1 })} className={`text-xs transition-colors hover:text-[var(--sonic-gold)] ${sort === value ? 'text-[var(--sonic-gold)]' : 'text-[var(--sonic-muted)]'}`}>
+                  <Link
+                    key={value}
+                    href={hrefFor({ sort: value, page: 1 })}
+                    className={`rounded-md px-2.5 py-1 font-semibold transition-colors ${
+                      sort === value
+                        ? 'bg-slate-900 text-white'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
                     {label}
                   </Link>
                 ))}
               </div>
             </div>
 
-            {currentPage === 1 && featuredProduct && (
-              <SonicReveal className="mb-5">
-                <SonicCatalogFeaturedCard product={featuredProduct} />
-              </SonicReveal>
+            {/* Products Grid */}
+            {visibleProducts.length > 0 ? (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {visibleProducts.map((prod) => (
+                  <SonicProductCard key={prod.id} product={prod} />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-xs">
+                <Search size={36} className="mx-auto text-slate-300" />
+                <h3 className="mt-4 text-base font-bold text-slate-900">Không tìm thấy thiết bị phù hợp</h3>
+                <p className="mt-1.5 text-xs text-slate-500">
+                  Hãy thử chọn danh mục khác hoặc tìm kiếm với từ khóa ngắn gọn hơn.
+                </p>
+                <Link
+                  href="/products"
+                  className="mt-5 inline-block rounded-md bg-[#d32f2f] px-4 py-2 text-xs font-bold text-white hover:bg-[#b71c1c]"
+                >
+                  Xem toàn bộ thiết bị
+                </Link>
+              </div>
             )}
 
-            {visibleProducts.length > 0 ? (
-              <div className="grid gap-5 sm:grid-cols-2">
-                {visibleProducts.map((product, index) => <SonicReveal key={product.id} delay={Math.min(index * 0.06, 0.24)} className="h-full"><SonicCatalogProductCard product={product} /></SonicReveal>)}
-              </div>
-            ) : !featuredProduct ? (
-              <div className="sonic-panel px-6 py-16 text-center">
-                <p className="sonic-label">Không tìm thấy</p>
-                <p className="mt-4 text-xl font-bold text-[var(--sonic-text-strong)]">Thử một bộ lọc khác.</p>
-                <Link href="/products" className="sonic-button sonic-button-ghost mt-7">Xem toàn bộ sản phẩm</Link>
-              </div>
-            ) : null}
-
+            {/* Pagination */}
             {pageCount > 1 && (
               <nav aria-label="Phân trang sản phẩm" className="mt-10 flex items-center justify-center gap-2">
-                <Link href={hrefFor({ page: Math.max(1, currentPage - 1) })} aria-label="Trang trước" aria-disabled={currentPage === 1} className={`flex h-9 w-9 items-center justify-center border border-[var(--sonic-line)] transition-colors hover:border-[var(--sonic-gold)] hover:text-[var(--sonic-gold)] ${currentPage === 1 ? 'pointer-events-none opacity-35' : ''}`}>
+                <Link
+                  href={hrefFor({ page: Math.max(1, currentPage - 1) })}
+                  aria-label="Trang trước"
+                  aria-disabled={currentPage === 1}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-[#d32f2f] hover:text-[#d32f2f] ${
+                    currentPage === 1 ? 'pointer-events-none opacity-40' : ''
+                  }`}
+                >
                   <ChevronLeft size={16} />
                 </Link>
                 {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => (
-                  <Link key={pageNumber} href={hrefFor({ page: pageNumber })} aria-current={pageNumber === currentPage ? 'page' : undefined} className={`flex h-9 min-w-9 items-center justify-center border px-2 text-xs transition-colors hover:border-[var(--sonic-gold)] hover:text-[var(--sonic-gold)] ${pageNumber === currentPage ? 'border-[var(--sonic-gold)] bg-[var(--sonic-gold)] text-[var(--sonic-button-text)] hover:text-[var(--sonic-button-text)]' : 'border-[var(--sonic-line)] text-[var(--sonic-muted)]'}`}>
+                  <Link
+                    key={pageNumber}
+                    href={hrefFor({ page: pageNumber })}
+                    aria-current={pageNumber === currentPage ? 'page' : undefined}
+                    className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-xs font-bold transition-colors ${
+                      pageNumber === currentPage
+                        ? 'border border-[#d32f2f] bg-[#d32f2f] text-white'
+                        : 'border border-slate-200 bg-white text-slate-700 hover:border-[#d32f2f] hover:text-[#d32f2f]'
+                    }`}
+                  >
                     {pageNumber}
                   </Link>
                 ))}
-                <Link href={hrefFor({ page: Math.min(pageCount, currentPage + 1) })} aria-label="Trang sau" aria-disabled={currentPage === pageCount} className={`flex h-9 w-9 items-center justify-center border border-[var(--sonic-line)] transition-colors hover:border-[var(--sonic-gold)] hover:text-[var(--sonic-gold)] ${currentPage === pageCount ? 'pointer-events-none opacity-35' : ''}`}>
+                <Link
+                  href={hrefFor({ page: Math.min(pageCount, currentPage + 1) })}
+                  aria-label="Trang sau"
+                  aria-disabled={currentPage === pageCount}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors hover:border-[#d32f2f] hover:text-[#d32f2f] ${
+                    currentPage === pageCount ? 'pointer-events-none opacity-40' : ''
+                  }`}
+                >
                   <ChevronRight size={16} />
                 </Link>
               </nav>
@@ -295,51 +444,40 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </section>
 
-      <section className="border-t border-[var(--sonic-line)] bg-[var(--sonic-surface)] py-12 md:py-16">
-        <div className="sonic-container">
+      {/* 3. Cam kết dịch vụ showroom Tiến Đạt Audio */}
+      <section className="border-t border-slate-200 bg-white py-12">
+        <div className="mx-auto max-w-[1240px] px-4">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="sonic-panel p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Nghe thử thực tế</p>
-              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Showroom 264 Phan Đình Phùng</h3>
-              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Không gian setup sẵn loa thùng, vang số, cục đẩy để khách hàng trải nghiệm chất âm thực tế trước khi lựa chọn.</p>
+            <div className="rounded-xl border border-slate-100 bg-[#f8fafc] p-5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#d32f2f]">Trải nghiệm thực tế</span>
+              <h3 className="mt-1.5 text-sm font-bold text-slate-900">Showroom 264 Phan Đình Phùng</h3>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Setup sẵn phòng thử âm thanh thực tế với loa thùng, vang số, cục đẩy để nghe trực tiếp trước khi chọn.
+              </p>
             </div>
-            <div className="sonic-panel p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Lắp đặt tận nơi</p>
-              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Toàn tỉnh Quảng Ngãi</h3>
-              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Đội ngũ kỹ thuật hỗ trợ vận chuyển, lắp ráp và cân chỉnh chất âm tận nhà tại TP Quảng Ngãi và các huyện lân cận.</p>
+            <div className="rounded-xl border border-slate-100 bg-[#f8fafc] p-5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#d32f2f]">Miễn phí vận chuyển</span>
+              <h3 className="mt-1.5 text-sm font-bold text-slate-900">Lắp đặt tận nhà tại Quảng Ngãi</h3>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Đội ngũ kỹ thuật hỗ trợ giao hàng, lắp ráp và cân chỉnh chất âm tận nơi trong bán kính 30km.
+              </p>
             </div>
-            <div className="sonic-panel p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Xử lý dứt điểm</p>
-              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Cắt hú rít micro 100%</h3>
-              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Căn chỉnh vang số chuyên nghiệp qua phần mềm máy tính, giọng hát nhẹ, bay bổng, không lo rú rít hỏng loa tép.</p>
+            <div className="rounded-xl border border-slate-100 bg-[#f8fafc] p-5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#d32f2f]">Kỹ thuật chuyên sâu</span>
+              <h3 className="mt-1.5 text-sm font-bold text-slate-900">Cắt hú rít dứt điểm 100%</h3>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Căn chỉnh vang số chi tiết qua phần mềm máy tính, giọng hát nhẹ hơi, bay bổng, không lo rú rít hỏng treble.
+              </p>
             </div>
-            <div className="sonic-panel p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--sonic-gold)]">Bảo hành uy tín</p>
-              <h3 className="mt-2 text-base font-bold text-[var(--sonic-text-strong)]">Hỗ trợ kỹ thuật 24/7</h3>
-              <p className="mt-2 text-xs leading-5 text-[var(--sonic-muted)]">Cam kết thiết bị chính hãng, hỗ trợ kỹ thuật và bảo hành nhanh chóng, đồng hành lâu dài cùng khách hàng.</p>
+            <div className="rounded-xl border border-slate-100 bg-[#f8fafc] p-5">
+              <span className="text-[11px] font-black uppercase tracking-wider text-[#d32f2f]">Hậu mãi dài lâu</span>
+              <h3 className="mt-1.5 text-sm font-bold text-slate-900">Bảo hành 12 - 24 tháng chính hãng</h3>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Cam kết thiết bị chính hãng 100%, hỗ trợ kỹ thuật trọn đời, đổi mới trong 7 ngày nếu có lỗi từ nhà sản xuất.
+              </p>
             </div>
           </div>
         </div>
-      </section>
-
-      <section className="border-y border-[var(--sonic-line)] bg-[var(--sonic-surface-strong)] py-16 md:py-24">
-        <SonicReveal className="sonic-container grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-          <div>
-            <p className="sonic-label">Kiến thức / Hi-End</p>
-            <h2 className="mt-4 max-w-xl text-3xl font-bold leading-tight tracking-[-0.05em] text-[var(--sonic-text-strong)] md:text-4xl">Bí quyết chọn Loa Hi-End hoàn hảo cho không gian.</h2>
-          </div>
-          <div>
-            <p className="sonic-copy max-w-2xl text-sm">
-              Hệ thống loa đóng vai trò là “giọng hát” của mỗi dàn máy âm thanh. Việc lựa chọn loa nghe nhạc Hi-End không chỉ đơn thuần là mua sắm thiết bị, mà là quá trình tìm kiếm sự đồng điệu giữa đặc tính kỹ thuật, chất âm đặc trưng và đặc điểm âm học của phòng nghe.
-            </p>
-            <p className="sonic-copy mt-5 max-w-2xl text-sm">
-              Tại Tiến Đạt Audio, chúng tôi đồng hành cùng bạn từ việc hiểu không gian đến khi hoàn thiện cấu hình phù hợp.
-            </p>
-            <Link href="/kien-thuc" className="mt-7 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-[var(--sonic-gold)] transition-colors hover:text-[var(--sonic-gold-hover)]">
-              Đọc kiến thức <ChevronRight size={15} />
-            </Link>
-          </div>
-        </SonicReveal>
       </section>
     </div>
   )

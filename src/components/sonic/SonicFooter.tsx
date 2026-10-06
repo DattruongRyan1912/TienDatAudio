@@ -1,56 +1,172 @@
 import Link from 'next/link'
+import { MapPin, Clock3, Mail } from 'lucide-react'
 import type { BusinessProfile } from '@/lib/business-profile'
 import { isSocialHubEnabled } from '@/modules/social/domain/feature-flag'
 import SonicDeferredMap from './SonicDeferredMap'
 
 const productLinks = [
-  ['Loa hi-end', '/products?category=loa-thung'],
-  ['Loa trầm', '/products?category=loa-tram'],
-  ['Vang số', '/products?category=vang-so'],
-  ['Thương hiệu', '/brands'],
+  ['Dàn karaoke gia đình', '/combos'],
+  ['Loa karaoke & Nghe nhạc', '/products?category=loa'],
+  ['Vang số & Mixer chống hú', '/products?category=vang-so'],
+  ['Cục đẩy công suất', '/products?category=cuc-day'],
+  ['Loa Sub siêu trầm', '/products?category=loa-sub'],
+  ['Micro không dây', '/products?category=micro'],
+  ['Thương hiệu phân phối', '/brands'],
+]
+
+const serviceLinks = [
+  ['Về Tiến Đạt Audio', '/about'],
+  ['Tư vấn âm thanh Quảng Ngãi', '/loa-quang-ngai'],
+  ['Kiến thức & Cân chỉnh', '/kien-thuc'],
+  ['Câu hỏi thường gặp (FAQ)', '/faq'],
+  ['Liên hệ & Đặt lịch', '/contact'],
 ]
 
 export default function SonicFooter({ profile }: { profile: BusinessProfile }) {
   const phoneDigits = profile.phone.replace(/\D/g, '')
-  const phoneDisplay = phoneDigits.length === 10 ? `${phoneDigits.slice(0, 4)} ${phoneDigits.slice(4, 7)} ${phoneDigits.slice(7)}` : profile.phone
+  const phoneDisplay =
+    phoneDigits.length === 10
+      ? `${phoneDigits.slice(0, 4)} ${phoneDigits.slice(4, 7)} ${phoneDigits.slice(7)}`
+      : profile.phone
+
   return (
-    <footer className="border-t border-[var(--sonic-line)] bg-[var(--sonic-canvas)]">
-      <div className="sonic-container grid gap-16 py-20 md:grid-cols-[1.35fr_.85fr_.85fr_1.45fr] md:py-28">
-        <div>
-          <p className="sonic-label">{profile.name} / 01</p>
-          <h2 className="mt-5 max-w-sm text-3xl font-bold tracking-[-0.05em] text-[var(--sonic-text-strong)]">Âm thanh được tuyển chọn cho những không gian đáng nhớ.</h2>
-          <p className="sonic-copy mt-5 max-w-sm text-sm">Tư vấn, phối ghép và triển khai hệ thống âm thanh tại Quảng Ngãi và khu vực miền Trung.</p>
-        </div>
-        <div>
-          <p className="sonic-label">Điều hướng</p>
-          <div className="mt-5 grid gap-3 text-sm text-[var(--sonic-muted)]">
-            <Link href="/products" className="transition-colors hover:text-[#d4af37]">Sản phẩm</Link>
-            <Link href="/loa-quang-ngai" className="transition-colors hover:text-[#d4af37]">Âm thanh Quảng Ngãi</Link>
-            <Link href="/about#solutions" className="transition-colors hover:text-[#d4af37]">Giải pháp</Link>
-            <Link href="/kien-thuc" className="transition-colors hover:text-[#d4af37]">Kiến thức</Link>
-            {isSocialHubEnabled() && <Link href="/bai-viet" className="transition-colors hover:text-[#d4af37]">Góc Audio</Link>}
-            <Link href="/contact" className="transition-colors hover:text-[#d4af37]">Liên hệ</Link>
+    <footer className="border-t border-slate-800 bg-[#0f172a] text-slate-300">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-12">
+          {/* Col 1: Brand & Intro (4 cols) */}
+          <div className="space-y-4 lg:col-span-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#d32f2f] text-xl font-black text-white shadow-md shadow-red-900/40">
+                TĐ
+              </div>
+              <div>
+                <h3 className="text-xl font-black uppercase tracking-tight text-white">
+                  Tiến Đạt Audio
+                </h3>
+                <p className="text-xs text-slate-400">Chuyên gia âm thanh tại Quảng Ngãi</p>
+              </div>
+            </div>
+
+            <p className="text-xs leading-relaxed text-slate-400">
+              Hơn 10 năm kinh nghiệm tư vấn, phối ghép và triển khai hệ thống âm thanh gia đình, phòng karaoke, cafe và sân khấu sự kiện. Cam kết 100% chính hãng, bảo hành minh bạch.
+            </p>
+
+            <div className="pt-2">
+              <span className="text-xs font-semibold text-slate-400">Hotline tư vấn 24/7:</span>
+              <div className="mt-1 flex items-center gap-3">
+                <a
+                  href={`tel:${phoneDigits}`}
+                  data-analytics-event="phone_click"
+                  className="text-xl font-black text-[#f59e0b] hover:text-amber-300 transition-colors"
+                >
+                  {phoneDisplay}
+                </a>
+                <a
+                  href="https://zalo.me/0934995657"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-[#0068ff] px-2.5 py-1 text-xs font-bold text-white shadow-xs hover:bg-[#0052cc]"
+                >
+                  Chat Zalo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Col 2: Categories (3 cols) */}
+          <div className="space-y-3 lg:col-span-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Danh mục thiết bị
+            </h4>
+            <ul className="space-y-2 text-xs">
+              {productLinks.map(([label, href]) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-slate-400 transition-colors hover:text-white hover:underline"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Navigation & Policy (2 cols) */}
+          <div className="space-y-3 lg:col-span-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Dịch vụ & Hỗ trợ
+            </h4>
+            <ul className="space-y-2 text-xs">
+              {serviceLinks.map(([label, href]) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-slate-400 transition-colors hover:text-white hover:underline"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+              {isSocialHubEnabled() && (
+                <li>
+                  <Link
+                    href="/bai-viet"
+                    className="text-slate-400 transition-colors hover:text-white hover:underline"
+                  >
+                    Góc Audio & Dự án
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
+
+          {/* Col 4: Showroom & Map (3 cols) */}
+          <div className="space-y-3 lg:col-span-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              Showroom Quảng Ngãi
+            </h4>
+            <div className="space-y-2 text-xs text-slate-400">
+              <p className="flex items-start gap-2">
+                <MapPin size={16} className="text-[#d32f2f] shrink-0 mt-0.5" />
+                <span>{profile.address.formatted}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Clock3 size={15} className="text-amber-400 shrink-0" />
+                <span>{profile.businessHours.join(' / ')}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Mail size={15} className="text-blue-400 shrink-0" />
+                <span>{profile.email}</span>
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <SonicDeferredMap embedUrl={profile.mapEmbedUrl} name={profile.name} />
+              <a
+                href={profile.mapUrl}
+                data-analytics-event="map_click"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 hover:text-amber-300"
+              >
+                Chỉ đường trên Google Maps →
+              </a>
+            </div>
           </div>
         </div>
-        <div>
-          <p className="sonic-label">Danh mục</p>
-          <div className="mt-5 grid gap-3 text-sm text-[var(--sonic-muted)]">
-            {productLinks.map(([label, href]) => <Link key={href} href={href} className="transition-colors hover:text-[#d4af37]">{label}</Link>)}
+
+        {/* Bottom Bar */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800/80 pt-8 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
+          <p>© {new Date().getFullYear()} {profile.name}. Tất cả quyền được bảo lưu.</p>
+          <div className="flex items-center gap-4 text-[11px]">
+            <span>Đại lý âm thanh chính hãng tại Quảng Ngãi</span>
+            <span>•</span>
+            <Link href="/faq" className="hover:text-slate-400">Chính sách bảo hành</Link>
+            <span>•</span>
+            <Link href="/contact" className="hover:text-slate-400">Hỗ trợ kỹ thuật</Link>
           </div>
         </div>
-        <div>
-          <p className="sonic-label">Showroom</p>
-          <p className="mt-5 text-sm leading-7 text-[var(--sonic-muted)]">{profile.address.formatted}</p>
-          <a href={`tel:${phoneDigits}`} data-analytics-event="phone_click" className="mt-4 inline-block text-lg font-bold text-[#d4af37]">{phoneDisplay}</a>
-          <p className="mt-2 text-xs text-[var(--sonic-subtle)]">{profile.businessHours.join(' / ')}</p>
-          <p className="mt-6 sonic-label text-[#858989]">Vị trí showroom</p>
-          <SonicDeferredMap embedUrl={profile.mapEmbedUrl} name={profile.name} />
-          <a href={profile.mapUrl} data-analytics-event="map_click" target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-[#d4af37] transition-colors hover:text-[#e5c45a]">Mở bản đồ <span aria-hidden="true" className="ml-2">↗</span></a>
-        </div>
-      </div>
-      <div className="sonic-container flex flex-col gap-3 border-t border-[var(--sonic-line)] py-6 text-[0.64rem] uppercase tracking-[0.16em] text-[var(--sonic-subtle)] sm:flex-row sm:items-center sm:justify-between">
-        <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span>Sonic Purity / Designed for listening</span>
       </div>
     </footer>
   )

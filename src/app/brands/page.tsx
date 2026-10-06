@@ -1,18 +1,35 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import {
+  ChevronRight,
+  MessageCircle,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react'
 import SonicBrandCard from '@/components/sonic/SonicBrandCard'
-import SonicReveal from '@/components/sonic/SonicReveal'
 import { getBrands, getProducts } from '@/lib/catalog'
+import { getBusinessProfile, formatPhoneHref } from '@/lib/business-profile'
 import { generateSEOMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = generateSEOMetadata({
   pagePath: '/brands',
-  title: 'Thương hiệu — Tiến Đạt Audio',
-  description: 'Các thương hiệu thiết bị âm thanh được Tiến Đạt Audio tuyển chọn và tư vấn theo không gian nghe thực tế.',
+  title: 'Thương hiệu âm thanh chính hãng — Tiến Đạt Audio',
+  description:
+    'Danh sách các thương hiệu thiết bị âm thanh hàng đầu thế giới được Tiến Đạt Audio phân phối chính hãng và bảo hành uy tín tại Quảng Ngãi: JBL, Bose, BMB, Yamaha, Denon, Paramax...',
+  keywords: [
+    'thương hiệu âm thanh',
+    'đại lý loa JBL Quảng Ngãi',
+    'bose chính hãng Quảng Ngãi',
+    'loa bmb chính hãng',
+    'Tiến Đạt Audio',
+  ],
 })
 
-type BrandsPageProps = { searchParams: Promise<Record<string, string | string[] | undefined>> }
+type BrandsPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
 type BrandSort = 'all' | 'az' | 'country'
 
 function first(value: string | string[] | undefined) {
@@ -23,109 +40,183 @@ function normalizeSort(value: string | undefined): BrandSort {
   return value === 'az' || value === 'country' ? value : 'all'
 }
 
-function getProductCount(brand: { id: string; name: string; productCount?: number }, products: Awaited<ReturnType<typeof getProducts>>) {
+function getProductCount(
+  brand: { id: string; name: string; productCount?: number },
+  products: Awaited<ReturnType<typeof getProducts>>
+) {
   if (typeof brand.productCount === 'number') return brand.productCount
   return products.filter((product) => product.brand_id === brand.id || product.brand === brand.name).length
 }
 
 export default async function BrandsPage({ searchParams }: BrandsPageProps) {
-  const params = await searchParams
+  const [params, brands, products, profile] = await Promise.all([
+    searchParams,
+    getBrands(),
+    getProducts(),
+    getBusinessProfile(),
+  ])
+
   const sort = normalizeSort(first(params.sort))
-  const [brands, products] = await Promise.all([getBrands(), getProducts()])
+  const phoneHref = formatPhoneHref(profile.phone)
+
   const productCounts = new Map(brands.map((brand) => [brand.id, getProductCount(brand, products)]))
   const curatedProductCount = Array.from(productCounts.values()).reduce((total, count) => total + count, 0)
   const originCount = new Set(brands.map((brand) => brand.country).filter(Boolean)).size
   const featuredBrandId = brands.find((brand) => brand.featured)?.id || brands[0]?.id
+
   const sortedBrands = [...brands].sort((a, b) => {
     if (sort === 'az') return a.name.localeCompare(b.name)
-    if (sort === 'country') return (a.country || 'International').localeCompare(b.country || 'International') || a.name.localeCompare(b.name)
-    return Number(Boolean(b.featured)) - Number(Boolean(a.featured)) || (a.sortOrder || 0) - (b.sortOrder || 0) || a.name.localeCompare(b.name)
+    if (sort === 'country')
+      return (
+        (a.country || 'International').localeCompare(b.country || 'International') ||
+        a.name.localeCompare(b.name)
+      )
+    return (
+      Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
+      (a.sortOrder || 0) - (b.sortOrder || 0) ||
+      a.name.localeCompare(b.name)
+    )
   })
-  const sortHref = (value: BrandSort) => value === 'all' ? '/brands' : `/brands?sort=${value}`
+
+  const sortHref = (value: BrandSort) => (value === 'all' ? '/brands' : `/brands?sort=${value}`)
 
   return (
-    <div className="sonic-page pt-28 md:pt-36">
-      <section className="sonic-container max-w-[1360px] border-b border-[var(--sonic-line)] pb-20 md:pb-28">
-        <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_260px] md:items-end md:gap-20">
-          <SonicReveal direction="left">
-            <p className="sonic-label">Brands / Selected partners</p>
-            <h1 className="sonic-title mt-5 max-w-[720px]">Những cái tên tạo nên<br className="hidden md:block" /> ngôn ngữ âm thanh riêng.</h1>
-            <p className="sonic-copy mt-7 max-w-[480px]">Chúng tôi không chọn thương hiệu vì danh tiếng đơn thuần. Mỗi cái tên cần có một lý do để hiện diện trong hệ thống của bạn.</p>
-          </SonicReveal>
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 pt-28 pb-20 md:pt-36">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-500">
+          <Link href="/" className="hover:text-[#d32f2f] transition-colors">
+            Trang chủ
+          </Link>
+          <ChevronRight size={14} className="text-slate-400" />
+          <span className="font-semibold text-slate-700">Thương hiệu đối tác</span>
+        </nav>
 
-          <SonicReveal direction="right" delay={0.12}>
-            <div className="border-t border-[var(--sonic-line-strong)]">
-              {[
-                [String(brands.length).padStart(2, '0'), 'Selected brands'],
-                [String(curatedProductCount).padStart(2, '0'), 'Curated products'],
-                [String(originCount).padStart(2, '0'), 'Audio origins'],
-              ].map(([value, label]) => (
-                <div key={label} className="flex items-end justify-between gap-4 border-b border-[var(--sonic-line)] py-4">
-                  <span className="text-3xl font-semibold tracking-[-0.06em] text-[var(--sonic-text-strong)]">{value}</span>
-                  <span className="sonic-label mb-1 text-right text-[var(--sonic-subtle)]">{label}</span>
-                </div>
-              ))}
-            </div>
-          </SonicReveal>
-        </div>
-      </section>
-
-      <section className="border-b border-[var(--sonic-line)] bg-[var(--sonic-surface-strong)] py-20 md:py-28">
-        <div className="sonic-container max-w-[1360px]">
-          <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr] md:items-end md:gap-16">
-            <div>
-              <p className="sonic-label">01 / Partner library</p>
-              <h2 className="sonic-title mt-5 max-w-xl">Từ sân khấu<br className="hidden md:block" /> đến phòng nghe tại gia.</h2>
-            </div>
-            <p className="sonic-copy max-w-xl md:justify-self-end">Mỗi thương hiệu được chọn vì một triết lý âm thanh, khả năng phối ghép và vai trò riêng trong hệ thống.</p>
+        {/* Hero Section */}
+        <div className="mb-10 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+          <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#d32f2f]">
+              <ShieldCheck size={14} /> 100% Chính Hãng — Đầy Đủ CO/CQ
+            </span>
+            <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 md:text-5xl">
+              Thương Hiệu Âm Thanh Tuyển Chọn
+            </h1>
+            <p className="mt-3 text-base text-slate-600 leading-relaxed">
+              Tiến Đạt Audio là đại lý phân phối chính hãng các thương hiệu âm thanh nổi tiếng toàn cầu. Mỗi sản phẩm được bảo hành minh bạch, hỗ trợ kỹ thuật và cân chỉnh chuyên sâu tại Quảng Ngãi.
+            </p>
           </div>
 
-          <div className="mt-12 flex items-center gap-5 overflow-x-auto border-y border-[var(--sonic-line)] py-4" aria-label="Sắp xếp thương hiệu">
-            <span className="sonic-label shrink-0 text-[var(--sonic-subtle)]">Brand index</span>
-            <nav className="flex min-w-max items-center gap-6" aria-label="Bộ lọc thương hiệu">
-              {([
-                ['all', 'Tất cả'],
-                ['az', 'A — Z'],
-                ['country', 'Quốc gia'],
-              ] as const).map(([value, label]) => {
+          {/* Quick Metrics */}
+          <div className="flex gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm sm:gap-6">
+            <div className="text-center px-2">
+              <span className="block text-2xl font-extrabold text-[#d32f2f] sm:text-3xl">
+                {brands.length}
+              </span>
+              <span className="text-[11px] font-bold uppercase text-slate-500">Thương hiệu</span>
+            </div>
+            <div className="h-10 w-px bg-slate-200 my-auto" />
+            <div className="text-center px-2">
+              <span className="block text-2xl font-extrabold text-slate-900 sm:text-3xl">
+                {curatedProductCount}+
+              </span>
+              <span className="text-[11px] font-bold uppercase text-slate-500">Thiết bị</span>
+            </div>
+            <div className="h-10 w-px bg-slate-200 my-auto" />
+            <div className="text-center px-2">
+              <span className="block text-2xl font-extrabold text-[#0068ff] sm:text-3xl">
+                {originCount}
+              </span>
+              <span className="text-[11px] font-bold uppercase text-slate-500">Quốc gia</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Sort & Filter Bar */}
+        <div className="mb-8 flex flex-col gap-4 border-y border-slate-200/80 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Sắp xếp:
+            </span>
+            <div className="flex gap-2">
+              {(
+                [
+                  ['all', 'Nổi bật'],
+                  ['az', 'Tên A — Z'],
+                  ['country', 'Theo Quốc gia'],
+                ] as const
+              ).map(([value, label]) => {
                 const active = sort === value
-                return <Link key={value} href={sortHref(value)} aria-current={active ? 'page' : undefined} className={`sonic-editorial-filter ${active ? 'sonic-editorial-filter-active' : ''}`}>{label}</Link>
+                return (
+                  <Link
+                    key={value}
+                    href={sortHref(value)}
+                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                      active
+                        ? 'bg-[#d32f2f] text-white shadow-sm'
+                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                )
               })}
-            </nav>
+            </div>
           </div>
 
-          <div className="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {sortedBrands.map((brand, index) => (
-              <SonicReveal key={brand.id} className={index === 0 && sort === 'all' && brand.id === featuredBrandId ? 'md:col-span-2' : ''} delay={index * 0.06}>
-                <SonicBrandCard brand={brand} index={index} productCount={productCounts.get(brand.id) || 0} featured={index === 0 && sort === 'all' && brand.id === featuredBrandId} />
-              </SonicReveal>
-            ))}
-          </div>
+          <p className="text-xs text-slate-500">
+            Hiển thị <strong>{sortedBrands.length}</strong> thương hiệu đang có sản phẩm tại Showroom
+          </p>
+        </div>
 
-          <div className="mt-28 flex items-center gap-4 md:mt-40" aria-hidden="true">
-            <span className="sonic-label shrink-0 text-[var(--sonic-subtle)]">Selected for listening</span>
-            <span className="h-px flex-1 bg-[var(--sonic-line)]" />
-            <span className="h-px w-16 bg-[var(--sonic-gold)] opacity-40" />
+        {/* Brands Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {sortedBrands.map((brand, index) => (
+            <SonicBrandCard
+              key={brand.id}
+              brand={brand}
+              index={index}
+              productCount={productCounts.get(brand.id) || 0}
+              featured={index === 0 && sort === 'all' && brand.id === featuredBrandId}
+            />
+          ))}
+        </div>
+
+        {/* Bottom Consultation Banner */}
+        <div className="mt-16 rounded-3xl bg-slate-900 p-8 text-white shadow-xl md:p-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-8">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-red-300">
+                <Sparkles size={14} /> Tư vấn chuyên gia
+              </span>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
+                Bạn chưa biết thương hiệu nào phù hợp với diện tích phòng và ngân sách?
+              </h2>
+              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                Đừng ngần ngại! Hãy liên hệ ngay với kỹ thuật viên của Tiến Đạt Audio để được so sánh trực tiếp các mẫu loa JBL, Bose, BMB, Paramax... trước khi quyết định mua.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col">
+              <a
+                href={`tel:${phoneHref}`}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#d32f2f] px-6 py-3.5 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#b71c1c]"
+              >
+                <Phone size={16} />
+                Hotline: {profile.phone}
+              </a>
+              <a
+                href="https://zalo.me/0934995657"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0068ff] px-6 py-3.5 text-center text-sm font-bold text-white shadow-md transition hover:bg-[#0052cc]"
+              >
+                <MessageCircle size={16} />
+                Chat Zalo Báo Giá
+              </a>
+            </div>
           </div>
         </div>
-      </section>
-
-      <section className="sonic-container max-w-[1360px] py-20 md:py-32">
-        <div className="mb-14 flex items-center gap-4" aria-hidden="true">
-          <span className="h-px flex-1 bg-[var(--sonic-line)]" />
-          <span className="h-px w-24 bg-[var(--sonic-line-strong)]" />
-        </div>
-        <div className="grid gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-end md:gap-20">
-          <SonicReveal direction="left">
-            <p className="sonic-label">02 / Phối ghép</p>
-            <h2 className="sonic-title mt-5 max-w-xl">Một logo<br className="hidden md:block" /> không nói lên tất cả.</h2>
-          </SonicReveal>
-          <SonicReveal direction="right" delay={0.1}>
-            <p className="sonic-copy max-w-2xl">Thương hiệu chỉ là điểm khởi đầu. Khả năng phối ghép, căn chỉnh và cách hệ thống phản hồi trong chính không gian của bạn mới là điều chúng tôi quan tâm.</p>
-            <Link href="/contact" className="sonic-editorial-cta group mt-8 inline-flex items-center gap-2">Nói chuyện với chuyên gia <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /></Link>
-          </SonicReveal>
-        </div>
-      </section>
+      </div>
     </div>
   )
 }

@@ -31,20 +31,132 @@ export default function SonicContactForm({ product, productId, articleId }: { pr
     }
   }
 
-  if (status === 'success') return <div className="sonic-panel sonic-fade-up flex min-h-[500px] flex-col items-center justify-center p-8 text-center"><span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#d4af37] text-[#080808]"><Check size={24} /></span><p className="sonic-label mt-7">Yêu cầu đã được ghi nhận</p><h2 className="mt-4 text-3xl font-bold tracking-[-0.05em]">Chúng tôi sẽ liên hệ sớm.</h2><p className="sonic-copy mt-4 max-w-md text-sm">Đội ngũ Tiến Đạt Audio sẽ gọi lại để hiểu rõ nhu cầu và sắp xếp lịch phù hợp.</p><button type="button" onClick={() => setStatus('idle')} className="sonic-button sonic-button-ghost mt-8">Gửi yêu cầu khác</button></div>
+  if (status === 'success') {
+    return (
+      <div className="flex min-h-[460px] flex-col items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50/50 p-8 text-center shadow-sm">
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md">
+          <Check size={28} />
+        </span>
+        <span className="mt-6 inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold tracking-wide text-emerald-800">
+          ĐÃ TIẾP NHẬN YÊU CẦU
+        </span>
+        <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
+          Tiến Đạt Audio sẽ liên hệ lại ngay
+        </h2>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
+          Cảm ơn quý khách. Kỹ thuật viên của chúng tôi sẽ gọi điện hoặc nhắn Zalo trong vòng 15 phút để tư vấn và sắp xếp lịch nghe thử tại showroom.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="mt-8 rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+        >
+          Gửi yêu cầu khác
+        </button>
+      </div>
+    )
+  }
 
   return (
-    <form onSubmit={submit} className="sonic-panel p-6 md:p-8">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2]">Họ và tên *<input required value={form.name} onChange={(event) => update('name', event.target.value)} className="sonic-input mt-1 normal-case tracking-normal" placeholder="Nguyễn Văn A" /></label>
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2]">Số điện thoại *<input required value={form.phone} onChange={(event) => update('phone', event.target.value)} className="sonic-input mt-1 normal-case tracking-normal" placeholder="0934 995 657" /></label>
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2]">Email<input type="email" value={form.email} onChange={(event) => update('email', event.target.value)} className="sonic-input mt-1 normal-case tracking-normal" placeholder="email@example.com" /></label>
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2]">Bạn quan tâm đến<input value={form.interest} onChange={(event) => update('interest', event.target.value)} className="sonic-input mt-1 normal-case tracking-normal" placeholder="Loa, karaoke, phòng nghe..." /></label>
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2] sm:col-span-2">Ngân sách dự kiến<select value={form.budget} onChange={(event) => update('budget', event.target.value)} className="sonic-input mt-1"><option value="">Chọn khoảng ngân sách</option><option>Dưới 10 triệu</option><option>10 — 30 triệu</option><option>30 — 70 triệu</option><option>Trên 70 triệu</option></select></label>
-        <label className="grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-[#9ea2a2] sm:col-span-2">Ghi chú<textarea value={form.message} onChange={(event) => update('message', event.target.value)} className="sonic-input mt-1 min-h-32 resize-y normal-case tracking-normal" placeholder="Mô tả không gian hoặc điều bạn đang tìm kiếm..." /></label>
+    <form onSubmit={submit} className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm md:p-8">
+      <div className="mb-6 border-b border-slate-100 pb-5">
+        <h2 className="text-xl font-bold text-slate-900">Thông tin liên hệ & Đặt lịch</h2>
+        <p className="mt-1 text-xs text-slate-500">
+          Vui lòng để lại thông tin, đội ngũ kỹ thuật sẽ gọi lại tư vấn cấu hình phù hợp với diện tích phòng và ngân sách của bạn.
+        </p>
       </div>
-      {status === 'error' && <p className="mt-5 border border-red-400/30 bg-red-400/5 px-4 py-3 text-sm text-red-200">{error}</p>}
-      <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><p className="max-w-xs text-xs leading-5 text-[#707474]">Thông tin của bạn chỉ được sử dụng để tư vấn và sắp xếp lịch trải nghiệm.</p><button disabled={status === 'loading'} type="submit" className="sonic-button sonic-button-gold">{status === 'loading' ? 'Đang gửi...' : 'Gửi yêu cầu'} <ArrowUpRight size={16} /></button></div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+          <span>Họ và tên <span className="text-[#d32f2f]">*</span></span>
+          <input
+            required
+            value={form.name}
+            onChange={(event) => update('name', event.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+            placeholder="Nguyễn Văn A"
+          />
+        </label>
+
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+          <span>Số điện thoại <span className="text-[#d32f2f]">*</span></span>
+          <input
+            required
+            type="tel"
+            value={form.phone}
+            onChange={(event) => update('phone', event.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+            placeholder="0934 995 657"
+          />
+        </label>
+
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+          <span>Email</span>
+          <input
+            type="email"
+            value={form.email}
+            onChange={(event) => update('email', event.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+            placeholder="email@example.com"
+          />
+        </label>
+
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
+          <span>Sản phẩm / Nhu cầu quan tâm</span>
+          <input
+            value={form.interest}
+            onChange={(event) => update('interest', event.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+            placeholder="Dàn karaoke, loa bluetooth, loa kéo, mixer..."
+          />
+        </label>
+
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
+          <span>Ngân sách dự kiến</span>
+          <select
+            value={form.budget}
+            onChange={(event) => update('budget', event.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+          >
+            <option value="">Chọn khoảng ngân sách phù hợp</option>
+            <option>Dưới 10 triệu</option>
+            <option>10 — 30 triệu (Phổ thông - Gia đình)</option>
+            <option>30 — 70 triệu (Cao cấp - Kinh doanh)</option>
+            <option>Trên 70 triệu (Sân khấu - Sự kiện chuyên nghiệp)</option>
+          </select>
+        </label>
+
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 sm:col-span-2">
+          <span>Ghi chú / Yêu cầu thêm</span>
+          <textarea
+            value={form.message}
+            onChange={(event) => update('message', event.target.value)}
+            rows={4}
+            className="w-full rounded-lg border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:border-[#d32f2f] focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+            placeholder="Mô tả diện tích phòng, sở thích nghe nhạc hoặc ngày giờ muốn ghé showroom nghe thử..."
+          />
+        </label>
+      </div>
+
+      {status === 'error' && (
+        <p className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          {error}
+        </p>
+      )}
+
+      <div className="mt-7 flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="max-w-xs text-xs leading-5 text-slate-500">
+          Thông tin của bạn được bảo mật tuyệt đối, chỉ dùng để kỹ thuật viên tư vấn báo giá.
+        </p>
+        <button
+          disabled={status === 'loading'}
+          type="submit"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#d32f2f] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#b71c1c] active:scale-[0.98] disabled:opacity-60"
+        >
+          {status === 'loading' ? 'Đang gửi thông tin...' : 'Gửi yêu cầu tư vấn'}
+          <ArrowUpRight size={16} />
+        </button>
+      </div>
     </form>
   )
 }

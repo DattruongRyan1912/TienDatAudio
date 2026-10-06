@@ -1,22 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight, Phone } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChevronRight,
+  MessageCircle,
+  Phone,
+  Sparkles,
+} from 'lucide-react'
 import { notFound, permanentRedirect } from 'next/navigation'
-import { getBusinessProfile } from '@/lib/business-profile'
+import { getBusinessProfile, formatPhoneHref } from '@/lib/business-profile'
 import { getProducts } from '@/lib/catalog'
 import { getPublicPosts } from '@/lib/content-repository'
 import { getSocialPostBySlug } from '@/modules/social/application/social-post-service'
 import SocialPostCard from '@/components/social/SocialPostCard'
 import SocialRelatedProduct from '@/components/social/SocialRelatedProduct'
-import SonicReveal from '@/components/sonic/SonicReveal'
 import { getSocialDiscoveryDescription, getSocialDiscoveryTitle } from '@/modules/social/domain/source-content'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
-// The root layout reads the theme cookie. Social posts are also created in
-// MongoDB after build time, so this CMS detail route must render dynamically.
-// Keeping it in the static/revalidate pipeline causes DYNAMIC_SERVER_USAGE and
-// a 500 response in production.
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -24,17 +26,54 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return { title: 'Không tìm thấy bài viết', robots: { index: false, follow: false } }
   const image = post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url
   const canonicalPath = post.seo.canonicalPath || `/bai-viet/${post.slug}`
-  const discoveryTitle = getSocialDiscoveryTitle({ title: post.seo.metaTitle || post.title, text: post.text, excerpt: post.excerpt, category: post.category })
-  const description = getSocialDiscoveryDescription({ text: post.text, excerpt: post.excerpt, metaDescription: post.seo.metaDescription }) || `Cập nhật ${post.category.toLocaleLowerCase('vi')} từ Tiến Đạt Audio.`
-  const openGraphTitle = getSocialDiscoveryTitle({ title: post.seo.ogTitle || discoveryTitle, text: post.text, excerpt: post.excerpt, category: post.category })
-  const openGraphDescription = getSocialDiscoveryDescription({ text: post.text, excerpt: description, metaDescription: post.seo.ogDescription }) || description
+  const discoveryTitle = getSocialDiscoveryTitle({
+    title: post.seo.metaTitle || post.title,
+    text: post.text,
+    excerpt: post.excerpt,
+    category: post.category,
+  })
+  const description =
+    getSocialDiscoveryDescription({
+      text: post.text,
+      excerpt: post.excerpt,
+      metaDescription: post.seo.metaDescription,
+    }) || `Cập nhật ${post.category.toLocaleLowerCase('vi')} từ Tiến Đạt Audio.`
+  const openGraphTitle = getSocialDiscoveryTitle({
+    title: post.seo.ogTitle || discoveryTitle,
+    text: post.text,
+    excerpt: post.excerpt,
+    category: post.category,
+  })
+  const openGraphDescription =
+    getSocialDiscoveryDescription({
+      text: post.text,
+      excerpt: description,
+      metaDescription: post.seo.ogDescription,
+    }) || description
   return {
     title: `${discoveryTitle} — Tiến Đạt Audio`,
     description,
     alternates: { canonical: canonicalPath },
     robots: { index: !post.seo.noIndex, follow: !post.seo.noIndex },
-    openGraph: { type: 'article', locale: 'vi_VN', url: canonicalPath, siteName: 'Tiến Đạt Audio', title: openGraphTitle, description: openGraphDescription, images: image ? [{ url: image, alt: discoveryTitle }] : [], publishedTime: post.publishedAt || undefined, modifiedTime: post.updatedAt, section: post.category, tags: post.tags },
-    twitter: { card: 'summary_large_image', title: openGraphTitle, description: openGraphDescription, images: image ? [image] : [] },
+    openGraph: {
+      type: 'article',
+      locale: 'vi_VN',
+      url: canonicalPath,
+      siteName: 'Tiến Đạt Audio',
+      title: openGraphTitle,
+      description: openGraphDescription,
+      images: image ? [{ url: image, alt: discoveryTitle }] : [],
+      publishedTime: post.publishedAt || undefined,
+      modifiedTime: post.updatedAt,
+      section: post.category,
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: openGraphTitle,
+      description: openGraphDescription,
+      images: image ? [image] : [],
+    },
   }
 }
 
@@ -43,20 +82,182 @@ export default async function SocialPostDetailPage({ params }: PageProps) {
   const post = await getSocialPostBySlug(requestedSlug)
   if (!post) notFound()
   if (post.slug !== requestedSlug) permanentRedirect(`/bai-viet/${post.slug}`)
-  const [profile, products, editorialPosts] = await Promise.all([getBusinessProfile(), getProducts(), getPublicPosts(100)])
+
+  const [profile, products, editorialPosts] = await Promise.all([
+    getBusinessProfile(),
+    getProducts(),
+    getPublicPosts(100),
+  ])
   const relatedProducts = products.filter((product) => post.relatedProductIds.includes(product.id)).slice(0, 4)
   const relatedArticles = editorialPosts.filter((article) => post.relatedArticleIds.includes(article.id)).slice(0, 4)
   const publishedAt = post.publishedAt || post.createdAt
   const articleUrl = `${profile.siteUrl.replace(/\/$/, '')}/bai-viet/${post.slug}`
-  const discoveryTitle = getSocialDiscoveryTitle({ title: post.title, text: post.text, excerpt: post.excerpt, category: post.category })
-  const discoveryDescription = getSocialDiscoveryDescription({ text: post.text, excerpt: post.excerpt, metaDescription: post.seo.metaDescription }) || post.excerpt
+  const discoveryTitle = getSocialDiscoveryTitle({
+    title: post.title,
+    text: post.text,
+    excerpt: post.excerpt,
+    category: post.category,
+  })
+  const discoveryDescription =
+    getSocialDiscoveryDescription({
+      text: post.text,
+      excerpt: post.excerpt,
+      metaDescription: post.seo.metaDescription,
+    }) || post.excerpt
+  const phoneHref = formatPhoneHref(profile.phone)
+
   const graph = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Article', '@id': `${articleUrl}#article`, headline: discoveryTitle, description: discoveryDescription, datePublished: publishedAt, dateModified: post.updatedAt, author: { '@type': 'Organization', name: post.author.displayName }, publisher: { '@id': `${profile.siteUrl.replace(/\/$/, '')}#business` }, mainEntityOfPage: articleUrl, image: post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url, articleSection: post.category, keywords: post.tags.join(', '), inLanguage: 'vi-VN' },
-      { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Trang chủ', item: profile.siteUrl }, { '@type': 'ListItem', position: 2, name: 'Góc Audio', item: `${profile.siteUrl}/bai-viet` }, { '@type': 'ListItem', position: 3, name: discoveryTitle, item: articleUrl }] },
+      {
+        '@type': 'Article',
+        '@id': `${articleUrl}#article`,
+        headline: discoveryTitle,
+        description: discoveryDescription,
+        datePublished: publishedAt,
+        dateModified: post.updatedAt,
+        author: { '@type': 'Organization', name: post.author.displayName },
+        publisher: { '@id': `${profile.siteUrl.replace(/\/$/, '')}#business` },
+        mainEntityOfPage: articleUrl,
+        image: post.seo.ogImage || post.media.find((item) => item.type === 'image')?.url,
+        articleSection: post.category,
+        keywords: post.tags.join(', '),
+        inLanguage: 'vi-VN',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: profile.siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Góc Audio', item: `${profile.siteUrl}/bai-viet` },
+          { '@type': 'ListItem', position: 3, name: discoveryTitle, item: articleUrl },
+        ],
+      },
     ],
   }
 
-  return <div className="sonic-page pt-28 md:pt-36"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} /><div className="sonic-container pb-20 md:pb-28"><SonicReveal><Link href="/bai-viet" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[var(--sonic-subtle)] hover:text-[var(--sonic-gold)]"><ArrowLeft size={14} /> Góc Audio</Link></SonicReveal><div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,760px)_300px] lg:items-start lg:justify-center lg:gap-16"><main><SonicReveal><SocialPostCard post={post} detail /></SonicReveal><p className="mt-4 text-xs text-[var(--sonic-subtle)]">Nội dung được xuất bản bởi {post.author.displayName}. Hãy kiểm tra thiết bị trong bài và trao đổi theo không gian thực tế của bạn.</p></main><SonicReveal direction="right" delay={0.1} className="space-y-6 lg:sticky lg:top-28"><aside><section className="rounded-lg border border-[var(--sonic-line)] bg-[var(--sonic-surface)] p-5"><p className="sonic-label">Thiết bị trong bài</p>{relatedProducts.length ? <div className="mt-4">{relatedProducts.map((product) => <SocialRelatedProduct key={product.id} product={product} />)}</div> : <p className="mt-4 text-sm leading-6 text-[var(--sonic-muted)]">Bài viết chưa gắn thiết bị. Xem danh mục để tìm cấu hình phù hợp.</p>}</section>{relatedArticles.length > 0 && <section className="rounded-lg border border-[var(--sonic-line)] bg-[var(--sonic-surface)] p-5"><p className="sonic-label">Đọc tiếp</p><div className="mt-4 grid gap-4">{relatedArticles.map((article) => <Link key={article.id} href={`/kien-thuc/${article.slug}`} className="border-t border-[var(--sonic-line)] pt-3 text-sm font-bold text-[var(--sonic-text)] hover:text-[var(--sonic-gold)]">{article.title}<span className="mt-1 block text-xs font-normal text-[var(--sonic-subtle)]">{article.category}</span></Link>)}</div></section>}<section className="rounded-lg border border-[var(--sonic-gold)]/40 bg-[var(--sonic-gold-soft)] p-5"><p className="sonic-label">Bắt đầu từ không gian thật</p><h2 className="mt-3 text-xl font-bold text-[var(--sonic-text)]">Cần tư vấn phối ghép?</h2><p className="mt-3 text-sm leading-6 text-[var(--sonic-muted)]">Đội ngũ Tiến Đạt Audio sẽ giúp bạn chọn cấu hình có lý do.</p><Link href={`/contact?post=${encodeURIComponent(post.id)}`} className="sonic-button sonic-button-gold mt-5 w-full">Nhận tư vấn <ArrowUpRight size={15} /></Link><a href={`tel:${profile.phone.replace(/\D/g, '')}`} className="mt-3 flex items-center justify-center gap-2 text-xs font-bold text-[var(--sonic-gold)]"><Phone size={13} />{profile.phone}</a></section></aside></SonicReveal></div></div></div>
+  return (
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 pt-28 pb-20 md:pt-36">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }} />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-500">
+          <Link href="/" className="hover:text-[#d32f2f] transition-colors">
+            Trang chủ
+          </Link>
+          <ChevronRight size={14} className="text-slate-400" />
+          <Link href="/bai-viet" className="hover:text-[#d32f2f] transition-colors">
+            Góc Audio
+          </Link>
+          <ChevronRight size={14} className="text-slate-400" />
+          <span className="font-semibold text-slate-700 line-clamp-1">{discoveryTitle}</span>
+        </nav>
+
+        {/* Back Link */}
+        <div className="mb-6">
+          <Link
+            href="/bai-viet"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#d32f2f] transition-colors"
+          >
+            <ArrowLeft size={14} />
+            Quay lại Góc Audio
+          </Link>
+        </div>
+
+        {/* Main Content & Sidebar */}
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+          {/* Main Article (8 cols) */}
+          <main className="lg:col-span-8">
+            <SocialPostCard post={post} detail />
+            <p className="mt-4 text-xs text-slate-500">
+              Nội dung được chia sẻ bởi ban biên tập {post.author.displayName} — Tiến Đạt Audio Quảng Ngãi.
+            </p>
+          </main>
+
+          {/* Sidebar (4 cols) */}
+          <aside className="space-y-6 lg:col-span-4 lg:sticky lg:top-28">
+            {/* Related Equipment */}
+            <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-100 pb-3">
+                Thiết bị trong bài viết
+              </h3>
+              {relatedProducts.length > 0 ? (
+                <div className="mt-3">
+                  {relatedProducts.map((product) => (
+                    <SocialRelatedProduct key={product.id} product={product} />
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-3 text-xs text-slate-500 leading-relaxed">
+                  Xem toàn bộ kho sản phẩm của Tiến Đạt Audio để tìm thiết bị phù hợp.
+                </p>
+              )}
+            </div>
+
+            {/* Related Knowledge Articles */}
+            {relatedArticles.length > 0 && (
+              <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-100 pb-3">
+                  Bài viết liên quan
+                </h3>
+                <div className="mt-3 space-y-3">
+                  {relatedArticles.map((article) => (
+                    <Link
+                      key={article.id}
+                      href={`/kien-thuc/${article.slug}`}
+                      className="group block border-t border-slate-100 pt-3 first:border-t-0 first:pt-0"
+                    >
+                      <h4 className="text-xs font-bold text-slate-900 transition-colors group-hover:text-[#0068ff]">
+                        {article.title}
+                      </h4>
+                      <span className="mt-0.5 block text-[11px] text-slate-500">
+                        {article.category}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quick Advisory Card */}
+            <div className="rounded-2xl border border-red-200 bg-red-50/70 p-6 shadow-sm">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#d32f2f]">
+                <Sparkles size={12} /> Hỗ trợ khách hàng
+              </span>
+              <h3 className="mt-1 text-base font-bold text-slate-900">
+                Thích cấu hình này?
+              </h3>
+              <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+                Liên hệ ngay với chúng tôi để nhận báo giá chi tiết và lên phương án khảo sát cho phòng của bạn.
+              </p>
+              <div className="mt-4 space-y-2">
+                <a
+                  href={`tel:${phoneHref}`}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[#d32f2f] py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#b71c1c]"
+                >
+                  <Phone size={14} />
+                  Hotline: {profile.phone}
+                </a>
+                <a
+                  href="https://zalo.me/0934995657"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[#0068ff] py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#0052cc]"
+                >
+                  <MessageCircle size={14} />
+                  Chat Zalo Báo Giá
+                </a>
+                <Link
+                  href={`/contact?post=${encodeURIComponent(post.id)}`}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white py-2.5 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                >
+                  Đặt lịch nghe thử <ArrowRight size={13} />
+                </Link>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  )
 }
