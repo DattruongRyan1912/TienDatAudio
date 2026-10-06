@@ -1,0 +1,116 @@
+name: Sync Batch-2 & Purge AI Drafts on Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Nhập SYNC-BATCH2-PRODUCTION để xác nhận gỡ 95 bài AI và nạp Batch-2
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-editorial-sync-batch2
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: inputs.confirmation == 'SYNC-BATCH2-PRODUCTION'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+
+    steps:
+      - name: Configure pinned SSH transport
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          test -n "$VPS_SSH_KEY"
+          test -n "$VPS_KNOWN_HOSTS"
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_KEY" > "$HOME/.ssh/tiendataudio_deploy"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/tiendataudio_deploy" "$HOME/.ssh/known_hosts"
+
+      - name: Execute purge and apply batch-2 on production
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh_args=(-i "$HOME/.ssh/tiendataudio_deploy" -p "$VPS_PORT" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          ssh "${ssh_args[@]}" "$VPS_USER@$VPS_HOST" 'bash -s' <<'REMOTE'
+          set -Eeuo pipefail
+
+          current_dir="$(readlink -f /srv/tiendataudio/current)"
+          test -d "$current_dir"
+          cd "$current_dir"
+
+          set -a
+          source /etc/tiendataudio/tiendataudio.env
+          set +a
+
+          echo "=== 1. TẠO BACKUP TRƯỚC KHI THAO TÁC ==="
+          backup_dir=/srv/tiendataudio/shared/db-backups
+          install -d -m 0700 "$backup_dir"
+          backup_stamp="$(date -u +'%Y%m%dT%H%M%SZ')"
+          backup_archive="$backup_dir/tiendataudio-before-purge-$backup_stamp.archive.gz"
+          mongodump --quiet --uri="$MONGODB_URI" --archive="$backup_archive" --gzip
+          sha256sum "$backup_archive" > "$backup_archive.sha256"
+          echo "Đã backup xong: $backup_archive"
+
+          echo "=== 2. GỠ BỎ / CHUYỂN 95 BÀI AI VỀ DRAFT & NOINDEX ==="
+          EDITORIAL_PURGE_CONFIRM=PURGE-AI-DRAFTS node scripts/unpublish-ai-editorial-drafts.mjs --apply
+
+          echo "=== 3. NẠP VÀ XUẤT BẢN BATCH-2 BÀI VIẾT KỸ THUẬT CRAWL ==="
+          EDITORIAL_BATCH_DIR=data/editorial-seeds/batch-2 \
+          EDITORIAL_BATCH_TARGET=local \
+          EDITORIAL_BATCH_PUBLISH=1 \
+          node scripts/apply-editorial-batch.mjs --apply
+
+          echo "=== 4. ĐẢM BẢO PUBLISHED_AT CHO BATCH-1 ==="
+          node -e "
+          import { MongoClient } from 'mongodb';
+          const uri = process.env.MONGODB_URI;
+          const client = await new MongoClient(uri).connect();
+          const db = client.db('tiendataudio');
+          const now = new Date().toISOString();
+          const slugs = [
+            'dan-karaoke-gia-dinh-gia-bao-nhieu',
+            'loa-karaoke-bi-hu-nguyen-nhan-cach-khac-phuc',
+            'lap-dat-dan-karaoke-gia-dinh-quang-ngai',
+            'cach-chon-loa-nghe-nhac-cho-phong-khach',
+            'dsp-audio-la-gi'
+          ];
+          const res = await db.collection('posts').updateMany(
+            { slug: { \$in: slugs } },
+            { \$set: { publishedAt: now, 'seo.noIndex': false } }
+          );
+          console.log('Updated publishedAt for batch-1:', res.modifiedCount);
+          await client.close();
+          "
+
+          echo "=== 5. KIỂM TRA TỔNG SỐ BÀI PUBLISHED TRÊN PRODUCTION ==="
+          node -e "
+          import { MongoClient } from 'mongodb';
+          const uri = process.env.MONGODB_URI;
+          const client = await new MongoClient(uri).connect();
+          const db = client.db('tiendataudio');
+          const count = await db.collection('posts').countDocuments({ status: 'published' });
+          const posts = await db.collection('posts').find({ status: 'published' }).project({ slug: 1, title: 1 }).toArray();
+          console.log('Tổng số bài published trên production:', count);
+          for (const p of posts) {
+            console.log(' - ' + p.slug + ' | ' + p.title);
+          }
+          await client.close();
+          "
+
+          echo "=== 6. HOÀN TẤT ĐỒNG BỘ PRODUCTION ==="
+          REMOTE
+
+      - name: Remove runner credential
+        if: always()
+        run: rm -f "$HOME/.ssh/tiendataudio_deploy"
